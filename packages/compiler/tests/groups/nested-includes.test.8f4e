@@ -1,0 +1,25 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+A group resolves its own include bindings and their private dependencies.
+noteEnd
+
+entry test
+group included
+includes
+include test/math inc includedValue
+includesEnd
+
+module included
+int output
+push &output
+call includedValue 12
+store
+
+push output
+assertEqual 13
+moduleEnd
+groupEnd
+entryEnd

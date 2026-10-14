@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module root
+call hidden
+moduleEnd
+
+group hidden
+function hidden
+functionEnd
+groupEnd
+entryEnd

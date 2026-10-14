@@ -1,0 +1,79 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Constant namespaces must be passed at each group boundary.
+Modules, functions, prototypes, and derived constants can use them.
+noteEnd
+
+constants env
+const SAMPLE_RATE 48000
+const BLOCK_SIZE SAMPLE_RATE/1000
+constantsEnd
+
+entry test
+module root
+use env
+int rate SAMPLE_RATE
+
+push rate
+assertEqual 48000
+moduleEnd
+
+group audio
+pass env
+
+constants derived
+use env
+const DOUBLE_BLOCK BLOCK_SIZE*2
+constantsEnd
+
+function getBlockSize
+use env
+push BLOCK_SIZE
+functionEnd int
+
+prototype state
+use env
+int[] samples BLOCK_SIZE
+prototypeEnd
+
+module voice
+use env
+use derived
+shape state
+int rate SAMPLE_RATE
+int blockSize BLOCK_SIZE
+int doubleBlock DOUBLE_BLOCK
+
+push rate
+assertEqual 48000
+push blockSize
+assertEqual 48
+push doubleBlock
+assertEqual 96
+push count(samples)
+assertEqual 48
+call getBlockSize
+assertEqual 48
+moduleEnd
+
+group nested
+pass env
+pass derived
+
+module nestedVoice
+use env
+int blockSize BLOCK_SIZE
+use derived
+int doubleBlock DOUBLE_BLOCK
+
+push blockSize
+assertEqual 48
+push doubleBlock
+assertEqual 96
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

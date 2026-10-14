@@ -1,0 +1,304 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "processing/audio/source": {
+      "id": "processing/audio/source",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "processing/audio/source",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 41,
+            },
+          ],
+          "instruction": "int",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "processing/root": {
+      "id": "processing/root",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "processing/root",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "groupedValue",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "exposedValue",
+              "targetModuleId": "processing/audio",
+              "type": "identifier",
+              "value": "&audio:exposedValue",
+            },
+          ],
+          "instruction": "int*",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "observed",
+            },
+          ],
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "metadata",
+            },
+          ],
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "observed",
+              "type": "identifier",
+              "value": "&observed",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "groupedValue",
+              "type": "identifier",
+              "value": "*groupedValue",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "store",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "metadata",
+              "type": "identifier",
+              "value": "&metadata",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "left": {
+                "referenceKind": "intermodular-element-count",
+                "scope": "intermodule",
+                "targetMemoryId": "exposedValue",
+                "targetModuleId": "processing/audio",
+                "type": "identifier",
+                "value": "count(audio:exposedValue)",
+              },
+              "operator": "+",
+              "right": {
+                "referenceKind": "intermodular-element-word-size",
+                "scope": "intermodule",
+                "targetMemoryId": "exposedValue",
+                "targetModuleId": "processing/audio",
+                "type": "identifier",
+                "value": "sizeof(audio:exposedValue)",
+              },
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "store",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "observed",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 41,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "metadata",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "processing/audio/source": {
+      "memory": {
+        "value": {
+          "byteAddress": 4,
+          "default": 41,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "value",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "processing/root": {
+      "memory": {
+        "groupedValue": {
+          "byteAddress": 8,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "groupedValue",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+        },
+        "metadata": {
+          "byteAddress": 16,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "metadata",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+        },
+        "observed": {
+          "byteAddress": 12,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "observed",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "processing/audio/source",
+      "processing/root",
+    ],
+    "requiredMemoryBytes": 20,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

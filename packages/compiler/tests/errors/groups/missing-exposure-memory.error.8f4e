@@ -1,0 +1,14 @@
+8f4e/v1
+
+entry main
+module root
+moduleEnd
+
+group audio
+expose int publicValue &source:missing
+
+module source
+int value
+moduleEnd
+groupEnd
+entryEnd
