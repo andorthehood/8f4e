@@ -13,8 +13,10 @@
 - Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
   aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
-- Example builds generate the module registry with `packages/examples/generate-module-registry.mjs`. Project
-  deployments upload individual `.8f4e` and `.wasm` files; the product website owns the project catalog.
+- Example builds generate modules and the module registry (`packages/examples/generate-module-registry.mjs`) without
+  precompiling project WASM files. The product website owns the project catalog and bundles `.8f4e` project sources
+  as downloadable assets; only example modules and their registry need a separate Cloudflare R2 deployment.
+  Its explicit Nx dependency on `@8f4e/examples` keeps bundled sources in build cache inputs and dependency watches.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
 ## Agent Skills

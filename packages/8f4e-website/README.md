@@ -14,13 +14,17 @@ npx nx run @8f4e/8f4e-website:serve
 
 The development server runs at `http://localhost:3001` so it can run alongside `@8f4e/editor-website`.
 
-Set the canvas's `data-project-url` attribute in `src/index.html` to choose the project loaded when the editor mounts.
+Set the canvas's `data-project-path` attribute in `src/index.html` to a path relative to
+`packages/examples/src/projects/` to choose the project loaded when the editor mounts. `src/example-projects.ts`
+uses a Vite glob to emit the original `.8f4e` sources as downloadable assets shared by the homepage and examples gallery.
 
 ## Examples gallery
 
 The separate `/examples/` page lists curated projects from `src/examples/projects.ts`. Each entry supplies a stable ID,
-title, short description, and a path relative to `https://static.8f4e.com/example-projects/`. The homepage footer links
-to the gallery. Vite builds the homepage and both galleries.
+title, short description, and a path relative to `packages/examples/src/projects/`. The homepage footer links
+to the gallery. Vite builds the homepage and both galleries, including their project source assets, so example projects
+need no separate deployment or precompiled WASM files. The `.8f4e` asset responses allow cross-origin requests through
+`src/_headers` so Open in editor links can load these sources from `editor.8f4e.com`.
 
 `projectCategories` in the same file defines category headings and their order. Projects are grouped by their
 containing directory, with Amiga MODs listed separately from other audio examples. Category headings use `h2`
