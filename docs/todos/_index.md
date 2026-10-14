@@ -62,6 +62,9 @@ Active todo files are listed below.
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 | 491 | Migrate project testing to native assertions | 🟡 | 2-4d | 2026-10-09 | Use TODO 490 in the shared runner, migrate fixtures and CLI, remove the precompiler, and add an editor test runtime. |
+| 493 | Index compiled functions by project block ID | 🟡 | 2-4h | 2026-10-14 | Reuse a compilation-derived Map for function-block layout, stack-widget, and tooltip lookups instead of repeatedly scanning all compiled functions. |
+| 494 | Make editor block-highlight parsing linear | 🟡 | 3-6h | 2026-10-14 | Track open-block counts and matching stacks incrementally to avoid repeated history scans and array copies during highlight parsing. |
+| 495 | Index editor pointer targets by memory and address | 🟡 | 3-6h | 2026-10-14 | Index planned declarations by memory index and byte address to avoid repeated filter/flatten/find work when resolving pointer-based widgets. |
 
 ### 🟢 Low Priority
 
@@ -72,6 +75,7 @@ Active todo files are listed below.
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
+| 496 | Use Set and Map for binary-asset lookups | 🟢 | 1-2h | 2026-10-14 | Deduplicate URLs with a Set and join fetched metadata through a Map while preserving asset request order and memory destinations. |
 
 ## Completed TODOs
 
