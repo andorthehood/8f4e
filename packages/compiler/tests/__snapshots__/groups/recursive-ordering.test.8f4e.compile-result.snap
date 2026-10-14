@@ -1,0 +1,184 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "audio/grouped": {
+      "id": "audio/grouped",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "audio/grouped",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "store",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "root": {
+      "id": "root",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "root",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "output",
+              "targetModuleId": "audio",
+              "type": "identifier",
+              "value": "&audio:output",
+            },
+          ],
+          "instruction": "int*",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "input",
+              "type": "identifier",
+              "value": "*input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "audio/grouped": {
+      "memory": {
+        "value": {
+          "byteAddress": 4,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "value",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "root": {
+      "memory": {
+        "input": {
+          "byteAddress": 8,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "input",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "audio/grouped",
+      "root",
+    ],
+    "requiredMemoryBytes": 12,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

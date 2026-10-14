@@ -1,0 +1,38 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Nested group memory exposures resolve pointer defaults and metadata queries.
+The public type intentionally differs from the backing declaration's type.
+noteEnd
+
+entry test
+group processing
+module root
+int* groupedValue &audio:exposedValue
+int observed
+int metadata
+
+push &observed
+push *groupedValue
+store
+push &metadata
+push count(audio:exposedValue)+sizeof(audio:exposedValue)
+store
+
+push observed
+assertEqual 41
+push metadata
+assertEqual 5
+moduleEnd
+
+group audio
+expose float exposedValue &source:value
+
+module source
+int value 41
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

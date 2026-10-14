@@ -1,0 +1,28 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Group modules run before their parent's modules, even when
+the parent module appears first in the source.
+noteEnd
+
+entry test
+module root
+int* input &audio:output
+
+push *input
+assertEqual 1
+moduleEnd
+
+group audio
+expose int output &grouped:value
+
+module grouped
+int value
+push &value
+push 1
+store
+moduleEnd
+groupEnd
+entryEnd

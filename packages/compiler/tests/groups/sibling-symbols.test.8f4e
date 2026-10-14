@@ -1,0 +1,42 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Sibling groups can reuse module and function names.
+Each group resolves its own function and executes independently.
+noteEnd
+
+entry test
+group left
+function value
+push 7
+functionEnd int
+
+module shared
+int output
+push &output
+call value
+store
+
+push output
+assertEqual 7
+moduleEnd
+groupEnd
+
+group right
+function value
+push 11
+functionEnd int
+
+module shared
+int output
+push &output
+call value
+store
+
+push output
+assertEqual 11
+moduleEnd
+groupEnd
+entryEnd

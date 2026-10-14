@@ -1,0 +1,525 @@
+{
+  "functionAst": {
+    "included/__8f4e_test_math__nonexported__helper__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/__8f4e_test_math__nonexported__helper",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "included/__8f4e_test_math__nonexported__helper",
+      "type": "function",
+    },
+    "included/__8f4e_test_math__nonexported__helper__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/__8f4e_test_math__nonexported__helper",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "included/__8f4e_test_math__nonexported__helper",
+      "type": "function",
+    },
+    "included/__8f4e_test_math__unselected__twice__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/__8f4e_test_math__unselected__twice",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/includedValue",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/includedValue",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "included/__8f4e_test_math__unselected__twice",
+      "type": "function",
+    },
+    "included/includedValue__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/includedValue",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/__8f4e_test_math__nonexported__helper",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "included/includedValue",
+      "type": "function",
+    },
+    "included/includedValue__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/includedValue",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/__8f4e_test_math__nonexported__helper",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "included/includedValue",
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "included/__8f4e_test_math__nonexported__helper__float": {
+      "id": "included/__8f4e_test_math__nonexported__helper__float",
+      "signature": {
+        "parameters": [
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "included/__8f4e_test_math__nonexported__helper__int": {
+      "id": "included/__8f4e_test_math__nonexported__helper__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "included/__8f4e_test_math__unselected__twice__int": {
+      "id": "included/__8f4e_test_math__unselected__twice__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "included/includedValue__float": {
+      "id": "included/includedValue__float",
+      "signature": {
+        "parameters": [
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "included/includedValue__int": {
+      "id": "included/includedValue__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "included/included": {
+      "id": "included/included",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/included",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "output",
+            },
+          ],
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "output",
+              "type": "identifier",
+              "value": "&output",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "included/includedValue",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "store",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "output",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 13,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "included/included": {
+      "memory": {
+        "output": {
+          "byteAddress": 4,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "output",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "included/__8f4e_test_math__nonexported__helper__float",
+      "included/__8f4e_test_math__nonexported__helper__int",
+      "included/__8f4e_test_math__unselected__twice__int",
+      "included/includedValue__float",
+      "included/includedValue__int",
+    ],
+    "compiledModules": [
+      "included/included",
+    ],
+    "requiredMemoryBytes": 8,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}
