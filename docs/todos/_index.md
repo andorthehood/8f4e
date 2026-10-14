@@ -67,6 +67,7 @@ Active todo files are listed below.
 | 495 | Index editor pointer targets by memory and address | 🟡 | 3-6h | 2026-10-14 | Index planned declarations by memory index and byte address to avoid repeated filter/flatten/find work when resolving pointer-based widgets. |
 | 498 | Consolidate shared editor test-state builders | 🟡 | 4-8h | 2026-10-14 | Share complete typed state defaults and migrate cast-based editor/runtime fixtures so missing required fields are caught earlier. |
 | 499 | Unify project instruction syntax parsing | 🟡 | 4-8h | 2026-10-14 | Move exposure syntax into the tokenizer alongside pass and init, with shared comment handling, validation, and source diagnostics. |
+| 500 | Keep planned memory and its source together | 🟡 | 4-8h | 2026-10-14 | Attach effective source information to each planned declaration, removing parallel arrays and positional source lookups. |
 
 ### 🟢 Low Priority
 
