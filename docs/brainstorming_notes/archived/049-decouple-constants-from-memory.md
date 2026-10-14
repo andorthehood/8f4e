@@ -2,6 +2,10 @@
 
 Date: 2026-06-15
 
+Status: Archived. The implemented decision is recorded in
+[ADR-009: Resolve Constants Independently From Memory](../../adr/009-resolve-constants-independently-from-memory.md).
+The original brainstorming discussion is preserved below.
+
 This note captures one narrow compiler cleanup: decoupling constants from memory.
 
 ## Short Version
