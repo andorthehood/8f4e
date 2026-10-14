@@ -1,3 +1,4 @@
+import { parseProjectSource } from '@8f4e/project-preparser';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, type Mock, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
@@ -5,6 +6,8 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import codeBlockRenderingEffect from './effect';
+import entryOutlines from './features/entryOutlines/effect';
+import projectGroupNavigation from './features/projectGroupNavigation/effect';
 
 function createFontIds() {
 	return new Proxy(
@@ -281,6 +284,65 @@ describe('code block rendering home directive', () => {
 			code: ['module voice', 'moduleEnd'],
 		});
 		expect(state.codeBlockRendering.codeBlocks.some(block => block.name === 'voice')).toBe(false);
+	});
+
+	it('outlines imported group entries in the root and nested project views', () => {
+		const project = parseProjectSource(`8f4e/v1
+entry main
+group audio
+; @pos 10 20
+group voices
+; @pos 30 40
+module voice
+; @pos 50 60
+float out
+moduleEnd
+groupEnd
+groupEnd
+entryEnd
+entry test
+group checks
+; @pos -20 -10
+groupEnd
+entryEnd`);
+		const state = createMockState({ initialProjectState: project, spriteLookups: createSpriteLookups() });
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+		codeBlockRenderingEffect(store, events);
+		entryOutlines(store);
+		projectGroupNavigation(store, events);
+		store.set('initialProjectState', project);
+
+		const root = state.codeBlockRendering.rootCodeBlocks;
+		const audio = root.find(block => block.name === 'audio')!;
+		expect(audio.entry).toBe('main');
+		expect(state.codeBlockRendering.entryOutlines.map(outline => outline.entryName)).toEqual(['main', 'test']);
+		expect(state.codeBlockRendering.entryOutlines[0]).toMatchObject({ topLeft: { x: 16, y: 256 } });
+
+		const openGroup = vi.mocked(events.on).mock.calls.find(([name]) => name === 'openProjectGroup')![1];
+		const goBack = vi.mocked(events.on).mock.calls.find(([name]) => name === 'goToParentProjectGroup')![1];
+		openGroup({ codeBlock: audio });
+		const voices = state.codeBlockRendering.codeBlocks[0];
+		expect(voices.name).toBe('voices');
+		expect(state.codeBlockRendering.entryOutlines).toHaveLength(1);
+		expect(state.codeBlockRendering.entryOutlines[0]).toMatchObject({
+			entryName: 'main',
+			topLeft: { x: 176, y: 576 },
+		});
+
+		openGroup({ codeBlock: voices });
+		expect(state.codeBlockRendering.codeBlocks[0].name).toBe('voice');
+		expect(state.codeBlockRendering.entryOutlines).toHaveLength(1);
+		expect(state.codeBlockRendering.entryOutlines[0]).toMatchObject({
+			entryName: 'main',
+			topLeft: { x: 336, y: 896 },
+		});
+
+		goBack(undefined);
+		goBack(undefined);
+		expect(state.codeBlockRendering.codeBlocks).toBe(root);
+		expect(state.codeBlockRendering.entryOutlines.map(outline => outline.entryName)).toEqual(['main', 'test']);
+		store.dispose();
 	});
 
 	it('resets the rendered slice pointer to the new root when a project reloads', () => {
