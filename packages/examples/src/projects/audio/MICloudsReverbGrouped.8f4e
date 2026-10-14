@@ -107,7 +107,7 @@ ifEnd
 
 moduleEnd
 module audiooutL
-; @pos 140 -34
+; @pos 143 -34
 use env
 
 float* in &reverb:outL
@@ -145,7 +145,7 @@ ifEnd
 
 moduleEnd
 module audiooutR
-; @pos 183 -34
+; @pos 186 -34
 use env
 
 float* in &reverb:outR
@@ -183,10 +183,20 @@ ifEnd
 
 moduleEnd
 group reverb
-; @pos 89 -34
+; @pos 85 -34
 expose float* in &reverbInput:in
 expose float outL &tank1OutputMix:out
 expose float outR &tank2OutputMix:out
+
+expose float decay &controlValues:decay
+expose float amount &controlValues:amount
+expose float diffusion &controlValues:diffusion
+expose float damping &controlValues:damping
+
+; @slider &decay 
+; @slider &amount
+; @slider &diffusion
+; @slider &damping
 
 pass env
 
