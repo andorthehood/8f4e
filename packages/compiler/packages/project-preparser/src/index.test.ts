@@ -177,7 +177,7 @@ describe('parseProjectSource', () => {
 			'group audio',
 			'; this comment belongs to the group block',
 			'futureInstruction anything',
-			'expose int level &voice:level',
+			'expose level &voice:level',
 			'',
 			'groupEnd',
 		];
@@ -191,7 +191,6 @@ describe('parseProjectSource', () => {
 		expect(project.groups[0].modules).toEqual([{ id: 8, code: validModuleBlock, entry: 'main' }]);
 		expect(project.groups[0].exposures).toEqual([
 			{
-				type: 'int',
 				name: 'level',
 				targetModuleName: 'voice',
 				targetMemoryName: 'level',
@@ -246,8 +245,8 @@ describe('parseProjectSource', () => {
 					'8f4e/v1',
 					'entry main',
 					'group audio',
-					'expose int value &source:first',
-					'expose float value &source:second',
+					'expose value &source:first',
+					'expose value &source:second',
 					'groupEnd',
 					'entryEnd',
 				].join('\n')

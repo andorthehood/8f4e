@@ -184,14 +184,14 @@ ifEnd
 moduleEnd
 group reverb
 ; @pos 85 -34
-expose float* in &reverbInput:in
-expose float outL &tank1OutputMix:out
-expose float outR &tank2OutputMix:out
+expose in &reverbInput:in
+expose outL &tank1OutputMix:out
+expose outR &tank2OutputMix:out
 
-expose float decay &controlValues:decay
-expose float amount &controlValues:amount
-expose float diffusion &controlValues:diffusion
-expose float damping &controlValues:damping
+expose decay &controlValues:decay
+expose amount &controlValues:amount
+expose diffusion &controlValues:diffusion
+expose damping &controlValues:damping
 
 ; @slider &decay 
 ; @slider &amount

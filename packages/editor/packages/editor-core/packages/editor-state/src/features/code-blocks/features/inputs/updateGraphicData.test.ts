@@ -72,13 +72,12 @@ describe('updateInputsGraphicData', () => {
 		const targetMemory = createMemory({ id: 'input', byteAddress: 36, wordAlignedAddress: 9 });
 		mockGraphicData = createMockCodeBlock({
 			name: 'audio',
-			code: ['group audio', 'expose int* publicInput &consumer:input', 'groupEnd'],
+			code: ['group audio', 'expose publicInput &consumer:input', 'groupEnd'],
 			gaps: new Map(),
 			nestedProjectCodeBlocks: [],
 		});
 		mockState.compiler.projectMemoryExposuresByGroupPath.audio = [
 			{
-				type: 'int*',
 				name: 'publicInput',
 				targetModuleName: 'consumer',
 				targetMemoryName: 'input',

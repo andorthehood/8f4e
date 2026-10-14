@@ -40,10 +40,10 @@ ordinary `use <namespace>` instruction. The compiler resolves passes as qualifie
 copy constants or inject declarations into block ASTs.
 
 Groups may publish direct-module memory items to their enclosing project with
-`expose <type> <name> &<module>:<memory>`. Exposures are symbolic aliases: the composer rewrites references such as
-`&audio:level` to the backing canonical module reference before the global memory pass, so aliases allocate no memory.
+`expose <name> &<module>:<memory>`. Exposures are symbolic aliases: references such as `&audio:level` resolve through
+the alias table to the backing declaration, so aliases allocate no memory and source references remain unchanged.
 Group names and exposure target-module names follow the source module-name rules so canonical paths remain referenceable.
-The declared public type is not checked against the target type. `CompileResult.projectMemoryExposuresByGroupPath`
+Each exposure inherits its backing declaration's type. `CompileResult.projectMemoryExposuresByGroupPath`
 retains each resolved exposure together with its backing `PlannedMemoryDeclaration` for editors and other hosts.
 
 ## Compiler Passes

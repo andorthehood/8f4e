@@ -2,13 +2,13 @@
 
 entry main
 group audio
-expose int gain &voice:level
-expose float wet &voice:wet
-expose int gate &voice:gate
-expose int* gateInput &voice:gate
-expose int* input &voice:pointer
-expose int[] keys &notesData:notes
-expose int pressed &countData:count
+expose gain &voice:level
+expose wet &voice:wet
+expose gate &voice:gate
+expose gateAlias &voice:gate
+expose input &voice:pointer
+expose keys &notesData:notes
+expose pressed &countData:count
 ; @slider &gain 0 1 0.01
 ; @watch gain
 ; @meter gain 0 1
@@ -36,7 +36,7 @@ int count 1
 moduleEnd
 
 group nested
-expose int gain &voice:level
+expose gain &voice:level
 module voice
 int level 7
 moduleEnd
@@ -44,7 +44,7 @@ groupEnd
 groupEnd
 
 group other
-expose float gain &voice:level
+expose gain &voice:level
 module voice
 float level 0.9
 moduleEnd

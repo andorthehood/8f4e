@@ -4,7 +4,7 @@ note
 ; @config runtime TestRuntime
 
 Nested group memory exposures resolve pointer defaults and metadata queries.
-The public type intentionally differs from the backing declaration's type.
+Aliases use the backing declaration's type without allocating additional storage.
 noteEnd
 
 entry test
@@ -28,7 +28,7 @@ assertEqual 5
 moduleEnd
 
 group audio
-expose float exposedValue &source:value
+expose exposedValue &source:value
 
 module source
 int value 41

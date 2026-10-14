@@ -91,7 +91,7 @@ describe('shared exposed memory resolution', () => {
 			publicModuleId: 'audio',
 			publicName: 'gain',
 			moduleId: 'audio/voice',
-			exposure: { type: 'int' },
+			exposure: { name: 'gain', targetMemory: { type: 'float' } },
 		});
 		expect(local.memory.isInteger).toBe(false);
 		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(controls), 'audio:gain')?.memory).toBe(local.memory);
@@ -130,7 +130,7 @@ describe('shared exposed memory resolution', () => {
 		expect(resolveMemoryIdentifier(state, scope, '*input')?.memory).toBe(alternate);
 	});
 
-	it('shares backing addresses and preserves public connector direction despite differing public types', () => {
+	it('shares backing addresses and infers control types and connector direction from backing memory', () => {
 		const { state, audio, derive } = test;
 		const bare = createMockCodeBlock({
 			name: 'audio',
@@ -147,7 +147,8 @@ describe('shared exposed memory resolution', () => {
 		expect(audio.widgets.outputs.find(output => output.id === 'gain')?.memory.wordAlignedAddress).toBe(
 			gain.wordAlignedAddress
 		);
-		expect(audio.widgets.inputs.map(input => input.id)).toEqual(['gateInput', 'input']);
+		expect(audio.widgets.inputs.map(input => input.id)).toEqual(['input']);
+		expect(audio.widgets.outputs.map(output => output.id)).toContain('gateAlias');
 		expect(audio.widgets.arrayPlotters[0].length).toBe(4);
 		expect(audio.widgets.arrayBars[0].length).toBe(4);
 		expect(audio.widgets.arrayWaves[0].length).toBe(4);

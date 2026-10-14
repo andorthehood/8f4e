@@ -51,7 +51,7 @@ with the group, using the same argument form it uses for ordinary module memory.
 
 ```txt
 group audio
-expose float gain &voice:level
+expose gain &voice:level
 ; @slider &gain 0 1 0.01
 ; @watch gain
 
@@ -65,9 +65,9 @@ Within an entry, this group displays controls for `voice`'s `level` on the group
 can address the same storage with `&audio:gain`, or watch its value with `audio:gain`. Nested group names resolve relative
 to the current project scope; a path containing `/`, such as `audio/nested:gain`, identifies a canonical group path.
 
-Each directive retains its supported argument forms and type requirements. Runtime access uses the backing
-declaration's storage type. Group connector direction uses the exposure's declared public type, which can differ from
-the backing type. Aliases allocate no additional memory.
+Each directive retains its supported argument forms and type requirements. Exposures inherit the backing declaration's
+type for controls and runtime access. Group connectors use the same pointer classification as module connectors:
+pointers are inputs, and non-pointers are outputs. Aliases allocate no additional memory.
 
 ## Supported Directives
 

@@ -5,7 +5,7 @@ int output
 moduleEnd
 group outer
 group inner
-expose int* input &processor:input
+expose input &processor:input
 bind &input &source:output
 module processor
 int* input

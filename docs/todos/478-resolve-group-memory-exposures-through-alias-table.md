@@ -45,8 +45,8 @@ source-oriented tooling continue to see the public reference.
 
 Make the same alias lookup available to later semantic-reference validation for any address-shaped reference that was
 not folded by the memory-reference pass. Once the memory plan exists, resolve compiled exposure metadata from the same
-table and backing declaration. Missing backing modules or memory items should produce normal semantic diagnostics;
-the exposure's declared public type must remain intentionally unchecked against the target type.
+table and backing declaration. Missing backing modules or memory items should produce normal semantic diagnostics.
+An exposure inherits its backing declaration's type.
 
 ## Anti-Patterns
 
@@ -56,7 +56,7 @@ the exposure's declared public type must remain intentionally unchecked against 
   layout-backed values.
 - Do not mutate tokenizer-produced identifier nodes to hold canonical targets.
 - Do not allocate memory for an exposure alias.
-- Do not validate the exposure's declared public type against the backing memory declaration.
+- Do not store a separate public type for an exposure; use the backing memory declaration's type.
 - Do not keep the existing AST rewrite as a compatibility fallback after alias-aware resolution is implemented.
 
 ## Implementation Plan
@@ -119,7 +119,7 @@ the exposure's declared public type must remain intentionally unchecked against 
 - [x] Semantic validation reports missing alias targets without returning undefined resolved metadata.
 - [x] No compiler stage reparses or rewrites raw identifier source strings for exposure resolution.
 - [x] The composer AST rewrite and all compatibility remnants are removed.
-- [x] Exposure public types remain independent of backing declaration types.
+- [x] Exposures use their backing declaration's type.
 
 ## Affected Components
 

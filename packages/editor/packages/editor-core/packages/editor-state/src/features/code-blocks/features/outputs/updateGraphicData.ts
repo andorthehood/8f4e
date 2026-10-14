@@ -3,9 +3,10 @@ import getCodeBlockModuleId from '../../../../pureHelpers/getCodeBlockModuleId';
 import {
 	getConnectorMemoryDeclarations,
 	getConnectorRow,
+	isInputMemoryDeclaration,
 	isOutputMemoryDeclaration,
 } from '../connectors/memoryDeclarations';
-import { getProjectMemoryExposureConnectors, isProjectMemoryExposureInput } from '../connectors/projectMemoryExposures';
+import { getProjectMemoryExposureConnectors } from '../connectors/projectMemoryExposures';
 
 const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
@@ -16,7 +17,7 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 	}
 	if (graphicData.nestedProjectCodeBlocks !== undefined) {
 		getProjectMemoryExposureConnectors(graphicData, state).forEach(({ exposure, row }) => {
-			if (isProjectMemoryExposureInput(exposure)) return;
+			if (isInputMemoryDeclaration(exposure.targetMemory)) return;
 
 			const width = state.viewport.vGrid * CONNECTOR_WIDTH_GRID_CELLS;
 			const height = state.viewport.hGrid;

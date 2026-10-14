@@ -26,7 +26,3 @@ export function getProjectMemoryExposureConnectors(
 		return exposure ? [{ exposure, row: gapCalculator(rawRow, graphicData.gaps) }] : [];
 	});
 }
-
-export function isProjectMemoryExposureInput(exposure: ResolvedProjectMemoryExposure): boolean {
-	return exposure.type.includes('*');
-}

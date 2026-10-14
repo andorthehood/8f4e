@@ -7,15 +7,15 @@ int hidden 1
 moduleEnd
 
 group audio
-expose float gain &voice:level
-expose float aliasOnly &voice:level
+expose gain &voice:level
+expose aliasOnly &voice:level
 
 module voice
 float level 0.25
 moduleEnd
 
 group nested
-expose int gain &voice:level
+expose gain &voice:level
 
 module voice
 int level 7

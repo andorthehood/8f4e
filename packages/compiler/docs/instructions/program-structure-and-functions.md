@@ -10,6 +10,17 @@ Block instructions define the structure of your program. See detailed documentat
 
 ## Other Instructions
 
+### expose
+
+Inside a group, `expose <name> &<module>:<memory>` gives a direct child module's memory item a public name:
+
+```8f4e
+expose input &processor:input
+```
+
+The alias uses the backing declaration's type and allocates no additional memory. Editors derive control types and
+connector direction from that declaration: pointers are inputs, and non-pointers are outputs.
+
 ### bind
 
 A group contains modules under its own project scope, and an `expose` line gives a module's memory item a public name.
@@ -23,7 +34,7 @@ float output 0.5
 moduleEnd
 
 group synth
-expose float* input &processor:input
+expose input &processor:input
 bind &input &source:output
 
 module processor
@@ -45,7 +56,7 @@ therefore has the same immediate-parent rule. Both operands must be start-addres
 literal addresses, expressions, indexed slots, and end addresses are not accepted.
 
 The destination must expose a scalar pointer declaration. Pointer arrays cannot be bound as a whole. Validation uses
-the backing declaration; the public exposure type remains independent of that declaration's type.
+the backing declaration's type.
 
 A binding overrides the backing pointer's declaration default. An unbound pointer keeps its normal default. Two
 bindings to the same backing pointer are an error, including when different exposed names target that pointer.

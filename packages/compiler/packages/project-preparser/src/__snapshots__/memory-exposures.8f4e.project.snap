@@ -6,8 +6,8 @@
     {
       "code": [
         "group audio",
-        "expose int exposedValue &source:value",
-        "expose int* exposedInput &consumer:input",
+        "expose exposedValue &source:value",
+        "expose exposedInput &consumer:input",
         "",
         "",
         "groupEnd",
@@ -19,13 +19,11 @@
           "name": "exposedValue",
           "targetMemoryName": "value",
           "targetModuleName": "source",
-          "type": "int",
         },
         {
           "name": "exposedInput",
           "targetMemoryName": "input",
           "targetModuleName": "consumer",
-          "type": "int*",
         },
       ],
       "functions": [],

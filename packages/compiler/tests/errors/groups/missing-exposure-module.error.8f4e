@@ -5,7 +5,7 @@ module root
 moduleEnd
 
 group audio
-expose int publicValue &missing:value
+expose publicValue &missing:value
 
 module source
 int value

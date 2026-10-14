@@ -4,7 +4,7 @@ module source
 int output
 moduleEnd
 group synth
-expose int* input &processor:value
+expose input &processor:value
 bind &input &source:output
 module processor
 int value

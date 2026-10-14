@@ -92,9 +92,9 @@ independently compiled WebAssembly artifacts.
 
 Each group may expose memory from one of its direct modules to its enclosing project. The object model stores these
 ordered aliases in `ProjectGroupObjectModel.exposures`; `.8f4e` text writes them as
-`expose <type> <name> &<module>:<memory>`. An exposure is non-allocating. Composition replaces a reference to the public
-group name with the canonical backing module and memory name before the global memory plan runs. The public declaration
-type controls how an editor presents the connector and is intentionally not checked against the target declaration.
+`expose <name> &<module>:<memory>`. An exposure is non-allocating. The alias table resolves a reference to the public
+group name to the canonical backing module and memory name. The backing declaration supplies the type for compiler
+resolution, editor controls, and connector direction.
 The compiled result indexes resolved exposures by canonical group path and points directly to each backing
 `PlannedMemoryDeclaration`.
 

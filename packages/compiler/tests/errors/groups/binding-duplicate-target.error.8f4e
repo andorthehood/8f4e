@@ -4,8 +4,8 @@ module source
 int output
 moduleEnd
 group synth
-expose int* input &processor:input
-expose int* anotherName &processor:input
+expose input &processor:input
+expose anotherName &processor:input
 bind &input &source:output
 bind &anotherName &source:output
 module processor

@@ -78,7 +78,6 @@ describe('group compiler metadata and cache', () => {
 
 		expect(exposure).toMatchObject({
 			name: 'exposedValue',
-			type: 'float',
 			groupPath: 'processing/audio',
 			targetModuleId: 'processing/audio/source',
 			targetMemoryName: 'value',

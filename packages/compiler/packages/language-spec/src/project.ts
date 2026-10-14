@@ -1,5 +1,5 @@
 import type { ArgumentIdentifier } from './arguments';
-import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
+import type { PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
 export const projectInstructions = {
@@ -131,8 +131,6 @@ export interface ProjectObjectModel {
 
 /** A group-owned public memory name backed by a memory item in one of the group's direct modules. */
 export interface ProjectMemoryExposure {
-	/** Public memory declaration type. It is intentionally not checked against the target's declaration type. */
-	type: MemoryDeclarationInstruction;
 	/** Public name used by the enclosing project. */
 	name: string;
 	/** Source-level name of the direct child module that owns the target memory item. */
