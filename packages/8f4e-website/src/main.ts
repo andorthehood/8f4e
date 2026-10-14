@@ -1,20 +1,10 @@
 import { type DefaultEditorInstance, mountDefaultEditor } from '@8f4e/editor-default';
+import { getExampleProjectUrl } from './example-projects';
 import { sharedAudioContext } from './shared-audio-context';
 
 const canvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('.editor-row canvas'));
 if (canvases.length === 0) {
 	throw new Error('Editor canvases not found');
-}
-
-if (import.meta.env.DEV) {
-	const cacheBuster = Date.now().toString();
-	for (const canvas of canvases) {
-		if (canvas.dataset.projectUrl) {
-			const projectUrl = new URL(canvas.dataset.projectUrl);
-			projectUrl.searchParams.set('v', cacheBuster);
-			canvas.dataset.projectUrl = projectUrl.toString();
-		}
-	}
 }
 
 const renderingReleaseDelayMs = 2_000;
@@ -98,7 +88,7 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 			projectOpening: false,
 		},
 		initialEditorMode: 'edit',
-		initialProjectUrl: canvas.dataset.projectUrl || undefined,
+		initialProjectUrl: canvas.dataset.projectPath ? getExampleProjectUrl(canvas.dataset.projectPath) : undefined,
 		storage: window.localStorage,
 		storageNamespace: index === 0 ? '8f4e-website' : `8f4e-website-${index + 1}`,
 	})
