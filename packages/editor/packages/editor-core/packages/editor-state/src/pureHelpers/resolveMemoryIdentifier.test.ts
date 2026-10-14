@@ -52,8 +52,12 @@ describe('resolveMemoryIdentifier', () => {
 		const memory = createMemory('value', 16);
 		state.compiler.memoryPlan.modules['audio/source'] = createModule('audio/source', [memory]);
 
-		expect(resolveMemoryIdentifier(state, 'audio/consumer', 'source:value')?.memory).toBe(memory);
-		expect(resolveMemoryIdentifier(state, '', 'audio/source:value')?.memory).toBe(memory);
+		expect(resolveMemoryIdentifier(state, { kind: 'module', moduleId: 'audio/consumer' }, 'source:value')?.memory).toBe(
+			memory
+		);
+		expect(resolveMemoryIdentifier(state, { kind: 'project', groupPath: '' }, 'audio/source:value')?.memory).toBe(
+			memory
+		);
 	});
 
 	it('resolves a dereferenced pointer from the memory plan without rendered outputs', () => {
@@ -74,6 +78,6 @@ describe('resolveMemoryIdentifier', () => {
 		state.callbacks.getWordFromMemory = () => pointee.byteAddress;
 
 		expect(state.codeBlockRendering.outputsByWordAddress.size).toBe(0);
-		expect(resolveMemoryIdentifier(state, 'watcher', '*pointer')?.memory).toBe(pointee);
+		expect(resolveMemoryIdentifier(state, { kind: 'module', moduleId: 'watcher' }, '*pointer')?.memory).toBe(pointee);
 	});
 });

@@ -16,6 +16,7 @@ import updateInputs from '~/features/code-blocks/features/inputs/updateGraphicDa
 import updateOutputs from '~/features/code-blocks/features/outputs/updateGraphicData';
 import saveDefaults from '~/features/code-blocks/features/sliderDefaultSaver/effect';
 import { getControlDefaultEdits } from '~/features/code-blocks/features/sliderDefaultSaver/saveDefaults';
+import getCodeBlockMemoryScope from '~/pureHelpers/getCodeBlockMemoryScope';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import resolveMemoryTarget from '~/pureHelpers/resolveMemoryTarget';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -85,7 +86,7 @@ describe('shared exposed memory resolution', () => {
 
 	it('preserves public identity and resolves local, external, and direct references to the same storage', () => {
 		const { state, audio, controls } = test;
-		const local = resolveMemoryTarget(state, audio, 'gain')!;
+		const local = resolveMemoryTarget(state, getCodeBlockMemoryScope(audio), 'gain')!;
 		expect(local).toMatchObject({
 			publicModuleId: 'audio',
 			publicName: 'gain',
@@ -93,34 +94,32 @@ describe('shared exposed memory resolution', () => {
 			exposure: { type: 'int' },
 		});
 		expect(local.memory.isInteger).toBe(false);
-		expect(resolveMemoryTarget(state, controls, 'audio:gain')?.memory).toBe(local.memory);
-		expect(resolveMemoryTarget(state, '', 'audio/voice:level')?.memory).toBe(local.memory);
-		expect(resolveMemoryIdentifier(state, audio, '&gain')?.memory).toBe(local.memory);
-		const directMemory = state.compiler.memoryPlan.modules.controls.memory.level;
-		state.compiler.memoryPlan.modules.audio = {
-			...state.compiler.memoryPlan.modules.controls,
-			id: 'audio',
-			memory: { gain: directMemory },
-		};
-		expect(resolveMemoryTarget(state, controls, 'audio:gain')?.memory).toBe(local.memory);
-		expect(resolveMemoryTarget(state, audio, 'gain')?.memory).toBe(local.memory);
-		expect(resolveMemoryTarget(state, 'audio', 'gain')?.memory).toBe(directMemory);
+		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(controls), 'audio:gain')?.memory).toBe(local.memory);
+		expect(resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, 'audio/voice:level')?.memory).toBe(
+			local.memory
+		);
+		expect(resolveMemoryIdentifier(state, getCodeBlockMemoryScope(audio), '&gain')?.memory).toBe(local.memory);
 	});
 
 	it('resolves nested and sibling namespaces without searching unrelated scopes', () => {
 		const { state, audio } = test;
 		const nested = audio.nestedProjectCodeBlocks!.find(block => block.name === 'nested')!;
-		expect(resolveMemoryTarget(state, audio, 'nested:gain')?.moduleId).toBe('audio/nested/voice');
-		expect(resolveMemoryTarget(state, nested, 'gain')?.moduleId).toBe('audio/nested/voice');
-		expect(resolveMemoryTarget(state, '', 'audio/nested:gain')?.memory.isInteger).toBe(true);
-		expect(resolveMemoryTarget(state, '', 'other:gain')?.moduleId).toBe('other/voice');
-		expect(resolveMemoryTarget(state, nested, 'wet')).toBeUndefined();
+		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(audio), 'nested:gain')?.moduleId).toBe(
+			'audio/nested/voice'
+		);
+		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(nested), 'gain')?.moduleId).toBe('audio/nested/voice');
+		expect(resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, 'audio/nested:gain')?.memory.isInteger).toBe(
+			true
+		);
+		expect(resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, 'other:gain')?.moduleId).toBe('other/voice');
+		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(nested), 'wet')).toBeUndefined();
 	});
 
 	it('uses canonical pointer metadata when dereferencing an exposed pointer', () => {
 		const { state, audio } = test;
-		const target = resolveMemoryTarget(state, audio, 'gain')!.memory;
-		expect(resolveMemoryIdentifier(state, audio, '*input')?.memory).toBe(target);
+		const scope = getCodeBlockMemoryScope(audio);
+		const target = resolveMemoryTarget(state, scope, 'gain')!.memory;
+		expect(resolveMemoryIdentifier(state, scope, '*input')?.memory).toBe(target);
 		state.compiler.pointerMetadataByModuleId['audio/voice'].pointer.pointeeMemoryIndex = 1;
 		const alternate = { ...target, id: 'otherMemory', memoryIndex: 1 };
 		state.compiler.memoryPlan.moduleList.push({
@@ -128,7 +127,7 @@ describe('shared exposed memory resolution', () => {
 			memoryIndex: 1,
 			declarations: [alternate],
 		});
-		expect(resolveMemoryIdentifier(state, audio, '*input')?.memory).toBe(alternate);
+		expect(resolveMemoryIdentifier(state, scope, '*input')?.memory).toBe(alternate);
 	});
 
 	it('shares backing addresses and preserves public connector direction despite differing public types', () => {
@@ -247,6 +246,6 @@ describe('shared exposed memory resolution', () => {
 		derive(audio);
 		expect(audio.widgets.sliders).toEqual([]);
 		expect(audio.widgets.debuggers).toEqual([]);
-		expect(resolveMemoryTarget(state, '', 'audio:gain')).toBeUndefined();
+		expect(resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, 'audio:gain')).toBeUndefined();
 	});
 });

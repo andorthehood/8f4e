@@ -1,10 +1,10 @@
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import resolveMemoryTarget, { type MemoryResolutionScope, type ResolvedMemoryTarget } from './resolveMemoryTarget';
+import resolveMemoryTarget, { type MemoryScope, type ResolvedMemoryTarget } from './resolveMemoryTarget';
 
 export default function resolveMemoryIdentifier(
 	state: State,
-	scope: MemoryResolutionScope,
+	scope: MemoryScope,
 	memoryIdentifier: string | undefined
 ): (MemoryIdentifier & { target: ResolvedMemoryTarget }) | undefined {
 	if (!memoryIdentifier) {

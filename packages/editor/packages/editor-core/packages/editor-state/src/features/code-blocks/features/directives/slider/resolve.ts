@@ -1,5 +1,6 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import getCodeBlockMemoryScope from '~/pureHelpers/getCodeBlockMemoryScope';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import type { SliderDirectiveData } from './data';
 
@@ -15,7 +16,7 @@ function resolveSliderDirectiveWidget(
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData, slider.memoryId);
+	const memory = resolveMemoryIdentifier(state, getCodeBlockMemoryScope(graphicData), slider.memoryId);
 
 	if (!memory) {
 		return;

@@ -8,7 +8,7 @@ function resolveBinaryAssetTarget(
 	state: State,
 	memoryId: string
 ): { memoryId: string; byteAddress: number; memoryByteLength: number } | null {
-	const memory = resolveMemoryTarget(state, '', memoryId)?.memory;
+	const memory = resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory;
 	if (!memory) {
 		return null;
 	}

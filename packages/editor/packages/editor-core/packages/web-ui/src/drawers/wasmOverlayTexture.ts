@@ -51,7 +51,7 @@ function normalizeMagnification(value: number | undefined): number {
 }
 
 function getOverlayBufferByteAddress(state: State, target: string): number | undefined {
-	return resolveMemoryTarget(state, '', target)?.memory.byteAddress;
+	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, target)?.memory.byteAddress;
 }
 
 export function getOverlayDrawRect(

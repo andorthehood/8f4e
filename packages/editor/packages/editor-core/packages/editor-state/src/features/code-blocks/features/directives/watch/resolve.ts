@@ -1,6 +1,7 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
+import getCodeBlockMemoryScope from '~/pureHelpers/getCodeBlockMemoryScope';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import type { WatchDirectiveData } from './data';
 
@@ -16,7 +17,7 @@ function resolveWatchDirectiveWidget(
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData, _debugger.id);
+	const memory = resolveMemoryIdentifier(state, getCodeBlockMemoryScope(graphicData), _debugger.id);
 	if (!memory) {
 		return;
 	}

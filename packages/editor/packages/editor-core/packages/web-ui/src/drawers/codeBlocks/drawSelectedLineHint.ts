@@ -46,7 +46,7 @@ function getMemoryForLiveValueLine(
 	moduleId: string,
 	memoryId: string
 ): PlannedMemoryDeclaration | undefined {
-	return resolveMemoryTarget(state, moduleId, memoryId)?.memory;
+	return resolveMemoryTarget(state, { kind: 'module', moduleId }, memoryId)?.memory;
 }
 
 function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): string | undefined {

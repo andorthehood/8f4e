@@ -5,7 +5,7 @@ import { getKeyboardMemoryConfig } from './config';
 import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
-	return resolveMemoryTarget(state, '', memoryId)?.memory.wordAlignedAddress;
+	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory.wordAlignedAddress;
 }
 
 function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {

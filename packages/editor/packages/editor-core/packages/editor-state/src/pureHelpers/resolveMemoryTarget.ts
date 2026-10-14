@@ -1,16 +1,17 @@
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import {
 	createProjectModuleId,
 	getProjectGroupPathFromModuleId,
 	type PlannedMemoryDeclaration,
+	type ProjectGroupPath,
+	type ProjectModuleId,
 	type ResolvedProjectMemoryExposure,
 } from '@8f4e/language-spec';
-import getCodeBlockModuleId from './getCodeBlockModuleId';
 
-/** A canonical module identity, or a block whose group scope must be preserved. */
-export type MemoryResolutionScope =
-	| string
-	| Pick<CodeBlockGraphicData, 'name' | 'projectPath' | 'nestedProjectCodeBlocks'>;
+/** The module or project scope in which a memory reference is evaluated. */
+export type MemoryScope =
+	| { kind: 'module'; moduleId: ProjectModuleId }
+	| { kind: 'project'; groupPath: ProjectGroupPath };
 
 export interface ResolvedMemoryTarget {
 	publicModuleId: string;
@@ -26,18 +27,13 @@ const exposureIndexes = new WeakMap<ResolvedProjectMemoryExposure[], Map<string,
 /** Resolves a plain memory reference once for widgets, connectors, and environment bindings. */
 export default function resolveMemoryTarget(
 	state: Pick<State, 'compiler'>,
-	scope: MemoryResolutionScope,
+	scope: MemoryScope,
 	reference: string | undefined
 ): ResolvedMemoryTarget | undefined {
 	if (!reference) return;
 
-	const namespaceId = typeof scope === 'string' ? scope : getCodeBlockModuleId(scope);
-	const projectPath =
-		typeof scope === 'string'
-			? getProjectGroupPathFromModuleId(scope)
-			: scope.nestedProjectCodeBlocks === undefined
-				? scope.projectPath
-				: namespaceId;
+	const namespaceId = scope.kind === 'module' ? scope.moduleId : scope.groupPath;
+	const projectPath = scope.kind === 'module' ? getProjectGroupPathFromModuleId(scope.moduleId) : scope.groupPath;
 	const separator = reference.indexOf(':');
 	const publicName = separator === -1 ? reference : reference.slice(separator + 1);
 	const referencedNamespace = separator === -1 ? undefined : reference.slice(0, separator);
@@ -48,10 +44,12 @@ export default function resolveMemoryTarget(
 				? referencedNamespace
 				: createProjectModuleId(projectPath, referencedNamespace);
 
-	const memory = state.compiler.memoryPlan.modules[publicModuleId]?.memory[publicName];
-	const isGroup = typeof scope !== 'string' && scope.nestedProjectCodeBlocks !== undefined;
+	const memory =
+		separator !== -1 || scope.kind === 'module'
+			? state.compiler.memoryPlan.modules[publicModuleId]?.memory[publicName]
+			: undefined;
 	const directTarget = memory ? { publicModuleId, publicName, moduleId: publicModuleId, memory } : undefined;
-	if (separator === -1 && !isGroup && directTarget) return directTarget;
+	if (separator === -1 && scope.kind === 'module') return directTarget;
 
 	const exposures = state.compiler.projectMemoryExposuresByGroupPath[publicModuleId];
 	if (!exposures) return directTarget;
