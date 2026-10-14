@@ -355,7 +355,7 @@ export interface CodeBlockGraphicData {
 	 */
 	blockType: CodeBlockType;
 	/**
-	 * Execution entry name used by module blocks in the compiler export pipeline.
+	 * Execution entry name used by module and project-group blocks in the compiler export pipeline.
 	 * This is separate from the visual `; @group` directive.
 	 */
 	entry?: string;
@@ -442,7 +442,7 @@ export type CodeBlockRendering = {
 	/** Direct pointer to the project slice currently rendered by the editor. */
 	codeBlocks: CodeBlockGraphicData[];
 	/**
-	 * Derived outline corners for execution entries that contain multiple module blocks.
+	 * Derived outline corners for execution entries containing visible module or project-group blocks.
 	 * Maintained from code block geometry so renderers can draw entry grouping without
 	 * recomputing relationships every frame.
 	 */

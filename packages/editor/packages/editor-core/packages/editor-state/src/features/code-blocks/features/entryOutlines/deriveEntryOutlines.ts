@@ -10,7 +10,7 @@ type EntryBounds = {
 
 function getEntryName(codeBlock: CodeBlockGraphicData): string {
 	if (!codeBlock.entry) {
-		throw new Error(`Module code block "${codeBlock.name}" is missing entry`);
+		throw new Error(`Code block "${codeBlock.name}" is missing entry`);
 	}
 	return codeBlock.entry;
 }
@@ -55,7 +55,7 @@ export default function deriveEntryOutlines(
 	const boundsByEntry = new Map<string, EntryBounds>();
 
 	for (const codeBlock of codeBlocks) {
-		if (codeBlock.blockType !== 'module') {
+		if (codeBlock.blockType !== 'module' && codeBlock.nestedProjectCodeBlocks === undefined) {
 			continue;
 		}
 

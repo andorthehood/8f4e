@@ -1,3 +1,4 @@
+import { createMockCodeBlock } from '@8f4e/editor-state-testing';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import { describe, expect, it } from 'vitest';
 import deriveEntryOutlines from './deriveEntryOutlines';
@@ -122,4 +123,82 @@ describe('deriveEntryOutlines', () => {
 
 		expect(outlines[0].entryName).toBe('main');
 	});
+
+	it('includes modules and groups in their own entry bounds', () => {
+		const outlines = deriveEntryOutlines([
+			createMockCodeBlock({ blockType: 'module', entry: 'main', x: 16, y: 32, width: 80, height: 40 }),
+			createMockCodeBlock({
+				code: ['group audio', 'groupEnd'],
+				entry: 'main',
+				nestedProjectCodeBlocks: [],
+				x: 160,
+				y: -16,
+				width: 96,
+				height: 48,
+			}),
+			createMockCodeBlock({
+				code: ['group checks', 'groupEnd'],
+				entry: 'test',
+				nestedProjectCodeBlocks: [],
+				x: -80,
+				y: 96,
+				width: 64,
+				height: 32,
+			}),
+		]);
+
+		expect(outlines).toEqual([
+			{
+				entryName: 'main',
+				topLeft: { x: 16, y: -16 },
+				topRight: { x: 256, y: -16 },
+				bottomRight: { x: 256, y: 72 },
+				bottomLeft: { x: 16, y: 72 },
+			},
+			{
+				entryName: 'test',
+				topLeft: { x: -80, y: 96 },
+				topRight: { x: -16, y: 96 },
+				bottomRight: { x: -16, y: 128 },
+				bottomLeft: { x: -80, y: 128 },
+			},
+		]);
+	});
+
+	it('pads an entry containing only a group without including its hidden child geometry', () => {
+		const outlines = deriveEntryOutlines(
+			[
+				createMockCodeBlock({
+					code: ['group audio', 'groupEnd'],
+					entry: 'main',
+					x: 10,
+					y: 20,
+					width: 30,
+					height: 40,
+					nestedProjectCodeBlocks: [
+						createMockCodeBlock({ blockType: 'module', entry: 'main', x: 1000, y: 1000, width: 100, height: 100 }),
+					],
+				}),
+			],
+			8,
+			16
+		);
+
+		expect(outlines).toEqual([
+			{
+				entryName: 'main',
+				topLeft: { x: 2, y: 4 },
+				topRight: { x: 48, y: 4 },
+				bottomRight: { x: 48, y: 76 },
+				bottomLeft: { x: 2, y: 76 },
+			},
+		]);
+	});
+
+	it.each(['note', 'function', 'constants', 'prototype', 'includes', 'unknown'] as const)(
+		'excludes ordinary %s blocks',
+		blockType => {
+			expect(deriveEntryOutlines([createMockCodeBlock({ blockType })])).toEqual([]);
+		}
+	);
 });
