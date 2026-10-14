@@ -4,7 +4,7 @@ note
 ; @config runtime TestRuntime
 ; @memoryRegions sampleMemory
 
-A group binding carries its source memory region and pointee element count into compilation.
+A group initializer carries its source memory region and pointee element count into compilation.
 noteEnd
 
 entry test
@@ -15,7 +15,7 @@ moduleEnd
 
 group reader
 expose input &processor:input
-bind &input &source:values
+init &input &source:values
 
 module processor
 int8* input

@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 75,
   "context": {
     "projectGroupPath": "synth",
   },
@@ -23,8 +23,8 @@
         "value": "&source:output",
       },
     ],
-    "instruction": "bind",
+    "instruction": "init",
     "lineNumber": 2,
   },
-  "message": "Undeclared identifier: source:output. (5)",
+  "message": "Initialization target must be exposed scalar memory: input. (75)",
 }

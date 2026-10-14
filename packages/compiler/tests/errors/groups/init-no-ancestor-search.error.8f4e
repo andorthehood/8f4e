@@ -3,13 +3,13 @@ entry main
 module source
 int output
 moduleEnd
-group synth
+group outer
+group inner
 expose input &processor:input
-expose anotherName &processor:input
-bind &input &source:output
-bind &anotherName &source:output
+init &input &source:output
 module processor
 int* input
 moduleEnd
+groupEnd
 groupEnd
 entryEnd

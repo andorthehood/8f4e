@@ -1,7 +1,7 @@
 {
-  "code": 5,
+  "code": 74,
   "context": {
-    "projectGroupPath": "outer/inner",
+    "projectGroupPath": "",
   },
   "line": {
     "arguments": [
@@ -23,8 +23,8 @@
         "value": "&source:output",
       },
     ],
-    "instruction": "bind",
-    "lineNumber": 2,
+    "instruction": "init",
+    "lineNumber": 0,
   },
-  "message": "Undeclared identifier: outer/source:output. (5)",
+  "message": "init can only be used at group level. (74)",
 }

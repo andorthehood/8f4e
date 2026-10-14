@@ -25,17 +25,18 @@ The pass receives:
 - The whole sub-program AST, grouped by block kind.
 - Constant-resolution facts aligned with that AST.
 - The completed `@8f4e/memory-planner` layout plan for that same sub-program AST.
-- The project memory-alias table and scoped group binding declarations from composition.
+- The project memory-alias table and scoped group initializer declarations from composition.
 
 The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting them into compiler namespace state.
 
 The resolver returns pointer metadata discovered from planned memory declaration sources so later passes can use the same pointer facts without re-running memory-reference resolution.
 
-Group bindings resolve exposed destinations in their owning group and source addresses in its immediate parent.
-Their resolved values replace pointer-initializer arguments in both AST-line facts and effective declaration-source
-facts. This lets default initialization and pointer analysis share the same value and address provenance without
-mutating the original AST or memory plan. Duplicate bindings are checked by canonical backing declaration, and
-binding diagnostics retain the group's path and the binding's source line.
+Group initializers resolve exposed scalar destinations in their owning group. Numeric literals are used directly,
+while source addresses resolve in the immediate parent project. Their values replace scalar-default arguments in
+both AST-line facts and effective declaration-source facts. This lets default initialization and pointer analysis
+share the same value and address provenance without mutating the original AST or memory plan. Duplicate initializers
+are checked by canonical backing declaration, and
+initializer diagnostics retain the group's path and the initializer's source line.
 
 ## Output
 
@@ -67,7 +68,7 @@ const memoryReferences = resolveMemoryReferences({
 	},
 	memoryPlan,
 	memoryAliases,
-	projectMemoryBindingScopes,
+	projectMemoryInitializerScopes,
 	constantReferences,
 });
 ```
@@ -119,8 +120,8 @@ This package must not:
 ## Error Ownership
 
 The pass leaves ordinary unresolved AST references unchanged. Callers that require full resolution validate the
-composed line and report semantic errors. Group bindings are resolved completely in this pass, which reports
-semantic errors for invalid scope, invalid exposed pointer destinations, missing parent-scope sources, and duplicates.
+composed line and report semantic errors. Group initializers are resolved completely in this pass, which reports
+semantic errors for invalid scope, invalid exposed scalar destinations, missing parent-scope sources, and duplicates.
 
 It should not revalidate facts guaranteed by earlier stages, such as token shape, argument count, or whether a declaration id is unique. Those checks belong to the parser, semantic compiler, or memory planner input builder as appropriate.
 
@@ -138,7 +139,7 @@ const result = resolveMemoryReferences({
 	},
 	memoryPlan,
 	memoryAliases,
-	projectMemoryBindingScopes,
+	projectMemoryInitializerScopes,
 	constantReferences,
 });
 ```

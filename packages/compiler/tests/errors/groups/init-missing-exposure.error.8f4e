@@ -1,8 +1,10 @@
 8f4e/v1
 entry main
+module source
+int output
+moduleEnd
 group synth
-expose input &processor:input
-bind &input &missing:output
+init &input &source:output
 module processor
 int* input
 moduleEnd

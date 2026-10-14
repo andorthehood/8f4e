@@ -1,4 +1,4 @@
-import type { ArgumentIdentifier } from './arguments';
+import type { ArgumentIdentifier, ArgumentLiteral } from './arguments';
 import type { PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
@@ -6,7 +6,7 @@ export const projectInstructions = {
 	entry: { opener: 'entry', closer: 'entryEnd' },
 	group: { opener: 'group', closer: 'groupEnd' },
 	expose: 'expose',
-	bind: 'bind',
+	init: 'init',
 	pass: 'pass',
 } as const;
 
@@ -16,7 +16,7 @@ export const projectInstructionNames = [
 	projectInstructions.group.opener,
 	projectInstructions.group.closer,
 	projectInstructions.expose,
-	projectInstructions.bind,
+	projectInstructions.init,
 	projectInstructions.pass,
 ] as const;
 
@@ -51,21 +51,21 @@ export interface ProjectConstantNamespaceScope {
 	passes: ProjectConstantNamespacePassLine[];
 }
 
-/** A group-local exposed pointer initialized from an immediate-parent memory address. */
-export interface ProjectMemoryBindingLine {
+/** A default for group-local exposed scalar memory, using a number or immediate-parent memory address. */
+export interface ProjectMemoryInitializerLine {
 	lineNumber: number;
-	instruction: 'bind';
+	instruction: 'init';
 	arguments: [
 		Extract<ArgumentIdentifier, { referenceKind: 'memory-reference' }>,
-		Extract<ArgumentIdentifier, { referenceKind: 'intermodular-reference' }>,
+		ArgumentLiteral | Extract<ArgumentIdentifier, { referenceKind: 'intermodular-reference' }>,
 	];
 }
 
-/** Source bindings and the two project scopes used to resolve their endpoints. */
-export interface ProjectMemoryBindingScope {
+/** Initializers and the project scopes used to resolve their destinations and address sources. */
+export interface ProjectMemoryInitializerScope {
 	groupPath: ProjectGroupPath;
 	parentGroupPath?: ProjectGroupPath;
-	bindings: ProjectMemoryBindingLine[];
+	initializers: ProjectMemoryInitializerLine[];
 }
 
 /** Canonical path of the root project. */

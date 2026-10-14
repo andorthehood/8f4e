@@ -1,5 +1,5 @@
 {
-  "code": 76,
+  "code": 5,
   "context": {
     "projectGroupPath": "synth",
   },
@@ -9,9 +9,9 @@
         "isEndAddress": false,
         "referenceKind": "memory-reference",
         "scope": "local",
-        "targetMemoryId": "anotherName",
+        "targetMemoryId": "input",
         "type": "identifier",
-        "value": "&anotherName",
+        "value": "&input",
       },
       {
         "isEndAddress": false,
@@ -23,8 +23,8 @@
         "value": "&source:output",
       },
     ],
-    "instruction": "bind",
-    "lineNumber": 4,
+    "instruction": "init",
+    "lineNumber": 2,
   },
-  "message": "Multiple bindings target the same pointer: anotherName. (76)",
+  "message": "Undeclared identifier: source:output. (5)",
 }

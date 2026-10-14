@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 75,
   "context": {
     "projectGroupPath": "synth",
   },
@@ -18,13 +18,13 @@
         "referenceKind": "intermodular-reference",
         "scope": "intermodule",
         "targetMemoryId": "output",
-        "targetModuleId": "missing",
+        "targetModuleId": "source",
         "type": "identifier",
-        "value": "&missing:output",
+        "value": "&source:output",
       },
     ],
-    "instruction": "bind",
-    "lineNumber": 2,
+    "instruction": "init",
+    "lineNumber": 1,
   },
-  "message": "Undeclared identifier: missing:output. (5)",
+  "message": "Initialization target must be exposed scalar memory: input. (75)",
 }

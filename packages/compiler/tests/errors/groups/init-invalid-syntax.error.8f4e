@@ -1,7 +1,9 @@
 8f4e/v1
 entry main
+group synth
+init input &source:output
 module processor
 int* input
-bind &input &source:output
 moduleEnd
+groupEnd
 entryEnd

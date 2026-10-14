@@ -1,0 +1,93 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Group initializers override scalar defaults using the backing declaration's storage type.
+Numbers share ordinary declaration conversion, inherited defaults, and initialization timing.
+noteEnd
+
+entry test
+module source
+int output 99
+push &values:address
+load
+push &output
+equal
+assertEqual 1
+moduleEnd
+
+group values
+expose foo &processor:foo
+expose gain &processor:gain
+expose precise &processor:precise
+expose zero &processor:zero
+expose signed &processor:signed
+expose bits &processor:bits
+expose inherited &processor:inherited
+expose truncated &processor:truncated
+expose rawPointer &processor:rawPointer
+expose address &processor:address
+init &foo 11
+init &gain 0.5
+init &precise 1.0000000000000002f64
+init &zero 0
+init &signed -11
+init &bits 0b1010
+init &inherited 0x20
+init &truncated 11.75
+init &rawPointer 0
+init &address &source:output
+
+prototype state
+int inherited 7
+prototypeEnd
+
+module processor
+shape state
+int foo 3
+float gain 0.25
+float64 precise 0.0f64
+int zero 5
+int signed 1
+int bits
+int truncated
+int* rawPointer &fallback
+int fallback 7
+int address
+int untouched 13
+
+push foo
+assertEqual 11
+push gain
+assertEqual 0.5
+push precise
+assertEqual 1.0000000000000002f64
+push zero
+assertEqual 0
+push signed
+assertEqual -11
+push bits
+assertEqual 10
+push inherited
+assertEqual 32
+push truncated
+assertEqual 11
+push rawPointer
+equalToZero
+assertEqual 1
+push untouched
+assertEqual 13
+moduleEnd
+
+group nested
+expose foo &processor:foo
+init &foo 22
+module processor
+int foo 1
+push foo
+assertEqual 22
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

@@ -9,7 +9,7 @@ Module-name segments use the language-spec character set `[A-Za-z_][A-Za-z0-9_-]
 
 This package is internal to `@8f4e/compiler` and is not a second project object model or a public compilation API.
 
-Group `bind` lines remain in their owning group's `code`. The composer validates their syntax with the tokenizer and
-records `projectMemoryBindingScopes`, including the group's canonical path and its immediate parent's path. These
+Group `init` lines remain in their owning group's `code`. The composer validates their syntax with the tokenizer and
+records `projectMemoryInitializerScopes`, including the group's canonical path and its immediate parent's path. These
 scoped records accompany the AST and alias table; memory-aware resolution owns target validation and initialization
-facts. Binding changes are re-read on every composition even when child ASTs are served from cache.
+facts. Initializer changes are re-read on every composition even when child ASTs are served from cache.

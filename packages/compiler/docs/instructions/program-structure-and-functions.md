@@ -21,11 +21,10 @@ expose input &processor:input
 The alias uses the backing declaration's type and allocates no additional memory. Editors derive control types and
 connector direction from that declaration: pointers are inputs, and non-pointers are outputs.
 
-### bind
+### init
 
-A group contains modules under its own project scope, and an `expose` line gives a module's memory item a public name.
-Inside a group, `bind` initializes one of these exposed pointers with the address of memory in the group's immediate
-parent project:
+Inside a group, `init` overrides the default value of an exposed scalar memory item. Values can be numeric literals
+or the start address of named memory in the group's immediate parent project:
 
 ```8f4e
 entry main
@@ -34,38 +33,45 @@ float output 0.5
 moduleEnd
 
 group synth
+expose foo &processor:foo
+expose gain &processor:gain
 expose input &processor:input
-bind &input &source:output
+init &foo 11
+init &gain 0.5
+init &input &source:output
 
 module processor
+int foo 3
+float gain 0.25
 float* input
-push *input
-drop
 moduleEnd
 groupEnd
 entryEnd
 ```
 
-The syntax is `bind &<exposed-pointer> &<module>:<memory>`. The destination name resolves against this group's
-exposures. The source module or group name resolves in the immediate parent project; a source group can supply one
-of its exposed memory items. For example, a binding inside `audio/synth` resolves `&source:output` to
-`audio/source:output`, even if `synth` also contains its own module named `source`.
+The syntax is `init &<exposed-memory> <number>` or `init &<exposed-memory> &<module>:<memory>`. The destination resolves
+against this group's exposures and must refer to a scalar declaration, including a scalar inherited from a shape.
+Arrays cannot be initialized as a whole through `init`.
 
-Binding sources use a single module/group name, without a canonical path or an ancestor search. Each nested group
-therefore has the same immediate-parent rule. Both operands must be start-address references to named memory items;
-literal addresses, expressions, indexed slots, and end addresses are not accepted.
+Numeric values use ordinary literal syntax, including zero, negative numbers, hexadecimal, binary, and `f64` suffixes.
+The backing declaration determines storage and conversion, just as for an ordinary declaration default. For example,
+`init &foo 11.75` initializes an `int` item to `11`. Pointer declarations can also receive numeric defaults, such as `0`.
 
-The destination must expose a scalar pointer declaration. Pointer arrays cannot be bound as a whole. Validation uses
-the backing declaration's type.
+For address values, the source module or group name resolves in the immediate parent project. A source group can supply
+one of its exposed memory items. For example, `init &input &source:output` inside `audio/synth` resolves its source to
+`audio/source:output`, even if `synth` also contains a module named `source`. Sources use a single module/group name,
+without a canonical path or ancestor search. Named constants, symbolic expressions, indexed slots, and end addresses
+are not accepted.
 
-A binding overrides the backing pointer's declaration default. An unbound pointer keeps its normal default. Two
-bindings to the same backing pointer are an error, including when different exposed names target that pointer.
+An initializer overrides the backing declaration's default. Items without an initializer keep their declaration
+defaults. Multiple initializers for the same backing memory item are an error, including when different exposed names
+refer to it.
 
-Bindings participate in `initDefaults()` and are ready before any entry's modules execute. They also provide the
-source's memory region and pointee element count to pointer analysis. Source declarations remain unchanged, and a
-binding allocates no additional memory.
+Initializers participate in `initDefaults()` and are ready before any entry's modules execute. Address initializers
+also provide their memory region and available pointee element count to pointer analysis. Source declarations remain
+unchanged, and an initializer allocates no additional memory.
 
-`bind` is valid only at group level. Root project scope, entry scope, and module/function bodies cannot contain bindings.
+`init` is valid only at group level. Root project scope, entry scope, and module/function bodies cannot contain it.
 
 ### call
 

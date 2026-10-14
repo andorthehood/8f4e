@@ -46,6 +46,10 @@ Group names and exposure target-module names follow the source module-name rules
 Each exposure inherits its backing declaration's type. `CompileResult.projectMemoryExposuresByGroupPath`
 retains each resolved exposure together with its backing `PlannedMemoryDeclaration` for editors and other hosts.
 
+Inside a group, `init &<exposed-memory> <number>` overrides a scalar declaration's default without changing its source.
+An address value, as in `init &input &source:output`, resolves against the immediate parent project. Initializers share
+ordinary default conversion and `initDefaults()` timing, including for inherited scalar declarations.
+
 ## Compiler Passes
 
 ```text

@@ -8,7 +8,7 @@ import {
 	type IncludedFunctionBindings,
 	type ProjectConstantNamespacePassLine,
 	type ProjectGroupPath,
-	type ProjectMemoryBindingLine,
+	type ProjectMemoryInitializerLine,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
 	type ValidatedAST,
@@ -19,7 +19,7 @@ import {
 } from '@8f4e/language-spec';
 import {
 	parseProjectConstantNamespacePassLine,
-	parseProjectMemoryBindingLine,
+	parseProjectMemoryInitializerLine,
 	SyntaxRulesError,
 } from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
@@ -71,14 +71,14 @@ function appendMemoryExposureAliases(
 	program.memoryAliases = aliases;
 }
 
-function collectProjectMemoryBindings(
+function collectProjectMemoryInitializers(
 	code: readonly string[],
 	projectPath: ProjectGroupPath
-): ProjectMemoryBindingLine[] {
+): ProjectMemoryInitializerLine[] {
 	return code.flatMap((line, index) => {
-		if (!/^\s*bind(?:\s|$)/.test(line)) return [];
+		if (!/^\s*init(?:\s|$)/.test(line)) return [];
 		try {
-			return [parseProjectMemoryBindingLine(line, index)];
+			return [parseProjectMemoryInitializerLine(line, index)];
 		} catch (error) {
 			if (error instanceof SyntaxRulesError) error.context = { ...error.context, projectGroupPath: projectPath };
 			throw error;
@@ -117,12 +117,12 @@ function appendUnit(
 	program: ComposedProgram,
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
-	const memoryBindings = collectProjectMemoryBindings(project.code, projectPath);
-	if (memoryBindings.length > 0) {
-		program.projectMemoryBindingScopes.push({
+	const memoryInitializers = collectProjectMemoryInitializers(project.code, projectPath);
+	if (memoryInitializers.length > 0) {
+		program.projectMemoryInitializerScopes.push({
 			groupPath: projectPath,
 			...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
-			bindings: memoryBindings,
+			initializers: memoryInitializers,
 		});
 	}
 	const constantNamespacePasses = collectProjectConstantNamespacePasses(project.code, projectPath);
@@ -234,7 +234,7 @@ export function composeProgram(
 		memoryExposures: [],
 		memoryAliases: new Map(),
 		projectConstantNamespaceScopes: [],
-		projectMemoryBindingScopes: [],
+		projectMemoryInitializerScopes: [],
 		cache,
 	};
 

@@ -4,7 +4,7 @@
     "projectBlockId": 3,
   },
   "line": {
-    "instruction": "bind",
+    "instruction": "init",
     "lineNumber": 2,
   },
   "message": "Unrecognised instruction.",

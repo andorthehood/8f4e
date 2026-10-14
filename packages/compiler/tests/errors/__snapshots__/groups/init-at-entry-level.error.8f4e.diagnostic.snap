@@ -1,7 +1,7 @@
 {
-  "code": 75,
+  "code": 74,
   "context": {
-    "projectGroupPath": "synth",
+    "projectGroupPath": "",
   },
   "line": {
     "arguments": [
@@ -23,8 +23,8 @@
         "value": "&source:output",
       },
     ],
-    "instruction": "bind",
-    "lineNumber": 1,
+    "instruction": "init",
+    "lineNumber": 0,
   },
-  "message": "Binding destination must be an exposed scalar pointer: input. (75)",
+  "message": "init can only be used at group level. (74)",
 }

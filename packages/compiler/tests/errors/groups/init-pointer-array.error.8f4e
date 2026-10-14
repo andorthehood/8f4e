@@ -4,10 +4,10 @@ module source
 int output
 moduleEnd
 group synth
-expose input &processor:value
-bind &input &source:output
+expose input &processor:input
+init &input &source:output
 module processor
-int value
+int*[] input 1
 moduleEnd
 groupEnd
 entryEnd

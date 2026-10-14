@@ -5,7 +5,7 @@ int another
 moduleEnd
 group synth
 expose input &processor:input
-bind &input &source:output
+init &input &source:output
 module processor
 int* input
 moduleEnd

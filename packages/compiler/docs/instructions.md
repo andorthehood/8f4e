@@ -84,7 +84,7 @@
 
 - [Program structure and functions](instructions/program-structure-and-functions.md)
   - [expose](instructions/program-structure-and-functions.md#expose)
-  - [bind](instructions/program-structure-and-functions.md#bind)
+  - [init](instructions/program-structure-and-functions.md#init)
   - [module](instructions/program-structure-and-functions.md#module)
   - [moduleEnd](instructions/program-structure-and-functions.md#moduleend)
   - [function](instructions/program-structure-and-functions.md#function)

@@ -3,8 +3,8 @@
 note
 ; @config runtime TestRuntime
 
-Bindings initialize exposed pointers before child modules execute. Nested bindings use the immediate parent,
-and sibling group exposures can supply source addresses. Pointers inherited from a shape can also be bound.
+Group initializers set exposed pointer defaults before child modules execute. Address sources use the immediate parent,
+and sibling group exposures can supply source addresses. Pointers inherited from a shape can also be initialized.
 noteEnd
 
 entry test
@@ -15,7 +15,7 @@ moduleEnd
 
 group synth
 expose input &processor:input
-bind &input &source:output ; host wiring
+init &input &source:output ; host wiring
 
 module source
 int output 999
@@ -41,7 +41,7 @@ moduleEnd
 
 group inner
 expose input &processor:input
-bind &input &source:output
+init &input &source:output
 
 module processor
 int* input
@@ -60,7 +60,7 @@ groupEnd
 
 group consumer
 expose input &processor:input
-bind &input &signal:output
+init &input &signal:output
 
 prototype state
 int* input
