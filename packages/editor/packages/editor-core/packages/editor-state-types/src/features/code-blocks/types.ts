@@ -161,6 +161,8 @@ export interface PianoKeyboard {
 	keys: PianoKeyboardKey[];
 	pressedKeysListMemory: PlannedMemoryDeclaration;
 	pressedNumberOfKeysMemory: PlannedMemoryDeclaration;
+	pressedKeysListModuleId: string;
+	pressedNumberOfKeysModuleId: string;
 	startingNumber: number;
 }
 
@@ -211,6 +213,8 @@ export interface ArrayWave {
 }
 
 export interface Slider {
+	/** Canonical owner of the backing declaration, including for exposed aliases. */
+	moduleId: string;
 	width: number;
 	height: number;
 	x: number;

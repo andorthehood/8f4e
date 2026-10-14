@@ -92,6 +92,7 @@ describe('slider directive widget resolution', () => {
 
 	it('clears existing sliders before resolving directive widgets', () => {
 		mockGraphicData.widgets.sliders.push({
+			moduleId: 'test-block',
 			width: 0,
 			height: 0,
 			x: 0,

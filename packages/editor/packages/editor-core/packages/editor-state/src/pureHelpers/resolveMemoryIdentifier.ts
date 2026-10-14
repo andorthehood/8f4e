@@ -1,20 +1,16 @@
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
-import {
-	createProjectModuleId,
-	getProjectGroupPathFromModuleId,
-	type PlannedMemoryDeclaration,
-} from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import resolveMemoryTarget, { type MemoryResolutionScope, type ResolvedMemoryTarget } from './resolveMemoryTarget';
 
 export default function resolveMemoryIdentifier(
 	state: State,
-	moduleId: string,
+	scope: MemoryResolutionScope,
 	memoryIdentifier: string | undefined
-): MemoryIdentifier | undefined {
+): (MemoryIdentifier & { target: ResolvedMemoryTarget }) | undefined {
 	if (!memoryIdentifier) {
 		return;
 	}
 
-	let memory: PlannedMemoryDeclaration | undefined;
 	let showAddress = false;
 	let showEndAddress = false;
 	let operator: '&' | '*' | undefined;
@@ -46,31 +42,19 @@ export default function resolveMemoryIdentifier(
 		memoryIdentifier = memoryIdentifier.substring(1);
 	}
 
-	if (/(\S+):(\S+)/.test(memoryIdentifier)) {
-		const [referencedModuleName, referencedMemoryIdentifier] = memoryIdentifier.split(':');
-		const projectPath = getProjectGroupPathFromModuleId(moduleId);
-		moduleId = referencedModuleName.includes('/')
-			? referencedModuleName
-			: createProjectModuleId(projectPath, referencedModuleName);
-		memoryIdentifier = referencedMemoryIdentifier;
-	}
-
 	if (/.+\[(\d+)\]/.test(memoryIdentifier)) {
 		const match = memoryIdentifier.match(/.+\[(\d+)\]/) as [never, string];
 		bufferPointer = parseInt(match[1], 10);
 		memoryIdentifier = memoryIdentifier.replace(/\[\d+\]/, '');
 	}
 
-	memory = state.compiler.memoryPlan.modules[moduleId]?.memory[memoryIdentifier];
-
-	if (!memory) {
-		return;
-	}
-
+	const target = resolveMemoryTarget(state, scope, memoryIdentifier);
+	if (!target) return;
+	let memory: PlannedMemoryDeclaration | undefined = target.memory;
 	if (operator === '*' && memory.pointeeBaseType) {
 		const pointerAddress = state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0;
 		const pointeeMemoryIndex =
-			state.compiler.pointerMetadataByModuleId[moduleId]?.[memory.id]?.pointeeMemoryIndex ?? memory.memoryIndex;
+			state.compiler.pointerMetadataByModuleId[target.moduleId]?.[memory.id]?.pointeeMemoryIndex ?? memory.memoryIndex;
 		memory = state.compiler.memoryPlan.moduleList
 			.filter(module => module.memoryIndex === pointeeMemoryIndex)
 			.flatMap(module => module.declarations)
@@ -82,6 +66,7 @@ export default function resolveMemoryIdentifier(
 	}
 
 	return {
+		target,
 		showAddress,
 		showEndAddress,
 		memory,

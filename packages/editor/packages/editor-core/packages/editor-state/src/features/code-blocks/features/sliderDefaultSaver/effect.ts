@@ -1,7 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
-import { saveControlDefaultValuesToCode } from './saveDefaults';
+import { getControlDefaultEdits } from './saveDefaults';
 
 export default function sliderDefaultSaver(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
@@ -16,15 +16,14 @@ export default function sliderDefaultSaver(store: StateManager<State>, events: E
 			return;
 		}
 
-		const updatedCode = saveControlDefaultValuesToCode(targetCodeBlock, state.callbacks?.getWordFromMemory);
-		if (!updatedCode) {
-			return;
-		}
+		const edits = getControlDefaultEdits(state, targetCodeBlock);
+		if (edits.length === 0) return;
 
-		targetCodeBlock.code = updatedCode;
-		targetCodeBlock.lastUpdated = Date.now();
-		state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = targetCodeBlock;
-		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', targetCodeBlock);
+		for (const { codeBlock, code } of edits) {
+			codeBlock.code = code;
+			codeBlock.lastUpdated = Date.now();
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		}
 		incrementCompilerInputRevision(store);
 	};
 

@@ -2,6 +2,7 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { CompiledStackAnalysisLine } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import getCodeBlockModuleId from '../../pureHelpers/getCodeBlockModuleId';
+import resolveMemoryTarget from '../../pureHelpers/resolveMemoryTarget';
 import { getCompiledFunctionForCodeBlock } from '../code-blocks/utils/getCompiledFunctionForCodeBlock';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
@@ -49,7 +50,7 @@ function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined
 		return undefined;
 	}
 
-	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryId];
+	return resolveMemoryTarget(state, moduleId, memoryId)?.memory;
 }
 
 function getSelectedModuleExecutionOrder(

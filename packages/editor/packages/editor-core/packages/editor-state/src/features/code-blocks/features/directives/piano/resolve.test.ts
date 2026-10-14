@@ -133,6 +133,8 @@ describe('piano directive widget resolution', () => {
 
 	it('clears existing piano keyboards before resolving directive widgets', () => {
 		mockGraphicData.widgets.pianoKeyboards[5] = {
+			pressedKeysListModuleId: 'test-block',
+			pressedNumberOfKeysModuleId: 'test-block',
 			x: 0,
 			y: 0,
 			width: 0,

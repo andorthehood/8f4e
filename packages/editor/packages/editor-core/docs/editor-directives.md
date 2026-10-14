@@ -43,6 +43,32 @@ Memory-related arguments use distinct forms:
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
+## Group Memory References
+
+Memory-based editor features and input/output connectors share memory-target resolution. A directive on a group block
+can refer to that group's exposed memory by its public name. A directive in the enclosing scope can qualify the name
+with the group, using the same argument form it uses for ordinary module memory.
+
+```txt
+group audio
+expose float gain &voice:level
+; @slider &gain 0 1 0.01
+; @watch gain
+
+module voice
+float level 0.5
+moduleEnd
+groupEnd
+```
+
+Within an entry, this group displays controls for `voice`'s `level` on the group block. A module in the enclosing scope
+can address the same storage with `&audio:gain`, or watch its value with `audio:gain`. Nested group names resolve relative
+to the current project scope; a path containing `/`, such as `audio/nested:gain`, identifies a canonical group path.
+
+Each directive retains its supported argument forms and type requirements. Runtime access uses the backing
+declaration's storage type. Group connector direction uses the exposure's declared public type, which can differ from
+the backing type. Aliases allocate no additional memory.
+
 ## Supported Directives
 
 ### `@public`
@@ -272,8 +298,9 @@ Render a slider that writes to a memory address.
 
 If provided, `min`, `max`, and `step` must be finite decimal numbers, and `step` must be greater than zero.
 
-Use **Save slider and piano values to code** in the module context menu to save current runtime values as declaration
-defaults in that module.
+Use **Save slider and piano values to code** in the block context menu to save current runtime values as declaration
+defaults. References to other modules or group aliases update the original backing declarations, including declarations
+inside nested groups. The public exposure lines remain unchanged.
 
 ### `@crossfade`
 
@@ -329,8 +356,8 @@ Notes:
 
 - Both memory arguments are addresses because piano clicks update the pressed-key array and count directly in runtime
   memory, like sliders. Clicks leave source code and declaration defaults unchanged; note highlights reflect runtime memory.
-- Use **Save slider and piano values to code** in the module context menu to save the current notes and count as declaration
-  defaults. This preserves the array size and inline comments; memories referenced in another module are skipped.
+- Use **Save slider and piano values to code** in the block context menu to save the current notes and count into their
+  backing declarations. This preserves array sizes and inline comments, including when aliases target different modules.
 - `pressedKeysListAddress` is used as both keyboard id and pressed-key array address.
 - `startingMidiNote` defaults to `0`.
 - `startingMidiNote` must be a non-negative integer.

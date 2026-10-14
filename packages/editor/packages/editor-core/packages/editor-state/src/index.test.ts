@@ -115,6 +115,8 @@ describe('editor state lifecycle', () => {
 			});
 			codeBlock.widgets.pianoKeyboards = [
 				{
+					pressedKeysListModuleId: 'test-block',
+					pressedNumberOfKeysModuleId: 'test-block',
 					x: 0,
 					y: 0,
 					width: 192,

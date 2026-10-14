@@ -5,16 +5,12 @@ import type {
 	InternalMouseEvent,
 	State,
 } from '@8f4e/editor-state-types';
-import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
-import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 interface ActiveCrossfade {
 	crossfade: Crossfade;
 	codeBlock: CodeBlockGraphicData;
-	leftMemory: Pick<PlannedMemoryDeclaration, 'wordAlignedAddress'>;
-	rightMemory: Pick<PlannedMemoryDeclaration, 'wordAlignedAddress'>;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -30,15 +26,15 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 			return;
 		}
 
-		const { crossfade, codeBlock, leftMemory, rightMemory } = activeCrossfade;
+		const { crossfade, codeBlock } = activeCrossfade;
 		const relativeX = x - (codeBlock.x + crossfade.x - state.viewport.x);
 		const normalized = clamp((relativeX - crossfade.handleWidth / 2) / crossfade.trackWidth, 0, 1);
 		const position = normalized * 2 - 1;
 		const leftValue = (1 - position) / 2;
 		const rightValue = (1 + position) / 2;
 
-		state.callbacks?.setWordInMemory?.(leftMemory.wordAlignedAddress, leftValue, false);
-		state.callbacks?.setWordInMemory?.(rightMemory.wordAlignedAddress, rightValue, false);
+		state.callbacks?.setWordInMemory?.(crossfade.leftWordAddress, leftValue, false);
+		state.callbacks?.setWordInMemory?.(crossfade.rightWordAddress, rightValue, false);
 	};
 
 	const onCodeBlockClick = ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) => {
@@ -48,15 +44,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 			return;
 		}
 
-		const module = state.compiler.memoryPlan.modules[getCodeBlockModuleId(codeBlock)];
-		const leftMemory = module?.memory[crossfade.leftId];
-		const rightMemory = module?.memory[crossfade.rightId];
-
-		if (!leftMemory || !rightMemory) {
-			return;
-		}
-
-		activeCrossfade = { crossfade, codeBlock, leftMemory, rightMemory };
+		activeCrossfade = { crossfade, codeBlock };
 		state.codeBlockRendering.draggedCodeBlock = undefined;
 		updateCrossfadeValue(x);
 	};

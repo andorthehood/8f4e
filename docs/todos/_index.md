@@ -81,6 +81,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 497 | Unify editor memory resolution for exposed aliases | 2026-10-14 | Added shared target resolution across widgets, connectors, and environment bindings, with canonical-owner control saving and regression coverage. |
 | 490 | Add native compiler assertions | 2026-10-09 | Added opt-in assert/assertEqual, typed callbacks, disabled operand drops, and compiler source-site metadata; existing testing remains in place pending TODO 491. |
 | 480 | Simplify map codegen with reverse row order | 2026-10-09 | Preserved first-match behavior with two map temporaries; added numeric edge-case project fixtures and a one-time benchmark showing 2.40–2.47× faster 64-row lookups and 1,863 → 895 byte fixtures. |
 | 487 | Save projects to reusable browser file handles | 2026-10-04 | Separated explicit source saves from session autosave; added per-editor writable file associations, Save As, safe project replacement, cancellation, and upload/download fallback. |

@@ -17,6 +17,7 @@ export default defineConfig({
 	}),
 	resolve: {
 		alias: {
+			'@8f4e/editor-state/memory': resolve(__dirname, 'packages/editor-state/src/memory.ts'),
 			'@8f4e/editor-state': resolve(__dirname, 'packages/editor-state/src/index.ts'),
 		},
 	},

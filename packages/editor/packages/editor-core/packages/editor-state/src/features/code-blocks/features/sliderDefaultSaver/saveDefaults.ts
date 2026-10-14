@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, Slider } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, PianoKeyboard, Slider, State } from '@8f4e/editor-state-types';
 import {
 	ArgumentType,
 	arrayMemoryDeclarationInstructions,
@@ -124,128 +124,101 @@ function replaceMemoryDeclarationDefault(
 	return `${groups.prefix}${value ? ` ${value}` : ''}${comment !== undefined ? ` ;${comment}` : ''}`;
 }
 
-export function saveSliderDefaultValuesToCode(
-	codeBlock: CodeBlockGraphicData,
-	getWordFromMemory: ((wordAlignedAddress: number) => number) | undefined
-): string[] | undefined {
-	if (!getWordFromMemory || codeBlock.widgets.sliders.length === 0) {
-		return undefined;
-	}
-
-	const sliderValueById = new Map<string, string>();
-	for (const slider of codeBlock.widgets.sliders) {
-		const value = formatRuntimeSliderValue(readRuntimeSliderValue(slider, getWordFromMemory), slider);
-		if (value !== undefined) {
-			sliderValueById.set(slider.id, value);
-		}
-	}
-
-	if (sliderValueById.size === 0) {
-		return undefined;
-	}
-
-	let didUpdate = false;
-	const updatedCode = codeBlock.code.map((line, index) => {
-		const memoryId = getMemoryDeclarationId(line, index + 1);
-		const value = memoryId ? sliderValueById.get(memoryId) : undefined;
-		if (!memoryId || value === undefined) {
-			return line;
-		}
-
-		const updatedLine = replaceMemoryDeclarationDefault(line, memoryId, value);
-		if (updatedLine === undefined || updatedLine === line) {
-			return line;
-		}
-
-		didUpdate = true;
-		return updatedLine;
-	});
-
-	return didUpdate ? updatedCode : undefined;
+interface DefaultValue {
+	moduleId: string;
+	memoryId: string;
+	value: string;
+	isArray: boolean;
 }
 
-export function savePianoDefaultValuesToCode(
-	codeBlock: CodeBlockGraphicData,
-	getWordFromMemory: ((wordAlignedAddress: number) => number) | undefined
-): string[] | undefined {
-	if (!getWordFromMemory || codeBlock.widgets.pianoKeyboards.length === 0) {
-		return undefined;
-	}
+function getSliderDefaults(sliders: Slider[], read: (address: number) => number): DefaultValue[][] {
+	return sliders.flatMap(slider => {
+		const value = formatRuntimeSliderValue(readRuntimeSliderValue(slider, read), slider);
+		return value === undefined ? [] : [[{ moduleId: slider.moduleId, memoryId: slider.id, value, isArray: false }]];
+	});
+}
 
-	const updatedCode = [...codeBlock.code];
-	for (const keyboard of codeBlock.widgets.pianoKeyboards) {
-		const notesMemory = keyboard.pressedKeysListMemory;
+function getPianoDefaults(keyboards: PianoKeyboard[], read: (address: number) => number): DefaultValue[][] {
+	return keyboards.flatMap(keyboard => {
+		const notes = keyboard.pressedKeysListMemory;
 		const countMemory = keyboard.pressedNumberOfKeysMemory;
-		const directive = codeBlock.parsedDirectives.find(
-			candidate => candidate.name === 'piano' && candidate.rawRow === keyboard.lineNumber
-		);
-		// Save only declarations owned by this block, even when another module uses the same memory names.
-		if (
-			directive?.args.slice(0, 2).some(argument => {
-				const separator = argument.lastIndexOf(':');
-				const moduleId = argument.slice(1, separator);
-				return separator !== -1 && moduleId !== codeBlock.name && moduleId !== getCodeBlockModuleId(codeBlock);
-			})
-		) {
-			continue;
-		}
-		const notesLine = updatedCode.findIndex(
-			(line, index) => getMemoryDeclarationId(line, index + 1, true) === notesMemory.id
-		);
-		const countLine = updatedCode.findIndex(
-			(line, index) => getMemoryDeclarationId(line, index + 1) === countMemory.id
-		);
-		if (notesLine === -1 || countLine === -1) {
-			continue;
-		}
-
-		const runtimeCount = getWordFromMemory(countMemory.wordAlignedAddress);
-		if (!Number.isFinite(runtimeCount)) {
-			continue;
-		}
-		const count = Math.min(Math.max(0, Math.trunc(runtimeCount)), notesMemory.numberOfElements);
+		const runtimeCount = read(countMemory.wordAlignedAddress);
+		if (!Number.isFinite(runtimeCount)) return [];
+		const count = Math.min(Math.max(0, Math.trunc(runtimeCount)), notes.numberOfElements);
 		const values: string[] = [];
 		for (let index = 0; index < count; index++) {
-			const address =
-				notesMemory.wordAlignedAddress + (index * notesMemory.elementWordSize) / Int32Array.BYTES_PER_ELEMENT;
-			const word = getWordFromMemory(address);
-			const value = notesMemory.isInteger
+			const address = notes.wordAlignedAddress + (index * notes.elementWordSize) / Int32Array.BYTES_PER_ELEMENT;
+			const word = read(address);
+			const value = notes.isInteger
 				? word
-				: notesMemory.isFloat64
-					? decodeFloat64Words(word, getWordFromMemory(address + 1))
+				: notes.isFloat64
+					? decodeFloat64Words(word, read(address + 1))
 					: decodeFloat32Word(word);
-			if (!Number.isFinite(value)) {
-				break;
-			}
+			if (!Number.isFinite(value)) return [];
 			const serialized = Object.is(value, -0) ? '0' : value.toString();
-			values.push(notesMemory.isInteger || /[.eE]/.test(serialized) ? serialized : `${serialized}.0`);
+			values.push(notes.isInteger || /[.eE]/.test(serialized) ? serialized : `${serialized}.0`);
 		}
-		if (values.length !== count) {
-			continue;
-		}
+		return [
+			[
+				{ moduleId: keyboard.pressedKeysListModuleId, memoryId: notes.id, value: values.join(' '), isArray: true },
+				{
+					moduleId: keyboard.pressedNumberOfKeysModuleId,
+					memoryId: countMemory.id,
+					value: count.toString(),
+					isArray: false,
+				},
+			],
+		];
+	});
+}
 
-		const notesDeclaration = replaceMemoryDeclarationDefault(
-			updatedCode[notesLine],
-			notesMemory.id,
-			values.join(' '),
-			true
-		);
-		const countDeclaration = replaceMemoryDeclarationDefault(updatedCode[countLine], countMemory.id, count.toString());
-		if (notesDeclaration !== undefined && countDeclaration !== undefined) {
-			updatedCode[notesLine] = notesDeclaration;
-			updatedCode[countLine] = countDeclaration;
+export interface ControlDefaultEdit {
+	codeBlock: CodeBlockGraphicData;
+	code: string[];
+}
+
+/** Routes already-resolved control values to their canonical source owners. */
+export function getControlDefaultEdits(state: State, source: CodeBlockGraphicData): ControlDefaultEdit[] {
+	const read = state.callbacks.getWordFromMemory;
+	if (!read) return [];
+
+	const owners = new Map<string, CodeBlockGraphicData>();
+	const collectOwners = (blocks: CodeBlockGraphicData[]) => {
+		for (const block of blocks) {
+			if (block.nestedProjectCodeBlocks !== undefined) collectOwners(block.nestedProjectCodeBlocks);
+			else if (block.blockType === 'module') owners.set(getCodeBlockModuleId(block), block);
+		}
+	};
+	collectOwners([source]);
+	collectOwners(state.codeBlockRendering.rootCodeBlocks);
+
+	const updates = new Map<CodeBlockGraphicData, string[]>();
+	const groups = [
+		...getSliderDefaults(source.widgets.sliders, read),
+		...getPianoDefaults(source.widgets.pianoKeyboards, read),
+	];
+	for (const group of groups) {
+		const edits = group.map(edit => {
+			const owner = owners.get(edit.moduleId);
+			if (!owner) return;
+			const code = updates.get(owner) ?? owner.code;
+			const row = code.findIndex(
+				(line, index) => getMemoryDeclarationId(line, index + 1, edit.isArray) === edit.memoryId
+			);
+			if (row === -1) return;
+			const line = replaceMemoryDeclarationDefault(code[row], edit.memoryId, edit.value, edit.isArray);
+			return line === undefined ? undefined : { owner, row, line };
+		});
+		// A piano's notes and count are saved together, including when they have different owners.
+		if (!edits.every(edit => edit !== undefined)) continue;
+		for (const edit of edits) {
+			const code = updates.get(edit.owner) ?? [...edit.owner.code];
+			code[edit.row] = edit.line;
+			updates.set(edit.owner, code);
 		}
 	}
 
-	return updatedCode.some((line, index) => line !== codeBlock.code[index]) ? updatedCode : undefined;
-}
-
-export function saveControlDefaultValuesToCode(
-	codeBlock: CodeBlockGraphicData,
-	getWordFromMemory: ((wordAlignedAddress: number) => number) | undefined
-): string[] | undefined {
-	const sliderCode = saveSliderDefaultValuesToCode(codeBlock, getWordFromMemory);
-	return (
-		savePianoDefaultValuesToCode({ ...codeBlock, code: sliderCode ?? codeBlock.code }, getWordFromMemory) ?? sliderCode
+	return [...updates].flatMap(([codeBlock, code]) =>
+		code.some((line, row) => line !== codeBlock.code[row]) ? [{ codeBlock, code }] : []
 	);
 }

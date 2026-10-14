@@ -1,11 +1,30 @@
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
 import { describe, expect, it } from 'vitest';
-import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
-import {
-	saveControlDefaultValuesToCode,
-	savePianoDefaultValuesToCode,
-	saveSliderDefaultValuesToCode,
-} from './saveDefaults';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { getControlDefaultEdits } from './saveDefaults';
+
+function saveControlDefaultValuesToCode(
+	codeBlock: ReturnType<typeof createMockCodeBlock>,
+	read: ((address: number) => number) | undefined
+) {
+	const state = createMockState();
+	state.callbacks.getWordFromMemory = read;
+	return getControlDefaultEdits(state, { ...codeBlock, blockType: 'module' })[0]?.code;
+}
+
+function saveSliderDefaultValuesToCode(
+	codeBlock: ReturnType<typeof createMockCodeBlock>,
+	read: ((address: number) => number) | undefined
+) {
+	return saveControlDefaultValuesToCode({ ...codeBlock, widgets: { ...codeBlock.widgets, pianoKeyboards: [] } }, read);
+}
+
+function savePianoDefaultValuesToCode(
+	codeBlock: ReturnType<typeof createMockCodeBlock>,
+	read: ((address: number) => number) | undefined
+) {
+	return saveControlDefaultValuesToCode({ ...codeBlock, widgets: { ...codeBlock.widgets, sliders: [] } }, read);
+}
 
 function createRawMemoryReader(values: Record<number, { type: 'int32' | 'float32' | 'float64'; value: number }>) {
 	const buffer = new ArrayBuffer(64);
@@ -34,6 +53,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'foo',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -46,6 +66,7 @@ describe('save slider default values to code', () => {
 				max: 1,
 			},
 			{
+				moduleId: 'synth',
 				id: 'bar',
 				wordAlignedAddress: 5,
 				byteAddress: 20,
@@ -83,6 +104,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'gain',
 				wordAlignedAddress: 8,
 				byteAddress: 32,
@@ -113,6 +135,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'gain',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -143,6 +166,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'phase',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -174,6 +198,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'foo',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -196,6 +221,7 @@ describe('save slider default values to code', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'foo',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -221,6 +247,8 @@ function createPianoCodeBlock(
 	const codeBlock = createMockCodeBlock({ name: 'synth', code });
 	codeBlock.widgets.pianoKeyboards = [
 		{
+			pressedKeysListModuleId: 'synth',
+			pressedNumberOfKeysModuleId: 'synth',
 			lineNumber: 3,
 			pressedKeysListMemory: {
 				id: 'notes',
@@ -357,6 +385,8 @@ describe('save piano default values to code', () => {
 			'; @piano &other:notes &other:count 48',
 			'moduleEnd',
 		]);
+		codeBlock.widgets.pianoKeyboards[0].pressedKeysListModuleId = 'other';
+		codeBlock.widgets.pianoKeyboards[0].pressedNumberOfKeysModuleId = 'other';
 		expect(savePianoDefaultValuesToCode(codeBlock, () => 0)).toBeUndefined();
 	});
 
@@ -401,6 +431,7 @@ describe('save piano default values to code', () => {
 		]);
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'synth',
 				id: 'gain',
 				wordAlignedAddress: 9,
 				byteAddress: 36,

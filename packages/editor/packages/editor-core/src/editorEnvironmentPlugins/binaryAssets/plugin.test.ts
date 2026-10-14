@@ -77,6 +77,7 @@ function createState({
 			},
 		},
 		compiler: {
+			projectMemoryExposuresByGroupPath: {},
 			memoryPlan: createMemoryPlan(byteAddress),
 		},
 		binaryAssets: [],
@@ -105,7 +106,7 @@ describe('binary assets plugin', () => {
 		loadBinaryAssetIntoMemoryMock.mockReset();
 	});
 
-	it('fetches configured assets and loads them into resolved memory', async () => {
+	it.each([false, true])('fetches and loads assets through aliases=%s', async exposed => {
 		const fetchedAsset: BinaryAsset = {
 			url: 'https://example.com/amen.pcm',
 			fileName: 'amen.pcm',
@@ -115,6 +116,22 @@ describe('binary assets plugin', () => {
 		fetchBinaryAssetsMock.mockResolvedValue([fetchedAsset]);
 		loadBinaryAssetIntoMemoryMock.mockResolvedValue();
 		const store = createStateManager(createState());
+
+		if (exposed) {
+			const state = store.getState();
+			state.editorConfig.bin!.amen.memory = 'audio:publicBuffer';
+			state.compiler.projectMemoryExposuresByGroupPath.audio = [
+				{
+					name: 'publicBuffer',
+					type: 'int[]',
+					groupPath: 'audio',
+					targetModuleId: 'samples',
+					targetModuleName: 'samples',
+					targetMemoryName: 'buffer',
+					targetMemory: state.compiler.memoryPlan.modules.samples.memory.buffer,
+				},
+			];
+		}
 
 		binaryAssetsPlugin({
 			store,
@@ -133,7 +150,7 @@ describe('binary assets plugin', () => {
 			{
 				...fetchedAsset,
 				id: 'amen',
-				memoryId: 'samples:buffer',
+				memoryId: exposed ? 'audio:publicBuffer' : 'samples:buffer',
 				loadedIntoMemory: true,
 				byteAddress: 16,
 				memoryByteLength: 16,

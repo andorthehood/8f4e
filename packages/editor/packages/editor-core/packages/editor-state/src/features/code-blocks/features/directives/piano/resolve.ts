@@ -1,6 +1,5 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution, PianoKeyboardKey } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
-import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
 import type { PianoDirectiveData } from './data';
@@ -74,7 +73,7 @@ function resolvePianoDirectiveWidget(
 	if (!graphicData.name) {
 		return;
 	}
-	const moduleId = getCodeBlockModuleId(graphicData);
+	const moduleId = graphicData;
 
 	const memoryIdentifierKeysList = resolveMemoryIdentifier(state, moduleId, pianoKeyboard.pressedKeysListMemoryId);
 	const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
@@ -123,6 +122,8 @@ function resolvePianoDirectiveWidget(
 		),
 		pressedKeysListMemory: memoryIdentifierKeysList.memory,
 		pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
+		pressedKeysListModuleId: memoryIdentifierKeysList.target.moduleId,
+		pressedNumberOfKeysModuleId: memoryIdentifierNumberOfKeys.target.moduleId,
 		startingNumber: pianoKeyboard.startingNumber,
 	});
 }

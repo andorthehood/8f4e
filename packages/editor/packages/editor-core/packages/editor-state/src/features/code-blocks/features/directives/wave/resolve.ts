@@ -1,6 +1,5 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
-import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import { resolveElementCount, resolveTypedValueSpec } from '../shared/typedValueSpec';
 import type { WaveDirectiveData } from './data';
@@ -17,7 +16,7 @@ function resolveWaveDirectiveWidget(
 		return;
 	}
 
-	const moduleId = getCodeBlockModuleId(graphicData);
+	const moduleId = graphicData;
 	const startAddress = resolveMemoryIdentifier(state, moduleId, wave.startAddressMemoryId);
 	const length = resolveElementCount(wave.length, moduleId, state);
 	const pointer = resolveMemoryIdentifier(state, moduleId, wave.pointerMemoryId);

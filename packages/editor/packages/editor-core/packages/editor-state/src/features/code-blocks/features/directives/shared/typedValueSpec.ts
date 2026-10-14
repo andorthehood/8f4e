@@ -2,6 +2,7 @@ import type { MemoryIdentifier, State, TypedValueKind } from '@8f4e/editor-state
 import { extractElementCountBase, hasElementCountPrefix } from '@8f4e/tokenizer';
 
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
+import type { MemoryResolutionScope } from '~/pureHelpers/resolveMemoryTarget';
 
 export type TypedValueSpec = {
 	baseSampleShift: 0 | 1 | 2 | 3;
@@ -111,7 +112,7 @@ export function resolveDirectOrPointerTypedValueSpec(startAddress: MemoryIdentif
 
 export function resolveElementCount(
 	length: string | number | undefined,
-	moduleId: string,
+	moduleId: MemoryResolutionScope,
 	state: State
 ): number | MemoryIdentifier | undefined {
 	if (typeof length === 'number') {
