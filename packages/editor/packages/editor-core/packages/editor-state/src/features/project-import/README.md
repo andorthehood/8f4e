@@ -80,3 +80,6 @@ redo preserve it. Cancelled or failed disk imports leave both the current projec
 - Import callbacks are optional (graceful degradation to defaults)
 - Project validation is minimal beyond `.8f4e` parser checks
 - Binary asset fetching and memory loading are handled by the lazy editor environment binary-assets plugin, triggered by `@config bin...` values
+- The asset-loading dialog offers **Continue editing** while loading continues in the background. Compilation failures
+  appear in that dialog when assets are waiting for memory. Dismissing it keeps it closed through metadata updates and
+  compilation retries; a new project, changed asset configuration, or a new loading cycle can show it again.

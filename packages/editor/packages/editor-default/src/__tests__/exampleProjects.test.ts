@@ -2,8 +2,9 @@
  * Integration tests that verify all example projects compile without errors.
  */
 
-import { compileProject, parseProjectSource } from '@8f4e/compiler';
+import { compileProject, deriveEffectiveMemorySize, parseProjectSource } from '@8f4e/compiler';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import { readdirSync, readFileSync } from 'fs';
 import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -71,5 +72,31 @@ describe('Example Projects Compilation', () => {
 				expect(Object.keys(result.compiledModules).length).toBe(moduleCount);
 			});
 		});
+	});
+
+	it.each([6, 7, 8, 9, 16])('runs the audio buffer with %i copies of the Clouds reverb group', async groupCount => {
+		const project = await loadProject('MICloudsReverbGrouped');
+		const originalGroup = project.groups[0];
+		project.groups = Array.from({ length: groupCount }, (_, index) => {
+			const group = structuredClone(originalGroup);
+			group.name = index === 0 ? 'reverb' : `reverb${index}`;
+			group.code[0] = `group ${group.name}`;
+			return group;
+		});
+
+		const result = await compileProject(project, {
+			...COMPILER_OPTIONS,
+			resolveInclude: resolveStdlibInclude,
+		});
+		const pages = deriveEffectiveMemorySize(result.requiredMemoryBytes) / WASM_MEMORY_PAGE_SIZE;
+		const memory = new WebAssembly.Memory({ initial: pages, maximum: pages, shared: true });
+		const { instance } = await WebAssembly.instantiate(new Uint8Array(result.codeBuffer), { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.buffer as CallableFunction)();
+
+		const playerMemory = result.memoryPlan.modules.pcmPlayer.memory;
+		expect(new Int32Array(memory.buffer)[playerMemory.playhead.wordAlignedAddress]).toBe(
+			playerMemory.buffer.byteAddress + 128 * playerMemory.buffer.elementWordSize
+		);
 	});
 });
