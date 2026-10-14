@@ -1,6 +1,118 @@
 8f4e/v1
 
+function mapIntToInt
+param int input
+push input
+mapBegin int
+map 1 10
+map 2 20
+map 1 20
+default -7
+mapEnd int
+functionEnd int
+
+function mapIntToFloat
+param int input
+push input
+mapBegin int
+map 1 10.5
+map 2 20.5
+map 1 20.5
+default -7.5
+mapEnd float
+functionEnd float
+
+function mapIntToFloat64
+param int input
+push input
+mapBegin int
+map 1 10.5f64
+map 2 20.5f64
+map 1 20.5f64
+default -7.5f64
+mapEnd float64
+functionEnd float64
+
+function mapFloatToInt
+param float input
+push input
+mapBegin float
+map 1.0 10
+map 2.0 20
+map 1.0 20
+default -7
+mapEnd int
+functionEnd int
+
+function mapFloatToFloat
+param float input
+push input
+mapBegin float
+map 1.0 10.5
+map 2.0 20.5
+map 1.0 20.5
+default -7.5
+mapEnd float
+functionEnd float
+
+function mapFloatToFloat64
+param float input
+push input
+mapBegin float
+map 1.0 10.5f64
+map 2.0 20.5f64
+map 1.0 20.5f64
+default -7.5f64
+mapEnd float64
+functionEnd float64
+
+function mapFloat64ToFloat64
+; @pos 6 17
+param float64 input
+push input
+mapBegin float64
+map 1.0f64 10.5f64
+map 2.0f64 20.5f64
+map 1.0f64 20.5f64
+default -7.5f64
+mapEnd float64
+functionEnd float64
+
+function mapFloat64ToFloat
+; @pos 8 30
+param float64 input
+push input
+mapBegin float64
+map 1.0f64 10.5
+map 2.0f64 20.5
+map 1.0f64 20.5
+default -7.5
+mapEnd float
+functionEnd float
+
+function mapFloat64ToInt
+; @pos 9 43
+param float64 input
+push input
+mapBegin float64
+map 1.0f64 10
+map 2.0f64 20
+map 1.0f64 20
+default -7
+mapEnd int
+functionEnd int
+
+constants env
+; @pos -71 19
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 2 2
 ; @config runtime TestRuntime
 
 Every numeric input/output pair
@@ -10,6 +122,7 @@ noteEnd
 
 entry test
 module mapNumericTypeAssertions
+; @pos 46 0
 
 ; int keys, int results.
 call mapIntToInt 1
@@ -137,8 +250,8 @@ push -7.5f64
 equal
 assertEqual 1
 moduleEnd
-
 module mapNonFiniteInputAssertions
+; @pos 90 0
 ; NaN and infinities cannot match
 ; finite keys. Compare results to
 ; finite defaults before asserting.
@@ -294,102 +407,3 @@ equal
 assertEqual 1
 moduleEnd
 entryEnd
-
-function mapIntToInt
-param int input
-push input
-mapBegin int
-map 1 10
-map 2 20
-map 1 20
-default -7
-mapEnd int
-functionEnd int
-
-function mapIntToFloat
-param int input
-push input
-mapBegin int
-map 1 10.5
-map 2 20.5
-map 1 20.5
-default -7.5
-mapEnd float
-functionEnd float
-
-function mapIntToFloat64
-param int input
-push input
-mapBegin int
-map 1 10.5f64
-map 2 20.5f64
-map 1 20.5f64
-default -7.5f64
-mapEnd float64
-functionEnd float64
-
-function mapFloatToInt
-param float input
-push input
-mapBegin float
-map 1.0 10
-map 2.0 20
-map 1.0 20
-default -7
-mapEnd int
-functionEnd int
-
-function mapFloatToFloat
-param float input
-push input
-mapBegin float
-map 1.0 10.5
-map 2.0 20.5
-map 1.0 20.5
-default -7.5
-mapEnd float
-functionEnd float
-
-function mapFloatToFloat64
-param float input
-push input
-mapBegin float
-map 1.0 10.5f64
-map 2.0 20.5f64
-map 1.0 20.5f64
-default -7.5f64
-mapEnd float64
-functionEnd float64
-
-function mapFloat64ToInt
-param float64 input
-push input
-mapBegin float64
-map 1.0f64 10
-map 2.0f64 20
-map 1.0f64 20
-default -7
-mapEnd int
-functionEnd int
-
-function mapFloat64ToFloat
-param float64 input
-push input
-mapBegin float64
-map 1.0f64 10.5
-map 2.0f64 20.5
-map 1.0f64 20.5
-default -7.5
-mapEnd float
-functionEnd float
-
-function mapFloat64ToFloat64
-param float64 input
-push input
-mapBegin float64
-map 1.0f64 10.5f64
-map 2.0f64 20.5f64
-map 1.0f64 20.5f64
-default -7.5f64
-mapEnd float64
-functionEnd float64

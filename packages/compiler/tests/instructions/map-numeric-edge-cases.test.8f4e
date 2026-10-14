@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -81 21
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 2 2
 ; @config runtime TestRuntime
 
 Empty and one-row maps preserve
@@ -9,8 +19,8 @@ input/output pair.
 noteEnd
 
 entry test
-
 module mapDefaultsIntToInt
+; @pos 13 12
 push 3
 mapBegin int
 mapEnd int
@@ -52,499 +62,8 @@ equal
 assertEqual 1
 
 moduleEnd
-
-module mapDefaultsIntToFloat
-push 3
-mapBegin int
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-push 1
-mapBegin int
-map 1 10.5
-mapEnd float
-push 10.5
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-map 1 10.5
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-map 1 10.5
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsIntToFloat64
-push 3
-mapBegin int
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-push 1
-mapBegin int
-map 1 10.5f64
-mapEnd float64
-push 10.5f64
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-map 1 10.5f64
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3
-mapBegin int
-map 1 10.5f64
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloatToInt
-push 3.0
-mapBegin float
-mapEnd int
-push 0
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-default -7
-mapEnd int
-push -7
-equal
-assertEqual 1
-
-push 1.0
-mapBegin float
-map 1.0 10
-mapEnd int
-push 10
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10
-mapEnd int
-push 0
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10
-default -7
-mapEnd int
-push -7
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloatToFloat
-push 3.0
-mapBegin float
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-push 1.0
-mapBegin float
-map 1.0 10.5
-mapEnd float
-push 10.5
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10.5
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10.5
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloatToFloat64
-push 3.0
-mapBegin float
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-push 1.0
-mapBegin float
-map 1.0 10.5f64
-mapEnd float64
-push 10.5f64
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10.5f64
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3.0
-mapBegin float
-map 1.0 10.5f64
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloat64ToInt
-push 3.0f64
-mapBegin float64
-mapEnd int
-push 0
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-default -7
-mapEnd int
-push -7
-equal
-assertEqual 1
-
-push 1.0f64
-mapBegin float64
-map 1.0f64 10
-mapEnd int
-push 10
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10
-mapEnd int
-push 0
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10
-default -7
-mapEnd int
-push -7
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloat64ToFloat
-push 3.0f64
-mapBegin float64
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-push 1.0f64
-mapBegin float64
-map 1.0f64 10.5
-mapEnd float
-push 10.5
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10.5
-mapEnd float
-push 0.0
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10.5
-default -7.5
-mapEnd float
-push -7.5
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapDefaultsFloat64ToFloat64
-push 3.0f64
-mapBegin float64
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-push 1.0f64
-mapBegin float64
-map 1.0f64 10.5f64
-mapEnd float64
-push 10.5f64
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10.5f64
-mapEnd float64
-push 0.0f64
-equal
-assertEqual 1
-
-push 3.0f64
-mapBegin float64
-map 1.0f64 10.5f64
-default -7.5f64
-mapEnd float64
-push -7.5f64
-equal
-assertEqual 1
-
-moduleEnd
-
-module mapFloatKeyPrecisionAssertions
-; Distinct source keys round to the
-; same float32 key. The earlier row
-; still wins. Float64 distinguishes
-; those same source keys.
-push 16777216.0
-mapBegin float
-map 16777216.0 10
-map 16777217.0 20
-default -7
-mapEnd int
-assertEqual 10
-
-push 16777217.0
-mapBegin float
-map 16777216.0 10
-map 16777217.0 20
-default -7
-mapEnd int
-assertEqual 10
-
-push 16777218.0
-mapBegin float
-map 16777216.0 10
-map 16777217.0 20
-default -7
-mapEnd int
-assertEqual -7
-
-push 16777216.0f64
-mapBegin float64
-map 16777216.0f64 10
-map 16777217.0f64 20
-default -7
-mapEnd int
-assertEqual 10
-
-push 16777217.0f64
-mapBegin float64
-map 16777216.0f64 10
-map 16777217.0f64 20
-default -7
-mapEnd int
-assertEqual 20
-
-push 16777218.0f64
-mapBegin float64
-map 16777216.0f64 10
-map 16777217.0f64 20
-default -7
-mapEnd int
-assertEqual -7
-
-moduleEnd
-
-module mapSignedZeroFloatAssertions
-; Read the result bits so negative
-; zero cannot pass as positive zero.
-float result
-
-push &result
-push 0.0
-mapBegin float
-map 0.0 -0.0
-map -0.0 5.0
-default 7.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-
-push 0.0
-mapBegin float
-map -0.0 5.0
-map 0.0 -0.0
-mapEnd float
-push 5.0
-equal
-assertEqual 1
-
-push &result
-push -0.0
-mapBegin float
-map 0.0 -0.0
-map -0.0 5.0
-default 7.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-
-push -0.0
-mapBegin float
-map -0.0 5.0
-map 0.0 -0.0
-mapEnd float
-push 5.0
-equal
-assertEqual 1
-
-push &result
-push 0.0
-mapBegin float
-default -0.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-
-push &result
-push 0.0
-mapBegin float
-map 1.0 5.0
-default -0.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-
-push &result
-push -1.0
-sqrt
-mapBegin float
-default -0.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-
-push &result
-push -1.0
-sqrt
-mapBegin float
-map 1.0 5.0
-default -0.0
-mapEnd float
-store
-push &result
-load
-assertEqual -2147483648
-moduleEnd
-
 module mapSignedZeroFloat64Assertions
+; @pos 50 2
 ; Read the result bits so negative
 ; zero cannot pass as positive zero.
 float64 result
@@ -664,5 +183,496 @@ push 4
 add
 load
 assertEqual -2147483648
+moduleEnd
+module mapSignedZeroFloatAssertions
+; @pos 99 2
+; Read the result bits so negative
+; zero cannot pass as positive zero.
+float result
+
+push &result
+push 0.0
+mapBegin float
+map 0.0 -0.0
+map -0.0 5.0
+default 7.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+
+push 0.0
+mapBegin float
+map -0.0 5.0
+map 0.0 -0.0
+mapEnd float
+push 5.0
+equal
+assertEqual 1
+
+push &result
+push -0.0
+mapBegin float
+map 0.0 -0.0
+map -0.0 5.0
+default 7.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+
+push -0.0
+mapBegin float
+map -0.0 5.0
+map 0.0 -0.0
+mapEnd float
+push 5.0
+equal
+assertEqual 1
+
+push &result
+push 0.0
+mapBegin float
+default -0.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+
+push &result
+push 0.0
+mapBegin float
+map 1.0 5.0
+default -0.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+
+push &result
+push -1.0
+sqrt
+mapBegin float
+default -0.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+
+push &result
+push -1.0
+sqrt
+mapBegin float
+map 1.0 5.0
+default -0.0
+mapEnd float
+store
+push &result
+load
+assertEqual -2147483648
+moduleEnd
+module mapFloatKeyPrecisionAssertions
+; @pos 146 2
+; Distinct source keys round to the
+; same float32 key. The earlier row
+; still wins. Float64 distinguishes
+; those same source keys.
+push 16777216.0
+mapBegin float
+map 16777216.0 10
+map 16777217.0 20
+default -7
+mapEnd int
+assertEqual 10
+
+push 16777217.0
+mapBegin float
+map 16777216.0 10
+map 16777217.0 20
+default -7
+mapEnd int
+assertEqual 10
+
+push 16777218.0
+mapBegin float
+map 16777216.0 10
+map 16777217.0 20
+default -7
+mapEnd int
+assertEqual -7
+
+push 16777216.0f64
+mapBegin float64
+map 16777216.0f64 10
+map 16777217.0f64 20
+default -7
+mapEnd int
+assertEqual 10
+
+push 16777217.0f64
+mapBegin float64
+map 16777216.0f64 10
+map 16777217.0f64 20
+default -7
+mapEnd int
+assertEqual 20
+
+push 16777218.0f64
+mapBegin float64
+map 16777216.0f64 10
+map 16777217.0f64 20
+default -7
+mapEnd int
+assertEqual -7
+
+moduleEnd
+module mapDefaultsFloat64ToFloat64
+; @pos 194 2
+push 3.0f64
+mapBegin float64
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+push 1.0f64
+mapBegin float64
+map 1.0f64 10.5f64
+mapEnd float64
+push 10.5f64
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10.5f64
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10.5f64
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsFloat64ToFloat
+; @pos 239 2
+push 3.0f64
+mapBegin float64
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
+push 1.0f64
+mapBegin float64
+map 1.0f64 10.5
+mapEnd float
+push 10.5
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10.5
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10.5
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsFloat64ToInt
+; @pos 282 2
+push 3.0f64
+mapBegin float64
+mapEnd int
+push 0
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+default -7
+mapEnd int
+push -7
+equal
+assertEqual 1
+
+push 1.0f64
+mapBegin float64
+map 1.0f64 10
+mapEnd int
+push 10
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10
+mapEnd int
+push 0
+equal
+assertEqual 1
+
+push 3.0f64
+mapBegin float64
+map 1.0f64 10
+default -7
+mapEnd int
+push -7
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsFloatToFloat64
+; @pos 323 2
+push 3.0
+mapBegin float
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+push 1.0
+mapBegin float
+map 1.0 10.5f64
+mapEnd float64
+push 10.5f64
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10.5f64
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10.5f64
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsFloatToFloat
+; @pos 366 2
+push 3.0
+mapBegin float
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
+push 1.0
+mapBegin float
+map 1.0 10.5
+mapEnd float
+push 10.5
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10.5
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10.5
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsFloatToInt
+; @pos 407 2
+push 3.0
+mapBegin float
+mapEnd int
+push 0
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+default -7
+mapEnd int
+push -7
+equal
+assertEqual 1
+
+push 1.0
+mapBegin float
+map 1.0 10
+mapEnd int
+push 10
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10
+mapEnd int
+push 0
+equal
+assertEqual 1
+
+push 3.0
+mapBegin float
+map 1.0 10
+default -7
+mapEnd int
+push -7
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsIntToFloat64
+; @pos 446 2
+push 3
+mapBegin int
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+push 1
+mapBegin int
+map 1 10.5f64
+mapEnd float64
+push 10.5f64
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+map 1 10.5f64
+mapEnd float64
+push 0.0f64
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+map 1 10.5f64
+default -7.5f64
+mapEnd float64
+push -7.5f64
+equal
+assertEqual 1
+
+moduleEnd
+module mapDefaultsIntToFloat
+; @pos 487 2
+push 3
+mapBegin int
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
+push 1
+mapBegin int
+map 1 10.5
+mapEnd float
+push 10.5
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+map 1 10.5
+mapEnd float
+push 0.0
+equal
+assertEqual 1
+
+push 3
+mapBegin int
+map 1 10.5
+default -7.5
+mapEnd float
+push -7.5
+equal
+assertEqual 1
+
 moduleEnd
 entryEnd
