@@ -10,9 +10,15 @@ completed: 2026-06-14
 
 # TODO: Add compiler algorithmic regression metrics
 
+## Completion Decision
+
+The maintainer confirmed on 2026-10-14 that this TODO is complete. The existing release-level compiler execution
+counters and metrics dashboard satisfy the accepted scope. The original size-scaling proposal below is retained
+as historical context and is not outstanding work under this TODO.
+
 ## Problem Description
 
-The compiler has snapshot coverage for many structural outputs, but there is no release-level signal for algorithmic regressions.
+The original goal was to complement compiler snapshots with release-level signals for algorithmic regressions.
 
 Raw compile duration is a weak primary metric because it varies by machine, runner load, CPU governor, and Node/V8 version. What we need instead is a way to detect when compiler cost grows faster than input size for representative compiler workloads.
 
@@ -23,7 +29,7 @@ This should catch cases such as:
 - memory or function resolution retaining more data than expected
 - a helper suddenly dominating V8 CPU profile samples
 
-## Proposed Solution
+## Original Proposed Solution
 
 Add a compiler complexity benchmark script that runs deterministic generated fixtures at multiple sizes and records curve-shape metrics.
 
@@ -110,21 +116,20 @@ Suggested record shape:
 - Verify the same fixture family produces stable size labels across runs.
 - Verify ratio calculations are based on metrics within the same run, not across different machines.
 
-## Success Criteria
+## Accepted Success Criteria
 
-- [x] Compiler complexity metrics are logged per release without relying on absolute wall-clock time as the primary signal.
-- [x] Generated fixture families cover linear instructions, locals, functions, memory-heavy programs, and one real project.
-- [x] Logs contain enough V8/Node metadata to explain runtime differences.
-- [x] The metrics dashboard can graph fixture-size curves and adjacent-size ratios.
-- [x] Obvious superlinear regressions are visible from the dashboard without opening profiler artifacts manually.
+- [x] Release automation records compiler range-execution and function-entry counts for real-project benchmarks.
+- [x] Historical compiler execution metrics are available in `logs/compiler-coverage-counts/`.
+- [x] The metrics dashboard displays compiler execution counts across releases and compiler pipeline components.
+- [x] The maintainer accepts the implemented metrics as completion of this TODO.
 
 ## Affected Components
 
 - `packages/compiler` - benchmarked compiler entry points and fixture source shapes
-- `scripts/` - benchmark runner and log appender
-- `logs/compiler-complexity/` - historical release metrics
-- `packages/metrics-dashboard` - future charts for compiler complexity curves
-- `.github/workflows/release.yml` - optional release-time collection once the script is stable
+- `scripts/log-compiler-coverage-counts.mjs` - compiler benchmark execution counters and log appender
+- `logs/compiler-coverage-counts/` - historical release metrics
+- `packages/metrics-dashboard` - compiler execution-count charts
+- `.github/workflows/release.yml` - release-time collection
 
 ## Risks & Considerations
 
@@ -145,3 +150,11 @@ Suggested record shape:
 - [Node.js V8 API](https://nodejs.org/api/v8.html)
 - [Node.js CPU and heap profiling CLI flags](https://nodejs.org/download/release/v22.12.0/docs/api/cli.html)
 - [Node.js perf_hooks API](https://nodejs.org/api/perf_hooks.html)
+
+## Notes
+
+- Completion was recorded in the 2026-06-14 archiving commit `e2c2a674c` and reaffirmed by the maintainer on
+  2026-10-14. The brief reopening during the issue audit was reversed following that clarification.
+- Compiler coverage logging was introduced in [commit f79b6392a](https://github.com/andorthehood/8f4e/commit/f79b6392ae005a4a4a438bcb442f490e3126be49).
+- Pipeline-component tracking and dashboard support were extended in [commit a6bb1484f](https://github.com/andorthehood/8f4e/commit/a6bb1484f4a972575e85094071c35bd593b88215).
+- No associated PR was returned for either implementation commit.

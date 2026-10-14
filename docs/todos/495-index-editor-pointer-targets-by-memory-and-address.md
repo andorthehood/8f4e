@@ -3,7 +3,7 @@ title: 'TODO: Index editor pointer targets by memory and address'
 priority: Medium
 effort: 3-6h
 created: 2026-10-14
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/1012
 status: Open
 completed: null
 ---

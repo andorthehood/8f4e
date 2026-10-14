@@ -122,7 +122,7 @@ Active todo files are listed below.
 | 460 | Fix cross-block constant cache dependencies | 2026-06-17 | Constant resolution now returns per-line facts beside source-shaped cached ASTs, and recompiling with a changed constants block re-resolves unchanged cached module ASTs correctly. |
 | 463 | Refactor stack analyzer to return fact report | 2026-06-17 | Stack analysis now returns explicit keyed facts consumed by compiler orchestration and code generation without mutating AST lines. |
 | 462 | Extract semantic reference resolver | 2026-06-17 | Semantic reference resolution now runs once in compileSubProgram and returns a report consumed by stack analysis and WASM codegen alongside unchanged ASTs. |
-| 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
+| 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Release-level compiler execution counters and dashboard accepted as complete; maintainer reaffirmed completion on 2026-10-14. |
 | 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |
 | 280 | Add reverse stack instruction with explicit item count | 2026-06-14 | Cancelled; no explicit `reverse <count>` stack instruction is planned. |
 | 211 | Add WASM memory to GLSL float uniform bindings via project config | 2026-06-14 | Project config now supports shader uniform bindings from WASM memory for postprocess and background effects. |
