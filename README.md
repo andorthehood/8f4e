@@ -15,7 +15,9 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
     │   └── packages/
     │       ├── <a href="./packages/compiler/packages/language-spec/README.md">language-spec</a> (Shared language contracts and target-independent compiler facts)
+    │       ├── <a href="./packages/compiler/packages/include-resolver/README.md">include-resolver</a> (Loads declared includes into a raw source tree)
     │       ├── <a href="./packages/compiler/packages/project-preparser/README.md">project-preparser</a> (Parses .8f4e project documents into sub-program source)
+    │       ├── <a href="./packages/compiler/packages/program-composer/README.md">program-composer</a> (Composes recursive project groups into an ordered AST program)
     │       ├── <a href="./packages/compiler/packages/sub-program/README.md">sub-program</a> (Compiles one closed, independently identifiable program unit)
     │       │   └── packages/
     │       │       ├── <a href="./packages/compiler/packages/sub-program/packages/tokenizer/README.md">tokenizer</a> (Parses source blocks into validated ASTs)
@@ -47,9 +49,12 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       │               └── <a href="./packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     │       ├── <a href="./packages/editor/packages/editor-website/README.md">editor-website</a> (Thin deployable website for the default editor)
     │       ├── <a href="./packages/editor/packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a> (AudioWorklet editor runtime)
+    │       ├── <a href="./packages/editor/packages/runtime-test-runner/README.md">runtime-test-runner</a> (Runs project test entries and reports assertions in the editor)
     │       └── <a href="./packages/editor/packages/runtime-web-worker/README.md">runtime-web-worker</a> (Web Worker editor runtime)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
     ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
+    ├── <a href="./packages/test-runner/README.md">test-runner</a> (Shared native assertion execution and reporting)
+    ├── <a href="./packages/8f4e-website/README.md">8f4e-website</a> (Product homepage, examples gallery, and compiler test gallery)
     ├── metrics-dashboard (Local dashboard for release metrics)
     └── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
 </pre>
