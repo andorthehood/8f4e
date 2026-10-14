@@ -68,7 +68,6 @@ int16[] buffer ASSET_PIANO_SIZE/2
 ; @config bin.piano.memory buffer
 int16* playhead &buffer
 float out
-float** reverbIn &reverb:in
 
 ; @wave2 &buffer count(buffer) playhead
 
@@ -80,11 +79,6 @@ castToFloat
 push max(buffer)
 castToFloat
 div
-store
-
-; Bind the reverb input to the player output.
-push reverbIn
-push &out
 store
 
 ; Advance the playhead
@@ -187,6 +181,8 @@ group reverb
 expose in &reverbInput:in
 expose outL &tank1OutputMix:out
 expose outR &tank2OutputMix:out
+
+init &in &pcmPlayer:out
 
 expose decay &controlValues:decay
 expose amount &controlValues:amount
@@ -316,7 +312,7 @@ moduleEnd
 module reverbInput
 ; @pos 160 -41
 
-float in 
+float* in
 
 moduleEnd
 module delayOffsetWriter
