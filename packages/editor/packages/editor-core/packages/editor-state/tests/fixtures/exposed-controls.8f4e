@@ -1,0 +1,58 @@
+8f4e/v1
+
+entry main
+group audio
+expose int gain &voice:level
+expose float wet &voice:wet
+expose int gate &voice:gate
+expose int* gateInput &voice:gate
+expose int* input &voice:pointer
+expose int[] keys &notesData:notes
+expose int pressed &countData:count
+; @slider &gain 0 1 0.01
+; @watch gain
+; @meter gain 0 1
+; @plot &keys count(keys)
+; @bars &keys count(keys)
+; @wave &keys count(keys)
+; @switch &gate 0 1
+; @button &gate 0 1
+; @crossfade &gain &wet
+; @piano &keys &pressed 48
+
+module voice
+float level 0.25
+float wet 0.75
+int gate
+float* pointer &level
+moduleEnd
+
+module notesData
+int[] notes 4 48
+moduleEnd
+
+module countData
+int count 1
+moduleEnd
+
+group nested
+expose int gain &voice:level
+module voice
+int level 7
+moduleEnd
+groupEnd
+groupEnd
+
+group other
+expose float gain &voice:level
+module voice
+float level 0.9
+moduleEnd
+groupEnd
+
+module controls
+float level 0.1
+; @slider &audio:gain 0 1 0.01
+; @watch audio:gain
+moduleEnd
+entryEnd

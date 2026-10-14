@@ -74,6 +74,8 @@ function createPianoKeyboardKeys(): PianoKeyboard['keys'] {
 
 function createPianoKeyboard(overrides: Partial<PianoKeyboard> = {}): PianoKeyboard {
 	return {
+		pressedKeysListModuleId: 'test-block',
+		pressedNumberOfKeysModuleId: 'test-block',
 		x: 2,
 		y: 3,
 		width: 48,

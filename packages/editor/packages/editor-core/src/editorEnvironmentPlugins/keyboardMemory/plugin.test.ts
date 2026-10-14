@@ -92,7 +92,7 @@ describe('keyboardMemoryPlugin', () => {
 		mockWindow = createMockWindow();
 	});
 
-	it('writes keyCode and keyPressed values and tracks latest still-pressed key', () => {
+	it.each([false, true])('writes key values and tracks pressed keys through aliases=%s', exposed => {
 		const setWordInMemory = vi.fn();
 		const state = {
 			editorConfig: {
@@ -102,6 +102,7 @@ describe('keyboardMemoryPlugin', () => {
 				},
 			},
 			compiler: {
+				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
 					code: { wordAlignedAddress: 4 },
 					pressed: { wordAlignedAddress: 5 },
@@ -111,6 +112,19 @@ describe('keyboardMemoryPlugin', () => {
 				setWordInMemory,
 			},
 		} as unknown as State;
+
+		if (exposed) {
+			state.editorConfig.keyboard = { keyCodeMemory: 'keyboard:code', keyPressedMemory: 'keyboard:pressed' };
+			state.compiler.projectMemoryExposuresByGroupPath.keyboard = ['code', 'pressed'].map(name => ({
+				name,
+				type: 'int',
+				groupPath: 'keyboard',
+				targetModuleId: 'keys',
+				targetModuleName: 'keys',
+				targetMemoryName: name,
+				targetMemory: state.compiler.memoryPlan.modules.keys.memory[name],
+			}));
+		}
 
 		const store = {
 			getState: () => state,
@@ -151,6 +165,7 @@ describe('keyboardMemoryPlugin', () => {
 				},
 			},
 			compiler: {
+				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
 					pressed: { wordAlignedAddress: 8 },
 				}),

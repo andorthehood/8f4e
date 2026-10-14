@@ -103,6 +103,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -137,6 +138,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -170,6 +172,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -203,6 +206,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -238,6 +242,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -278,6 +283,7 @@ describe('slider interaction', () => {
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,

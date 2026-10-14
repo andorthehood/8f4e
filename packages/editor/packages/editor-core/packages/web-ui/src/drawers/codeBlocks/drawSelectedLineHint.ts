@@ -1,3 +1,4 @@
+import { resolveMemoryTarget } from '@8f4e/editor-state/memory';
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { SpriteFont } from '@8f4e/sprite-generator';
@@ -45,7 +46,7 @@ function getMemoryForLiveValueLine(
 	moduleId: string,
 	memoryId: string
 ): PlannedMemoryDeclaration | undefined {
-	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryId];
+	return resolveMemoryTarget(state, { kind: 'module', moduleId }, memoryId)?.memory;
 }
 
 function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): string | undefined {

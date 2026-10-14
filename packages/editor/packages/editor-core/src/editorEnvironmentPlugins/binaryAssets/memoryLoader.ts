@@ -1,3 +1,4 @@
+import { resolveMemoryTarget } from '@8f4e/editor-state/memory';
 import type { BinaryAsset, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { MemoryViews } from '@8f4e/web-ui';
@@ -7,12 +8,7 @@ function resolveBinaryAssetTarget(
 	state: State,
 	memoryId: string
 ): { memoryId: string; byteAddress: number; memoryByteLength: number } | null {
-	const [moduleId, memoryName] = memoryId.split(':');
-	if (!moduleId || !memoryName) {
-		return null;
-	}
-
-	const memory = state.compiler.memoryPlan.modules[moduleId]?.memory[memoryName];
+	const memory = resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory;
 	if (!memory) {
 		return null;
 	}

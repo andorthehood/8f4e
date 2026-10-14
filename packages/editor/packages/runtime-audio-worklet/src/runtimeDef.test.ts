@@ -341,6 +341,7 @@ describe('AudioWorklet runtime config', () => {
 				},
 			},
 			compiler: {
+				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
 					audiooutL: { buffer: { wordAlignedAddress: 8 } },
 					audiooutR: { buffer: { wordAlignedAddress: 24 } },

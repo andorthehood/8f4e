@@ -33,6 +33,7 @@ const store = {
 				},
 			},
 			compiler: {
+				projectMemoryExposuresByGroupPath: {},
 				compiledModules: {},
 				memoryPlan: {
 					modules: {

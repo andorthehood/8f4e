@@ -1,0 +1,25 @@
+8f4e/v1
+
+entry main
+module audio
+int gain 99
+int hidden 1
+moduleEnd
+
+group audio
+expose float gain &voice:level
+expose float aliasOnly &voice:level
+
+module voice
+float level 0.25
+moduleEnd
+
+group nested
+expose int gain &voice:level
+
+module voice
+int level 7
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

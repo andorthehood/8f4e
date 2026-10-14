@@ -53,6 +53,8 @@ describe('pianoKeyboard interaction', () => {
 		});
 		codeBlock.widgets.pianoKeyboards = [
 			{
+				pressedKeysListModuleId: 'test-block',
+				pressedNumberOfKeysModuleId: 'test-block',
 				x: 20,
 				y: 40,
 				width: 240,

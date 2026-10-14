@@ -90,6 +90,18 @@ clear with results or compilation start, and contribute space below the assertio
 - **Viewport**: Block positions are in viewport coordinates
 - **Edit History**: Block changes trigger history snapshots
 
+Memory references use the `MemoryScope` type exported through `@8f4e/editor-state/memory`. A module scope
+(`{ kind: 'module', moduleId }`) resolves unqualified names in that module's declarations. A project scope
+(`{ kind: 'project', groupPath }`) resolves unqualified names in the group's exposed aliases; the root project uses
+the empty group path. Qualified names resolve relative to the scope's project path, while paths containing `/` are
+canonical. Local module declarations and group exposures remain distinct even when a module and group share a name.
+
+Widgets, connectors, and other code-block consumers use `getCodeBlockMemoryScope` to convert graphical blocks at the
+editor boundary. Configuration and renderer consumers construct scopes from their known project paths or canonical
+module IDs. `resolveMemoryTarget` handles target lookup using these explicit scopes, and `resolveMemoryIdentifier`
+adds address operators, dereferencing, indexing, and display formats. The resolvers accept no graphical blocks or
+implicit string scopes.
+
 ## References
 
 - See `utils/` for block manipulation helpers

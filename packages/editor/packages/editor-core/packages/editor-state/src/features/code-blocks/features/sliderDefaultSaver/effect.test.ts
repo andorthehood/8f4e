@@ -53,10 +53,12 @@ describe('slider default saver', () => {
 		const saveSliderValuesToCodeCallback = onCallbacks.get('saveSliderValuesToCode');
 		const codeBlock = createMockCodeBlock({
 			name: 'test-block',
+			blockType: 'module',
 			code: ['module test-block', 'float testSlider 0.25', '; @slider &testSlider 0 1 0.01', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'testSlider',
 				x: 50,
 				y: 50,
@@ -71,6 +73,7 @@ describe('slider default saver', () => {
 			},
 		];
 
+		mockState.codeBlockRendering.rootCodeBlocks.push(codeBlock);
 		saveSliderValuesToCodeCallback?.({ codeBlock });
 
 		expect(codeBlock.code).toEqual([
@@ -84,10 +87,13 @@ describe('slider default saver', () => {
 	it('uses the existing action and programmatic edit path to save piano defaults', () => {
 		const codeBlock = createMockCodeBlock({
 			name: 'synth',
+			blockType: 'module',
 			code: ['module synth', 'int[] notes 4', 'int count 0', '; @piano &notes &count 48', 'moduleEnd'],
 		});
 		codeBlock.widgets.pianoKeyboards = [
 			{
+				pressedKeysListModuleId: 'synth',
+				pressedNumberOfKeysModuleId: 'synth',
 				lineNumber: 3,
 				pressedKeysListMemory: {
 					id: 'notes',
@@ -105,6 +111,7 @@ describe('slider default saver', () => {
 			[8, 2],
 		]);
 		mockState.callbacks.getWordFromMemory = address => memory.get(address) ?? 0;
+		mockState.codeBlockRendering.rootCodeBlocks.push(codeBlock);
 		mockState.codeBlockRendering.selectedCodeBlock = codeBlock;
 		sliderDefaultSaver(mockStore as any, mockEvents);
 

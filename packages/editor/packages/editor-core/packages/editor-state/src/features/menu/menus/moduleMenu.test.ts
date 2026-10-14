@@ -65,6 +65,7 @@ describe('module menu', () => {
 		});
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'gain',
 				wordAlignedAddress: 4,
 				byteAddress: 16,
@@ -103,6 +104,7 @@ describe('module menu', () => {
 		const codeBlock = createMockCodeBlock({ blockType: 'module' });
 		codeBlock.widgets.sliders = [
 			{
+				moduleId: 'test-block',
 				id: 'gain',
 				wordAlignedAddress: 4,
 				byteAddress: 16,

@@ -1,3 +1,4 @@
+import { resolveMemoryTarget } from '@8f4e/editor-state/memory';
 import type { State } from '@8f4e/editor-state-types';
 import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
 import type { RgbaTexture, RgbaTextureLayer } from 'glugglugglug';
@@ -50,13 +51,7 @@ function normalizeMagnification(value: number | undefined): number {
 }
 
 function getOverlayBufferByteAddress(state: State, target: string): number | undefined {
-	const [moduleId, memoryId] = target.split(':');
-	if (!moduleId || !memoryId) {
-		return undefined;
-	}
-
-	const memory = state.compiler.memoryPlan.modules[moduleId]?.memory[memoryId];
-	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
+	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, target)?.memory.byteAddress;
 }
 
 export function getOverlayDrawRect(

@@ -1,6 +1,6 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
-import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
+import getCodeBlockMemoryScope from '~/pureHelpers/getCodeBlockMemoryScope';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import type { CrossfadeDirectiveData } from './data';
 
@@ -16,9 +16,9 @@ function resolveCrossfadeDirectiveWidget(
 		return;
 	}
 
-	const moduleId = getCodeBlockModuleId(graphicData);
-	const leftMemory = resolveMemoryIdentifier(state, moduleId, crossfade.leftMemoryId);
-	const rightMemory = resolveMemoryIdentifier(state, moduleId, crossfade.rightMemoryId);
+	const scope = getCodeBlockMemoryScope(graphicData);
+	const leftMemory = resolveMemoryIdentifier(state, scope, crossfade.leftMemoryId);
+	const rightMemory = resolveMemoryIdentifier(state, scope, crossfade.rightMemoryId);
 
 	if (!leftMemory || !rightMemory) {
 		return;

@@ -1,21 +1,11 @@
+import { resolveMemoryTarget } from '@8f4e/editor-state/memory';
 import type { State } from '@8f4e/editor-state-types';
 import type { EditorEnvironmentPluginContext } from '../types';
 import { getKeyboardMemoryConfig } from './config';
 import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
-	if (!memoryId) {
-		return undefined;
-	}
-
-	const separatorIndex = memoryId.indexOf(':');
-	if (separatorIndex <= 0 || separatorIndex >= memoryId.length - 1) {
-		return undefined;
-	}
-
-	const moduleId = memoryId.slice(0, separatorIndex);
-	const memoryName = memoryId.slice(separatorIndex + 1);
-	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryName]?.wordAlignedAddress;
+	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory.wordAlignedAddress;
 }
 
 function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {

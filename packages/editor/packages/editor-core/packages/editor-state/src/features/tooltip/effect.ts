@@ -1,7 +1,9 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { CompiledStackAnalysisLine } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import getCodeBlockMemoryScope from '../../pureHelpers/getCodeBlockMemoryScope';
 import getCodeBlockModuleId from '../../pureHelpers/getCodeBlockModuleId';
+import resolveMemoryTarget from '../../pureHelpers/resolveMemoryTarget';
 import { getCompiledFunctionForCodeBlock } from '../code-blocks/utils/getCompiledFunctionForCodeBlock';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
@@ -44,12 +46,12 @@ function getSelectedCodeBlockStackAnalysisLine(
 /**
  * Resolves memory metadata for selected memory declaration tooltip rows.
  */
-function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined, memoryId: string | undefined) {
-	if (!moduleId || !memoryId) {
+function getSelectedMemoryDeclaration(state: State, codeBlock: CodeBlockGraphicData, memoryId: string | undefined) {
+	if (!codeBlock.name || !memoryId) {
 		return undefined;
 	}
 
-	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryId];
+	return resolveMemoryTarget(state, getCodeBlockMemoryScope(codeBlock), memoryId)?.memory;
 }
 
 function getSelectedModuleExecutionOrder(
@@ -87,7 +89,7 @@ export default function tooltip(store: StateManager<State>): void {
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
 			state.spriteLookups,
 			selectedCodeBlock.name,
-			getSelectedMemoryDeclaration(state, getCodeBlockModuleId(selectedCodeBlock), memoryId),
+			getSelectedMemoryDeclaration(state, selectedCodeBlock, memoryId),
 			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
 		);
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));

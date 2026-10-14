@@ -267,6 +267,8 @@ describe('drawModules', () => {
 		});
 		block.widgets.pianoKeyboards = [
 			{
+				pressedKeysListModuleId: 'test-block',
+				pressedNumberOfKeysModuleId: 'test-block',
 				x: 0,
 				y: 16,
 				width: 48,
