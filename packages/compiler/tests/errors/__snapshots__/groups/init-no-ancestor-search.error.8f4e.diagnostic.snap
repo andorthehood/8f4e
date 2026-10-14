@@ -1,0 +1,30 @@
+{
+  "code": 5,
+  "context": {
+    "projectGroupPath": "outer/inner",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "input",
+        "type": "identifier",
+        "value": "&input",
+      },
+      {
+        "isEndAddress": false,
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetMemoryId": "output",
+        "targetModuleId": "source",
+        "type": "identifier",
+        "value": "&source:output",
+      },
+    ],
+    "instruction": "init",
+    "lineNumber": 2,
+  },
+  "message": "Undeclared identifier: outer/source:output. (5)",
+}

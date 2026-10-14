@@ -38,6 +38,7 @@ export const SyntaxErrorCode = {
 	IMPORT_EXPORT_CONFLICT: 15,
 	IMPORTED_FUNCTION_BODY: 16,
 	PARAM_AFTER_FUNCTION_BODY: 17,
+	INVALID_PROJECT_MEMORY_INITIALIZER: 18,
 } as const;
 
 export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
@@ -68,6 +69,8 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 	[SyntaxErrorCode.IMPORT_EXPORT_CONFLICT]: 'A function cannot be both imported and exported.',
 	[SyntaxErrorCode.IMPORTED_FUNCTION_BODY]: 'An imported function cannot have an executable body.',
 	[SyntaxErrorCode.PARAM_AFTER_FUNCTION_BODY]: 'Parameters must be declared before the function body.',
+	[SyntaxErrorCode.INVALID_PROJECT_MEMORY_INITIALIZER]:
+		'Expected "init &<exposed-memory> <number>" or "init &<exposed-memory> &<module>:<memory>".',
 };
 
 export interface SyntaxErrorLine {

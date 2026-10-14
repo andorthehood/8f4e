@@ -7,6 +7,7 @@ import { mainTokenizerLoop } from './mainTokenizerLoop';
 
 export { parseLine } from './parseLine';
 export { parseProjectConstantNamespacePassLine } from './parseProjectConstantNamespacePassLine';
+export { parseProjectMemoryInitializerLine } from './parseProjectMemoryInitializerLine';
 
 import { createASTFromBuilder } from './sourceBlockASTBuilder';
 import instructionParser from './syntax/instructionParser';

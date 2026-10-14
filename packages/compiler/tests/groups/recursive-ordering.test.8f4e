@@ -16,7 +16,7 @@ assertEqual 1
 moduleEnd
 
 group audio
-expose int output &grouped:value
+expose output &grouped:value
 
 module grouped
 int value

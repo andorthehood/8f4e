@@ -146,6 +146,11 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 				i += 1;
 				continue;
 			}
+			if (startsWithInstruction(trimmed, 'init')) {
+				(options.rootCode ?? options.project.code).push(line);
+				i += 1;
+				continue;
+			}
 			if (options.exposures && startsWithInstruction(trimmed, 'expose')) {
 				const exposure = parseProjectMemoryExposureLine(trimmed, i + 1);
 				if (options.exposures.some(candidate => candidate.name === exposure.name)) {
@@ -219,7 +224,7 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 			if (closer) {
 				throw new Error(`Parse error at line ${i + 1}: unexpected closer "${closer}"`);
 			}
-			if (!startsWithInstruction(trimmed, 'pass')) {
+			if (!startsWithInstruction(trimmed, 'pass') && !startsWithInstruction(trimmed, 'init')) {
 				throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 			}
 			if (project.code.length === 0) {

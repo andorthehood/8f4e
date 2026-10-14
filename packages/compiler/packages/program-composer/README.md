@@ -8,3 +8,8 @@ identities such as `audio/counter` and `audio/voices/counter`; these identities 
 Module-name segments use the language-spec character set `[A-Za-z_][A-Za-z0-9_-]*` and remain unencoded.
 
 This package is internal to `@8f4e/compiler` and is not a second project object model or a public compilation API.
+
+Group `init` lines remain in their owning group's `code`. The composer validates their syntax with the tokenizer and
+records `projectMemoryInitializerScopes`, including the group's canonical path and its immediate parent's path. These
+scoped records accompany the AST and alias table; memory-aware resolution owns target validation and initialization
+facts. Initializer changes are re-read on every composition even when child ASTs are served from cache.

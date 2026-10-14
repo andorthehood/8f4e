@@ -1,0 +1,12 @@
+8f4e/v1
+entry main
+group synth
+expose value &processor:value
+expose alias &processor:value
+init &value 11
+init &alias 12
+module processor
+int value
+moduleEnd
+groupEnd
+entryEnd

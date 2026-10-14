@@ -123,7 +123,6 @@ describe('binary assets plugin', () => {
 			state.compiler.projectMemoryExposuresByGroupPath.audio = [
 				{
 					name: 'publicBuffer',
-					type: 'int[]',
 					groupPath: 'audio',
 					targetModuleId: 'samples',
 					targetModuleName: 'samples',

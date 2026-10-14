@@ -25,7 +25,7 @@ describe('highlightSyntax8f4e', () => {
 	});
 
 	it('highlights project group instructions', () => {
-		const colors = highlightSyntax8f4e(['group audio', 'expose int level &voice:level', 'groupEnd'], syntaxFonts);
+		const colors = highlightSyntax8f4e(['group audio', 'expose level &voice:level', 'groupEnd'], syntaxFonts);
 
 		expect(colors.map(line => line[0])).toEqual(['instruction', 'instruction', 'instruction']);
 	});

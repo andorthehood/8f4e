@@ -125,12 +125,11 @@ describe('serializeProjectTo8f4e', () => {
 						'group audio',
 						'; retain this group comment',
 						'futureInstruction anything',
-						'expose int count &counter:count',
+						'expose count &counter:count',
 						'groupEnd',
 					],
 					exposures: [
 						{
-							type: 'int',
 							name: 'count',
 							targetModuleName: 'counter',
 							targetMemoryName: 'count',
@@ -160,12 +159,11 @@ describe('serializeProjectTo8f4e', () => {
 				'group audio',
 				'; retain this group comment',
 				'futureInstruction anything',
-				'expose int count &counter:count',
+				'expose count &counter:count',
 				'groupEnd',
 			],
 			exposures: [
 				{
-					type: 'int',
 					name: 'count',
 					targetModuleName: 'counter',
 					targetMemoryName: 'count',

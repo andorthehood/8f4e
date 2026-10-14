@@ -241,10 +241,9 @@ describe('code block rendering home directive', () => {
 						...EMPTY_DEFAULT_PROJECT,
 						name: 'Audio',
 						entry: 'main',
-						code: ['group Audio', '; keep this comment', 'expose int level &voice:level', 'groupEnd'],
+						code: ['group Audio', '; keep this comment', 'expose level &voice:level', 'groupEnd'],
 						exposures: [
 							{
-								type: 'int',
 								name: 'level',
 								targetModuleName: 'voice',
 								targetMemoryName: 'level',
@@ -270,7 +269,7 @@ describe('code block rendering home directive', () => {
 		expect(groupBlock.code).toEqual([
 			'group Audio',
 			'; keep this comment',
-			'expose int level &voice:level',
+			'expose level &voice:level',
 			'; @pos 0 -6',
 			'groupEnd',
 		]);

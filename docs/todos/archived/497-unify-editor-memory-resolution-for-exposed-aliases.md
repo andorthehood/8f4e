@@ -29,8 +29,8 @@ declaration, address, memory index, and storage type. Exposure indexes use weak 
 
 `resolveMemoryIdentifier`, input/output connectors, and other memory-reference consumers use that resolver.
 Debugger formatting, widget requirements, and connector source-row placement remain in their respective features.
-Connector direction continues to use the exposure's declared public type; runtime reads and writes should use
-the backing declaration's actual storage type. Exposure types remain intentionally unchecked against backing types.
+Connector direction uses the backing declaration's pointer type, and runtime reads and writes use its storage type.
+Exposures carry no separate public type.
 
 The intended group-block usage is:
 
@@ -39,7 +39,7 @@ The intended group-block usage is:
 
 entry main
 group audio
-expose float gain &voice:level
+expose gain &voice:level
 ; @slider &gain 0 1 0.01
 
 module voice
@@ -65,7 +65,7 @@ declaration's default through its canonical owner, including when the control is
 3. Make `resolveMemoryIdentifier` delegate target lookup to the shared resolver while preserving its existing
    address, dereference, indexing, and display-format behavior. Pointer metadata must be read from the canonical owner.
 4. Migrate input/output connectors to the same resolver. Remove their independent target lookup while retaining
-   source-row matching and the existing public-type rules for connector direction.
+   source-row matching and deriving connector direction from the backing declaration.
 5. Audit all editor memory-reference consumers, including sliders, watches, meters, plots, waves, bars, buttons,
    switches, crossfades, pianos, and configuration bindings. Route target lookups through the shared resolver and
    preserve each consumer's supported argument forms and type requirements.
@@ -80,7 +80,7 @@ declaration's default through its canonical owner, including when the control is
 - [x] References such as `&audio:gain` from the enclosing scope resolve to the same target as the group-local reference.
 - [x] Input/output connectors and all compatible editor memory-reference features use the same target-resolution logic.
 - [x] No widget or connector maintains its own exposure lookup or alternative group-scope resolution path.
-- [x] Resolution preserves the public name and public type alongside canonical backing ownership and memory metadata.
+- [x] Resolution preserves the public name alongside canonical backing ownership and memory metadata.
 - [x] Nested groups and sibling groups with repeated alias or backing declaration names resolve independently.
 - [x] Missing aliases and replacement compilation metadata do not leave controls bound to stale declarations.
 - [x] Saving control values updates the correct backing source declaration, including when public and backing names differ.
@@ -103,8 +103,7 @@ declaration's default through its canonical owner, including when the control is
 
 - A public alias name can differ from the backing declaration name, and multiple modules can reuse either name.
   Source edits must identify the canonical owner rather than match a memory name in the displayed block.
-- Public exposure types describe the group interface and are not guaranteed to match backing types. Preserve
-  connector classification while using actual storage metadata for runtime access.
+- Connector classification and runtime access both use the backing declaration's type.
 - Alias support does not expand a directive's accepted syntax, supported storage types, or memory-region capabilities.
   Existing float64 slider-write and fractional-range integer-write issues are separate work.
 - Keep compiler exposure semantics and source text unchanged. Reuse compiled targets rather than reparsing exposure
@@ -114,7 +113,7 @@ declaration's default through its canonical owner, including when the control is
 
 - Run `npx nx run @8f4e/editor-state:test` and `npx nx run @8f4e/editor-core:test`.
 - Run affected Nx typechecks; include `@8f4e/web-ui:test` if rendering changes.
-- Test shared resolution for direct references, nested/sibling aliases, different public/backing names and types,
+- Test shared resolution for direct references, nested/sibling aliases, different public/backing names and storage types,
   unresolved targets, pointer provenance, and metadata replacement.
 - Verify slider reads/writes, connector addresses and direction, another read-only widget, another writable control,
   and saving values into the backing declaration through a group alias.
@@ -131,7 +130,7 @@ declaration's default through its canonical owner, including when the control is
 ## Validation Results
 
 - Editor-state, editor-core, and web-ui test suites passed. The shared integration fixture covers nested/sibling aliases,
-  public/backing type differences, pointer provenance, widget/connector targets, runtime writes, metadata replacement,
+  inferred backing types, pointer provenance, widget/connector targets, runtime writes, metadata replacement,
   and saving slider and piano values across source owners.
 - Editor-state-types, editor-state, editor-core, and web-ui typechecks passed; the editor website production build passed.
 - Biome and whitespace checks passed.

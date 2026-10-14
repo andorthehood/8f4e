@@ -10,7 +10,7 @@ includesEnd
 
 entry test
 group left
-expose int result &calculation:result
+expose result &calculation:result
 
 includes
 include test/math inc adjusted
@@ -25,7 +25,7 @@ moduleEnd
 groupEnd
 
 group right
-expose int result &calculation:result
+expose result &calculation:result
 
 includes
 include test/math twice adjusted

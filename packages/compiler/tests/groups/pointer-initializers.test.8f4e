@@ -1,0 +1,75 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Group initializers set exposed pointer defaults before child modules execute. Address sources use the immediate parent,
+and sibling group exposures can supply source addresses. Pointers inherited from a shape can also be initialized.
+noteEnd
+
+entry test
+module source
+int[] output 3 41 42 43
+int[] alternate 2 91 92
+moduleEnd
+
+group synth
+expose input &processor:input
+init &input &source:output ; host wiring
+
+module source
+int output 999
+moduleEnd
+
+module processor
+int* input &fallback
+int[] fallback 2 7 8
+
+push *input
+assertEqual 41
+push count(*input)
+assertEqual 3
+push sizeof(*input)
+assertEqual 4
+moduleEnd
+groupEnd
+
+group outer
+module source
+int output 17
+moduleEnd
+
+group inner
+expose input &processor:input
+init &input &source:output
+
+module processor
+int* input
+push *input
+assertEqual 17
+moduleEnd
+groupEnd
+groupEnd
+
+group signal
+expose output &data:value
+module data
+int value 55
+moduleEnd
+groupEnd
+
+group consumer
+expose input &processor:input
+init &input &signal:output
+
+prototype state
+int* input
+prototypeEnd
+
+module processor
+shape state
+push *input
+assertEqual 55
+moduleEnd
+groupEnd
+entryEnd

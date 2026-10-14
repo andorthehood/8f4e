@@ -1,0 +1,30 @@
+{
+  "code": 75,
+  "context": {
+    "projectGroupPath": "synth",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "input",
+        "type": "identifier",
+        "value": "&input",
+      },
+      {
+        "isEndAddress": false,
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetMemoryId": "output",
+        "targetModuleId": "source",
+        "type": "identifier",
+        "value": "&source:output",
+      },
+    ],
+    "instruction": "init",
+    "lineNumber": 1,
+  },
+  "message": "Initialization target must be exposed scalar memory: input. (75)",
+}

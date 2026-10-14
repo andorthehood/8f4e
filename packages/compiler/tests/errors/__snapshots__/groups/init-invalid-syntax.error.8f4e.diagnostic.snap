@@ -1,0 +1,11 @@
+{
+  "code": 18,
+  "context": {
+    "projectGroupPath": "synth",
+  },
+  "line": {
+    "instruction": "init",
+    "lineNumber": 1,
+  },
+  "message": "Expected "init &<exposed-memory> <number>" or "init &<exposed-memory> &<module>:<memory>".",
+}

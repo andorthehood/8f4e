@@ -8,6 +8,50 @@ async function readProject(relativePath: string) {
 }
 
 describe('group compiler metadata and cache', () => {
+	it('re-resolves scalar initializers and restores declaration defaults when removed', async () => {
+		const project = await readProject('./groups/scalar-initializers.test.8f4e');
+		const group = project.groups[0]!;
+		const first = await compileProject(project, { disableSharedMemory: true });
+		const previousHits = first.cache.ast.stats.hits;
+		const initializerRow = group.code.findIndex(line => line.startsWith('init &foo '));
+		group.code[initializerRow] = 'init &foo 22';
+
+		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
+		expect(second.cache.ast.stats.hits).toBeGreaterThan(previousHits);
+		expect(first.memoryDefaultsByModuleId['values/processor']!.foo!.value).toBe(11);
+		expect(second.memoryDefaultsByModuleId['values/processor']!.foo!.value).toBe(22);
+		expect(group.modules[0]!.code).toContain('int foo 3');
+
+		group.code.splice(initializerRow, 1);
+		const restored = await compileProject(project, { disableSharedMemory: true, cache: second.cache });
+		expect(restored.memoryDefaultsByModuleId['values/processor']!.foo!.value).toBe(3);
+	});
+
+	it('re-resolves group initializers without changing cached declaration source', async () => {
+		const project = await readProject('./groups/pointer-initializers.test.8f4e');
+		const group = project.groups[0]!;
+		const first = await compileProject(project, { disableSharedMemory: true });
+		const previousHits = first.cache.ast.stats.hits;
+		const initializerRow = group.code.findIndex(line => line.startsWith('init '));
+		group.code[initializerRow] = 'init &input &source:alternate';
+
+		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
+		expect(second.cache.ast.stats.hits).toBeGreaterThan(previousHits);
+		expect(second.memoryDefaultsByModuleId['synth/processor']!.input!.value).toBe(
+			second.memoryPlan.modules.source!.memory.alternate!.byteAddress
+		);
+		expect(first.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(3);
+		expect(second.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(2);
+		expect(group.modules.find(module => module.code[0] === 'module processor')!.code).toContain('int* input &fallback');
+
+		group.code.splice(initializerRow, 1);
+		const restored = await compileProject(project, { disableSharedMemory: true, cache: second.cache });
+		expect(restored.memoryDefaultsByModuleId['synth/processor']!.input!.value).toBe(
+			restored.memoryPlan.modules['synth/processor']!.memory.fallback!.byteAddress
+		);
+		expect(restored.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(2);
+	});
+
 	it('re-resolves passed namespaces when cached child ASTs are unchanged', async () => {
 		const project = await readProject('./groups/constant-namespace-passes.test.8f4e');
 		const first = await compileProject(project, { disableSharedMemory: true });
@@ -53,7 +97,6 @@ describe('group compiler metadata and cache', () => {
 
 		expect(exposure).toMatchObject({
 			name: 'exposedValue',
-			type: 'float',
 			groupPath: 'processing/audio',
 			targetModuleId: 'processing/audio/source',
 			targetMemoryName: 'value',

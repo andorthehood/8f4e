@@ -83,6 +83,8 @@
   - [localSet](instructions/declarations-and-locals.md#localset)
 
 - [Program structure and functions](instructions/program-structure-and-functions.md)
+  - [expose](instructions/program-structure-and-functions.md#expose)
+  - [init](instructions/program-structure-and-functions.md#init)
   - [module](instructions/program-structure-and-functions.md#module)
   - [moduleEnd](instructions/program-structure-and-functions.md#moduleend)
   - [function](instructions/program-structure-and-functions.md#function)

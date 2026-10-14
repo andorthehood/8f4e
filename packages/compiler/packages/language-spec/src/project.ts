@@ -1,11 +1,12 @@
-import type { ArgumentIdentifier } from './arguments';
-import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
+import type { ArgumentIdentifier, ArgumentLiteral } from './arguments';
+import type { PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
 export const projectInstructions = {
 	entry: { opener: 'entry', closer: 'entryEnd' },
 	group: { opener: 'group', closer: 'groupEnd' },
 	expose: 'expose',
+	init: 'init',
 	pass: 'pass',
 } as const;
 
@@ -15,6 +16,7 @@ export const projectInstructionNames = [
 	projectInstructions.group.opener,
 	projectInstructions.group.closer,
 	projectInstructions.expose,
+	projectInstructions.init,
 	projectInstructions.pass,
 ] as const;
 
@@ -47,6 +49,23 @@ export interface ProjectConstantNamespaceScope {
 	groupPath: ProjectGroupPath;
 	parentGroupPath?: ProjectGroupPath;
 	passes: ProjectConstantNamespacePassLine[];
+}
+
+/** A default for group-local exposed scalar memory, using a number or immediate-parent memory address. */
+export interface ProjectMemoryInitializerLine {
+	lineNumber: number;
+	instruction: 'init';
+	arguments: [
+		Extract<ArgumentIdentifier, { referenceKind: 'memory-reference' }>,
+		ArgumentLiteral | Extract<ArgumentIdentifier, { referenceKind: 'intermodular-reference' }>,
+	];
+}
+
+/** Initializers and the project scopes used to resolve their destinations and address sources. */
+export interface ProjectMemoryInitializerScope {
+	groupPath: ProjectGroupPath;
+	parentGroupPath?: ProjectGroupPath;
+	initializers: ProjectMemoryInitializerLine[];
 }
 
 /** Canonical path of the root project. */
@@ -112,8 +131,6 @@ export interface ProjectObjectModel {
 
 /** A group-owned public memory name backed by a memory item in one of the group's direct modules. */
 export interface ProjectMemoryExposure {
-	/** Public memory declaration type. It is intentionally not checked against the target's declaration type. */
-	type: MemoryDeclarationInstruction;
 	/** Public name used by the enclosing project. */
 	name: string;
 	/** Source-level name of the direct child module that owns the target memory item. */

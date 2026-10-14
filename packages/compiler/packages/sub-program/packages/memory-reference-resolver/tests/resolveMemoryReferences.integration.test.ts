@@ -370,6 +370,7 @@ describe('resolveMemoryReferences integration', () => {
 				ast,
 				memoryPlan,
 				memoryAliases: new Map(),
+				projectMemoryInitializerScopes: [],
 				constantReferences,
 			} satisfies MemoryReferenceResolverIntegrationInput)
 		).toMatchSnapshot();

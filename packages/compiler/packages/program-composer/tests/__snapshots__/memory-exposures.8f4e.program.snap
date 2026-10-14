@@ -209,7 +209,6 @@
       "targetMemoryName": "value",
       "targetModuleId": "audio/source",
       "targetModuleName": "source",
-      "type": "int",
     },
     {
       "groupPath": "audio",
@@ -217,7 +216,6 @@
       "targetMemoryName": "input",
       "targetModuleId": "audio/consumer",
       "targetModuleName": "consumer",
-      "type": "int*",
     },
   ],
   "moduleEntryNames": [

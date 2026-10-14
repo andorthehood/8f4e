@@ -20,7 +20,7 @@ describe('validateInstructionArguments', () => {
 	});
 
 	it('rejects project-level instructions', () => {
-		for (const instruction of ['group', 'groupEnd', 'expose', 'pass']) {
+		for (const instruction of ['group', 'groupEnd', 'expose', 'pass', 'init']) {
 			expect(() => validateInstructionArguments(instruction, [])).toThrow(
 				expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
 			);
@@ -50,20 +50,14 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('module', [classifyIdentifier(moduleName)])).not.toThrow();
 	});
 
-	it.each([
-		'1voice',
-		'voice/left',
-		'voice%left',
-		'voice?left',
-		'voice#left',
-		'voice@left',
-		'voice:left',
-		'voice.left',
-	])('rejects the module name %s as an invalid identifier', moduleName => {
-		expect(() => validateInstructionArguments('module', [classifyIdentifier(moduleName)])).toThrow(
-			expect.objectContaining({ code: SyntaxErrorCode.INVALID_IDENTIFIER })
-		);
-	});
+	it.each(['1voice', 'voice/left', 'voice%left', 'voice?left', 'voice#left', 'voice@left', 'voice:left', 'voice.left'])(
+		'rejects the module name %s as an invalid identifier',
+		moduleName => {
+			expect(() => validateInstructionArguments('module', [classifyIdentifier(moduleName)])).toThrow(
+				expect.objectContaining({ code: SyntaxErrorCode.INVALID_IDENTIFIER })
+			);
+		}
+	);
 
 	it('accepts compile-time values for default', () => {
 		expect(() =>

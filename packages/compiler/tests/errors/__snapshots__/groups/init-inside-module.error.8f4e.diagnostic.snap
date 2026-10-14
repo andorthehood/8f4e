@@ -1,0 +1,11 @@
+{
+  "code": 11,
+  "context": {
+    "projectBlockId": 3,
+  },
+  "line": {
+    "instruction": "init",
+    "lineNumber": 2,
+  },
+  "message": "Unrecognised instruction.",
+}

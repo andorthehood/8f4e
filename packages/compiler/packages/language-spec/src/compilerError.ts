@@ -146,6 +146,22 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.GROUP_MEMORY_INITIALIZER_OUTSIDE_GROUP:
+			return { code, message: `init can only be used at group level. (${code})`, line, context };
+		case ErrorCode.INVALID_GROUP_MEMORY_INITIALIZER_TARGET:
+			return {
+				code,
+				message: `Initialization target must be exposed scalar memory${details?.identifier ? `: ${details.identifier}` : ''}. (${code})`,
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_GROUP_MEMORY_INITIALIZER:
+			return {
+				code,
+				message: `Multiple initializers target the same memory item${details?.identifier ? `: ${details.identifier}` : ''}. (${code})`,
+				line,
+				context,
+			};
 		case ErrorCode.CONSTANT_RESOLUTION_FAILED:
 			return {
 				code,

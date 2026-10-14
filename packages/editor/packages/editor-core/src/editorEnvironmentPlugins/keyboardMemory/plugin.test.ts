@@ -117,7 +117,6 @@ describe('keyboardMemoryPlugin', () => {
 			state.editorConfig.keyboard = { keyCodeMemory: 'keyboard:code', keyPressedMemory: 'keyboard:pressed' };
 			state.compiler.projectMemoryExposuresByGroupPath.keyboard = ['code', 'pressed'].map(name => ({
 				name,
-				type: 'int',
 				groupPath: 'keyboard',
 				targetModuleId: 'keys',
 				targetModuleName: 'keys',

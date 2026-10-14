@@ -70,9 +70,12 @@ describe('instruction name classification', () => {
 		expect(isKnownInstructionName('group')).toBe(true);
 		expect(isKnownInstructionName('groupEnd')).toBe(true);
 		expect(isKnownInstructionName('expose')).toBe(true);
+		expect(isKnownInstructionName('init')).toBe(true);
+		expect(isKnownInstructionName('bind')).toBe(false);
 		expect(isKnownInstructionName('pass')).toBe(true);
 		expect(isSubProgramInstructionName('group')).toBe(false);
 		expect(isSubProgramInstructionName('expose')).toBe(false);
+		expect(isSubProgramInstructionName('init')).toBe(false);
 		expect(isSubProgramInstructionName('pass')).toBe(false);
 		expect(isSubProgramInstructionName('push')).toBe(true);
 	});

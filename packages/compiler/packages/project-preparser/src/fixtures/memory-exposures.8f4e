@@ -6,8 +6,8 @@ int* input &audio:exposedValue
 moduleEnd
 
 group audio
-expose int exposedValue &source:value
-expose int* exposedInput &consumer:input
+expose exposedValue &source:value
+expose exposedInput &consumer:input
 
 module source
 int value 42

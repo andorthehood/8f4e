@@ -9,6 +9,7 @@ import type {
 	ProjectGroupPath,
 	ProjectMemoryAliasLookup,
 	ProjectMemoryExposure,
+	ProjectMemoryInitializerScope,
 	ProjectModuleId,
 	SourceMetadata,
 } from '@8f4e/language-spec';
@@ -45,5 +46,6 @@ export interface ComposedProgram {
 	memoryExposures: ComposedProjectMemoryExposure[];
 	memoryAliases: ProjectMemoryAliasLookup;
 	projectConstantNamespaceScopes: ProjectConstantNamespaceScope[];
+	projectMemoryInitializerScopes: ProjectMemoryInitializerScope[];
 	cache: CompilerCache;
 }
