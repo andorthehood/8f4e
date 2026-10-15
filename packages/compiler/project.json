@@ -28,6 +28,11 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/packages/examples/src/projects/audio/MICloudsReverbGrouped.8f4e"
+      ],
       "outputs": ["{workspaceRoot}/coverage/@8f4e/compiler"],
       "dependsOn": ["^build"],
       "options": {
