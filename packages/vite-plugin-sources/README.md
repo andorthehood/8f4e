@@ -78,9 +78,10 @@ resolves the stdlib package directory through the exported `package.json` path a
 IDs such as `std/math/fract`; source text loads on demand. Parsing and compilation stay in the consuming packages.
 Example/test galleries continue using their existing file URLs.
 
-The [resolver test](../editor/packages/editor-default/src/stdlib-resolver.test.ts) checks the discovered IDs against
-the stdlib source directory and verifies that each loader returns the exact original source text. The CLI and compiler
-test resolvers load exported source files directly by include ID. Stdlib has no generated manifest or build step.
+The plugin's integration tests own file discovery and exact source-text coverage using synthetic source trees. The
+editor's [resolver tests](../editor/packages/editor-default/src/stdlib-resolver.test.ts) verify compilation and execution
+with a real stdlib include and handling of unknown IDs. The CLI and compiler test resolvers load exported source files
+directly by include ID. Stdlib has no generated manifest or build step.
 
 Build tooling must depend on the plugin package and on the package containing its sources. Nx builds the plugin
 before building the default editor; the editor's stdlib dependency includes source changes in its build inputs.
