@@ -949,7 +949,7 @@ export const instructionSpecs = {
 		stack: stack({
 			inputs: ['float'],
 			outputs: ['float'],
-			effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
+			effect: stackMutation(1, [{ kind: 'same', isNonZero: false }]),
 		}),
 	},
 	shiftLeft: withDocsAndStack(binaryIntegerSpec, {

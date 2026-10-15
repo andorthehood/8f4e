@@ -65,4 +65,13 @@ push 2.0f64
 sqrt
 assertEqual 1.4142135623730951f64
 moduleEnd
+module float64RoundAssertions
+; @pos 51 50
+; round should preserve float64
+; precision when given a float64
+; operand.
+push 16777217.0f64
+round
+assertEqual 16777217.0f64
+moduleEnd
 entryEnd
