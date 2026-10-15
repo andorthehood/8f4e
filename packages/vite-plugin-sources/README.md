@@ -69,3 +69,20 @@ the stdlib package without assuming a `node_modules` location. Set `include: ['s
 
 Within the 8f4e workspace, run `npx nx run @8f4e/vite-plugin-sources:build`, `:test`, or `:typecheck`.
 The integration tests use synthetic source trees and exercise Vite builds, consuming builds, and watch behavior.
+
+### Default editor integration
+
+The default editor is the plugin's first consumer. Its [Vite configuration](../editor/packages/editor-default/vite.config.ts)
+resolves the stdlib package directory through the exported `manifest.json` path and registers a collection matching
+`std/**/*.8f4e`. The [browser resolver](../editor/packages/editor-default/src/stdlib-resolver.ts) looks up loaders by
+IDs such as `std/math/fract`; source text loads on demand. Parsing and compilation stay in the consuming packages.
+Example/test galleries continue using their existing file URLs.
+
+The manifest's contents are not used for discovery or browser loading. The editor configuration only resolves its
+path to locate the stdlib package. The existing manifest export is retained as stdlib's documented include catalog,
+and the [resolver test](../editor/packages/editor-default/src/stdlib-resolver.test.ts) checks that the discovered IDs
+match that catalog and that each loader returns the exact original source text. The CLI and compiler test resolvers
+load exported source files directly by include ID without reading the manifest.
+
+Build tooling must depend on the plugin package and on the package containing its sources. Nx builds the plugin
+before building the default editor; the editor's stdlib dependency includes source changes in its build inputs.
