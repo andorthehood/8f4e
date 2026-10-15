@@ -11,5 +11,8 @@ import { Section } from '../section';
 export default function createFunctionSection(functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;
 
-	return [Section.FUNCTION, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionTypeIndexes])];
+	return [
+		Section.FUNCTION,
+		...createVector([...unsignedLEB128(numberOfFunctions), ...functionTypeIndexes.flatMap(unsignedLEB128)]),
+	];
 }

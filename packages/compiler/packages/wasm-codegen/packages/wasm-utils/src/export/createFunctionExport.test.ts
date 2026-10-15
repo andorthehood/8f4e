@@ -7,3 +7,12 @@ test('createFunctionExport generates correct entry', () => {
 	expect(exp).toContain(ExportDesc.FUNC);
 	expect(exp).toContain(0);
 });
+
+test.each([
+	[127, [127]],
+	[128, [128, 1]],
+	[255, [255, 1]],
+	[256, [128, 2]],
+])('encodes function index %i as unsigned LEB128', (index, encoded) => {
+	expect(createFunctionExport('f', index)).toStrictEqual([1, 102, ExportDesc.FUNC, ...encoded]);
+});

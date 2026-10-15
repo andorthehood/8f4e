@@ -1,4 +1,5 @@
 import encodeString from '../encoding/encodeString';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import type { FunctionExport } from '../section';
 import { ExportDesc } from '../section';
 
@@ -10,5 +11,5 @@ import { ExportDesc } from '../section';
  * @returns Byte array representing the function export entry
  */
 export default function createFunctionExport(name: string, reference: number): FunctionExport {
-	return [...encodeString(name), ExportDesc.FUNC, reference];
+	return [...encodeString(name), ExportDesc.FUNC, ...unsignedLEB128(reference)];
 }
