@@ -15,7 +15,7 @@ type ColorContext = Pick<OffscreenCanvasRenderingContext2D, 'clearRect' | 'fillR
  * @returns A 2D canvas context suitable for resolving CSS colors.
  */
 function createColorContext(): ColorContext {
-	const context = new OffscreenCanvas(1, 1).getContext('2d', { alpha: true });
+	const context = new OffscreenCanvas(1, 1).getContext('2d', { alpha: true, willReadFrequently: true });
 	if (!context) {
 		throw new Error('Could not create a canvas context for resolving wire colors.');
 	}
