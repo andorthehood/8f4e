@@ -239,6 +239,53 @@
       ],
       "type": "module",
     },
+    "float64RoundAssertions": {
+      "id": "float64RoundAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64RoundAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 16777217,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "round",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 16777217,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
     "float64SqrtAssertions": {
       "id": "float64SqrtAssertions",
       "lines": [
@@ -291,6 +338,9 @@
     "float64ComparisonAssertions": {
       "memory": {},
     },
+    "float64RoundAssertions": {
+      "memory": {},
+    },
     "float64SqrtAssertions": {
       "memory": {},
     },
@@ -299,6 +349,7 @@
     "compiledFunctions": [],
     "compiledModules": [
       "float64ComparisonAssertions",
+      "float64RoundAssertions",
       "float64SqrtAssertions",
     ],
     "requiredMemoryBytes": 4,

@@ -553,6 +553,12 @@ export const WASM_F64_MAX = 0xa5;
 export const WASM_F32_NEAREST = 0x90;
 
 /**
+ * Round to nearest integer value, ties to even.
+ * Type signature: (param f64) (result f64)
+ */
+export const WASM_F64_NEAREST = 0x9e;
+
+/**
  * Square root.
  * Type signature: (param f32) (result f32)
  */
@@ -687,6 +693,7 @@ export type WASMInstructionCode =
 	| typeof WASM_F64_MIN
 	| typeof WASM_F64_MAX
 	| typeof WASM_F32_NEAREST
+	| typeof WASM_F64_NEAREST
 	| typeof WASM_F32_SQRT
 	| typeof WASM_F64_SQRT
 	| typeof WASM_I32_TUNC_F32_S
