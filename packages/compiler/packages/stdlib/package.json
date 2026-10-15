@@ -4,15 +4,11 @@
   "private": true,
   "description": "8f4e standard library source files",
   "type": "module",
-  "scripts": {
-    "generate-manifest": "node scripts/generate-manifest.mjs"
-  },
   "exports": {
-    "./manifest.json": "./manifest.json",
+    "./package.json": "./package.json",
     "./std/*": "./std/*"
   },
   "files": [
-    "manifest.json",
     "std"
   ],
   "sideEffects": false,

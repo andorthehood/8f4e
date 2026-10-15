@@ -4,7 +4,7 @@ import { createLibConfig } from '@8f4e/config/vite';
 import { sourceFiles } from '@8f4e/vite-plugin-sources';
 import { defineConfig } from 'vite';
 
-const stdlibRoot = dirname(createRequire(import.meta.url).resolve('@8f4e/stdlib/manifest.json'));
+const stdlibRoot = dirname(createRequire(import.meta.url).resolve('@8f4e/stdlib/package.json'));
 
 export default defineConfig({
 	base: './',

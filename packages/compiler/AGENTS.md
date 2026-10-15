@@ -22,6 +22,7 @@
   their parent modules for the same entry.
 - WebAssembly body generation and final binary emission live in `@8f4e/wasm-codegen` (`packages/compiler/packages/wasm-codegen`).
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
+  It has no build or generation step; include IDs follow paths under `std/` without the `.8f4e` extension.
 
 ## Build, Test, Dev
 - From root: `npx nx run @8f4e/compiler:build|test|typecheck`.

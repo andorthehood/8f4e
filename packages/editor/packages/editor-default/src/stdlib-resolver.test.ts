@@ -1,16 +1,21 @@
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
+import { sep } from 'node:path';
 import sources from 'virtual:8f4e-sources/stdlib';
 import { compileProject, parseProjectSource } from '@8f4e/compiler';
-import stdlibManifest from '@8f4e/stdlib/manifest.json';
 import { describe, expect, it } from 'vitest';
 import { resolveStdlibInclude } from './stdlib-resolver';
 
 describe('resolveStdlibInclude', () => {
-	it('covers the manifest and resolves the exact original source text', async () => {
-		expect([...sources.keys()].sort()).toEqual(stdlibManifest.includes.map(include => include.id).sort());
-		for (const include of stdlibManifest.includes) {
-			const original = await readFile(new URL(import.meta.resolve(`@8f4e/stdlib/${include.path}`)), 'utf8');
-			expect(await resolveStdlibInclude(include.id)).toBe(original);
+	it('covers all stdlib source files and resolves their exact original text', async () => {
+		const stdlibRoot = new URL('./', import.meta.resolve('@8f4e/stdlib/package.json'));
+		const paths = (await readdir(new URL('std/', stdlibRoot), { recursive: true }))
+			.filter(path => path.endsWith('.8f4e'))
+			.map(path => `std/${path.split(sep).join('/')}`)
+			.sort();
+		expect([...sources.keys()].sort()).toEqual(paths.map(path => path.replace(/\.8f4e$/, '')));
+		for (const path of paths) {
+			const original = await readFile(new URL(import.meta.resolve(`@8f4e/stdlib/${path}`)), 'utf8');
+			expect(await resolveStdlibInclude(path.replace(/\.8f4e$/, ''))).toBe(original);
 		}
 	});
 

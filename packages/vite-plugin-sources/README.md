@@ -61,9 +61,9 @@ The configured source directory is added to Vite's development file allowlist so
 the host application directory. Vite's file deny patterns remain in effect.
 
 To discover an installed package, resolve an exported file through Node's package resolution and use its directory
-as the root. For example, `dirname(createRequire(import.meta.url).resolve('@8f4e/stdlib/manifest.json'))` locates
+as the root. For example, `dirname(createRequire(import.meta.url).resolve('@8f4e/stdlib/package.json'))` locates
 the stdlib package without assuming a `node_modules` location. Set `include: ['std/**/*.8f4e']` to retain its
-`std/math/fract` style IDs. The plugin does not read the manifest or require its schema.
+`std/math/fract` style IDs. The plugin discovers the files directly without a separate source catalog.
 
 ## Development
 
@@ -73,16 +73,14 @@ The integration tests use synthetic source trees and exercise Vite builds, consu
 ### Default editor integration
 
 The default editor is the plugin's first consumer. Its [Vite configuration](../editor/packages/editor-default/vite.config.ts)
-resolves the stdlib package directory through the exported `manifest.json` path and registers a collection matching
+resolves the stdlib package directory through the exported `package.json` path and registers a collection matching
 `std/**/*.8f4e`. The [browser resolver](../editor/packages/editor-default/src/stdlib-resolver.ts) looks up loaders by
 IDs such as `std/math/fract`; source text loads on demand. Parsing and compilation stay in the consuming packages.
 Example/test galleries continue using their existing file URLs.
 
-The manifest's contents are not used for discovery or browser loading. The editor configuration only resolves its
-path to locate the stdlib package. The existing manifest export is retained as stdlib's documented include catalog,
-and the [resolver test](../editor/packages/editor-default/src/stdlib-resolver.test.ts) checks that the discovered IDs
-match that catalog and that each loader returns the exact original source text. The CLI and compiler test resolvers
-load exported source files directly by include ID without reading the manifest.
+The [resolver test](../editor/packages/editor-default/src/stdlib-resolver.test.ts) checks the discovered IDs against
+the stdlib source directory and verifies that each loader returns the exact original source text. The CLI and compiler
+test resolvers load exported source files directly by include ID. Stdlib has no generated manifest or build step.
 
 Build tooling must depend on the plugin package and on the package containing its sources. Nx builds the plugin
 before building the default editor; the editor's stdlib dependency includes source changes in its build inputs.
