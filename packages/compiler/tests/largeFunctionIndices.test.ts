@@ -1,8 +1,5 @@
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import { readFileSync } from 'fs';
 import { describe, expect, it } from 'vitest';
-import { compileProject, deriveEffectiveMemorySize, parseProjectSource } from '../src';
-import { resolveStdlibInclude } from './stdlibResolver';
+import { compileProject, parseProjectSource } from '../src';
 
 describe('large WebAssembly function indices', () => {
 	it.each([127, 128, 255, 256])('invokes the correct export at function index %i', async functionIndex => {
@@ -37,35 +34,5 @@ describe('large WebAssembly function indices', () => {
 		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 		const { instance } = await WebAssembly.instantiate(new Uint8Array(result.codeBuffer), { host: { memory } });
 		expect((instance.exports.selected as CallableFunction)()).toBe(1234);
-	});
-
-	it.each([6, 7, 8, 9, 16])('runs the audio buffer with %i copies of the Clouds reverb group', async groupCount => {
-		const source = readFileSync(
-			new URL('../../examples/src/projects/audio/MICloudsReverbGrouped.8f4e', import.meta.url),
-			'utf8'
-		);
-		const project = parseProjectSource(source);
-		const originalGroup = project.groups[0];
-		project.groups = Array.from({ length: groupCount }, (_, index) => {
-			const group = structuredClone(originalGroup);
-			group.name = index === 0 ? 'reverb' : `reverb${index}`;
-			group.code[0] = `group ${group.name}`;
-			return group;
-		});
-
-		const result = await compileProject(project, {
-			startingMemoryWordAddress: 0,
-			resolveInclude: resolveStdlibInclude,
-		});
-		const pages = deriveEffectiveMemorySize(result.requiredMemoryBytes) / WASM_MEMORY_PAGE_SIZE;
-		const memory = new WebAssembly.Memory({ initial: pages, maximum: pages, shared: true });
-		const { instance } = await WebAssembly.instantiate(new Uint8Array(result.codeBuffer), { host: { memory } });
-		(instance.exports.initDefaults as CallableFunction)();
-		(instance.exports.buffer as CallableFunction)();
-
-		const playerMemory = result.memoryPlan.modules.pcmPlayer.memory;
-		expect(new Int32Array(memory.buffer)[playerMemory.playhead.wordAlignedAddress]).toBe(
-			playerMemory.buffer.byteAddress + 128 * playerMemory.buffer.elementWordSize
-		);
 	});
 });

@@ -36,8 +36,6 @@
 ## Testing
 - Vitest (via Nx). Keep narrow unit tests colocated with the source under test using `*.test.ts` or `__tests__/`.
 - Put broader compiler behavior, multi-module, integration-style, and generic regression coverage in `tests/`.
-- The large-program regression loads the Clouds reverb example directly; the compiler test target includes that
-  example source in its Nx cache inputs. Keep external test fixtures in those inputs when adding or moving coverage.
 - Syntax/parser in-source tests live with `@8f4e/tokenizer`; compiler tests should focus on semantic and codegen behavior.
 - Assertion execution and failure reporting use `@8f4e/test-runner`, shared with the CLI. Fixture adapters own compile
   options and snapshot serialization; runner integration coverage lives in `tests/testRunner.test.ts`.
