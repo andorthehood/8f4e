@@ -34,7 +34,7 @@ describe('resolveStdlibInclude', () => {
 		expect(new DataView(memory.buffer).getFloat32(resultAddress, true)).toBe(0.25);
 	});
 
-	it('returns undefined for an unknown include', async () => {
-		await expect(resolveStdlibInclude('std/unknown')).resolves.toBeUndefined();
+	it.each(['std/unknown', 'toString', '__proto__'])('returns undefined for unknown include %s', async id => {
+		expect(await resolveStdlibInclude(id)).toBeUndefined();
 	});
 });

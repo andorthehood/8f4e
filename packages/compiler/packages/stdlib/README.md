@@ -4,20 +4,15 @@
 
 The package exports:
 
-- `./manifest.json`: generated include metadata.
+- `./package.json`: package metadata for locating the source directory through Node's package resolution.
 - `./std/*`: standard-library source files.
 
-The manifest is generated from the files under `std/`:
-
-```sh
-npx nx run @8f4e/stdlib:generate-manifest
-```
+This is a source-only package with no build or generation step.
 
 This package owns:
 
 - Standard-library include source files.
 - Stable include ids such as `std/math/clamp` and `std/memory/loadAt`.
-- Keeping `manifest.json` in sync with `std/`.
 - Marking every public include function with `#export`.
 
 This package does not own:
@@ -26,7 +21,9 @@ This package does not own:
 - Source parsing, semantic validation, memory planning, or code generation.
 - Runtime host behavior.
 
-Callers should use the manifest to discover available standard-library includes and load the exported source files through their own environment-specific resolver.
+Callers load the exported source files through their own environment-specific resolver. Include IDs follow source
+paths without the `.8f4e` extension: `std/math/clamp` resolves to `@8f4e/stdlib/std/math/clamp.8f4e`. Browser consumers
+can use `@8f4e/vite-plugin-sources` to discover the files and load their text on demand.
 
 ## Include exports
 
