@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -116 19
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 4 4
 ; @config runtime TestRuntime
 
 Intermodule address references
@@ -10,7 +20,40 @@ addresses.
 noteEnd
 
 entry test
+module nthArraySource
+; @pos 4 41
+; Arrays count as one
+; declaration slot for nth
+; references.
+int[] buffer 10 0
+int scalar 60
+moduleEnd
+module nthAddressSource
+; @pos 5 113
+; Nth references address memory
+; declarations by declaration
+; slot, not by array element.
+int a 10
+int b 20
+int c 30
+moduleEnd
+module sameModuleAddressAssertions
+; @pos 7 78
+; Same-module start and end
+; references should resolve in
+; declaration initializers.
+int[] buffer 5 1 2 3 4 5
+int* startPtr &buffer
+int* endPtr buffer&
+
+push *startPtr
+assertEqual 1
+
+push *endPtr
+assertEqual 5
+moduleEnd
 module addressSource
+; @pos 15 16
 ; The source module gives start,
 ; end, scalar-end, and
 ; module-end
@@ -19,8 +62,70 @@ int[] buffer 3 11 22 33
 int scalar 42
 int tail 99
 moduleEnd
+module lateAddressSource
+; @pos 31 58
+int[] buffer 4 5 6 7 8
+moduleEnd
+module nthAddressAssertions
+; @pos 55 113
+; &module:0 is the first memory
+; item and matches the module
+; base
+; address.
+int* first &nthAddressSource:0
+int* base &nthAddressSource:
+int* second &nthAddressSource:1
+int* third &nthAddressSource:2
 
+push first
+push base
+equal
+assertEqual 1
+
+push *first
+assertEqual 10
+
+push *second
+assertEqual 20
+
+push *third
+assertEqual 30
+moduleEnd
+module nthArrayAssertions
+; @pos 58 44
+int* scalar &nthArraySource:1
+
+push *scalar
+assertEqual 60
+moduleEnd
+module currentModuleShorthandAssertions
+; @pos 58 78
+; Current-module shorthand
+; references should resolve
+; start, end,
+; and nth declaration addresses.
+int a 10
+int b 20
+int[] tail 2 30 40
+int* moduleStart &this
+int* moduleEndPtr this&
+int* second &this:1
+
+push *moduleStart
+assertEqual 10
+
+push *second
+assertEqual 20
+
+push moduleEndPtr
+push &moduleEndPtr
+push sizeof(moduleEndPtr)
+add
+equal
+assertEqual 1
+moduleEnd
 module addressReferenceAssertions
+; @pos 63 6
 ; Start-address references
 ; should point at the first
 ; value.
@@ -50,8 +155,8 @@ assertEqual 42
 push *moduleEnd
 assertEqual 99
 moduleEnd
-
 module outOfOrderAddressAssertions
+; @pos 73 58
 ; Named start and end references
 ; can resolve to modules
 ; declared
@@ -64,99 +169,5 @@ assertEqual 5
 
 push *end
 assertEqual 8
-moduleEnd
-
-module lateAddressSource
-int[] buffer 4 5 6 7 8
-moduleEnd
-
-module nthAddressSource
-; Nth references address memory
-; declarations by declaration
-; slot, not by array element.
-int a 10
-int b 20
-int c 30
-moduleEnd
-
-module nthAddressAssertions
-; &module:0 is the first memory
-; item and matches the module
-; base
-; address.
-int* first &nthAddressSource:0
-int* base &nthAddressSource:
-int* second &nthAddressSource:1
-int* third &nthAddressSource:2
-
-push first
-push base
-equal
-assertEqual 1
-
-push *first
-assertEqual 10
-
-push *second
-assertEqual 20
-
-push *third
-assertEqual 30
-moduleEnd
-
-module nthArraySource
-; Arrays count as one
-; declaration slot for nth
-; references.
-int[] buffer 10 0
-int scalar 60
-moduleEnd
-
-module nthArrayAssertions
-int* scalar &nthArraySource:1
-
-push *scalar
-assertEqual 60
-moduleEnd
-
-module sameModuleAddressAssertions
-; Same-module start and end
-; references should resolve in
-; declaration initializers.
-int[] buffer 5 1 2 3 4 5
-int* startPtr &buffer
-int* endPtr buffer&
-
-push *startPtr
-assertEqual 1
-
-push *endPtr
-assertEqual 5
-moduleEnd
-
-module currentModuleShorthandAssertions
-; Current-module shorthand
-; references should resolve
-; start, end,
-; and nth declaration addresses.
-int a 10
-int b 20
-int[] tail 2 30 40
-int* moduleStart &this
-int* moduleEndPtr this&
-int* second &this:1
-
-push *moduleStart
-assertEqual 10
-
-push *second
-assertEqual 20
-
-push moduleEndPtr
-push &moduleEndPtr
-push sizeof(moduleEndPtr)
-add
-equal
-assertEqual 1
 moduleEnd
 entryEnd
