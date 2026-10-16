@@ -1,63 +1,54 @@
 import { extractUseDependencies } from '@8f4e/tokenizer';
 import type { ExampleModuleRegistryEntry } from './exampleModules';
-import { getExampleModuleManifest, getExampleModuleRegistry } from './exampleModules';
+import { getExampleModuleLoader, getExampleModuleRegistry } from './exampleModules';
 
 // Cache for loaded modules to avoid redundant loading
-const loadedModulesCache: Record<string, string> = {};
-const moduleDependencyCache: Record<string, string[]> = {};
+const loadedModulesCache = new Map<string, string>();
+const moduleDependencyCache = new Map<string, string[]>();
 
 /**
  * Get list of modules with metadata only.
- * Returns hosted registry metadata without loading any module code.
+ * Returns the bundled catalog without loading any module code.
  */
 export async function getListOfModules(): Promise<ExampleModuleRegistryEntry[]> {
 	return getExampleModuleRegistry();
 }
 
-async function inferModuleDependenciesFromCode(slug: string, code: string): Promise<string[]> {
-	const moduleManifest = await getExampleModuleManifest();
-	const validSlugs = new Set(Object.keys(moduleManifest));
+function inferModuleDependenciesFromCode(slug: string, code: string): string[] {
 	const dependencies = extractUseDependencies(code);
 
-	return dependencies.filter(dependency => dependency !== slug && validSlugs.has(dependency));
+	return dependencies.filter(dependency => dependency !== slug && getExampleModuleLoader(dependency) !== undefined);
 }
 
 export async function getModuleDependencies(slug: string): Promise<string[]> {
-	if (moduleDependencyCache[slug]) {
-		return moduleDependencyCache[slug];
+	const cachedDependencies = moduleDependencyCache.get(slug);
+	if (cachedDependencies) {
+		return cachedDependencies;
 	}
 
 	const code = await getModule(slug);
-	const dependencies = await inferModuleDependenciesFromCode(slug, code);
-	moduleDependencyCache[slug] = dependencies;
+	const dependencies = inferModuleDependenciesFromCode(slug, code);
+	moduleDependencyCache.set(slug, dependencies);
 	return dependencies;
 }
 
 /**
  * Get a specific module by slug.
- * Uses cached version if available, otherwise fetches on-demand.
+ * Uses cached source if available, otherwise imports its lazy chunk.
  */
 export async function getModule(slug: string): Promise<string> {
-	if (loadedModulesCache[slug]) {
-		console.log(`Module ${slug} loaded from cache`);
-		return loadedModulesCache[slug];
+	const cachedModule = loadedModulesCache.get(slug);
+	if (cachedModule !== undefined) {
+		return cachedModule;
 	}
 
-	const moduleManifest = await getExampleModuleManifest();
-	const url = moduleManifest[slug];
-	if (!url) {
+	const load = getExampleModuleLoader(slug);
+	if (!load) {
 		throw new Error(`Module not found: ${slug}`);
 	}
 
-	console.log(`Loading module: ${url}`);
-	const requestUrl = `${url}${url.includes('?') ? '&' : '?'}_t=${Date.now()}`;
-	const response = await fetch(requestUrl, { cache: 'no-store' });
-	if (!response.ok) {
-		throw new Error(`Failed to fetch module from ${requestUrl}: HTTP ${response.status}`);
-	}
-	const module = await response.text();
-	loadedModulesCache[slug] = module;
-	console.log(`Loaded module: ${slug}`);
+	const module = await load();
+	loadedModulesCache.set(slug, module);
 
 	return module;
 }

@@ -5,10 +5,14 @@ import { sourceFiles } from '@8f4e/vite-plugin-sources';
 import { defineConfig } from 'vite';
 
 const stdlibRoot = dirname(createRequire(import.meta.url).resolve('@8f4e/stdlib/package.json'));
+const exampleModulesRoot = dirname(createRequire(import.meta.url).resolve('@8f4e/examples/package.json'));
 
 export default defineConfig({
 	base: './',
-	plugins: [sourceFiles({ name: 'stdlib', root: stdlibRoot, include: ['std/**/*.8f4e'] })],
+	plugins: [
+		sourceFiles({ name: 'stdlib', root: stdlibRoot, include: ['std/**/*.8f4e'] }),
+		sourceFiles({ name: 'example-modules', root: exampleModulesRoot, include: ['src/modules/**/*.8f4em'] }),
+	],
 	...createLibConfig({
 		entry: './src/index.ts',
 		outDir: 'dist',

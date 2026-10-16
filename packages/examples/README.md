@@ -8,11 +8,13 @@ Example modules and projects used by the editor and tooling. Exports example mod
 - `projects/`: complete example projects.
 - `src/benchmarks/bytecode-size/`: benchmark cases for measuring emitted bytecode size.
 
-## Hosted Examples
+## Loading Examples
 
-- Modules are deployed to Cloudflare R2 at `https://static.8f4e.com/example-modules/` with `registry.json`.
+- The default editor discovers `.8f4em` files with `@8f4e/vite-plugin-sources` and derives module titles and categories
+  from their paths. Opening the module menu loads only catalog metadata; selecting a module loads its source chunk
+  on demand. Module sources ship with each website build.
 - The product website bundles project `.8f4e` sources as downloadable assets for its homepage and examples gallery.
   The website gallery owns the project catalog.
-- `generate-module-registry.mjs` generates `dist/registries/example-modules.json` for the editor’s built-in module browser.
 
-The package build generates example modules and their registry. The editor compiles project sources when they are loaded.
+The package build runs the module generators before consumers discover the source files. The editor compiles project
+sources when they are loaded.
