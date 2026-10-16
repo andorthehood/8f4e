@@ -20,7 +20,7 @@ Pointer declarations combine two different kinds of information:
 Current state:
 - `float* ptr` and `float* ptr &samples` share the same broad metadata surface
 - `count(*ptr)` needs provenance/count facts, while `sizeof(*ptr)` and `min(*ptr)` mostly need type facts
-- pointer metadata currently falls back to defaults when provenance is unknown
+- pointer type declarations do not establish a reachable element count
 - memory-start and memory-end address initializers must be interpreted carefully to avoid overstating count metadata
 
 Why this is a problem:
@@ -107,6 +107,7 @@ Only memory-start provenance should carry allocation-level element count unless 
 ## Related Items
 
 - **Related**: `docs/todos/430-nest-pointer-metadata-shape.md`
+- **Related**: `docs/todos/501-preserve-known-pointee-counts-of-one.md`
 - **Related**: `docs/todos/archived/428-add-pointer-aware-count-and-min-metadata-queries.md`
 - **Related**: `docs/todos/425-split-stack-item-value-and-address.md`
 

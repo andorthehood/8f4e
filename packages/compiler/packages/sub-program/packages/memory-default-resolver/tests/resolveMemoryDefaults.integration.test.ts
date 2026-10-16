@@ -252,10 +252,6 @@ describe('resolveMemoryDefaults integration', () => {
 			],
 		} as const;
 		const memoryReferences = {
-			prototypes: [],
-			modules: [],
-			constants: [],
-			functions: [],
 			declarationSourcesByModuleId: {
 				main: {
 					lineFacts: [
@@ -292,14 +288,6 @@ describe('resolveMemoryDefaults integration', () => {
 				audio: {
 					lineFacts: [undefined],
 				},
-			},
-			pointerMetadataByModuleId: {
-				main: {
-					ptr: {
-						pointeeElementCount: 3,
-					},
-				},
-				audio: {},
 			},
 		} as const;
 

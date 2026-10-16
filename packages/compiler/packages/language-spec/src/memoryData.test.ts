@@ -10,7 +10,6 @@ import {
 	getElementWordSize,
 	getMemoryByteAddress,
 	getMemoryStringLastByteAddress,
-	getPointeeElementCount,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementMinValue,
@@ -77,12 +76,6 @@ describe('memoryData utilities', () => {
 	});
 
 	describe('pointer metadata helpers', () => {
-		it('returns known pointee count or scalar default count', () => {
-			expect(getPointeeElementCount(pointer('float', { pointeeElementCount: 16 }))).toBe(16);
-			expect(getPointeeElementCount(pointer('float'))).toBe(1);
-			expect(getPointeeElementCount(undefined)).toBe(0);
-		});
-
 		it.each([
 			['int', 1, 4],
 			['float', 1, 4],

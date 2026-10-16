@@ -27,6 +27,12 @@ the cleanup; the outcome and validation are recorded here.
   Converted the mixed group-initializer fixture to single-memory coverage of pointee type and element count.
 - Updated editor/worker/CLI contracts, current docs, test-runner guidance, and relevant active TODOs. Historical
   archived designs remain unchanged. This audit also preserves the original PR and merge-commit findings.
+- Removed the test-only pointee-count fallback helpers and their obsolete unit test. The defaults resolver now
+  consumes only declaration-reference facts and returns the defaults record directly, with no pointer metadata
+  forwarding or compatibility wrapper. Compiler orchestration reads counts from the memory-reference report.
+- The pre-existing count-one bug is documented separately in
+  [TODO 501](todos/501-preserve-known-pointee-counts-of-one.md) and
+  [issue #1042](https://github.com/andorthehood/8f4e/issues/1042). Its behavior is deliberately unchanged in this cleanup.
 
 ## Implementation validation
 
@@ -44,6 +50,9 @@ Validated with Node 24.16.0 through Nx:
   memory sizes. The initial on-disk build could not compile the float64-math fixture, so that fixture has no byte
   baseline; its current compiler fixture test passes. The converted group initializer also passes.
 - Refreshed metadata snapshots and checked the diffs for obsolete fields and intentional fixture-layout changes.
+- A fresh base-versus-current-source comparison covered 852 compiler scenarios: 711 successful compilations and
+  141 rejected inputs. Wasm bytes, retained metadata, and diagnostics matched after excluding removed memory fields.
+  The independent helper/forwarding cleanup retained those results and changed only the defaults-pass snapshot shape.
 - Biome and `git diff --check` pass. A final search found no removed memory-identity identifiers or fixture directives
   in active packages; `#region` appears only in the rejection test. The Wasm encoding comment about the mandatory
   zero immediate and legitimate declaration/storage terminology remain.

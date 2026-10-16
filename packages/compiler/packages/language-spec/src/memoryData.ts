@@ -43,15 +43,6 @@ export function getElementCount(memoryItem: PlannedMemoryDeclaration): number {
 	return memoryItem.numberOfElements;
 }
 
-export function getPointeeElementCountFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
-	if (!pointerMetadata?.pointeeBaseType) return 0;
-	return pointerMetadata.pointeeElementCount ?? 1;
-}
-
-export function getPointeeElementCount(memoryItem: PointerMetadata | undefined): number {
-	return getPointeeElementCountFromMetadata(memoryItem);
-}
-
 export function getElementWordSize(memoryItem: PlannedMemoryDeclaration): number {
 	return memoryItem.elementWordSize;
 }

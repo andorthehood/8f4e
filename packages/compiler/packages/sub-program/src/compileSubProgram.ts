@@ -230,10 +230,11 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		projectMemoryInitializerScopes: program.projectMemoryInitializerScopes,
 		constantReferences: constantResolution.references,
 	});
+	const { pointerMetadataByModuleId } = memoryReferenceResolution.references;
 	const prototypeShapesById = indexPrototypeShapes(subProgramAst.prototypes);
-	let memoryDefaultResolution: ReturnType<typeof resolveMemoryDefaults>;
+	let memoryDefaultsByModuleId: ReturnType<typeof resolveMemoryDefaults>;
 	try {
-		memoryDefaultResolution = resolveMemoryDefaults({
+		memoryDefaultsByModuleId = resolveMemoryDefaults({
 			memoryPlan,
 			memoryReferences: memoryReferenceResolution.references,
 		});
@@ -259,7 +260,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		registeredFunctions: registration.declarations,
 		memoryPlan,
 		memoryAliases: program.memoryAliases,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		pointerMetadataByModuleId,
 		constantReferences: constantResolution.references,
 		memoryReferences: memoryReferenceResolution.references,
 		functions: functionRegistry,
@@ -269,7 +270,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 	const stackReport = analyzeStack({
 		semanticReferences,
 		memoryPlan,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		pointerMetadataByModuleId,
 		functions: functionRegistry,
 		functionTypeRegistry,
 	});
@@ -312,8 +313,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		compiledFunctions,
 		functionTypeRegistry,
 		memoryPlan,
-		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		memoryDefaultsByModuleId,
+		pointerMetadataByModuleId,
 		projectMemoryExposuresByGroupPath,
 		cache,
 	};
