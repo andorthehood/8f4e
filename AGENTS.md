@@ -8,17 +8,18 @@
   `src/examples/index.html`, and `src/tests/index.html`. The test gallery bundles the compiler's `.test.8f4e`
   fixtures as assets; fixture editor directives select `TestRuntime` to run assertions after compilation.
 - Reusable Vite source discovery lives in `packages/vite-plugin-sources/`. It exposes lazy text collections through
-  `virtual:8f4e-sources/<name>`; its first consumer is the default editor's stdlib resolver.
+  `virtual:8f4e-sources/<name>`; the default editor uses it for stdlib includes and example modules.
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.
 - Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
   aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
-- Example builds generate modules and the module registry (`packages/examples/generate-module-registry.mjs`) without
-  precompiling project WASM files. The product website owns the project catalog and bundles `.8f4e` project sources
-  as downloadable assets; only example modules and their registry need a separate Cloudflare R2 deployment.
-  Its explicit Nx dependency on `@8f4e/examples` keeps bundled sources in build cache inputs and dependency watches.
+- Example builds generate module sources without precompiling project WASM files. The default editor discovers
+  `.8f4em` sources through `@8f4e/vite-plugin-sources`, derives its module catalog from file paths, and loads source
+  chunks on demand. Modules ship with the website builds. The product website owns the project catalog and bundles
+  `.8f4e` project sources as downloadable assets. Both consumers depend on `@8f4e/examples` so source changes are
+  included in build cache inputs and dependency watches.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
 ## Agent Skills

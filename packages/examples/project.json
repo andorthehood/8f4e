@@ -5,10 +5,16 @@
 	"targets": {
 		"build": {
 			"executor": "nx:run-commands",
-			"outputs": ["{projectRoot}/dist"],
+			"outputs": [
+				"{projectRoot}/src/modules/lookup-tables/sineLookupTable.8f4em",
+				"{projectRoot}/src/modules/lookup-tables/expLookupTable.8f4em",
+				"{projectRoot}/src/modules/lookup-tables/midiFreqLUT_12TET.8f4em",
+				"{projectRoot}/src/modules/lookup-tables/minBLEPLUT.8f4em",
+				"{projectRoot}/src/modules/constants/amigaPeriodIncrement.8f4em"
+			],
 			"dependsOn": ["^build"],
 			"options": {
-				"command": "node ./src/module-generators/generateModules.ts && node ./generate-module-registry.mjs",
+				"command": "node ./src/module-generators/generateModules.ts",
 				"cwd": "{projectRoot}"
 			}
 		},

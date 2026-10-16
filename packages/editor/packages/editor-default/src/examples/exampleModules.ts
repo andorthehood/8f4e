@@ -1,36 +1,67 @@
-import { fetchRegistryJson } from './fetchRegistry';
-
-const EXAMPLE_MODULES_REGISTRY_URL = 'https://static.8f4e.com/example-modules/registry.json';
+import sources from 'virtual:8f4e-sources/example-modules';
 
 export interface ExampleModuleRegistryEntry {
 	slug: string;
 	title: string;
-	description?: string;
 	category: string;
-	dependencies?: string[];
-	url: string;
 	path: string;
 }
 
-interface ExampleModulesRegistry {
-	modules: ExampleModuleRegistryEntry[];
+const upperCaseWords = new Set(['lsb', 'msb', 'midi', 'pcm', 'cga', 'crt', 'xor']);
+const preserveCaseWords = new Set(['8bit', '16bit', '32bit']);
+
+function humanizeSlug(slug: string): string {
+	return slug
+		.replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+		.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+		.replace(/[-_]/g, ' ')
+		.trim()
+		.split(/\s+/)
+		.map(word => {
+			const lower = word.toLowerCase();
+			if (upperCaseWords.has(lower)) {
+				return lower.toUpperCase();
+			}
+			if (preserveCaseWords.has(lower)) {
+				return lower;
+			}
+			return word.charAt(0).toUpperCase() + word.slice(1);
+		})
+		.join(' ');
 }
 
-let moduleRegistryPromise: Promise<ExampleModuleRegistryEntry[]> | null = null;
-let moduleManifestPromise: Promise<Record<string, string>> | null = null;
+const moduleLoaders = new Map<string, () => Promise<string>>();
+const moduleRegistry: ExampleModuleRegistryEntry[] = [];
 
-function fetchModuleRegistry(): Promise<ExampleModuleRegistryEntry[]> {
-	return fetchRegistryJson<ExampleModulesRegistry>(EXAMPLE_MODULES_REGISTRY_URL).then(registry => registry.modules);
+for (const [sourceId, load] of sources) {
+	const path = sourceId.slice('src/modules/'.length);
+	const segments = path.split('/');
+	const slug = segments.pop()!;
+	if (moduleLoaders.has(slug)) {
+		throw new Error(`Duplicate example module slug: ${slug}`);
+	}
+	moduleLoaders.set(slug, load);
+	moduleRegistry.push({
+		slug,
+		title: humanizeSlug(slug),
+		category: segments
+			.map(segment =>
+				segment
+					.split('-')
+					.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+					.join(' ')
+			)
+			.join('/'),
+		path: `${path}.8f4em`,
+	});
 }
 
-export function getExampleModuleRegistry(): Promise<ExampleModuleRegistryEntry[]> {
-	moduleRegistryPromise ??= fetchModuleRegistry();
-	return moduleRegistryPromise;
+moduleRegistry.sort((left, right) => left.slug.localeCompare(right.slug));
+
+export async function getExampleModuleRegistry(): Promise<ExampleModuleRegistryEntry[]> {
+	return moduleRegistry;
 }
 
-export function getExampleModuleManifest(): Promise<Record<string, string>> {
-	moduleManifestPromise ??= getExampleModuleRegistry().then(modules =>
-		Object.fromEntries(modules.map(module => [module.slug, module.url]))
-	);
-	return moduleManifestPromise;
+export function getExampleModuleLoader(slug: string): (() => Promise<string>) | undefined {
+	return moduleLoaders.get(slug);
 }

@@ -48,6 +48,10 @@ the editor starts with an empty project and does not fetch an example project re
 [examples gallery](https://8f4e.com/examples/); its links open projects by URL. The editor's menu supports opening
 projects from disk and adding built-in modules.
 
+Built-in modules and standard-library includes ship as lazy source chunks with the host's build. The module menu's
+catalog is derived from source paths without loading module text. Selecting a module loads its source on demand;
+module dependencies are resolved through the same local catalog.
+
 Code changes automatically save a recovery session to browser storage. With the editor canvas focused, `Cmd+S`
 or `Ctrl+S` saves canonical `.8f4e` source to disk. In browsers supporting the File System Access API in a secure
 context, the first Save chooses a destination and later saves reuse it. Opening a project from disk associates the
