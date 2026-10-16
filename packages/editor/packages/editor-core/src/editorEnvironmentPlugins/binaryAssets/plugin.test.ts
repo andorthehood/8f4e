@@ -23,7 +23,6 @@ function createMemoryPlan(byteAddress: number): State['compiler']['memoryPlan'] 
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: 'int',
-		memoryIndex: 0,
 		byteAddress,
 		elementByteLength: 4,
 		wordAlignedSize: 4,
@@ -39,7 +38,6 @@ function createMemoryPlan(byteAddress: number): State['compiler']['memoryPlan'] 
 	const samples = {
 		id: 'samples',
 		lineNumber: 1,
-		memoryIndex: 0,
 		byteAddress,
 		wordAlignedSize: buffer.wordAlignedSize,
 		wordAlignedByteLength: buffer.wordAlignedByteLength,
@@ -53,7 +51,6 @@ function createMemoryPlan(byteAddress: number): State['compiler']['memoryPlan'] 
 	return {
 		modules: { samples },
 		moduleList: [samples],
-		nextByteAddressByMemoryIndex: {},
 	};
 }
 

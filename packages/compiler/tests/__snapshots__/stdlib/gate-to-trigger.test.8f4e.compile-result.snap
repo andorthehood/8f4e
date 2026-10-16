@@ -821,7 +821,6 @@
           "id": "previousFloat",
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -839,7 +838,6 @@
           "id": "previousInt",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -859,7 +857,6 @@
       "gateToTriggerIntAssertions",
     ],
     "requiredMemoryBytes": 12,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

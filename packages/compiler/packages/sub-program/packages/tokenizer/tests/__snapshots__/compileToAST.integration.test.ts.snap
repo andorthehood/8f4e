@@ -318,19 +318,6 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
             "referenceKind": "plain",
             "scope": "local",
             "type": "identifier",
-            "value": "fastMemory",
-          },
-        ],
-        "instruction": "#region",
-        "isBlockPrologue": true,
-        "lineNumber": 2,
-      },
-      {
-        "arguments": [
-          {
-            "referenceKind": "plain",
-            "scope": "local",
-            "type": "identifier",
             "value": "phase",
           },
           {
@@ -340,7 +327,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "float",
-        "lineNumber": 3,
+        "lineNumber": 2,
       },
       {
         "arguments": [
@@ -363,7 +350,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "int[]",
-        "lineNumber": 4,
+        "lineNumber": 3,
       },
       {
         "arguments": [
@@ -384,7 +371,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "float*",
-        "lineNumber": 7,
+        "lineNumber": 6,
       },
       {
         "arguments": [
@@ -394,7 +381,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 8,
+        "lineNumber": 7,
       },
       {
         "arguments": [
@@ -407,7 +394,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 9,
+        "lineNumber": 8,
       },
       {
         "arguments": [
@@ -421,7 +408,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 10,
+        "lineNumber": 9,
       },
       {
         "arguments": [
@@ -435,7 +422,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 11,
+        "lineNumber": 10,
       },
       {
         "arguments": [
@@ -449,7 +436,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 12,
+        "lineNumber": 11,
       },
       {
         "arguments": [
@@ -463,19 +450,19 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 13,
+        "lineNumber": 12,
       },
       {
         "arguments": [],
         "ifBlock": {
           "hasElse": true,
-          "matchingIfEndIndex": 16,
+          "matchingIfEndIndex": 15,
           "resultTypes": [
             "int",
           ],
         },
         "instruction": "if",
-        "lineNumber": 14,
+        "lineNumber": 13,
       },
       {
         "arguments": [
@@ -486,12 +473,12 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 15,
+        "lineNumber": 14,
       },
       {
         "arguments": [],
         "instruction": "else",
-        "lineNumber": 16,
+        "lineNumber": 15,
       },
       {
         "arguments": [
@@ -502,7 +489,7 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "instruction": "push",
-        "lineNumber": 17,
+        "lineNumber": 16,
       },
       {
         "arguments": [
@@ -514,18 +501,18 @@ exports[`compileToAST integration > tokenizes source blocks into validated ASTs 
           },
         ],
         "ifEndBlock": {
-          "matchingIfIndex": 12,
+          "matchingIfIndex": 11,
           "resultTypes": [
             "int",
           ],
         },
         "instruction": "ifEnd",
-        "lineNumber": 18,
+        "lineNumber": 17,
       },
       {
         "arguments": [],
         "instruction": "moduleEnd",
-        "lineNumber": 19,
+        "lineNumber": 18,
       },
     ],
     "moduleLine": {

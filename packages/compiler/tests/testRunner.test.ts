@@ -213,8 +213,15 @@ entryEnd`);
 	expect(first.failures).toHaveLength(0);
 	expect(second.failures).toHaveLength(0);
 	expect(first.assertions.length).toBe(1);
-	expect(first.memories.memory).not.toBe(second.memories.memory);
-	expect(new Int32Array(first.memories.memory.buffer)[address]).toBe(11);
+	expect(first.memory).not.toBe(second.memory);
+	expect(new Int32Array(first.memory.buffer)[address]).toBe(11);
+	const borrowed = await runTests({
+		codeBuffer: compiled.codeBuffer,
+		assertionSites: compiled.assertionSites,
+		memory: first.memory,
+	});
+	expect(borrowed.memory).toBe(first.memory);
+	expect(borrowed.failures).toMatchObject([{ received: 11, expected: 7 }]);
 });
 
 it('collects integer truth and exact numeric equality through the compiled Wasm callbacks', async () => {

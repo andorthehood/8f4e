@@ -1,7 +1,7 @@
 import type { AssertionSite } from './assertions';
 import type { ASTCacheStats } from './cache';
 import type { CompiledFunctionLookup, CompiledModuleLookup } from './compiled';
-import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
+import type { MemoryDefaults, MemoryLayoutPlan } from './memory';
 import type { ProjectMemoryExposuresByGroupPath } from './project';
 
 export type MemoryReinitReason =
@@ -28,7 +28,6 @@ export type CompileAndUpdateMemoryResult = {
 	compiledFunctions?: CompiledFunctionLookup;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
-	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;

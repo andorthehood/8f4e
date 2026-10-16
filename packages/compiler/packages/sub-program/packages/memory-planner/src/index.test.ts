@@ -2,12 +2,11 @@ import type {
 	ArgumentCompileTimeExpression,
 	CompilerASTLine,
 	MemoryDeclarationLine,
-	RegionLine,
 	ShapeLine,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from './index';
 
@@ -57,27 +56,13 @@ function moduleLine(id: string, lineNumber: number) {
 	} as const;
 }
 
-function regionLine(value: string | number, lineNumber: number): RegionLine {
-	return {
-		lineNumber,
-		instruction: '#region',
-		arguments: [typeof value === 'number' ? literal(value) : identifier(value)],
-		isBlockPrologue: true,
-	};
-}
-
-function validatedModuleAst(
-	id: string,
-	lineNumber: number,
-	lines: readonly CompilerASTLine[],
-	regionDirectiveLine?: RegionLine
-): ValidatedModuleAST {
+function validatedModuleAst(id: string, lineNumber: number, lines: readonly CompilerASTLine[]): ValidatedModuleAST {
 	const line = moduleLine(id, lineNumber);
 
 	return {
 		type: 'module',
 		id,
-		lines: [line, ...(regionDirectiveLine ? [regionDirectiveLine] : []), ...lines],
+		lines: [line, ...lines],
 		moduleLine: line,
 	} as ValidatedModuleAST;
 }
@@ -143,7 +128,6 @@ describe('planSubProgramMemoryLayout', () => {
 		expect(plan.modules.first.memory.bytes.byteAddress).toBe(8);
 		expect(plan.modules.second.byteAddress).toBe(16);
 		expect(plan.modules.second.memory.phase.byteAddress).toBe(16);
-		expect(plan.nextByteAddressByMemoryIndex[0]).toBe(24);
 	});
 
 	it('allocates modules alphabetically by id instead of source order', () => {
@@ -174,85 +158,6 @@ describe('planSubProgramMemoryLayout', () => {
 		expect(plan.modules.alpha.memory.first.byteAddress).toBe(4);
 		expect(plan.modules.zeta.byteAddress).toBe(12);
 		expect(plan.modules.zeta.memory.last.byteAddress).toBe(12);
-	});
-
-	it('keeps module address cursors independent per memory region', () => {
-		const audioRegionLine: RegionLine = {
-			lineNumber: 10,
-			instruction: '#region',
-			arguments: [identifier('audio')],
-			isBlockPrologue: true,
-		};
-		const plan = planSubProgramMemoryLayout({
-			prototypes: [],
-			modules: [
-				validatedModuleAst('defaultModule', 1, [
-					{
-						lineNumber: 2,
-						instruction: 'int[]',
-						arguments: [identifier('values'), literal(3)],
-					},
-				]),
-				validatedModuleAst(
-					'audioModule',
-					9,
-					[
-						{
-							lineNumber: 11,
-							instruction: 'float[]',
-							arguments: [identifier('samples'), literal(2)],
-						},
-					],
-					audioRegionLine
-				),
-			],
-			constantReferences: noConstantReferences(),
-			startingByteAddress: 4,
-			memoryRegions: ['audio'],
-		});
-
-		expect(plan.modules.defaultModule).toMatchObject({
-			byteAddress: 4,
-			memoryIndex: 0,
-			wordAlignedSize: 3,
-		});
-		expect(plan.modules.audioModule).toMatchObject({
-			byteAddress: 4,
-			memoryIndex: 1,
-			memoryRegionName: 'audio',
-			wordAlignedSize: 2,
-		});
-		expect(plan.nextByteAddressByMemoryIndex).toEqual({
-			0: 16,
-			1: 12,
-		});
-	});
-
-	it.each([
-		['missing', ErrorCode.UNKNOWN_MEMORY_REGION],
-		[2, ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS],
-	] as const)('rejects invalid region %s during planning', (region, code) => {
-		const line = regionLine(region, 2);
-		expect(() =>
-			planSubProgramMemoryLayout({
-				prototypes: [],
-				modules: [validatedModuleAst('main', 1, [], line)],
-				constantReferences: noConstantReferences(),
-				memoryRegions: ['audio'],
-			})
-		).toThrowError(expect.objectContaining({ code, line }));
-	});
-
-	it('validates earlier region directives before selecting the final region', () => {
-		const invalidLine = regionLine('missing', 2);
-		expect(() =>
-			planSubProgramMemoryLayout({
-				prototypes: [],
-				modules: [validatedModuleAst('main', 1, [invalidLine, regionLine('audio', 3)])],
-				constantReferences: noConstantReferences(),
-				memoryRegions: ['audio'],
-			})
-		).toThrowError(expect.objectContaining({ code: ErrorCode.UNKNOWN_MEMORY_REGION, line: invalidLine }));
 	});
 
 	it('plans compiler-normalized declaration lines', () => {

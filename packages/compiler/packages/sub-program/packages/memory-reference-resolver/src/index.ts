@@ -86,9 +86,6 @@ function createSubProgramResolutionContext(
 		memoryAliases,
 		pointerMetadata,
 		locals: {},
-		startingByteAddress: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
 	};
 }
 
@@ -105,10 +102,6 @@ function createModuleResolutionContext(
 		pointerMetadata,
 		moduleName: module.id,
 		locals: {},
-		startingByteAddress: module.byteAddress,
-		currentModuleWordAlignedSize: module.wordAlignedSize,
-		currentMemoryIndex: module.memoryIndex,
-		...(module.memoryRegionName ? { currentMemoryRegionName: module.memoryRegionName } : {}),
 	};
 }
 
@@ -204,12 +197,11 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 		return;
 	}
 
-	const modulePointerMetadata = (context.pointerMetadata[moduleId] ??= {});
-	modulePointerMetadata[idArgument.value] = {
-		pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
-		...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
-		...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
-	};
+	if (pointeeElementCount !== undefined && pointeeElementCount !== 1) {
+		context.pointerMetadata[moduleId]![idArgument.value] = { pointeeElementCount };
+	} else {
+		delete context.pointerMetadata[moduleId]![idArgument.value];
+	}
 }
 
 function resolvedValueToLiteral(resolved: Const): ResolvedArgumentLiteral {

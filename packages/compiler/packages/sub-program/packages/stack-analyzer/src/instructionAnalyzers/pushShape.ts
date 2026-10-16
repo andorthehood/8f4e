@@ -17,11 +17,7 @@ export function analyzePushShape(line: ResolvedPushShapeLine, context: Compilati
 		const pointer = functionValueTypeToStackItem(pointerType) as StackAddress;
 
 		for (const item of produced) {
-			item.pointsTo = {
-				...pointer.pointsTo!,
-				memoryIndex: item.address.memoryIndex,
-				...(item.address.memoryRegionName ? { memoryRegionName: item.address.memoryRegionName } : {}),
-			};
+			item.pointsTo = pointer.pointsTo;
 		}
 
 		producedStack.push(...produced);

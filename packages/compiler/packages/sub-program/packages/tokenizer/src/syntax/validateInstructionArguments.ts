@@ -130,14 +130,6 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 				invalid(`Invalid argument for ${instruction}: expected result type (int or float).`);
 			}
 			return;
-		case 'regionReference':
-			if (
-				argument.type !== ArgumentType.IDENTIFIER &&
-				(argument.type !== ArgumentType.LITERAL || !argument.isInteger || argument.value < 0)
-			) {
-				invalid(`Invalid argument for ${instruction}: expected region identifier or non-negative integer index.`);
-			}
-			return;
 	}
 }
 

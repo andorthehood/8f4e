@@ -1,19 +1,11 @@
 import type { GalleryCategory } from '../gallery';
 
 const fixtureRoot = '../../../compiler/tests/';
-// The editor currently supports only default memory, so omit fixtures that require additional regions.
-const fixtureUrls = import.meta.glob<string>(
-	[
-		'../../../compiler/tests/**/*.test.8f4e',
-		'!../../../compiler/tests/memory-regions.test.8f4e',
-		'!../../../compiler/tests/region-selection.test.8f4e',
-	],
-	{
-		query: '?url&no-inline',
-		import: 'default',
-		eager: true,
-	}
-);
+const fixtureUrls = import.meta.glob<string>('../../../compiler/tests/**/*.test.8f4e', {
+	query: '?url&no-inline',
+	import: 'default',
+	eager: true,
+});
 
 function humanize(name: string): string {
 	const words = name.replaceAll('-', ' ');

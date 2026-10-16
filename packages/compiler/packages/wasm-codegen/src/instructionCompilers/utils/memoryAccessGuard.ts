@@ -5,7 +5,7 @@ import {
 	ifelse,
 	localGet,
 	localSet,
-	unsignedLEB128,
+	memoryCopy,
 	WASM_I32_ADD,
 	WASM_I32_AND,
 	WASM_I32_LE_U,
@@ -25,7 +25,6 @@ type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof
 
 type GuardedLoadOptions = {
 	accessByteWidth: number;
-	memoryIndex: number;
 	lineNumber: number;
 	resultType: NumericWasmValueType;
 	loadByteCode: number[];
@@ -33,7 +32,6 @@ type GuardedLoadOptions = {
 
 type GuardedAddressOperationOptions = {
 	accessByteWidth: number;
-	memoryIndex: number;
 	lineNumber: number;
 	resultType: NumericWasmValueType;
 	buildTrueBranch: (addressLocalIndex: number) => number[];
@@ -43,17 +41,13 @@ type GuardedAddressOperationOptions = {
 type GuardedStoreOptions = {
 	value: StackItem;
 	accessByteWidth: number;
-	memoryIndex: number;
 	lineNumber: number;
 	storeByteCode: number[];
 };
 
 type GuardedMemoryCopyOptions = {
 	byteLength: number;
-	destinationMemoryIndex: number;
-	sourceMemoryIndex: number;
 	lineNumber: number;
-	memoryCopyByteCode: number[];
 };
 
 type MemoryGuardContext = CodegenContext;
@@ -100,13 +94,12 @@ export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number):
  * Builds bytecode for the last valid start address for an access width in a linear memory.
  *
  * @param accessByteWidth - Byte width of the memory access being protected.
- * @param memoryIndex - Memory index to resolve.
  * @returns The computed result.
  */
-export function linearLastValidStartAddress(accessByteWidth: number, memoryIndex = 0): number[] {
+export function linearLastValidStartAddress(accessByteWidth: number): number[] {
 	return [
 		WASM_MEMORY_SIZE,
-		...unsignedLEB128(memoryIndex),
+		0,
 		...i32const(1),
 		WASM_I32_SUB,
 		...i32const(16),
@@ -116,21 +109,21 @@ export function linearLastValidStartAddress(accessByteWidth: number, memoryIndex
 	];
 }
 
-function linearMemoryByteLength(memoryIndex: number): number[] {
-	return [WASM_MEMORY_SIZE, ...unsignedLEB128(memoryIndex), ...i32const(16), WASM_I32_SHL];
+function linearMemoryByteLength(): number[] {
+	return [WASM_MEMORY_SIZE, 0, ...i32const(16), WASM_I32_SHL];
 }
 
-function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number, memoryIndex: number): number[] {
-	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth, memoryIndex), WASM_I32_LE_U];
+function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number): number[] {
+	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth), WASM_I32_LE_U];
 }
 
-function rangeWithinMemoryBounds(addressLocalIndex: number, byteLength: number, memoryIndex: number): number[] {
+function rangeWithinMemoryBounds(addressLocalIndex: number, byteLength: number): number[] {
 	return [
 		...localGet(addressLocalIndex),
-		...linearMemoryByteLength(memoryIndex),
+		...linearMemoryByteLength(),
 		WASM_I32_LE_U,
 		...i32const(byteLength),
-		...linearMemoryByteLength(memoryIndex),
+		...linearMemoryByteLength(),
 		...localGet(addressLocalIndex),
 		WASM_I32_SUB,
 		WASM_I32_LE_U,
@@ -177,7 +170,7 @@ export function guardedAddressOperation(
 
 	return [
 		...localSet(addressLocal.index),
-		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth, options.memoryIndex),
+		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth),
 		...ifelse(
 			options.resultType,
 			options.buildTrueBranch(addressLocal.index),
@@ -202,7 +195,7 @@ export function guardedStore(context: MemoryGuardContext, options: GuardedStoreO
 	return [
 		...localSet(valueLocal.index),
 		...localSet(addressLocal.index),
-		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth, options.memoryIndex),
+		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth),
 		...ifelse(WASM_TYPE_VOID, [
 			...localGet(addressLocal.index),
 			...localGet(valueLocal.index),
@@ -241,14 +234,14 @@ export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedM
 	return [
 		...localSet(sourceLocal.index),
 		...localSet(destinationLocal.index),
-		...rangeWithinMemoryBounds(destinationLocal.index, options.byteLength, options.destinationMemoryIndex),
-		...rangeWithinMemoryBounds(sourceLocal.index, options.byteLength, options.sourceMemoryIndex),
+		...rangeWithinMemoryBounds(destinationLocal.index, options.byteLength),
+		...rangeWithinMemoryBounds(sourceLocal.index, options.byteLength),
 		WASM_I32_AND,
 		...ifelse(WASM_TYPE_VOID, [
 			...localGet(destinationLocal.index),
 			...localGet(sourceLocal.index),
 			...i32const(options.byteLength),
-			...options.memoryCopyByteCode,
+			...memoryCopy(),
 		]),
 	];
 }
@@ -260,18 +253,16 @@ export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedM
  * @param valueLocalIndex - Local index holding the guarded value to store.
  * @param accessByteWidth - Byte width of the memory access being protected.
  * @param storeByteCode - store byte code value to use.
- * @param memoryIndex - Memory index to resolve.
  * @returns The computed result.
  */
 export function guardedStoreFromLocals(
 	addressLocalIndex: number,
 	valueLocalIndex: number,
 	accessByteWidth: number,
-	storeByteCode: number[],
-	memoryIndex = 0
+	storeByteCode: number[]
 ): number[] {
 	return [
-		...addressWithinMemoryBounds(addressLocalIndex, accessByteWidth, memoryIndex),
+		...addressWithinMemoryBounds(addressLocalIndex, accessByteWidth),
 		...ifelse(WASM_TYPE_VOID, [...localGet(addressLocalIndex), ...localGet(valueLocalIndex), ...storeByteCode]),
 	];
 }

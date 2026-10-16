@@ -2,7 +2,6 @@ import type {
 	ArrayMemoryDeclarationLine,
 	CompilerASTLine,
 	MemoryDeclarationLine,
-	MemoryReferenceResolutionReport,
 	ModuleLine,
 	ShapeLine,
 	ValidatedModuleAST,
@@ -11,7 +10,7 @@ import type {
 import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
 import { planSubProgramMemoryLayout } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
-import { MemoryDefaultResolverError, resolveMemoryDefaults } from './index';
+import { MemoryDefaultResolverError, type ResolveMemoryDefaultsInput, resolveMemoryDefaults } from './index';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -90,16 +89,11 @@ function noConstantReferences() {
 
 function noMemoryReferences(
 	memoryPlan: ReturnType<typeof planSubProgramMemoryLayout>
-): MemoryReferenceResolutionReport {
+): ResolveMemoryDefaultsInput['memoryReferences'] {
 	return {
-		prototypes: [],
-		modules: [],
-		constants: [],
-		functions: [],
 		declarationSourcesByModuleId: Object.fromEntries(
 			memoryPlan.moduleList.map(module => [module.id, { lineFacts: [] }])
 		),
-		pointerMetadataByModuleId: Object.fromEntries(memoryPlan.moduleList.map(module => [module.id, {}])),
 	};
 }
 
@@ -124,7 +118,7 @@ describe('resolveMemoryDefaults', () => {
 			memoryReferences: noMemoryReferences(memoryPlan),
 		});
 
-		expect(result.memoryDefaultsByModuleId.main).toEqual({
+		expect(result.main).toEqual({
 			counter: { value: 7, hasExplicitDefault: true, isInherited: false },
 			values: { value: { 0: 1.5, 1: 2.5 }, hasExplicitDefault: true, isInherited: false },
 		});
@@ -148,7 +142,7 @@ describe('resolveMemoryDefaults', () => {
 			memoryReferences: noMemoryReferences(memoryPlan),
 		});
 
-		expect(result.memoryDefaultsByModuleId.main).toMatchObject({
+		expect(result.main).toMatchObject({
 			implicitScalar: { hasExplicitDefault: false },
 			explicitScalar: { hasExplicitDefault: true },
 			__anonymous__4: { hasExplicitDefault: true },
@@ -157,7 +151,7 @@ describe('resolveMemoryDefaults', () => {
 		});
 	});
 
-	it('derives pointer metadata from address defaults', () => {
+	it('resolves pointer address defaults from declaration reference facts', () => {
 		const buffer = arrayLine(2, 'int[]', [classifyIdentifier('buffer'), literal(4)]);
 		const pointer = scalarLine(3, 'int*', [classifyIdentifier('ptr'), classifyIdentifier('&buffer')]);
 		const module = moduleAst('main', [buffer, pointer]);
@@ -180,10 +174,8 @@ describe('resolveMemoryDefaults', () => {
 							value: bufferDeclaration.byteAddress,
 							isInteger: true,
 							address: {
-								memoryIndex: 0,
 								safeRange: {
 									source: 'memory-start',
-									memoryIndex: 0,
 									byteAddress: bufferDeclaration.byteAddress,
 									safeByteLength: bufferDeclaration.elementByteLength,
 									moduleId: 'main',
@@ -195,26 +187,16 @@ describe('resolveMemoryDefaults', () => {
 				},
 			],
 		};
-		memoryReferences.pointerMetadataByModuleId.main = {
-			ptr: {
-				pointeeMemoryIndex: 0,
-				pointeeElementCount: 4,
-			},
-		};
 
 		const result = resolveMemoryDefaults({
 			memoryPlan,
 			memoryReferences,
 		});
 
-		expect(result.memoryDefaultsByModuleId.main.ptr).toMatchObject({
+		expect(result.main.ptr).toMatchObject({
 			value: memoryPlan.modules.main.memory.buffer.byteAddress,
 			hasExplicitDefault: true,
 			isInherited: false,
-		});
-		expect(result.pointerMetadataByModuleId.main.ptr).toEqual({
-			pointeeMemoryIndex: 0,
-			pointeeElementCount: 4,
 		});
 	});
 
@@ -240,7 +222,7 @@ describe('resolveMemoryDefaults', () => {
 			memoryReferences: noMemoryReferences(memoryPlan),
 		});
 
-		expect(result.memoryDefaultsByModuleId.main).toEqual({
+		expect(result.main).toEqual({
 			foo: { value: 2, hasExplicitDefault: true, isInherited: false },
 			bar: { value: 3, hasExplicitDefault: true, isInherited: true },
 		});

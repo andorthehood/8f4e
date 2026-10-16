@@ -7,7 +7,6 @@ import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAdd
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',
-	memoryIndex: 0,
 	byteAddress: 0,
 	safeByteLength: 128,
 	memoryId: 'arr',
@@ -36,7 +35,6 @@ describe('clamp address instruction compilers', () => {
 			createStackFacts({
 				clamp: {
 					accessByteWidth: 4,
-					memoryIndex: 0,
 					range,
 				},
 			})
@@ -50,7 +48,6 @@ describe('clamp address instruction compilers', () => {
 		const context = createInstructionCompilerTestContext();
 		const shiftedRange: MemoryAddressRange = {
 			source: 'memory-start',
-			memoryIndex: 0,
 			byteAddress: 64,
 			safeByteLength: 128,
 			memoryId: 'arr',
@@ -63,7 +60,6 @@ describe('clamp address instruction compilers', () => {
 			createStackFacts({
 				clamp: {
 					accessByteWidth: 4,
-					memoryIndex: 0,
 					range: shiftedRange,
 				},
 			})
@@ -83,8 +79,7 @@ describe('clamp address instruction compilers', () => {
 			createStackFacts({
 				clamp: {
 					accessByteWidth: 4,
-					memoryIndex: 0,
-					range: { source: 'module-start', memoryIndex: 0, byteAddress: 64, safeByteLength: 32, moduleId: 'osc' },
+					range: { source: 'module-start', byteAddress: 64, safeByteLength: 32, moduleId: 'osc' },
 				},
 			})
 		);
@@ -100,7 +95,7 @@ describe('clamp address instruction compilers', () => {
 			clampGlobalAddress,
 			createLine('clampGlobalAddress'),
 			context,
-			createStackFacts({ clamp: { accessByteWidth: 4, memoryIndex: 0 } })
+			createStackFacts({ clamp: { accessByteWidth: 4 } })
 		);
 
 		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);

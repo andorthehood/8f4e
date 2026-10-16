@@ -44,7 +44,6 @@ async function setup() {
 	const state = createMockState();
 	state.compiler.memoryPlan = compiled.memoryPlan;
 	state.compiler.projectMemoryExposuresByGroupPath = compiled.projectMemoryExposuresByGroupPath;
-	state.compiler.pointerMetadataByModuleId = compiled.pointerMetadataByModuleId;
 	const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 	const { instance } = await WebAssembly.instantiate(new Uint8Array(compiled.codeBuffer), { host: { memory } });
 	(instance.exports.initDefaults as CallableFunction)();
@@ -115,19 +114,11 @@ describe('shared exposed memory resolution', () => {
 		expect(resolveMemoryTarget(state, getCodeBlockMemoryScope(nested), 'wet')).toBeUndefined();
 	});
 
-	it('uses canonical pointer metadata when dereferencing an exposed pointer', () => {
+	it('dereferences an exposed pointer to its backing declaration', () => {
 		const { state, audio } = test;
 		const scope = getCodeBlockMemoryScope(audio);
 		const target = resolveMemoryTarget(state, scope, 'gain')!.memory;
 		expect(resolveMemoryIdentifier(state, scope, '*input')?.memory).toBe(target);
-		state.compiler.pointerMetadataByModuleId['audio/voice'].pointer.pointeeMemoryIndex = 1;
-		const alternate = { ...target, id: 'otherMemory', memoryIndex: 1 };
-		state.compiler.memoryPlan.moduleList.push({
-			...state.compiler.memoryPlan.modules['audio/voice'],
-			memoryIndex: 1,
-			declarations: [alternate],
-		});
-		expect(resolveMemoryIdentifier(state, scope, '*input')?.memory).toBe(alternate);
 	});
 
 	it('shares backing addresses and infers control types and connector direction from backing memory', () => {

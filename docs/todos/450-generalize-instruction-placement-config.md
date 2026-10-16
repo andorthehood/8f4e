@@ -95,7 +95,7 @@ Avoid encoding behavior in instruction names. The tokenizer should consume decla
 ### Step 2: Move Directive Prologue Rules Into Specs
 
 - Replace directive-specific tokenizer prologue checks with spec-driven placement metadata.
-- Preserve the existing behavior for `#impure`, `#export`, `#import`, `#loopCap`, `#region`, and `#skipExecution`.
+- Preserve the existing behavior for `#impure`, `#export`, `#import`, `#loopCap`, and `#skipExecution`.
 - Preserve `isBlockPrologue` metadata for directive lines if consumers still need it.
 
 ### Step 3: Add Function Parameter Prologue Rules

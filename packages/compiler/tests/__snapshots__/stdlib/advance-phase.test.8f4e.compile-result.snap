@@ -503,7 +503,6 @@
           "id": "phase",
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -521,7 +520,6 @@
       "advancePhaseAssertions",
     ],
     "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

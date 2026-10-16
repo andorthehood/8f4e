@@ -1,7 +1,6 @@
 import {
 	type CompilerDiagnosticContext,
 	type ComposedFunctionAST,
-	compilerSourceBlockInstructionByType,
 	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
@@ -11,16 +10,10 @@ import {
 	type FunctionRegistry,
 	getEffectiveFunctionMetadata,
 	getError,
-	getMemoryRegionFields,
-	type Namespaces,
 	type RegisteredFunction,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
-import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
-
-const moduleBlock = compilerSourceBlockInstructionByType.module;
 
 function getAstDiagnosticContext(
 	ast: ComposedFunctionAST | ValidatedModuleAST | ValidatedPrototypeAST
@@ -168,33 +161,4 @@ export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void
 		}
 		seenModuleIds.add(id);
 	}
-}
-
-/**
- * Discovers planned namespaces for modules.
- *
- * @param asts - Validated ASTs being processed.
- * @param memoryPlan - Completed memory layout plan for the sub-program.
- * @param defaultResolution - Resolved defaults and pointer metadata keyed by module id.
- * @returns The computed result.
- */
-export function collectNamespacesFromASTs(
-	asts: readonly ValidatedModuleAST[],
-	memoryPlan: MemoryLayoutPlan,
-	defaultResolution: ResolveMemoryDefaultsResult
-): Namespaces {
-	const namespaces: Namespaces = {};
-
-	for (const plannedModule of memoryPlan.moduleList) {
-		namespaces[plannedModule.id] = {
-			kind: moduleBlock.type,
-			...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
-			byteAddress: plannedModule.byteAddress,
-			wordAlignedSize: plannedModule.wordAlignedSize,
-			memoryDefaults: defaultResolution.memoryDefaultsByModuleId[plannedModule.id]!,
-			pointerMetadata: defaultResolution.pointerMetadataByModuleId[plannedModule.id]!,
-		};
-	}
-
-	return namespaces;
 }

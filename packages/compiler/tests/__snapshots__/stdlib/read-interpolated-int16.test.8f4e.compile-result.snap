@@ -2107,7 +2107,6 @@
           "id": "buffer",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 3,
           "pointerDepth": 0,
           "type": "int16",
@@ -2122,7 +2121,6 @@
           "id": "pointer",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -2145,7 +2143,6 @@
       "readInterpolatedInt16Assertions",
     ],
     "requiredMemoryBytes": 16,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

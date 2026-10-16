@@ -1,21 +1,18 @@
 import type {
 	Argument,
 	ArgumentCompileTimeExpression,
-	CompileOptions,
 	CompilerASTLine,
 	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
 	MemoryDeclarationLine,
 	MemoryLayoutPlan,
-	MemoryRegionIdentity,
 	ModuleAST,
 	ModuleLine,
 	PlannedMemoryDeclaration,
 	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
 	PrototypeAST,
-	RegionLine,
 	ScalarMemoryDeclarationLine,
 	ShapeLine,
 	ValidatedModuleAST,
@@ -26,21 +23,15 @@ import {
 	ErrorCode,
 	type ErrorCodeValue,
 	GLOBAL_ALIGNMENT_BOUNDARY,
-	getDefaultMemoryRegion,
 	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
-	resolveMemoryRegionByIndex,
-	resolveMemoryRegionName,
-	validateMemoryRegionOptions,
 } from '@8f4e/language-spec';
 import { planArrayDeclarationLayout, planScalarDeclarationLayout } from './declarations';
 import { getEndAddressSafeByteLength, getEndByteAddress, getWordAlignedByteLength } from './layoutAddresses';
-import { advanceModuleByteAddress, createModuleAddressCursor, getNextModuleByteAddress } from './modules';
 
 export type {
 	MemoryLayoutPlan,
-	MemoryRegionIdentity,
 	PlannedMemoryDeclaration,
 	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
@@ -80,7 +71,6 @@ type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
 interface MemoryLayoutSourceModule {
 	id: string;
 	moduleLine: Pick<ModuleLine, 'lineNumber'>;
-	region: MemoryRegionIdentity;
 	lines: readonly MemoryLayoutSourceLine[];
 }
 
@@ -101,7 +91,6 @@ export interface SubProgramMemoryLayoutPlanInput<
 		modules: readonly ConstantResolutionBlockFacts[];
 	};
 	startingByteAddress?: number;
-	memoryRegions?: Pick<CompileOptions, 'memoryRegions'>['memoryRegions'];
 }
 
 function plannerError(
@@ -111,19 +100,6 @@ function plannerError(
 	details?: MemoryPlannerErrorDetails
 ): MemoryPlannerError {
 	return new MemoryPlannerError(compilerErrorCode, line, message, details);
-}
-
-function resolveModuleRegion(line: RegionLine, ast: ModuleAST, memoryRegions: readonly string[]): MemoryRegionIdentity {
-	const context = {
-		codeBlockId: ast.id,
-		codeBlockType: ast.type,
-		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
-		...(ast.source !== undefined ? { source: ast.source } : {}),
-	};
-	const [argument] = line.arguments;
-	return argument.type === ArgumentType.LITERAL
-		? resolveMemoryRegionByIndex(argument.value, memoryRegions, line, context)
-		: resolveMemoryRegionName(argument.value, memoryRegions, line, context);
 }
 
 function getScalarDeclarationId(line: ScalarMemoryDeclarationLine): string {
@@ -270,22 +246,16 @@ function isShapeLine(line: CompilerASTLine): line is ShapeLine {
 
 function collectModuleMemoryLayoutSourceLines(
 	ast: ModuleAST,
-	constantReferences: ConstantResolutionBlockFacts | undefined,
-	memoryRegions: readonly string[]
+	constantReferences: ConstantResolutionBlockFacts | undefined
 ): MemoryLayoutSourceModule {
 	const sourceModule: MemoryLayoutSourceModule = {
 		id: ast.id,
 		moduleLine: ast.moduleLine,
-		region: getDefaultMemoryRegion(),
 		lines: [],
 	};
 
 	for (let lineIndex = 0; lineIndex < ast.lines.length; lineIndex++) {
 		const line = applyConstantFacts(ast.lines[lineIndex], constantReferences?.lineFacts[lineIndex]);
-		if (line.instruction === '#region') {
-			sourceModule.region = resolveModuleRegion(line, ast, memoryRegions);
-			continue;
-		}
 
 		if (isMemoryDeclarationLine(line)) {
 			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line)];
@@ -302,10 +272,9 @@ function collectModuleMemoryLayoutSourceLines(
 
 function createMemoryLayoutSourceModules(
 	asts: readonly ModuleAST[],
-	constantReferences: readonly ConstantResolutionBlockFacts[],
-	memoryRegions: readonly string[]
+	constantReferences: readonly ConstantResolutionBlockFacts[]
 ): MemoryLayoutSourceModule[] {
-	return asts.map((ast, index) => collectModuleMemoryLayoutSourceLines(ast, constantReferences[index], memoryRegions));
+	return asts.map((ast, index) => collectModuleMemoryLayoutSourceLines(ast, constantReferences[index]));
 }
 
 function getEffectiveMemoryDeclarationSources(
@@ -342,12 +311,7 @@ function getEffectiveMemoryDeclarationSources(
 	return declarationSources;
 }
 
-function planDeclarationLine(
-	line: MemoryDeclarationLine,
-	startingByteAddress: number,
-	localWordOffset: number,
-	region: MemoryRegionIdentity
-) {
+function planDeclarationLine(line: MemoryDeclarationLine, startingByteAddress: number, localWordOffset: number) {
 	if (isScalarMemoryDeclarationLine(line)) {
 		return planScalarDeclarationLayout({
 			id: getScalarDeclarationId(line),
@@ -355,7 +319,6 @@ function planDeclarationLine(
 			instruction: line.instruction,
 			startingByteAddress,
 			localWordOffset,
-			region,
 		});
 	}
 
@@ -367,14 +330,12 @@ function planDeclarationLine(
 		numberOfElements: elementCountArgument.value,
 		startingByteAddress,
 		localWordOffset,
-		region,
 	});
 }
 
 function planModuleMemory(
 	sourceModule: MemoryLayoutSourceModule,
 	moduleByteAddress: number,
-	region: MemoryRegionIdentity,
 	prototypesById: Readonly<Record<string, MemoryLayoutSourcePrototype>>
 ): Omit<
 	PlannedMemoryModule,
@@ -386,7 +347,7 @@ function planModuleMemory(
 	const declarationSources = getEffectiveMemoryDeclarationSources(sourceModule, prototypesById);
 
 	for (const declarationSource of declarationSources) {
-		const plannedDeclaration = planDeclarationLine(declarationSource.line, moduleByteAddress, localWordOffset, region);
+		const plannedDeclaration = planDeclarationLine(declarationSource.line, moduleByteAddress, localWordOffset);
 		const declaration = plannedDeclaration.declaration;
 
 		memory[declaration.id] = declaration;
@@ -395,7 +356,6 @@ function planModuleMemory(
 	}
 
 	return {
-		...region,
 		wordAlignedSize: localWordOffset,
 		memory,
 		declarations,
@@ -407,18 +367,16 @@ function planModuleMemory(
 function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 	const startingByteAddress = input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY;
 	const prototypesById = getPrototypeMap(input.prototypes);
-	const cursor = createModuleAddressCursor(startingByteAddress);
+	let nextByteAddress = startingByteAddress;
 	const modules: Record<string, PlannedMemoryModule> = {};
 	const moduleList: PlannedMemoryModule[] = [];
 
 	for (const sourceModule of [...input.modules].sort((left, right) =>
 		left.id < right.id ? -1 : left.id > right.id ? 1 : 0
 	)) {
-		const { region } = sourceModule;
-		const moduleByteAddress = getNextModuleByteAddress(cursor, region.memoryIndex, startingByteAddress);
-		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, region, prototypesById);
+		const moduleByteAddress = nextByteAddress;
+		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, prototypesById);
 		const plannedModule: PlannedMemoryModule = {
-			...region,
 			id: sourceModule.id,
 			lineNumber: sourceModule.moduleLine.lineNumber,
 			byteAddress: moduleByteAddress,
@@ -433,13 +391,12 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 
 		modules[plannedModule.id] = plannedModule;
 		moduleList.push(plannedModule);
-		advanceModuleByteAddress(cursor, region.memoryIndex, moduleByteAddress, plannedModule.wordAlignedSize);
+		nextByteAddress = moduleByteAddress + plannedModule.wordAlignedByteLength;
 	}
 
 	return {
 		modules,
 		moduleList,
-		nextByteAddressByMemoryIndex: { ...cursor },
 	};
 }
 
@@ -455,15 +412,9 @@ export function planSubProgramMemoryLayout<
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
 	TModule extends ModuleAST = ValidatedModuleAST,
 >(input: SubProgramMemoryLayoutPlanInput<TPrototype, TModule>): MemoryLayoutPlan {
-	validateMemoryRegionOptions(input);
-
 	return planMemoryLayout({
 		prototypes: getPrototypeSources(input.prototypes, input.constantReferences.prototypes),
-		modules: createMemoryLayoutSourceModules(
-			input.modules,
-			input.constantReferences.modules,
-			input.memoryRegions ?? []
-		),
+		modules: createMemoryLayoutSourceModules(input.modules, input.constantReferences.modules),
 		startingByteAddress: input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY,
 	});
 }

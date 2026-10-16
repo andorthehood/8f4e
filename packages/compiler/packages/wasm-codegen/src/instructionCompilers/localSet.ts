@@ -7,19 +7,9 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `localSet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localSet: InstructionCompiler<ResolvedLocalSetLine> = (line, context, facts) => {
+const _localSet: InstructionCompiler<ResolvedLocalSetLine> = (line, context) => {
 	const localName = line.binding.id;
 	const local = context.locals[localName]!;
-	const pointerFact = facts.localPointer;
-
-	if (pointerFact) {
-		local.pointeeMemoryIndex = pointerFact.pointeeMemoryIndex;
-		if (pointerFact.pointeeMemoryRegionName) {
-			local.pointeeMemoryRegionName = pointerFact.pointeeMemoryRegionName;
-		} else {
-			delete local.pointeeMemoryRegionName;
-		}
-	}
 
 	return saveByteCode(context, localSet(local.index));
 };

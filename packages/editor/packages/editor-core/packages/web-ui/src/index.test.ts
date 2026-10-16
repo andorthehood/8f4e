@@ -126,7 +126,6 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
-		memoryIndex: 0,
 		byteAddress: 0,
 		elementByteLength: 4,
 		wordAlignedSize: 1,
@@ -429,7 +428,6 @@ describe('web-ui init', () => {
 				screen: {
 					id: 'screen',
 					lineNumber: 1,
-					memoryIndex: 0,
 					byteAddress: 4,
 					wordAlignedSize: 1,
 					wordAlignedByteLength: 4,
@@ -443,7 +441,6 @@ describe('web-ui init', () => {
 				},
 			},
 			moduleList: [],
-			nextByteAddressByMemoryIndex: { 0: 8 },
 		};
 		const memoryBuffer = new ArrayBuffer(24);
 		const memoryViews = {

@@ -88,12 +88,6 @@ describe('resolveMemoryReferences integration', () => {
 			instruction: 'module',
 			arguments: [{ type: 'identifier', value: 'audio', referenceKind: 'plain', scope: 'local' }],
 		} as const;
-		const audioRegionLine = {
-			lineNumber: 11,
-			instruction: '#region',
-			arguments: [{ type: 'identifier', value: 'audio', referenceKind: 'plain', scope: 'local' }],
-			isBlockPrologue: true,
-		} as const;
 		const audioSamplesDeclarationLine = {
 			lineNumber: 12,
 			instruction: 'int16u[]',
@@ -168,7 +162,6 @@ describe('resolveMemoryReferences integration', () => {
 		const samplesMemory = {
 			numberOfElements: 4,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 4,
 			elementByteLength: 16,
 			wordAlignedSize: 4,
@@ -186,7 +179,6 @@ describe('resolveMemoryReferences integration', () => {
 		const ptrMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 20,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -205,8 +197,6 @@ describe('resolveMemoryReferences integration', () => {
 		const audioSamplesMemory = {
 			numberOfElements: 6,
 			elementWordSize: 2,
-			memoryIndex: 1,
-			memoryRegionName: 'audio',
 			byteAddress: 4,
 			elementByteLength: 12,
 			wordAlignedSize: 3,
@@ -242,7 +232,7 @@ describe('resolveMemoryReferences integration', () => {
 					type: 'module',
 					id: 'audio',
 					moduleLine: audioModuleLine,
-					lines: [audioModuleLine, audioRegionLine, audioSamplesDeclarationLine, audioModuleEndLine],
+					lines: [audioModuleLine, audioSamplesDeclarationLine, audioModuleEndLine],
 				},
 			],
 			constants: [
@@ -273,7 +263,6 @@ describe('resolveMemoryReferences integration', () => {
 					wordAlignedByteLength: 20,
 					endByteAddress: 20,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						samples: samplesMemory,
 						ptr: ptrMemory,
@@ -292,8 +281,6 @@ describe('resolveMemoryReferences integration', () => {
 					wordAlignedByteLength: 12,
 					endByteAddress: 12,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 1,
-					memoryRegionName: 'audio',
 					memory: {
 						samples: audioSamplesMemory,
 					},
@@ -310,7 +297,6 @@ describe('resolveMemoryReferences integration', () => {
 					wordAlignedByteLength: 20,
 					endByteAddress: 20,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						samples: samplesMemory,
 						ptr: ptrMemory,
@@ -329,8 +315,6 @@ describe('resolveMemoryReferences integration', () => {
 					wordAlignedByteLength: 12,
 					endByteAddress: 12,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 1,
-					memoryRegionName: 'audio',
 					memory: {
 						samples: audioSamplesMemory,
 					},
@@ -338,10 +322,6 @@ describe('resolveMemoryReferences integration', () => {
 					declarationSources: [{ line: audioSamplesDeclarationLine, isInherited: false }],
 				},
 			],
-			nextByteAddressByMemoryIndex: {
-				0: 24,
-				1: 16,
-			},
 		} as const;
 		const constantReferences = {
 			prototypes: [],

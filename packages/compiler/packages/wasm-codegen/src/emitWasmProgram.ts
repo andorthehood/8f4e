@@ -35,12 +35,7 @@ import type {
 	ProjectMemoryExposuresByGroupPath,
 	WasmFunctionLayout,
 } from '@8f4e/language-spec';
-import {
-	createFunctionId,
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	getCustomMemoryRegionName,
-} from '@8f4e/language-spec';
+import { createFunctionId, DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/language-spec';
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 
 interface EmissionProgram {
@@ -57,35 +52,6 @@ interface EmissionProgram {
 	cache: CompilerCache;
 }
 
-/** Calculates required byte size for each WebAssembly memory index. */
-function getRequiredMemoryBytesByIndex(memoryPlan: MemoryLayoutPlan) {
-	return memoryPlan.moduleList.reduce<Record<number, number>>((result, item) => {
-		const memoryIndex = item.memoryIndex;
-		const requiredBytes = item.byteAddress + item.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
-		return result;
-	}, {});
-}
-
-/** Converts non-default memory byte requirements into configured memory region names. */
-function getRequiredMemoryBytesByRegion(
-	requiredMemoryBytesByIndex: Record<number, number>,
-	memoryRegions: readonly string[]
-): Record<string, number> {
-	const result: Record<string, number> = {};
-
-	for (const [memoryIndexString, requiredBytes] of Object.entries(requiredMemoryBytesByIndex)) {
-		const memoryIndex = Number(memoryIndexString);
-		if (memoryIndex === 0 || requiredBytes <= 0) {
-			continue;
-		}
-
-		result[getCustomMemoryRegionName(memoryRegions, memoryIndex)] = requiredBytes;
-	}
-
-	return result;
-}
-
 /**
  * Emits a complete WebAssembly binary from compiled modules, functions, and planned memory facts.
  *
@@ -95,7 +61,7 @@ function getRequiredMemoryBytesByRegion(
  */
 export function emitWasmProgram(
 	program: EmissionProgram,
-	options: Pick<CompileOptions, 'disableSharedMemory' | 'memoryRegions'>
+	options: Pick<CompileOptions, 'disableSharedMemory'>
 ): CompileResult {
 	const {
 		functionLayout,
@@ -110,15 +76,9 @@ export function emitWasmProgram(
 		projectMemoryExposuresByGroupPath,
 		cache,
 	} = program;
-	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(memoryPlan);
-	const requiredMemoryBytes = requiredMemoryBytesByIndexFromModules[0] ?? 0;
-	const requiredMemoryBytesByIndex: Record<number, number> = {
-		...requiredMemoryBytesByIndexFromModules,
-		0: requiredMemoryBytes,
-	};
-	const requiredMemoryBytesByRegion = getRequiredMemoryBytesByRegion(
-		requiredMemoryBytesByIndex,
-		options.memoryRegions ?? []
+	const requiredMemoryBytes = memoryPlan.moduleList.reduce(
+		(maximum, module) => Math.max(maximum, module.byteAddress + module.wordAlignedByteLength),
+		0
 	);
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(memoryPlan, memoryDefaultsByModuleId);
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
@@ -137,33 +97,24 @@ export function emitWasmProgram(
 		)
 	);
 	const memoryInitiatorFunction = [
-		...Object.entries(requiredMemoryBytesByIndex).flatMap(([memoryIndexString, requiredBytes]) => {
-			const memoryIndex = Number(memoryIndexString);
-			return requiredBytes > 0
-				? [...i32const(0), ...i32const(0), ...i32const(requiredBytes), ...memoryFill(memoryIndex)]
-				: [];
-		}),
+		...(requiredMemoryBytes > 0
+			? [...i32const(0), ...i32const(0), ...i32const(requiredMemoryBytes), ...memoryFill()]
+			: []),
 		...initialMemoryDataSegments.flatMap((segment, index) => [
 			...i32const(segment.byteAddress),
 			...i32const(0),
 			...i32const(segment.bytes.length),
-			...memoryInit(index, segment.memoryIndex),
+			...memoryInit(index),
 		]),
 	];
-	const maxUsedMemoryIndex = Math.max(0, ...Object.keys(requiredMemoryBytesByIndex).map(Number));
-	const memoryImports = Array.from({ length: maxUsedMemoryIndex + 1 }, (_, memoryIndex) => {
-		const requiredBytes = requiredMemoryBytesByIndex[memoryIndex] ?? 0;
-		const memorySizePages = Math.max(1, Math.ceil(requiredBytes / WASM_MEMORY_PAGE_SIZE));
-		const importName =
-			memoryIndex === 0 ? 'memory' : getCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
-		return createMemoryImport(
-			DEFAULT_HOST_IMPORT_MODULE_NAME,
-			importName,
-			memorySizePages,
-			memorySizePages,
-			!options.disableSharedMemory
-		);
-	});
+	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
+	const memoryImport = createMemoryImport(
+		DEFAULT_HOST_IMPORT_MODULE_NAME,
+		'memory',
+		memorySizePages,
+		memorySizePages,
+		!options.disableSharedMemory
+	);
 	const functionImports = functionLayout.imports.map(func =>
 		createFunctionImport(func.moduleName, func.fieldName, func.typeIndex)
 	);
@@ -188,7 +139,7 @@ export function emitWasmProgram(
 				createFunctionType([WASM_TYPE_I32, WASM_TYPE_I32], [WASM_TYPE_I32]),
 				...uniqueUserFunctionTypes,
 			]),
-			...createImportSection([...functionImports, ...memoryImports]),
+			...createImportSection([...functionImports, memoryImport]),
 			...createFunctionSection([...builtInFunctionSignatures, ...userFunctionSignatureIndices, ...functionSignatures]),
 			...createExportSection([
 				...builtInExports,
@@ -209,7 +160,6 @@ export function emitWasmProgram(
 		pointerMetadataByModuleId,
 		projectMemoryExposuresByGroupPath,
 		requiredMemoryBytes,
-		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,
 	};
 }

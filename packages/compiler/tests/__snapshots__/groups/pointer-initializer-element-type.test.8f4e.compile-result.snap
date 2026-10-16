@@ -123,18 +123,6 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "sampleMemory",
-            },
-          ],
-          "instruction": "#region",
-          "isBlockPrologue": true,
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
               "value": "values",
             },
             {
@@ -178,18 +166,15 @@
       "memory": {
         "input": {
           "byteAddress": 4,
-          "default": 4,
+          "default": 8,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "input",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointeeBaseType": "int8",
           "pointeeElementCount": 4,
-          "pointeeMemoryIndex": 1,
-          "pointeeMemoryRegionName": "sampleMemory",
           "pointerDepth": 1,
           "type": "int8*",
           "wordAlignedAddress": 1,
@@ -200,7 +185,7 @@
     "source": {
       "memory": {
         "values": {
-          "byteAddress": 4,
+          "byteAddress": 8,
           "default": {
             "0": 11,
             "1": 12,
@@ -212,12 +197,10 @@
           "id": "values",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 1,
-          "memoryRegionName": "sampleMemory",
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int8",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
@@ -229,10 +212,7 @@
       "reader/processor",
       "source",
     ],
-    "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {
-      "sampleMemory": 8,
-    },
+    "requiredMemoryBytes": 12,
     "wasmExports": [
       "initDefaults",
       "main",

@@ -1,6 +1,5 @@
 import type {
 	ArrayDeclarationInstruction,
-	MemoryRegionIdentity,
 	MemoryType,
 	PointeeBaseType,
 	ScalarMemoryDeclarationInstruction,
@@ -55,7 +54,6 @@ export function planScalarDeclarationLayout(input: {
 	lineNumber: number;
 	startingByteAddress: number;
 	localWordOffset: number;
-	region: MemoryRegionIdentity;
 	instruction: ScalarMemoryDeclarationInstruction;
 }) {
 	const pointerDepth = getPointerDepth(input.instruction);
@@ -72,7 +70,6 @@ export function planScalarDeclarationLayout(input: {
 			declaration: {
 				numberOfElements,
 				elementWordSize,
-				...input.region,
 				wordAlignedAddress: getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset),
 				wordAlignedSize,
 				wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
@@ -100,7 +97,6 @@ export function planScalarDeclarationLayout(input: {
 		declaration: {
 			numberOfElements,
 			elementWordSize: nonPointerElementWordSize,
-			...input.region,
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			wordAlignedSize,
 			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
@@ -128,7 +124,6 @@ export function planArrayDeclarationLayout(input: {
 	lineNumber: number;
 	startingByteAddress: number;
 	localWordOffset: number;
-	region: MemoryRegionIdentity;
 	instruction: ArrayDeclarationInstruction;
 	numberOfElements: number;
 }) {
@@ -146,7 +141,6 @@ export function planArrayDeclarationLayout(input: {
 		declaration: {
 			numberOfElements: input.numberOfElements,
 			elementWordSize,
-			...input.region,
 			wordAlignedSize,
 			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
 			wordAlignedAddress: alignedAbsoluteWordOffset,

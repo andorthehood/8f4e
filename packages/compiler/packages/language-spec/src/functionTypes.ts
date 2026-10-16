@@ -78,14 +78,9 @@ function localBindingToStackItem(binding: LocalValueMetadata): StackItem {
 		return {
 			kind: 'address',
 			valueType: 'int',
-			address: {
-				memoryIndex: binding.pointeeMemoryIndex ?? 0,
-				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
-			},
+			address: {},
 			pointsTo: {
 				baseType: binding.pointeeBaseType,
-				memoryIndex: binding.pointeeMemoryIndex ?? 0,
-				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
 				pointerDepth: binding.pointerDepth,
 			},
 		};

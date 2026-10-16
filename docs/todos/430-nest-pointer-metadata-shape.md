@@ -15,9 +15,9 @@ completed: null
 Pointer facts are currently represented by scattered optional fields across multiple language-spec types.
 
 Current state:
-- `DataStructure` uses fields such as `pointeeBaseType`, `pointerDepth`, `pointeeMemoryIndex`, `pointeeMemoryRegionName`, and `pointeeElementCount`
+- `DataStructure` uses fields such as `pointeeBaseType`, `pointerDepth`, `pointeeElementCount`
 - `PointerLocalBinding` repeats a similar set of fields
-- `StackAddress.pointsTo` represents similar facts with different names such as `baseType`, `memoryIndex`, and `elementCount`
+- `StackAddress.pointsTo` represents similar facts with different names such as `baseType` and `elementCount`
 - helper types in `memoryData.ts` use adapter unions to paper over those shape differences
 
 Why this is a problem:
@@ -39,8 +39,6 @@ interface PointerMetadata {
 }
 
 interface PointerPointeeMetadata {
-	memoryIndex: number;
-	memoryRegionName?: string;
 	elementCount?: number;
 	provenance: 'memory-start' | 'unknown';
 }
@@ -76,7 +74,7 @@ The precise names should follow language-spec style, but pointer facts should li
 
 ## Validation Checkpoints
 
-- `rg -n "pointeeBaseType|pointeeMemoryIndex|pointeeMemoryRegionName|pointeeElementCount|pointsTo" packages/compiler packages/compiler/packages/language-spec -g '*.ts'`
+- `rg -n "pointeeBaseType|pointeeElementCount|pointsTo" packages/compiler packages/compiler/packages/language-spec -g '*.ts'`
 - `npx nx run @8f4e/language-spec:typecheck`
 - `npx nx run @8f4e/compiler:typecheck`
 - `npx nx run compiler:test -- --run src/utils/memoryData.test.ts src/stackAnalysis/analyzeInstruction.test.ts tests/instructions/constantExpressions.test.ts`

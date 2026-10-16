@@ -59,7 +59,6 @@ export default async function compileAndUpdateMemory(
 		compiledFunctions,
 		memoryPlan,
 		memoryDefaultsByModuleId,
-		pointerMetadataByModuleId,
 		projectMemoryExposuresByGroupPath,
 		cache,
 	} = await compileProject(project, {
@@ -148,7 +147,6 @@ export default async function compileAndUpdateMemory(
 		compiledFunctions,
 		memoryPlan,
 		memoryDefaultsByModuleId,
-		pointerMetadataByModuleId,
 		projectMemoryExposuresByGroupPath,
 		requiredMemoryBytes,
 		allocatedMemoryBytes,

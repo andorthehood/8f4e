@@ -80,11 +80,6 @@ type PointerSlotType = 'pointer';
 type BaseTypeMetadataKey = PointeeBaseType | PointerSlotType;
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
 
-export interface MemoryRegionIdentity {
-	memoryIndex: number;
-	memoryRegionName?: string;
-}
-
 /** Numeric storage metadata for a scalar or pointer slot type. */
 interface BaseTypeMetadata {
 	wordSize: number;
@@ -162,10 +157,6 @@ export interface PlannedMemoryDeclaration {
 	numberOfElements: number;
 	elementWordSize: number;
 	type: MemoryType;
-	/** Resolved WebAssembly memory index where this declaration is stored. */
-	memoryIndex: number;
-	/** Configured logical region name for non-default memories. */
-	memoryRegionName?: string;
 	byteAddress: number;
 	/** Actual value bytes covered by declared elements, excluding alignment padding. */
 	elementByteLength: number;
@@ -199,7 +190,7 @@ export interface PlannedMemoryDeclarationSource {
 	isInherited: boolean;
 }
 
-export interface PlannedMemoryModule extends MemoryRegionIdentity {
+export interface PlannedMemoryModule {
 	id: string;
 	lineNumber: number;
 	byteAddress: number;
@@ -222,7 +213,6 @@ export interface MemoryLayoutPlan {
 	modules: Record<string, PlannedMemoryModule>;
 	/** Modules in alphabetical layout order by id; entries are the same objects exposed through `modules`. */
 	moduleList: readonly PlannedMemoryModule[];
-	nextByteAddressByMemoryIndex: Record<number, number>;
 }
 
 export type MemoryDefaultValue = number | Record<string, number>;
@@ -236,10 +226,6 @@ export interface MemoryDefault {
 export type MemoryDefaults = Record<string, MemoryDefault>;
 
 export interface MemoryPointerMetadata {
-	/** Resolved WebAssembly memory index where this pointer dereferences. */
-	pointeeMemoryIndex?: number;
-	/** Configured logical region name for this pointer's pointee memory. */
-	pointeeMemoryRegionName?: string;
 	/** Element count of the known pointee memory item, when initialized from a tracked memory address. */
 	pointeeElementCount?: number;
 }
@@ -251,8 +237,6 @@ export type ResolvedMemoryDeclaration = PlannedMemoryDeclaration & MemoryPointer
 export type MemoryBuffer = Int32Array;
 
 export type MemoryValueChange = {
-	memoryIndex: number;
-	memoryRegionName?: string;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
 	value: number | Record<string, number>;

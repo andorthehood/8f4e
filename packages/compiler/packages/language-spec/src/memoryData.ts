@@ -1,21 +1,8 @@
 import type { MemoryPointerMetadata, MemoryValueKind, PlannedMemoryDeclaration } from './memory';
 import { BASE_TYPE_METADATA } from './memory';
-import type { PointerLocalMetadata, StackAddress } from './semantic';
 
-export type PointerMetadata =
-	| (Pick<PlannedMemoryDeclaration, 'memoryIndex' | 'memoryRegionName' | 'pointeeBaseType' | 'pointerDepth'> &
-			Partial<MemoryPointerMetadata>)
-	| Pick<
-			PointerLocalMetadata,
-			'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
-	  >
-	| {
-			pointeeBaseType: NonNullable<StackAddress['pointsTo']>['baseType'];
-			pointerDepth: NonNullable<StackAddress['pointsTo']>['pointerDepth'];
-			pointeeMemoryIndex: NonNullable<StackAddress['pointsTo']>['memoryIndex'];
-			pointeeMemoryRegionName?: NonNullable<StackAddress['pointsTo']>['memoryRegionName'];
-			pointeeElementCount?: NonNullable<StackAddress['pointsTo']>['elementCount'];
-	  };
+export type PointerMetadata = Pick<PlannedMemoryDeclaration, 'pointeeBaseType' | 'pointerDepth'> &
+	MemoryPointerMetadata;
 
 function getDeclaredBaseTypeMetadata(
 	memoryItem: Pick<PlannedMemoryDeclaration, 'elementWordSize' | 'isInteger' | 'isUnsigned'>
@@ -54,15 +41,6 @@ export function getMemoryStringLastByteAddress(memoryItem: PlannedMemoryDeclarat
 
 export function getElementCount(memoryItem: PlannedMemoryDeclaration): number {
 	return memoryItem.numberOfElements;
-}
-
-export function getPointeeElementCountFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
-	if (!pointerMetadata?.pointeeBaseType) return 0;
-	return pointerMetadata.pointeeElementCount ?? 1;
-}
-
-export function getPointeeElementCount(memoryItem: PointerMetadata | undefined): number {
-	return getPointeeElementCountFromMetadata(memoryItem);
 }
 
 export function getElementWordSize(memoryItem: PlannedMemoryDeclaration): number {

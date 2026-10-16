@@ -32,8 +32,8 @@ describe('function value type helpers', () => {
 			{
 				kind: 'address',
 				valueType: 'int',
-				address: { memoryIndex: 0 },
-				pointsTo: { baseType: 'int', memoryIndex: 0, pointerDepth: 1 },
+				address: {},
+				pointsTo: { baseType: 'int', pointerDepth: 1 },
 			},
 		],
 		[
@@ -41,8 +41,8 @@ describe('function value type helpers', () => {
 			{
 				kind: 'address',
 				valueType: 'int',
-				address: { memoryIndex: 0 },
-				pointsTo: { baseType: 'int16u', memoryIndex: 0, pointerDepth: 2 },
+				address: {},
+				pointsTo: { baseType: 'int16u', pointerDepth: 2 },
 			},
 		],
 		[
@@ -50,8 +50,8 @@ describe('function value type helpers', () => {
 			{
 				kind: 'address',
 				valueType: 'int',
-				address: { memoryIndex: 0 },
-				pointsTo: { baseType: 'float', memoryIndex: 0, pointerDepth: 2 },
+				address: {},
+				pointsTo: { baseType: 'float', pointerDepth: 2 },
 			},
 		],
 	])('converts %s to a stack item', (type, expected) => {

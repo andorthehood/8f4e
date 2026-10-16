@@ -67,12 +67,6 @@ describe('planSubProgramMemoryLayout integration', () => {
 			instruction: 'module',
 			arguments: [{ type: 'identifier', value: 'audio', referenceKind: 'plain', scope: 'local' }],
 		} as const;
-		const audioRegionLine = {
-			lineNumber: 21,
-			instruction: '#region',
-			arguments: [{ type: 'identifier', value: 'audio', referenceKind: 'plain', scope: 'local' }],
-			isBlockPrologue: true,
-		} as const;
 		const samplesDeclarationLine = {
 			lineNumber: 22,
 			instruction: 'float[]',
@@ -120,7 +114,7 @@ describe('planSubProgramMemoryLayout integration', () => {
 				type: 'module',
 				id: 'audio',
 				moduleLine: audioModuleLine,
-				lines: [audioModuleLine, audioRegionLine, samplesDeclarationLine, peaksDeclarationLine, audioModuleEndLine],
+				lines: [audioModuleLine, samplesDeclarationLine, peaksDeclarationLine, audioModuleEndLine],
 			},
 		] as const;
 		const constantReferences = {
@@ -145,7 +139,6 @@ describe('planSubProgramMemoryLayout integration', () => {
 				modules,
 				constantReferences,
 				startingByteAddress: 4,
-				memoryRegions: ['audio'],
 			} satisfies MemoryPlannerIntegrationInput)
 		).toMatchSnapshot();
 	});

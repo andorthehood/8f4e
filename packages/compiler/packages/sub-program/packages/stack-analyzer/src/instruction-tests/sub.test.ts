@@ -13,8 +13,7 @@ describe('sub stack analysis', () => {
 				isNonZero: false,
 				knownValue: 0,
 				address: {
-					memoryIndex: 0,
-					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: -4 }
@@ -36,9 +35,8 @@ describe('sub stack analysis', () => {
 				isNonZero: true,
 				knownValue: 4,
 				address: {
-					memoryIndex: 0,
-					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
-					clampRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					safeRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+					clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 		]);
@@ -53,8 +51,7 @@ describe('sub stack analysis', () => {
 				isNonZero: false,
 				knownValue: 0,
 				address: {
-					memoryIndex: 0,
-					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 }
@@ -76,8 +73,7 @@ describe('sub stack analysis', () => {
 				isNonZero: true,
 				knownValue: -4,
 				address: {
-					memoryIndex: 0,
-					clampRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 		]);

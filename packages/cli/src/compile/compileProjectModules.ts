@@ -26,7 +26,6 @@ interface CompileProjectModulesResult {
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	compiledWasm: string;
 	requiredMemoryBytes: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
 function hasCompilableProgramBlocks(project: ProjectObjectModel): boolean {
@@ -44,7 +43,7 @@ export default async function compileProjectModules(
 	if (!hasCompilableProgramBlocks(project)) {
 		return {
 			compiledModules: {},
-			memoryPlan: { modules: {}, moduleList: [], nextByteAddressByMemoryIndex: {} },
+			memoryPlan: { modules: {}, moduleList: [] },
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
 			projectMemoryExposuresByGroupPath: {},
@@ -67,6 +66,5 @@ export default async function compileProjectModules(
 		projectMemoryExposuresByGroupPath: result.projectMemoryExposuresByGroupPath,
 		compiledWasm: Buffer.from(result.codeBuffer).toString('base64'),
 		requiredMemoryBytes: result.requiredMemoryBytes,
-		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
 	};
 }

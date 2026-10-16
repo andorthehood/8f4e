@@ -16,7 +16,6 @@ export * from './instructionSpecUtils';
 export * from './instructions';
 export * from './memory';
 export * from './memoryData';
-export * from './memoryRegions';
 export * from './moduleNames';
 export * from './options';
 export * from './paramShape';

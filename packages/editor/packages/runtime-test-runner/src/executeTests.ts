@@ -5,7 +5,7 @@ import type { TestRunResult, TestRuntimeProgram } from './types';
 export async function executeTests(program: TestRuntimeProgram): Promise<TestRunResult> {
 	const { codeBuffer, assertionSites, memory } = program;
 	try {
-		const { assertions, failures } = await runTests({ codeBuffer, assertionSites, memories: { memory } });
+		const { assertions, failures } = await runTests({ codeBuffer, assertionSites, memory });
 		return {
 			status: failures.length ? 'failed' : 'passed',
 			assertions,

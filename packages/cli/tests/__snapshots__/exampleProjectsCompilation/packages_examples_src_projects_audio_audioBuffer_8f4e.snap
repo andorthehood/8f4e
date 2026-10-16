@@ -847,7 +847,6 @@
   "memoryPlan": {
     "modules": {
       "audioout": {
-        "memoryIndex": 0,
         "id": "audioout",
         "lineNumber": 0,
         "byteAddress": 0,
@@ -859,7 +858,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -878,7 +876,6 @@
           "buffer": {
             "numberOfElements": 128,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedSize": 128,
             "wordAlignedByteLength": 512,
             "wordAlignedAddress": 1,
@@ -896,7 +893,6 @@
           "pointer": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 129,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -916,7 +912,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -935,7 +930,6 @@
           {
             "numberOfElements": 128,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedSize": 128,
             "wordAlignedByteLength": 512,
             "wordAlignedAddress": 1,
@@ -953,7 +947,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 129,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1040,7 +1033,6 @@
         ]
       },
       "phaseAccumulator": {
-        "memoryIndex": 0,
         "id": "phaseAccumulator",
         "lineNumber": 0,
         "byteAddress": 520,
@@ -1052,7 +1044,6 @@
           "defaultFreq": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 130,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1070,7 +1061,6 @@
           "frequency": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 131,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1089,7 +1079,6 @@
           "phase": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 132,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1107,7 +1096,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 133,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1127,7 +1115,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 130,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1145,7 +1132,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 131,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1164,7 +1150,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 132,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1182,7 +1167,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 133,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1277,7 +1261,6 @@
     },
     "moduleList": [
       {
-        "memoryIndex": 0,
         "id": "audioout",
         "lineNumber": 0,
         "byteAddress": 0,
@@ -1289,7 +1272,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1308,7 +1290,6 @@
           "buffer": {
             "numberOfElements": 128,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedSize": 128,
             "wordAlignedByteLength": 512,
             "wordAlignedAddress": 1,
@@ -1326,7 +1307,6 @@
           "pointer": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 129,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1346,7 +1326,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1365,7 +1344,6 @@
           {
             "numberOfElements": 128,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedSize": 128,
             "wordAlignedByteLength": 512,
             "wordAlignedAddress": 1,
@@ -1383,7 +1361,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 129,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1470,7 +1447,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "phaseAccumulator",
         "lineNumber": 0,
         "byteAddress": 520,
@@ -1482,7 +1458,6 @@
           "defaultFreq": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 130,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1500,7 +1475,6 @@
           "frequency": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 131,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1519,7 +1493,6 @@
           "phase": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 132,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1537,7 +1510,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 133,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1557,7 +1529,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 130,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1575,7 +1546,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 131,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1594,7 +1564,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 132,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1612,7 +1581,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 133,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1704,10 +1672,7 @@
           }
         ]
       }
-    ],
-    "nextByteAddressByMemoryIndex": {
-      "0": 536
-    }
+    ]
   },
   "memoryDefaultsByModuleId": {
     "audioout": {
@@ -1751,16 +1716,8 @@
     }
   },
   "pointerMetadataByModuleId": {
-    "audioout": {
-      "in": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "phaseAccumulator": {
-      "frequency": {
-        "pointeeMemoryIndex": 0
-      }
-    }
+    "audioout": {},
+    "phaseAccumulator": {}
   },
   "compiledWasm": "AGFzbQEAAAABFwVgAABgAX8Bf2ACf38Bf2AAAGABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMHBgAAAwQAAAcgAwxpbml0RGVmYXVsdHMAAARtYWluAAEGYnVmZmVyAAIMAQIK9wIGIQBBAEEAQZgE/AsAQQBBAEEE/AgAAEGEBEEAQQz8CAEACwYAEAQQBQskAQF/QQAhAAJAA0AgAEGAAU4EQAwCCyAAQQFqIQAQAQwACwsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAtkAQF9QZAEQZAEKgIAQ9sPyUBBjAQoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBkAQqAgBD2w9JQF4EQEGQBEPbD0nAOAIAC0GUBEGQBCoCABADOAIAC10CAX8BfUGEBCgCAEEAKAIAKgIAQwAAAD+UIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GEBEGEBCgCAEEEajYCAEGEBCgCAEGABEoEQEGEBEEENgIACwsLFQIBBBQCAAABDAQAAAAAANxDCAIAAA==",
   "requiredMemoryBytes": 536

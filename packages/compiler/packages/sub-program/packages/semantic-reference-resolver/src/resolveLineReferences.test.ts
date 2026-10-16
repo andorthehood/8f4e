@@ -26,7 +26,6 @@ function createSourceMemoryPlan(): MemoryLayoutPlan {
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,
-		memoryIndex: 0,
 	} as const;
 	const source = {
 		id: 'source',
@@ -36,12 +35,10 @@ function createSourceMemoryPlan(): MemoryLayoutPlan {
 		memory: { buffer },
 		declarations: [buffer],
 		declarationSources: [],
-		memoryIndex: 0,
 	};
 	return {
 		modules: { source },
 		moduleList: [source],
-		nextByteAddressByMemoryIndex: { 0: 16 },
 	};
 }
 
@@ -49,7 +46,6 @@ function createEmptyMemoryPlan(): MemoryLayoutPlan {
 	return {
 		modules: {},
 		moduleList: [],
-		nextByteAddressByMemoryIndex: {},
 	};
 }
 
@@ -75,7 +71,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -95,7 +90,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -112,7 +106,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -135,7 +128,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -152,7 +144,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -169,7 +160,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -186,7 +176,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
@@ -203,7 +192,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 			},
 			locals: { localVar: { isInteger: true } },
 			bindingsByName: { localVar: { id: 0, name: 'localVar', type: 'int' } },
@@ -217,12 +205,10 @@ describe('resolveLineReferences', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
 		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
@@ -235,7 +221,7 @@ describe('resolveLineReferences', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
@@ -251,7 +237,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: { otherModule: { kind: 'module' } },
 			},
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
@@ -270,7 +255,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: { source: { kind: 'module' } },
 			},
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
@@ -289,12 +273,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {
-					source: {
-						kind: 'module',
-						// No byteAddress — module not yet laid out
-					},
-				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
@@ -314,7 +292,7 @@ describe('resolveLineReferences', () => {
 
 	it('validates unresolved intermodule references through group aliases', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map([['audio', new Map([['level', { targetModuleId: 'source', targetMemoryId: 'buffer' }]])]]),
 			locals: {},
@@ -334,11 +312,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {
-					source: {
-						kind: 'module',
-					},
-				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
@@ -355,7 +328,7 @@ describe('resolveLineReferences', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved value-expression default', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
@@ -371,11 +344,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {
-					source: {
-						kind: 'module',
-					},
-				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
@@ -392,7 +360,7 @@ describe('resolveLineReferences', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for push with &name when memory does not exist', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
@@ -406,7 +374,7 @@ describe('resolveLineReferences', () => {
 
 	it('throws for count(*localPointer) when the pointer has no element count metadata', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {
@@ -426,7 +394,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 				functions: { byId: {}, arityByName: {} },
 			},
 			locals: {},
@@ -445,7 +412,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
 					arityByName: { knownFn: 0 },
@@ -471,7 +437,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 				functions: {
 					byId: { knownFn__int: targetFunction },
 					arityByName: { knownFn: 1 },
@@ -497,7 +462,6 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
-				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
 					arityByName: { knownFn: 1 },
@@ -526,7 +490,7 @@ describe('resolveLineReferences', () => {
 
 	it('rejects zero clamp-address access width', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 
@@ -537,7 +501,7 @@ describe('resolveLineReferences', () => {
 
 	it('rejects unsupported clamp-address access widths', () => {
 		const context = {
-			namespace: { moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test' },
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 
@@ -586,10 +550,8 @@ describe('resolveSemanticReferences', () => {
 		const result = resolveSemanticReferences({
 			ast: { prototypes: [], modules: [], constants: [] },
 			registeredFunctions: [{ ast, metadata }],
-			namespaces: {},
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
-			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
 			constantReferences: { prototypes: [], modules: [], constants: [], functions: [{ lineFacts: [] }] },
 			memoryReferences: {

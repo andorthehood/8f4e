@@ -14,5 +14,5 @@ export default function pushMemoryIdentifier(line: ResolvedMemoryPushLine, conte
 	const { memoryItem } = line.resolvedTarget;
 	const kind = resolveMemoryValueKind(memoryItem);
 
-	return saveByteCode(context, [...i32const(memoryItem.byteAddress), ...loadOpcode[kind](memoryItem.memoryIndex)]);
+	return saveByteCode(context, [...i32const(memoryItem.byteAddress), ...loadOpcode[kind]]);
 }

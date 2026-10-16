@@ -33,7 +33,6 @@ describe('piano directive widget resolution', () => {
 						'test-block': {
 							id: 'test-block',
 							lineNumber: 0,
-							memoryIndex: 0,
 							byteAddress: 0,
 							wordAlignedSize: 0,
 							wordAlignedByteLength: 0,
@@ -70,7 +69,6 @@ describe('piano directive widget resolution', () => {
 						},
 					},
 					moduleList: [],
-					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});

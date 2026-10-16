@@ -3,19 +3,7 @@ import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { WASM_MISC } from '../wasmInstruction';
 import { WASM_MISC_MEMORY_INIT } from '../wasmMiscInstruction';
 
-/**
- * Creates a WebAssembly memory.init instruction.
- *
- * Stack: destination memory offset, source data offset, byte count.
- *
- * @param dataSegmentIndex - Data segment index for the instruction.
- * @param memoryIndex - Memory index to encode.
- * @returns Encoded memory init instruction bytes.
- */
-export default function memoryInit(dataSegmentIndex = 0, memoryIndex = 0): number[] {
-	return [
-		...prefixedInstruction(WASM_MISC, WASM_MISC_MEMORY_INIT),
-		...unsignedLEB128(dataSegmentIndex),
-		...unsignedLEB128(memoryIndex),
-	];
+/** Creates a WebAssembly memory.init instruction. Stack: destination offset, source data offset, byte count. */
+export default function memoryInit(dataSegmentIndex = 0): number[] {
+	return [...prefixedInstruction(WASM_MISC, WASM_MISC_MEMORY_INIT), ...unsignedLEB128(dataSegmentIndex), 0];
 }

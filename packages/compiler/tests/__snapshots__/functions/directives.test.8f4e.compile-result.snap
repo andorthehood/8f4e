@@ -336,7 +336,6 @@
           "id": "output",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -355,7 +354,6 @@
           "id": "value",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -374,7 +372,6 @@
       "skippedDirectiveModule",
     ],
     "requiredMemoryBytes": 12,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

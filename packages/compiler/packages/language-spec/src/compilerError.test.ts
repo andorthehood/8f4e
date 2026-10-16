@@ -46,9 +46,6 @@ describe('getError', () => {
 		expect(
 			getError(ErrorCode.POINTEE_ELEMENT_MAX_ON_NON_POINTER, line, undefined, { identifier: 'peak' }).message
 		).toContain('"peak" is not a pointer');
-		expect(
-			getError(ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS, line, undefined, { identifier: 'region9' }).message
-		).toBe(`Memory region index is out of bounds: region9. (${ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS})`);
 	});
 
 	it('includes the undeclared identifier when provided', () => {

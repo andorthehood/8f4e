@@ -8,14 +8,12 @@ import type {
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	FunctionValueType,
-	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	MemoryReferenceResolutionBlockFacts,
 	MemoryReferenceResolutionLineFacts,
 	MemoryReferenceResolutionReport,
 	ModuleAST,
-	Namespaces,
 	ProjectMemoryAliasLookup,
 	PrototypeAST,
 	RegisteredFunction,
@@ -63,10 +61,8 @@ export interface ResolveSemanticReferencesInput<
 > {
 	ast: SemanticReferenceResolverSubProgramAST<TPrototype, TModule, TConstants>;
 	registeredFunctions: readonly RegisteredFunction<TFunction>[];
-	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
 	memoryAliases: ProjectMemoryAliasLookup;
-	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	constantReferences: {
 		prototypes: readonly ConstantResolutionBlockFacts[];
@@ -329,7 +325,6 @@ function createModuleContext(
 	const plannedModule = input.memoryPlan.modules[ast.id];
 	return createCompilationContext<ReferenceResolutionContext>({
 		namespace: {
-			namespaces: input.namespaces,
 			moduleName: undefined,
 			functions: input.functions,
 			prototypeShapeIds: collectPrototypeShapeIds(ast),
@@ -340,16 +335,10 @@ function createModuleContext(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		startingByteAddress: plannedModule.byteAddress,
-		currentModuleNextWordOffset: plannedModule.wordAlignedSize,
-		currentModuleWordAlignedSize: plannedModule.wordAlignedSize,
-		currentMemoryIndex: plannedModule.memoryIndex,
-		...(plannedModule.memoryRegionName ? { currentMemoryRegionName: plannedModule.memoryRegionName } : {}),
 		memoryPlan: input.memoryPlan,
 		memoryAliases: input.memoryAliases,
 		currentPlannedModule: plannedModule,
-		memoryDefaults: input.memoryDefaultsByModuleId[ast.id],
-		pointerMetadata: input.pointerMetadataByModuleId[ast.id],
+		pointerMetadataByModuleId: input.pointerMetadataByModuleId,
 		mode: 'module',
 		functionTypeRegistry: input.functionTypeRegistry,
 		prototypeShapes: input.prototypeShapes,
@@ -365,7 +354,6 @@ function createFunctionContext(
 ): ReferenceResolutionContext {
 	return createCompilationContext<ReferenceResolutionContext>({
 		namespace: {
-			namespaces: input.namespaces,
 			moduleName: undefined,
 			functions: input.functions,
 			prototypeShapeIds: [],
@@ -376,14 +364,9 @@ function createFunctionContext(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
 		memoryPlan: input.memoryPlan,
 		memoryAliases: input.memoryAliases,
-		memoryDefaults: {},
-		pointerMetadata: {},
+		pointerMetadataByModuleId: input.pointerMetadataByModuleId,
 		mode: 'function',
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,

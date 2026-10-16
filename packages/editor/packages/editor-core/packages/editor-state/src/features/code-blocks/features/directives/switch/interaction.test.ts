@@ -33,7 +33,6 @@ describe('switch interaction', () => {
 						'test-block': {
 							id: 'test-block',
 							lineNumber: 0,
-							memoryIndex: 0,
 							byteAddress: 0,
 							wordAlignedSize: 0,
 							wordAlignedByteLength: 0,
@@ -49,7 +48,6 @@ describe('switch interaction', () => {
 						},
 					},
 					moduleList: [],
-					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			callbacks: {

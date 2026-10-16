@@ -14,7 +14,6 @@ import {
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
-	getMemoryRegionFields,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
@@ -40,10 +39,6 @@ export interface MemoryReferenceResolutionContext {
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId;
 	moduleName?: string;
 	locals: LocalMap;
-	startingByteAddress: number;
-	currentModuleWordAlignedSize: number;
-	currentMemoryIndex: number;
-	currentMemoryRegionName?: string;
 }
 
 function getCurrentModuleId(context: MemoryReferenceResolutionContext): string | undefined {
@@ -319,15 +314,12 @@ export function resolveMemoryExpressionOperand(
 		const targetModule = getModule(context, targetModuleId);
 		const item = targetModule?.declarations[operand.targetMemoryIndex];
 		if (item) {
-			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
 			const resolvedModuleId = targetModuleId === 'this' ? getCurrentModuleId(context) : targetModuleId;
 			return {
 				...memoryStartAddressValue(item, resolvedModuleId),
 				address: {
-					...memoryRegionFields,
 					safeRange: {
 						source: 'module-nth-memory-start',
-						...memoryRegionFields,
 						byteAddress: item.byteAddress,
 						safeByteLength: item.wordAlignedByteLength,
 						moduleId: resolvedModuleId,

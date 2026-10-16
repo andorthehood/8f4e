@@ -46,7 +46,7 @@ The pass returns `references`, a report containing:
 - `declarationSourcesByModuleId`: per-line argument facts aligned with each planned module's effective declaration sources.
 - `pointerMetadataByModuleId`: pointer target facts derived from resolved declaration-source address defaults.
 
-When a resolved value is an address, the literal should keep the address metadata needed by later compiler stages, such as memory index, memory region name, safe range, and clamp range.
+When a resolved value is an address, the literal should keep the address metadata needed by later compiler stages, such as safe range and clamp range.
 
 The pass must not mutate the caller's AST or namespace tables.
 

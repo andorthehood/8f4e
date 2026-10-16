@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Index editor pointer targets by memory and address'
+title: 'TODO: Index editor pointer targets by address'
 priority: Medium
 effort: 3-6h
 created: 2026-10-14
@@ -8,12 +8,12 @@ status: Open
 completed: null
 ---
 
-# TODO: Index editor pointer targets by memory and address
+# TODO: Index editor pointer targets by address
 
 ## Problem Description
 
-When `resolveMemoryIdentifier` dereferences a pointer, it filters the memory plan's module list by memory index,
-flattens their declarations, and searches for the declaration whose `byteAddress` equals the pointer value.
+When `resolveMemoryIdentifier` dereferences a pointer, it scans the memory plan's modules and
+declarations to find for the declaration whose `byteAddress` equals the pointer value.
 Every such lookup repeats these scans and allocates temporary arrays.
 
 Pointer-based widgets can repeat this work during block derived-state updates. Projects with many declarations
@@ -21,7 +21,7 @@ could benefit from an address index, but the effect on editor latency has not ye
 
 ## Proposed Solution
 
-Build a secondary index of planned declarations using nested Maps keyed by memory index and byte address. Reuse
+Build a secondary index of planned declarations keyed by byte address. Reuse
 the index for pointer-target resolution and rebuild or invalidate it whenever the memory plan changes.
 
 Read the current pointer value on every resolution. Cache declaration lookup data, not pointer values or resolved
@@ -31,15 +31,13 @@ targets, because runtime memory can change without recompilation.
 
 1. Measure pointer resolution with many declarations and multiple pointer-based widgets; record baseline results.
 2. Index declarations once per memory plan while preserving module/declaration traversal order for duplicate addresses.
-3. Replace the filter/flatten/find chain with lookup by the effective pointee memory index and current pointer value.
-4. Cover memory-plan replacement, cross-memory resolution, duplicate addresses, and changing pointer values, then
+3. Replace the scan with lookup by the current pointer value.
+4. Cover memory-plan replacement, cross-module resolution, duplicate addresses, and changing pointer values, then
    repeat the benchmark including index construction and retained memory.
 
 ## Success Criteria
 
-- [ ] Pointer-target lookup avoids repeated module filtering, declaration flattening, and linear address searches.
-- [ ] Identical byte addresses in different memories resolve independently.
-- [ ] Explicit pointee memory metadata and the existing fallback memory index retain their semantics.
+- [ ] Pointer-target lookup avoids repeated module and declaration scans.
 - [ ] Runtime pointer changes are reflected immediately without rebuilding the index.
 - [ ] Unknown addresses, address zero, duplicate addresses, recompilation, and project replacement behave correctly.
 - [ ] Measurements establish the benefit and maintenance cost on representative large projects.

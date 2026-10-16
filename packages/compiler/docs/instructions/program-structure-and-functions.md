@@ -68,7 +68,7 @@ defaults. Multiple initializers for the same backing memory item are an error, i
 refer to it.
 
 Initializers participate in `initDefaults()` and are ready before any entry's modules execute. Address initializers
-also provide their memory region and available pointee element count to pointer analysis. Source declarations remain
+also provide available pointee element counts to pointer analysis. Source declarations remain
 unchanged, and an initializer allocates no additional memory.
 
 `init` is valid only at group level. Root project scope, entry scope, and module/function bodies cannot contain it.

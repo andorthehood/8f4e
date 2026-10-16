@@ -26,10 +26,8 @@ describe('storeBytes instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 2,
 								memoryId: 'test',
@@ -63,10 +61,8 @@ describe('storeBytes instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 1,
 								memoryId: 'test',

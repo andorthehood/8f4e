@@ -85,8 +85,8 @@ const { instance } = await WebAssembly.instantiate(new Uint8Array(compiled.codeB
 });
 ```
 
-This example supplies the default non-shared memory. Programs with custom memory regions also require the corresponding
-memory imports. Every emitted assertion import is required during instantiation, even when its call is in a branch
+This example supplies the program's non-shared `host.memory`. Every emitted assertion import is required during
+instantiation, even when its call is in a branch
 that is never executed. Callback exceptions propagate and interrupt the current invocation; collecting callbacks
 should return normally to run later assertions.
 

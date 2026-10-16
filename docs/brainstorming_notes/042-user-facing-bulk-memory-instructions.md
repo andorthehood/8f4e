@@ -156,21 +156,6 @@ push &buffer[0]
 copyBytes 64
 ```
 
-If multi-memory regions are added later, copy semantics need to say whether source and destination can live in different regions.
-
-## Relationship to multi-memory
-
-Bulk memory becomes more interesting with logical memory regions.
-
-Open questions:
-
-- should `copyBytes` support copying between regions?
-- should region-crossing copies require explicit syntax?
-- should `copyBytes` infer source and destination regions from address metadata?
-- should region-crossing copies be rejected unless both addresses are statically known?
-
-WebAssembly multi-memory can express memory-indexed copies, but 8f4e should expose logical regions rather than raw memory indices.
-
 ## Relationship to `storeBytes`
 
 `storeBytes <count>` is a stack-to-memory literal write helper. It should stay separate.

@@ -26,7 +26,6 @@ function createPointerMemoryItem(
 	return {
 		numberOfElements: 1,
 		elementWordSize: 4,
-		memoryIndex: 0,
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
 		isInteger: true,

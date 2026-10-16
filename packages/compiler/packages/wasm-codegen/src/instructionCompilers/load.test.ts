@@ -23,10 +23,8 @@ describe('load instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 4,
 								memoryId: 'test',
@@ -79,10 +77,8 @@ describe('load instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 2,
 								memoryId: 'test',
@@ -109,7 +105,7 @@ describe('load instruction compiler', () => {
 			context,
 			createStackFacts({
 				consumedOperands: [
-					{ kind: 'address', valueType: 'int', isNonZero: false, address: { memoryIndex: 0, safeAccessByteWidth: 4 } },
+					{ kind: 'address', valueType: 'int', isNonZero: false, address: { safeAccessByteWidth: 4 } },
 				],
 			})
 		);

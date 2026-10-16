@@ -32,7 +32,7 @@ import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileFunction, compileModules, planFunctionLayout } from '@8f4e/wasm-codegen';
 import { planAssertions } from './assertions';
-import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
+import { assertUniqueModuleIds, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
 	functionLayout: WasmFunctionLayout;
@@ -218,7 +218,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 			constantReferences: constantResolution.references,
 			startingByteAddress:
 				(options.startingMemoryWordAddress ?? DEFAULT_STARTING_MEMORY_WORD_ADDRESS) * GLOBAL_ALIGNMENT_BOUNDARY,
-			memoryRegions: options.memoryRegions,
 		});
 	} catch (error) {
 		throw wrapMemoryPlannerError(error, subProgramAst);
@@ -231,18 +230,17 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		projectMemoryInitializerScopes: program.projectMemoryInitializerScopes,
 		constantReferences: constantResolution.references,
 	});
+	const { pointerMetadataByModuleId } = memoryReferenceResolution.references;
 	const prototypeShapesById = indexPrototypeShapes(subProgramAst.prototypes);
-	let memoryDefaultResolution: ReturnType<typeof resolveMemoryDefaults>;
+	let memoryDefaultsByModuleId: ReturnType<typeof resolveMemoryDefaults>;
 	try {
-		memoryDefaultResolution = resolveMemoryDefaults({
+		memoryDefaultsByModuleId = resolveMemoryDefaults({
 			memoryPlan,
 			memoryReferences: memoryReferenceResolution.references,
 		});
 	} catch (error) {
 		throw wrapMemoryDefaultResolverError(error, subProgramAst);
 	}
-
-	const namespaces = collectNamespacesFromASTs(subProgramAst.modules, memoryPlan, memoryDefaultResolution);
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames);
 	const registration = registerFunctions(subProgramAst.functions, {
@@ -260,11 +258,9 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 	const semanticReferences = resolveSemanticReferences({
 		ast: subProgramAst,
 		registeredFunctions: registration.declarations,
-		namespaces,
 		memoryPlan,
 		memoryAliases: program.memoryAliases,
-		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		pointerMetadataByModuleId,
 		constantReferences: constantResolution.references,
 		memoryReferences: memoryReferenceResolution.references,
 		functions: functionRegistry,
@@ -273,10 +269,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 	}).references;
 	const stackReport = analyzeStack({
 		semanticReferences,
-		namespaces,
 		memoryPlan,
-		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		pointerMetadataByModuleId,
 		functions: functionRegistry,
 		functionTypeRegistry,
 	});
@@ -319,8 +313,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		compiledFunctions,
 		functionTypeRegistry,
 		memoryPlan,
-		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
-		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		memoryDefaultsByModuleId,
+		pointerMetadataByModuleId,
 		projectMemoryExposuresByGroupPath,
 		cache,
 	};

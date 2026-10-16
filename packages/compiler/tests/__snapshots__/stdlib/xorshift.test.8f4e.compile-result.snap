@@ -469,7 +469,6 @@
           "id": "seed",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -487,7 +486,6 @@
       "xorshiftAssertions",
     ],
     "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

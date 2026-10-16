@@ -38,7 +38,6 @@ export function analyzeClampAddress(line: CompilerASTLine, context: CompilationC
 		produced,
 		clamp: {
 			accessByteWidth,
-			memoryIndex: produced[0].address.memoryIndex,
 			...(range ? { range } : {}),
 		},
 	};

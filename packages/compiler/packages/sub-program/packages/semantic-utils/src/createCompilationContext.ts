@@ -20,7 +20,6 @@ export function createCompilationContext<TContext extends CompilationContext = C
 ): TContext {
 	const base: CompilationContext = {
 		namespace: {
-			namespaces: {},
 			moduleName: undefined,
 			prototypeShapeIds: [],
 		},
@@ -28,15 +27,9 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		byteCode: [],
 		stack: [],
 		...createBlockState(),
-		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
 		memoryPlan: createEmptyMemoryPlan(),
 		memoryAliases: new Map(),
-		memoryDefaults: {},
-		pointerMetadata: {},
-		memoryRegions: [],
+		pointerMetadataByModuleId: {},
 		mode: 'module',
 	};
 

@@ -9,14 +9,12 @@ describe('memory declaration layout planner', () => {
 			instruction: 'int',
 			startingByteAddress: 4,
 			localWordOffset: 0,
-			region: { memoryIndex: 0 },
 		});
 
 		expect(result).toEqual({
 			declaration: {
 				numberOfElements: 1,
 				elementWordSize: 4,
-				memoryIndex: 0,
 				wordAlignedAddress: 1,
 				wordAlignedSize: 1,
 				wordAlignedByteLength: 4,
@@ -42,7 +40,6 @@ describe('memory declaration layout planner', () => {
 			instruction: 'float64',
 			startingByteAddress: 4,
 			localWordOffset: 0,
-			region: { memoryIndex: 0 },
 		});
 
 		expect(result.declaration.wordAlignedAddress).toBe(2);
@@ -59,14 +56,11 @@ describe('memory declaration layout planner', () => {
 			numberOfElements: 5,
 			startingByteAddress: 4,
 			localWordOffset: 0,
-			region: { memoryIndex: 1, memoryRegionName: 'audio' },
 		});
 
 		expect(result.declaration).toMatchObject({
 			numberOfElements: 5,
 			elementWordSize: 1,
-			memoryIndex: 1,
-			memoryRegionName: 'audio',
 			wordAlignedAddress: 1,
 			wordAlignedSize: 2,
 			byteAddress: 4,
@@ -88,7 +82,6 @@ describe('memory declaration layout planner', () => {
 			numberOfElements: 2,
 			startingByteAddress: 4,
 			localWordOffset: 0,
-			region: { memoryIndex: 0 },
 		});
 
 		expect(result.declaration.wordAlignedAddress).toBe(2);

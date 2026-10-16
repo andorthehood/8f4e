@@ -239,7 +239,6 @@
       "loopLocalStorageAssertions",
     ],
     "requiredMemoryBytes": 4,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "capped",
       "initDefaults",

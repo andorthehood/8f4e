@@ -50,16 +50,6 @@ export interface FixtureProgramInstantiateOptions extends FixtureProgramCompileO
 
 export const testRoot = path.dirname(fileURLToPath(import.meta.url));
 
-const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
-
-export function getTestMemoryRegions(source: string): string[] {
-	return source
-		.split('\n')
-		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
-		.filter((regions): regions is string => regions !== undefined)
-		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
-}
-
 export async function collectFixtureProgramFiles(directory = testRoot): Promise<string[]> {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
 	const nestedFiles = await Promise.all(
@@ -83,18 +73,6 @@ export async function collectFixtureProgramFiles(directory = testRoot): Promise<
 export function createMemory(requiredMemoryBytes: number): WebAssembly.Memory {
 	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	return new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
-}
-
-export function createMemoryImports(
-	requiredMemoryBytes: number,
-	requiredMemoryBytesByRegion: Record<string, number> = {}
-): Record<string, WebAssembly.Memory> {
-	return {
-		memory: createMemory(requiredMemoryBytes),
-		...Object.fromEntries(
-			Object.entries(requiredMemoryBytesByRegion).map(([regionName, bytes]) => [regionName, createMemory(bytes)])
-		),
-	};
 }
 
 export function getExportedFunction(
@@ -149,20 +127,12 @@ function serializeMemoryData(
 		wordAlignedSize: data.wordAlignedSize,
 		byteAddress: data.byteAddress,
 		wordAlignedAddress: data.wordAlignedAddress,
-		memoryIndex: data.memoryIndex,
-		...(data.memoryRegionName ? { memoryRegionName: data.memoryRegionName } : {}),
 		default: serializeDefaultValue(memoryDefault?.value ?? 0),
 		...(memoryDefault?.hasExplicitDefault ? { hasExplicitDefault: true } : {}),
 		...(memoryDefault?.isInherited ? { isInherited: true } : {}),
 		isInteger: data.isInteger,
 		...(data.isFloat64 ? { isFloat64: true } : {}),
 		...(data.pointeeBaseType ? { pointeeBaseType: data.pointeeBaseType } : {}),
-		...(pointerMetadata?.pointeeMemoryIndex !== undefined
-			? { pointeeMemoryIndex: pointerMetadata.pointeeMemoryIndex }
-			: {}),
-		...(pointerMetadata?.pointeeMemoryRegionName
-			? { pointeeMemoryRegionName: pointerMetadata.pointeeMemoryRegionName }
-			: {}),
 		...(pointerMetadata?.pointeeElementCount !== undefined
 			? { pointeeElementCount: pointerMetadata.pointeeElementCount }
 			: {}),
@@ -214,8 +184,6 @@ function serializeCompiledModuleOverview(
 		id: module.id,
 		index: module.index,
 		...(module.executionEntryName ? { executionEntryName: module.executionEntryName } : {}),
-		memoryIndex: plannedModule.memoryIndex,
-		...(plannedModule.memoryRegionName ? { memoryRegionName: plannedModule.memoryRegionName } : {}),
 		byteAddress: plannedModule.byteAddress,
 		wordAlignedAddress: plannedModule.byteAddress / 4,
 		wordAlignedSize: plannedModule.wordAlignedSize,
@@ -269,7 +237,6 @@ export function serializeCompileResult(result: CompileResult): FixtureCompileSna
 	return {
 		overview: {
 			requiredMemoryBytes: result.requiredMemoryBytes,
-			requiredMemoryBytesByRegion: sortRecord(result.requiredMemoryBytesByRegion, bytes => bytes),
 			compiledModules: Object.keys(moduleOverview),
 			compiledFunctions: Object.keys(functionOverview),
 		},
@@ -292,7 +259,6 @@ export async function compileFixtureProgramSource(
 ): Promise<CompiledFixtureProgram> {
 	const normalizedSource = source.trimStart();
 	const project = parseProjectSource(normalizedSource);
-	const memoryRegions = getTestMemoryRegions(normalizedSource);
 	const compileProjectModel: ProjectObjectModel = {
 		...project,
 		prototypes: [...project.prototypes, ...(options.extraPrototypes ?? [])],
@@ -304,7 +270,6 @@ export async function compileFixtureProgramSource(
 		compileResult: await compileProject(compileProjectModel, {
 			disableSharedMemory: true,
 			includeStackAnalysis: options.includeStackAnalysis,
-			memoryRegions,
 			resolveInclude: resolveTestInclude,
 			cache: options.cache,
 		}),
@@ -317,10 +282,7 @@ export async function instantiateFixtureProgramSource(
 ): Promise<InstantiatedFixtureProgram> {
 	const compiledFixture = await compileFixtureProgramSource(source, options);
 	const host = {
-		...createMemoryImports(
-			compiledFixture.compileResult.requiredMemoryBytes,
-			compiledFixture.compileResult.requiredMemoryBytesByRegion
-		),
+		memory: createMemory(compiledFixture.compileResult.requiredMemoryBytes),
 		...options.hostImports,
 	};
 	const { instance } = await WebAssembly.instantiate(new Uint8Array(compiledFixture.compileResult.codeBuffer), {
@@ -349,7 +311,6 @@ export async function runFixtureProgramFile(filePath: string) {
 		compiled = await compileProject(project, {
 			enableAssertions: true,
 			disableSharedMemory: true,
-			memoryRegions: getTestMemoryRegions(source),
 			resolveInclude: resolveTestInclude,
 		});
 		result = await runTests(compiled);

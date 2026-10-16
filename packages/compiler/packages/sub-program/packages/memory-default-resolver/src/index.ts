@@ -6,7 +6,6 @@ import type {
 	MemoryDefault,
 	MemoryDefaults,
 	MemoryLayoutPlan,
-	MemoryPointerMetadataMap,
 	MemoryReferenceResolutionLineFacts,
 	MemoryReferenceResolutionReport,
 	PlannedMemoryDeclaration,
@@ -25,12 +24,7 @@ import {
 
 export interface ResolveMemoryDefaultsInput {
 	memoryPlan: MemoryLayoutPlan;
-	memoryReferences: MemoryReferenceResolutionReport;
-}
-
-export interface ResolveMemoryDefaultsResult {
-	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
-	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	memoryReferences: Pick<MemoryReferenceResolutionReport, 'declarationSourcesByModuleId'>;
 }
 
 interface MemoryDefaultResolverErrorDetails {
@@ -336,10 +330,9 @@ function applyMemoryReferenceFacts<TLine extends CompilerASTLine>(
 function resolveModuleMemoryDefaults(
 	plannedModule: PlannedMemoryModule,
 	memoryPlan: MemoryLayoutPlan,
-	memoryReferences: MemoryReferenceResolutionReport
-): { memoryDefaults: MemoryDefaults; pointerMetadata: MemoryPointerMetadataMap } {
+	memoryReferences: ResolveMemoryDefaultsInput['memoryReferences']
+): MemoryDefaults {
 	const memoryDefaults: MemoryDefaults = {};
-	const pointerMetadata = memoryReferences.pointerMetadataByModuleId[plannedModule.id]!;
 	const declarationSourceFacts = memoryReferences.declarationSourcesByModuleId[plannedModule.id]!.lineFacts;
 
 	plannedModule.declarationSources.forEach(({ line, isInherited }, index) => {
@@ -367,34 +360,25 @@ function resolveModuleMemoryDefaults(
 		);
 	});
 
-	return { memoryDefaults, pointerMetadata };
+	return memoryDefaults;
 }
 
 /**
- * Resolves memory defaults and pointer target metadata for a whole planned sub-program.
+ * Resolves memory defaults for a whole planned sub-program.
  *
  * The memory plan is the source of truth for declaration order, layout, and
  * effective declaration source lines after shape expansion.
  *
  * @param input - Completed memory plan and memory-reference facts for the sub-program.
- * @returns Defaults and pointer metadata keyed by module id.
+ * @returns Memory defaults keyed by module id.
  */
-export function resolveMemoryDefaults(input: ResolveMemoryDefaultsInput): ResolveMemoryDefaultsResult {
-	const pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap> = {};
+export function resolveMemoryDefaults(input: ResolveMemoryDefaultsInput): Record<string, MemoryDefaults> {
 	const memoryDefaultsByModuleId: Record<string, MemoryDefaults> = {};
 
 	for (const plannedModule of input.memoryPlan.moduleList) {
-		const { memoryDefaults, pointerMetadata } = resolveModuleMemoryDefaults(
-			plannedModule,
-			input.memoryPlan,
-			input.memoryReferences
-		);
+		const memoryDefaults = resolveModuleMemoryDefaults(plannedModule, input.memoryPlan, input.memoryReferences);
 		memoryDefaultsByModuleId[plannedModule.id] = memoryDefaults;
-		pointerMetadataByModuleId[plannedModule.id] = pointerMetadata;
 	}
 
-	return {
-		memoryDefaultsByModuleId,
-		pointerMetadataByModuleId,
-	};
+	return memoryDefaultsByModuleId;
 }

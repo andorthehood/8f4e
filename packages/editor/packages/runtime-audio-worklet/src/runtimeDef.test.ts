@@ -290,7 +290,6 @@ describe('AudioWorklet runtime config', () => {
 							numberOfElements: 1,
 							elementWordSize: 4,
 							type: 'int',
-							memoryIndex: 0,
 							byteAddress: memoryData.wordAlignedAddress * 4,
 							elementByteLength: 4,
 							wordAlignedSize: 1,
@@ -310,7 +309,6 @@ describe('AudioWorklet runtime config', () => {
 					{
 						id: moduleId,
 						lineNumber: 1,
-						memoryIndex: 0,
 						byteAddress: moduleIndex * 4,
 						wordAlignedSize: Object.keys(memory).length,
 						wordAlignedByteLength: Object.keys(memory).length * 4,
@@ -327,7 +325,6 @@ describe('AudioWorklet runtime config', () => {
 		return {
 			modules,
 			moduleList: Object.values(modules),
-			nextByteAddressByMemoryIndex: {},
 		};
 	}
 

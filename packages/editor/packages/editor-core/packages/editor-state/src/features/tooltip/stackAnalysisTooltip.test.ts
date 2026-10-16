@@ -69,7 +69,7 @@ describe('stack analysis tooltip text', () => {
 					{ kind: 'value', valueType: 'int' },
 					{ kind: 'value', valueType: 'int', knownValue: 1234 },
 					{ kind: 'value', valueType: 'float' },
-					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
+					{ kind: 'address', valueType: 'int', address: {} },
 					{ kind: 'value', valueType: 'int' },
 					{ kind: 'value', valueType: 'int' },
 				],
@@ -78,7 +78,7 @@ describe('stack analysis tooltip text', () => {
 				stackAfter: [
 					{ kind: 'value', valueType: 'int', knownValue: 1234 },
 					{ kind: 'value', valueType: 'float' },
-					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
+					{ kind: 'address', valueType: 'int', address: {} },
 					{ kind: 'value', valueType: 'int' },
 					{ kind: 'value', valueType: 'int' },
 				],

@@ -49,7 +49,6 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 				numberOfElements: 1,
 				elementWordSize: 4,
 				type: 'int',
-				memoryIndex: 0,
 				byteAddress: memoryData.wordAlignedAddress * 4,
 				elementByteLength: 4,
 				wordAlignedSize: 1,
@@ -67,7 +66,6 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 	const keys = {
 		id: 'keys',
 		lineNumber: 1,
-		memoryIndex: 0,
 		byteAddress: 0,
 		wordAlignedSize: Object.keys(memory).length,
 		wordAlignedByteLength: Object.keys(memory).length * 4,
@@ -81,7 +79,6 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 	return {
 		modules: { keys },
 		moduleList: [keys],
-		nextByteAddressByMemoryIndex: {},
 	};
 }
 

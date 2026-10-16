@@ -49,9 +49,7 @@ Loading failures offer a retry.
 
 The `/tests/` page discovers `packages/compiler/tests/**/*.test.8f4e` through the Vite glob in `src/tests/projects.ts`.
 Adding or removing a fixture updates the catalog at the next build. Fixtures are grouped by directory, with root-level
-files under General. Error fixtures and include-only helper sources are excluded. The `memory-regions` and
-`region-selection` fixtures are also excluded until the editor supports additional memory regions; they remain in
-the compiler test suite.
+files under General. Error fixtures and include-only helper sources are excluded.
 
 Vite emits the original project files as downloadable assets, so this gallery needs no separate fixture deployment.
 Each project has a GitHub source link and an Open in editor link. Hash URLs use the relative fixture path without

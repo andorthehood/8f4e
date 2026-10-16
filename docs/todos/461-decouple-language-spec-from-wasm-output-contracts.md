@@ -35,7 +35,7 @@ Keep language-spec focused on source-level and target-neutral language facts:
 - source-level function value types and signatures.
 - instruction metadata that is true before choosing a backend.
 - diagnostic codes and shared diagnostic data shapes.
-- target-neutral memory layout facts such as declared memory regions and logical memory indexes.
+- target-neutral memory layout facts such as declaration addresses, sizes, and element types.
 
 Move WASM emission and runtime contracts to `@8f4e/wasm-codegen` or a small WASM-specific contract package owned by that
 backend.

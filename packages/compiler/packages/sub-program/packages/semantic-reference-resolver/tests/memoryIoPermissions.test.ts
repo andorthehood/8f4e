@@ -27,10 +27,8 @@ function resolveFunction(body: string[], isImpure = false) {
 	return resolveSemanticReferences({
 		ast: { prototypes: [], modules: [], constants: [] },
 		registeredFunctions: [{ ast, metadata }],
-		namespaces: {},
-		memoryPlan: { modules: {}, moduleList: [], nextByteAddressByMemoryIndex: {} },
+		memoryPlan: { modules: {}, moduleList: [] },
 		memoryAliases: new Map(),
-		memoryDefaultsByModuleId: {},
 		pointerMetadataByModuleId: {},
 		constantReferences: { prototypes: [], modules: [], constants: [], functions: [{ lineFacts: [] }] },
 		memoryReferences: {

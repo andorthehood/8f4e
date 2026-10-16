@@ -7,12 +7,6 @@ export interface CompileOptions {
 	enableAssertions?: boolean;
 	/** Word address where the first module memory allocation begins. Defaults to 1. */
 	startingMemoryWordAddress?: number;
-	/**
-	 * Ordered custom memory region names. WebAssembly memory index 0 is always the
-	 * implicit default memory and is not listed here; custom names map to
-	 * indices 1..N by array position.
-	 */
-	memoryRegions?: string[];
 	/** Whether to include per-instruction stack analysis in compiled modules and functions. Default is false. */
 	includeStackAnalysis?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */

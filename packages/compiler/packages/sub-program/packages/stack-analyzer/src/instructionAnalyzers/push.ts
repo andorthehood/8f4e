@@ -9,12 +9,7 @@ import type {
 	SemanticPushLine,
 	Stack,
 } from '@8f4e/language-spec';
-import {
-	ArgumentType,
-	getDereferencedValueKindFromMetadata,
-	getMemoryRegionFields,
-	getPointerDepthFromMetadata,
-} from '@8f4e/language-spec';
+import { ArgumentType, getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
 import { createStackValue, produce } from './stack';
@@ -44,8 +39,6 @@ function getAddressPointeeMetadata(context: CompilationContext, address: Address
 
 	return {
 		baseType,
-		memoryIndex: memoryItem.memoryIndex,
-		...(memoryItem.memoryRegionName ? { memoryRegionName: memoryItem.memoryRegionName } : {}),
 		pointerDepth,
 		elementCount: memoryItem.numberOfElements,
 	} satisfies PointeeMetadata;
@@ -86,10 +79,6 @@ function getPointeeMetadata(
 	return pointerMetadata.pointeeBaseType
 		? {
 				baseType: pointerMetadata.pointeeBaseType,
-				memoryIndex: pointerMetadata.pointeeMemoryIndex ?? 0,
-				...(pointerMetadata.pointeeMemoryRegionName
-					? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
-					: {}),
 				pointerDepth: getPointerDepthFromMetadata(pointerMetadata),
 				...(pointerMetadata.pointeeElementCount !== undefined
 					? { elementCount: pointerMetadata.pointeeElementCount }
@@ -121,16 +110,9 @@ function pushDereferencedPointerStackItems(
 		return [
 			kindToStackItem('int32', {
 				isNonZero: false,
-				address: getMemoryRegionFields(
-					pointerMetadata.pointeeMemoryIndex ?? 0,
-					pointerMetadata.pointeeMemoryRegionName
-				),
+				address: {},
 				pointsTo: {
 					baseType: pointerMetadata.pointeeBaseType,
-					memoryIndex: pointerMetadata.pointeeMemoryIndex ?? 0,
-					...(pointerMetadata.pointeeMemoryRegionName
-						? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
-						: {}),
 					pointerDepth: remainingPointerDepth,
 					...(pointerMetadata.pointeeElementCount !== undefined
 						? { elementCount: pointerMetadata.pointeeElementCount }
@@ -155,7 +137,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine, context: Compilati
 				kindToStackItem(kind, {
 					isNonZero: false,
 					...(pointsTo ? { pointsTo } : {}),
-					...(pointsTo ? { address: getMemoryRegionFields(pointsTo.memoryIndex, pointsTo.memoryRegionName) } : {}),
+					...(pointsTo ? { address: {} } : {}),
 				}),
 			];
 		}
@@ -180,7 +162,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine, context: Compilati
 				local.pointeeBaseType
 					? kindToStackItem('int32', {
 							isNonZero: false,
-							address: getMemoryRegionFields(local.pointeeMemoryIndex ?? 0, local.pointeeMemoryRegionName),
+							address: {},
 							...(pointsTo ? { pointsTo } : {}),
 						})
 					: {

@@ -27,10 +27,8 @@ describe('memoryCopy instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 20,
 								safeByteLength: 20,
 								memoryId: 'target',
@@ -42,10 +40,8 @@ describe('memoryCopy instruction compiler', () => {
 						valueType: 'int',
 						isNonZero: false,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 20,
 								memoryId: 'source',

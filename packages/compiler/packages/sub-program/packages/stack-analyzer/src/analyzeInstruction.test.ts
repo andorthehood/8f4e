@@ -190,8 +190,6 @@ describe('analyzeInstruction', () => {
 	it('records clamp address facts', () => {
 		const range: MemoryAddressRange = {
 			source: 'memory-start',
-			memoryIndex: 2,
-			memoryRegionName: 'aux',
 			byteAddress: 16,
 			safeByteLength: 64,
 			memoryId: 'buffer',
@@ -200,7 +198,7 @@ describe('analyzeInstruction', () => {
 		context.stack.push({
 			kind: 'address',
 			valueType: 'int',
-			address: { memoryIndex: 0, clampRange: range },
+			address: { clampRange: range },
 		});
 		const line = {
 			lineNumber: 1,
@@ -212,7 +210,6 @@ describe('analyzeInstruction', () => {
 
 		expect(facts.clamp).toEqual({
 			accessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY * 2,
-			memoryIndex: 2,
 			range,
 		});
 	});

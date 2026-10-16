@@ -116,7 +116,6 @@ export type CompileResult = {
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	requiredMemoryBytes: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;
 };
 
