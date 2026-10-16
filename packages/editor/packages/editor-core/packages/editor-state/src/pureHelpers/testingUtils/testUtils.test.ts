@@ -7,16 +7,10 @@ import { createMockCodeBlock } from './testUtils';
  * and setting lastUpdated to a fixed value
  */
 function normalizeBlock(block: CodeBlockGraphicData) {
-	const { displayModel: _displayModel, ...normalizedBlock } = block;
-	delete normalizedBlock.isCollapsed;
-
 	return {
-		...normalizedBlock,
+		...block,
 		lastUpdated: 0,
 		gaps: Array.from(block.gaps.entries()),
-		widgets: {
-			...block.widgets,
-		},
 	};
 }
 

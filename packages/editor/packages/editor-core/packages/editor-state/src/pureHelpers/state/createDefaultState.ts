@@ -127,7 +127,6 @@ export default function createDefaultState() {
 			targetX: 0,
 			targetY: 0,
 			active: false,
-			durationMs: 500,
 		},
 	};
 }

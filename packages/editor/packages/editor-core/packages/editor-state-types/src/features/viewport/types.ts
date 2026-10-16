@@ -37,5 +37,4 @@ export interface ViewportAnimation {
 	targetY: number;
 	active: boolean;
 	startTime?: number;
-	durationMs: number;
 }

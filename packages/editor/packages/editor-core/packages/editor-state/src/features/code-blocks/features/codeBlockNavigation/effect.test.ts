@@ -7,7 +7,6 @@ import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDire
 
 interface JumpToFavoriteCodeBlockEvent {
 	creationIndex: number;
-	name: string;
 }
 
 describe('codeBlockNavigation', () => {
@@ -59,7 +58,6 @@ describe('codeBlockNavigation', () => {
 			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 				codeBlocks: [selectedBlock, leftBlock, rightBlock, upBlock, downBlock],
-				viewport: { x: 0, y: 0, width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
 		});
 
@@ -83,28 +81,28 @@ describe('codeBlockNavigation', () => {
 
 	it('should register a navigateCodeBlock event handler', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		expect(events.on).toHaveBeenCalledWith('navigateCodeBlock', expect.any(Function));
 	});
 
 	it('should register a jumpToFavoriteCodeBlock event handler', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		expect(events.on).toHaveBeenCalledWith('jumpToFavoriteCodeBlock', expect.any(Function));
 	});
 
 	it('should register a goHome event handler', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		expect(events.on).toHaveBeenCalledWith('goHome', expect.any(Function));
 	});
 
 	it('should do nothing when no code block is selected', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		state.codeBlockRendering.selectedCodeBlock = undefined;
 		onNavigateCodeBlockHandler({ direction: 'right' });
@@ -113,7 +111,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should navigate left when navigateCodeBlock event with left direction is dispatched', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		onNavigateCodeBlockHandler({ direction: 'left' });
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(leftBlock);
@@ -121,7 +119,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should navigate right when navigateCodeBlock event with right direction is dispatched', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
@@ -137,7 +135,7 @@ describe('codeBlockNavigation', () => {
 		});
 		state.codeBlockRendering.codeBlocks = [selectedBlock, anchoredRight, rightBlock];
 
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
@@ -155,7 +153,7 @@ describe('codeBlockNavigation', () => {
 		state.codeBlockRendering.selectedCodeBlock = anchoredSelected;
 		state.codeBlockRendering.codeBlocks = [anchoredSelected, rightBlock];
 
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
@@ -172,7 +170,7 @@ describe('codeBlockNavigation', () => {
 		rightBlock.cursor.row = 0;
 		rightBlock.cursor.col = 0;
 
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
@@ -184,7 +182,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should navigate up when navigateCodeBlock event with up direction is dispatched', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 		selectedBlock.cursor.row = 0;
 		selectedBlock.cursor.y = 0;
 
@@ -194,7 +192,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should navigate down when navigateCodeBlock event with down direction is dispatched', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 		selectedBlock.code = ['zero', 'one', 'two', 'three'];
 		selectedBlock.cursor.row = 3;
 		selectedBlock.cursor.y = 3 * state.viewport.hGrid;
@@ -209,7 +207,7 @@ describe('codeBlockNavigation', () => {
 		selectedBlock.cursor.col = 2;
 		selectedBlock.cursor.y = 2 * state.viewport.hGrid;
 
-		const result = navigateToCodeBlockInDirection(state, 'up', events);
+		const result = navigateToCodeBlockInDirection(createStateManager(state), 'up', events);
 
 		expect(result).toBe(true);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
@@ -248,7 +246,7 @@ describe('codeBlockNavigation', () => {
 		selectedBlock.cursor.col = 1;
 		selectedBlock.cursor.y = state.viewport.hGrid;
 
-		const result = navigateToCodeBlockInDirection(state, 'down', events);
+		const result = navigateToCodeBlockInDirection(createStateManager(state), 'down', events);
 
 		expect(result).toBe(true);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
@@ -274,7 +272,7 @@ describe('codeBlockNavigation', () => {
 		upBlock.cursor.col = 0;
 		upBlock.cursor.y = 0;
 
-		const result = navigateToCodeBlockInDirection(state, 'up', events);
+		const result = navigateToCodeBlockInDirection(createStateManager(state), 'up', events);
 
 		expect(result).toBe(true);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(upBlock);
@@ -294,7 +292,7 @@ describe('codeBlockNavigation', () => {
 		downBlock.cursor.col = 1;
 		downBlock.cursor.y = 2 * state.viewport.hGrid;
 
-		const result = navigateToCodeBlockInDirection(state, 'down', events);
+		const result = navigateToCodeBlockInDirection(createStateManager(state), 'down', events);
 
 		expect(result).toBe(true);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(downBlock);
@@ -305,7 +303,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should center viewport on the newly selected highlighted line', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		selectedBlock.cursor.y = state.viewport.hGrid;
 		rightBlock.cursor.y = 5 * state.viewport.hGrid;
@@ -344,11 +342,15 @@ describe('codeBlockNavigation', () => {
 			},
 		});
 
-		codeBlockNavigation(state, events);
+		const store = createStateManager(state);
+		const onSelectionChanged = vi.fn();
+		store.subscribe('codeBlockRendering.selectedCodeBlock', onSelectionChanged);
+		codeBlockNavigation(store, events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
+		expect(onSelectionChanged).toHaveBeenCalledWith(rightBlock);
 		expect(state.viewportAnimation.active).toBe(true);
 		expect(state.viewportAnimation.targetX).toBe(48);
 		expect(state.viewportAnimation.targetY).toBe(-96);
@@ -356,13 +358,13 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.y).toBe(0);
 
 		frameCallbacks[0](0);
-		frameCallbacks[1](state.viewportAnimation.durationMs / 2);
+		frameCallbacks[1](250);
 
 		expect(state.viewport.x).toBe(24);
 		expect(state.viewport.y).toBe(-48);
 		expect(state.viewportAnimation.active).toBe(true);
 
-		frameCallbacks[2](state.viewportAnimation.durationMs);
+		frameCallbacks[2](500);
 
 		expect(state.viewport.x).toBe(state.viewportAnimation.targetX);
 		expect(state.viewport.y).toBe(state.viewportAnimation.targetY);
@@ -378,7 +380,7 @@ describe('codeBlockNavigation', () => {
 
 	it('should not change selection if no block found in direction', () => {
 		// Initialize the effect
-		codeBlockNavigation(state, events);
+		codeBlockNavigation(createStateManager(state), events);
 
 		// Remove all blocks except selected
 		state.codeBlockRendering.codeBlocks = [selectedBlock];
@@ -389,7 +391,7 @@ describe('codeBlockNavigation', () => {
 
 	describe('jumpToCodeBlock', () => {
 		it('should jump to code block by creationIndex', () => {
-			const result = jumpToCodeBlock(state, 2, 'wrong-name', events);
+			const result = jumpToCodeBlock(createStateManager(state), 2, events);
 			expect(result).toBe(true);
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
 			expect(events.dispatch).toHaveBeenCalledWith(
@@ -401,31 +403,17 @@ describe('codeBlockNavigation', () => {
 			);
 		});
 
-		it('should not jump by name when creationIndex does not match', () => {
-			const result = jumpToCodeBlock(state, 999, 'left');
-			expect(result).toBe(false);
-			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
-		});
-
 		it('should return false when creationIndex does not match', () => {
-			const result = jumpToCodeBlock(state, 999, 'nonexistent');
+			const result = jumpToCodeBlock(createStateManager(state), 999, events);
 			expect(result).toBe(false);
 			// selectedCodeBlock should remain unchanged
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
 		});
 
-		it('should use creationIndex when name could match a different block', () => {
-			// Set up a scenario where name matches one block but creationIndex matches another
-			const result = jumpToCodeBlock(state, 3, 'left');
-			// Should select upBlock (creationIndex=3) not leftBlock (name='left')
-			expect(result).toBe(true);
-			expect(state.codeBlockRendering.selectedCodeBlock).toBe(upBlock);
-		});
-
 		it('should center viewport on the jumped-to code block', () => {
 			downBlock.cursor.y = 3 * state.viewport.hGrid;
 
-			jumpToCodeBlock(state, 4, 'down');
+			jumpToCodeBlock(createStateManager(state), 4, events);
 
 			expect(state.viewport.y).toBe(downBlock.y + downBlock.cursor.y - state.viewport.height / 2);
 		});
@@ -434,19 +422,18 @@ describe('codeBlockNavigation', () => {
 	describe('jumpToFavoriteCodeBlock event', () => {
 		it('should jump when jumpToFavoriteCodeBlock event is dispatched', () => {
 			// Initialize the effect
-			codeBlockNavigation(state, events);
+			codeBlockNavigation(createStateManager(state), events);
 
-			onJumpToFavoriteCodeBlockHandler({ creationIndex: 2, name: 'right' });
+			onJumpToFavoriteCodeBlockHandler({ creationIndex: 2 });
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
 		});
 
 		it('should handle jumpToFavoriteCodeBlock with non-existent target gracefully', () => {
 			// Initialize the effect
-			codeBlockNavigation(state, events);
+			codeBlockNavigation(createStateManager(state), events);
 
 			onJumpToFavoriteCodeBlockHandler({
 				creationIndex: 999,
-				name: 'nonexistent',
 			});
 			// selectedCodeBlock should remain unchanged
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
@@ -481,7 +468,7 @@ describe('codeBlockNavigation', () => {
 				},
 			});
 
-			goHome(state);
+			goHome(createStateManager(state), events);
 
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(firstHome);
 			expect(state.viewport.x).toBe(48);
@@ -510,7 +497,7 @@ describe('codeBlockNavigation', () => {
 				},
 			});
 
-			goHome(state);
+			goHome(createStateManager(state), events);
 
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
 			expect(state.viewport.x).toBe(48);
@@ -529,7 +516,7 @@ describe('codeBlockNavigation', () => {
 				codeBlockRendering: { codeBlocks: [homeBlock] },
 			});
 
-			goHome(state, events);
+			goHome(createStateManager(state), events);
 
 			expect(events.dispatch).toHaveBeenCalledWith(
 				'viewportChanged',
@@ -552,7 +539,7 @@ describe('codeBlockNavigation', () => {
 				codeBlockRendering: { codeBlocks: [disabledHome, otherHome] },
 			});
 
-			goHome(state);
+			goHome(createStateManager(state), events);
 
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(disabledHome);
 		});
@@ -566,7 +553,7 @@ describe('codeBlockNavigation', () => {
 				},
 			});
 
-			goHome(state);
+			goHome(createStateManager(state), events);
 
 			expect(state.viewport.x).toBe(0);
 			expect(state.viewport.y).toBe(0);
@@ -582,7 +569,7 @@ describe('codeBlockNavigation', () => {
 			});
 			state.codeBlockRendering.codeBlocks = [homeBlock, ...state.codeBlockRendering.codeBlocks];
 
-			codeBlockNavigation(state, events);
+			codeBlockNavigation(createStateManager(state), events);
 
 			onGoHomeHandler();
 

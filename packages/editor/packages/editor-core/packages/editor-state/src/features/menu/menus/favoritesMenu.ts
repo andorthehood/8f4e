@@ -32,7 +32,6 @@ export const favoritesMenu: MenuGenerator = state => {
 		action: 'jumpToFavoriteCodeBlock',
 		payload: {
 			creationIndex: favorite.creationIndex,
-			name: favorite.name,
 		},
 		close: true,
 	}));

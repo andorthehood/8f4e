@@ -34,7 +34,7 @@ for implementation. Keeping the outline does not require retaining presentation 
 - Kept the four-character selection outline in both view and edit modes. It advances one perimeter step every
   80 ms using `performance.now()`, loops continuously, and keeps its phase when selection changes. It uses no
   presentation state, scheduler, or additional timer. Tests can provide an explicit timestamp.
-- Preserved the shared viewport animator, cubic easing, normal 500 ms duration, navigation targets, and
+- Preserved the shared viewport animator, cubic easing, fixed 500 ms duration, navigation targets, and
   Command/Control+Arrow handling in both modes. Favorites, home alignment, and viewport anchors remain.
 - Moved cancellation of pending viewport animation on editor disposal into the viewport effect. Presentation
   cleanup previously supplied that cancellation even for ordinary navigation. The exported animation-stop helper
@@ -46,6 +46,30 @@ for implementation. Keeping the outline does not require retaining presentation 
 - Added deterministic outline tests and screenshots for both modes and animation phases. Updated the existing
   switches screenshot to include the selected-block outline and freeze its animation clock.
 
+## Compatibility cleanup
+
+A follow-up review identified inherited test accommodations that the initial removal had carried forward. They
+were removed after the user requested this additional cleanup:
+
+- Navigation accepts only the real state manager. Removed the `StateSource` union, duck-typed adapters, and direct
+  selection/cursor mutation alternatives. Tests now construct real stores, and the animation regression also checks
+  that selection subscribers are notified in both modes.
+- The event dispatcher is required by navigation, viewport animation, and viewport updates. Removed the missing-
+  dispatcher snap route and silent movement-without-notification path. Hosts may still omit the optional frame
+  scheduler; that supported case updates immediately and emits `viewportChanged`, with explicit regression coverage.
+- Removed `ViewportAnimation.durationMs` from the type and all state/test defaults. Navigation uses a private
+  500 ms constant; timing tests verify the actual midpoint and completion rather than overriding state duration.
+- Block snapshots now include `displayModel` and `isCollapsed`. Refreshed all 10 affected snapshots instead of
+  deleting fields to preserve their older shape. Snapshot normalization only fixes timestamps and serializes Maps.
+- Removed the unused favorite-name argument and redundant name field from favorite navigation payloads. Menu
+  titles still show names. Removed two duplicate tests for the obsolete argument and added the scheduler test.
+- Removed an invalid nested viewport property from a navigation fixture. An explicit TypeScript check using the
+  test configuration now reports zero errors in all three edited test files. This resolves the 17 navigation
+  argument errors missed by the earlier routine check, which did not validate those test calls.
+
+Both website builds, the full affected editor suites, production type checks, and all browser screenshots passed
+again after this cleanup. No image baselines changed during the follow-up.
+
 ## Implementation verification
 
 Verified with Node 24.16.0 using Nx. Builds and tests ran sequentially so tests consumed stable dependency outputs.
@@ -53,12 +77,12 @@ Verified with Node 24.16.0 using Nx. Builds and tests ran sequentially so tests 
 | Check | Result |
 | --- | --- |
 | Both website production builds | Passed, including 37 dependency tasks. |
-| Editor state tests | 1,159 passed across 153 files. |
+| Editor state tests | 1,158 passed across 153 files. |
 | Editor core tests | 82 passed across 20 files. |
 | Web UI unit tests | 73 passed across 22 files. |
 | Shared editor test helpers | 5 passed in one file. |
 | Default editor composition tests | 40 passed across 6 files. |
-| Editor test total | 1,359 passed across 202 files, with no reported type errors. |
+| Editor test total | 1,358 passed across 202 files. |
 | Type checks | Passed for editor-state-types, editor-state, editor-core, web-ui, editor-state-testing, and editor-default. |
 | Examples test target | Passed; its dependent CLI suite passed 35 tests. No embedded example-module tests were found. |
 | Browser screenshots | All 8 tests across 6 files passed after reviewing the new/updated baselines. |
@@ -235,7 +259,8 @@ Preserve this path:
 
 The navigation helper also animates movement to the current block's vertical edge. Favorites and `goHome` use the
 same animation helper. Retain their behavior as well as the fallback that updates immediately when animation
-callbacks or the event dispatcher are absent.
+callbacks are absent. The dispatcher is required by the final implementation; the former dispatcher-free route
+was removed during compatibility cleanup.
 
 Keep the shared viewport animation state, frame scheduling/cancellation callbacks, and ordinary 500 ms duration.
 The presentation-specific 2,000 ms override disappears with the presentation effect. Do not remove viewport
@@ -271,9 +296,9 @@ which initially suggested making it internal. Implementation established that pr
 ordinary navigation animation on editor disposal. That call now belongs to the viewport effect, so the export is
 retained for the shared animation lifecycle.
 
-Presentation is the only production code that overrides `viewportAnimation.durationMs`; the other production
-assignments initialize it to 500 ms. Moving this fixed duration into the animator would be an optional further
-simplification, rather than a requirement. Preserve normal navigation duration and animation if taking that step.
+At the audit baseline, presentation was the only production code overriding `viewportAnimation.durationMs`; other
+assignments initialized it to 500 ms. Compatibility cleanup removed the now-redundant state field and test-only
+overrides. A private constant in the animator preserves normal navigation's 500 ms duration.
 
 ## Examples and documentation
 
@@ -384,7 +409,7 @@ Use Node 24.16.0 through `nvm use` and prefer Nx targets. Relevant commands afte
 
 ```sh
 npx nx run-many --target=build --projects=@8f4e/editor-website,@8f4e/8f4e-website
-npx nx run-many --target=test --projects=@8f4e/editor-state,@8f4e/editor-core,@8f4e/web-ui,@8f4e/editor-state-testing
+npx nx run-many --target=test --projects=@8f4e/editor-state,@8f4e/editor-core,@8f4e/web-ui,@8f4e/editor-state-testing,@8f4e/editor-default
 npx nx run-many --target=typecheck --projects=@8f4e/editor-state-types,@8f4e/editor-state,@8f4e/editor-core,@8f4e/web-ui,@8f4e/editor-state-testing,@8f4e/editor-default
 npx nx run @8f4e/examples:test
 npx nx run @8f4e/web-ui:test:screenshot

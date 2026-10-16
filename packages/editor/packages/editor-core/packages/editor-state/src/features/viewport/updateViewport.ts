@@ -11,7 +11,7 @@ export interface ViewportChangedEvent {
 /**
  * Applies viewport position updates through a single commit path.
  */
-export default function updateViewport(state: State, x: number, y: number, events?: EventDispatcher): boolean {
+export default function updateViewport(state: State, x: number, y: number, events: EventDispatcher): boolean {
 	const previousX = state.viewport.x;
 	const previousY = state.viewport.y;
 	const nextX = Math.round(x);
@@ -23,7 +23,7 @@ export default function updateViewport(state: State, x: number, y: number, event
 
 	const changed = state.viewport.x !== previousX || state.viewport.y !== previousY;
 
-	if (changed && events) {
+	if (changed) {
 		const event: ViewportChangedEvent = {
 			previousX,
 			previousY,
