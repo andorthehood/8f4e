@@ -67,6 +67,7 @@ Active todo files are listed below.
 | 498 | Consolidate shared editor test-state builders | 🟡 | 4-8h | 2026-10-14 | Share complete typed state defaults and migrate cast-based editor/runtime fixtures so missing required fields are caught earlier. |
 | 499 | Unify project instruction syntax parsing | 🟡 | 4-8h | 2026-10-14 | Move exposure syntax into the tokenizer alongside pass and init, with shared comment handling, validation, and source diagnostics. |
 | 500 | Keep planned memory and its source together | 🟡 | 4-8h | 2026-10-14 | Attach effective source information to each planned declaration, removing parallel arrays and positional source lookups. |
+| 501 | Preserve known pointee counts of one | 🟡 | 1-2h | 2026-10-16 | Retain proven single-element pointee counts so count(*pointer) resolves correctly while unknown counts remain errors. |
 
 ### 🟢 Low Priority
 
