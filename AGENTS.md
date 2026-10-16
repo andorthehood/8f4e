@@ -43,6 +43,9 @@
   composition and website. Use `run-many --target=lint --all` to lint every project if needed.
 - `npx nx graph`: Open Nx project dependency graph.
 - `npx nx run @8f4e/editor-website:kill-dev`: Kill any dev server on port 3000.
+- Production deployments run only in the manually dispatched `Release` GitHub Actions workflow on `main`, after
+  release checks, builds, and the atomic release push succeed. It deploys 8f4e.com, including bundled example
+  modules, to Cloudflare Pages; pushes and merges do not deploy. See `docs/releasing.md`.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
