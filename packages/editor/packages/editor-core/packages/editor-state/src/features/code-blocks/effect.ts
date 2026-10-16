@@ -89,7 +89,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.displayModel = displayModel;
 
 		graphicData.disabled = directiveState.blockState.disabled;
-		graphicData.hidden = directiveState.blockState.hidden && state.codeBlockRendering.selectedCodeBlock !== graphicData;
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.homeAlignment = directiveState.blockState.homeAlignment;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
@@ -280,7 +279,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				blockType: codeBlock.blockType,
 				entry: codeBlock.entry,
 				disabled: codeBlock.disabled ?? directiveState.blockState.disabled,
-				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
 				homeAlignment: directiveState.blockState.homeAlignment,
 				isFavorite: directiveState.blockState.isFavorite,

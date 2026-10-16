@@ -88,8 +88,8 @@ describe('parseDirectiveLineRecords', () => {
 	});
 
 	it('parses multiple full-line directives from one comment line', () => {
-		expect(parseDirectiveLineRecords('; @stop 1 01 @favorite')).toEqual([
-			{ prefix: '@', name: 'stop', args: ['1', '01'], isTrailing: false },
+		expect(parseDirectiveLineRecords('; @pos 1 2 @favorite')).toEqual([
+			{ prefix: '@', name: 'pos', args: ['1', '2'], isTrailing: false },
 			{ prefix: '@', name: 'favorite', args: [], isTrailing: false },
 		]);
 	});
@@ -104,8 +104,8 @@ describe('parseDirectiveLineRecords', () => {
 
 describe('parseDirectiveComments', () => {
 	it('returns all full-line editor directives in source order', () => {
-		expect(parseDirectiveComments('; @stop 1 01 @favorite')).toEqual([
-			{ name: 'stop', args: ['1', '01'] },
+		expect(parseDirectiveComments('; @pos 1 2 @favorite')).toEqual([
+			{ name: 'pos', args: ['1', '2'] },
 			{ name: 'favorite', args: [] },
 		]);
 	});

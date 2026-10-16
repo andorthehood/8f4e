@@ -23,7 +23,6 @@ export default function createDefaultState() {
 			viewportAnchoredCodeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
-			showHiddenCodeBlocks: false,
 			selectedCodeBlockForProgrammaticEdit: undefined,
 		},
 		contextMenu: {
@@ -129,14 +128,6 @@ export default function createDefaultState() {
 			targetY: 0,
 			active: false,
 			durationMs: 500,
-		},
-		presentation: {
-			canPresent: false,
-			activeStopIndex: 0,
-			totalStops: 0,
-			remainingMs: 0,
-			currentStopDurationMs: 0,
-			deadlineAt: undefined,
 		},
 	};
 }

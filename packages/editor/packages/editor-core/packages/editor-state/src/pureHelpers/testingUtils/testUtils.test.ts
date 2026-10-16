@@ -9,7 +9,6 @@ import { createMockCodeBlock } from './testUtils';
 function normalizeBlock(block: CodeBlockGraphicData) {
 	const { displayModel: _displayModel, ...normalizedBlock } = block;
 	delete normalizedBlock.isCollapsed;
-	delete normalizedBlock.hidden;
 
 	return {
 		...normalizedBlock,

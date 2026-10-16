@@ -1,11 +1,41 @@
 import type { EventDispatcher, PianoKeyboard } from '@8f4e/editor-state-types';
 import { describe, expect, it, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
+import animateViewport from './features/viewport/animateViewport';
 import initState from './index';
 import { createMockCodeBlock } from './pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from './pureHelpers/testingUtils/vitestTestUtils';
 
 describe('editor state lifecycle', () => {
+	it.each(['view', 'edit'] as const)('cancels active viewport animation when disposing in %s mode', editorMode => {
+		const frames: Array<(time: number) => void> = [];
+		const cancelAnimationFrame = vi.fn();
+		const events = createMockEventDispatcherWithVitest();
+		const store = initState(events, {
+			callbacks: {
+				loadSession: async () => null,
+				requestAnimationFrame: callback => {
+					frames.push(callback);
+					return frames.length;
+				},
+				cancelAnimationFrame,
+			},
+			initialEditorMode: editorMode,
+			runtimeRegistry: {},
+		});
+		const state = store.getState();
+		animateViewport(state, 80, 160, events);
+		expect(state.viewportAnimation.active).toBe(true);
+
+		store.dispose();
+		expect(cancelAnimationFrame).toHaveBeenCalledWith(1);
+		expect(state.viewportAnimation.active).toBe(false);
+
+		frames[0](250);
+		expect(state.viewport.x).toBe(0);
+		expect(state.viewport.y).toBe(0);
+	});
+
 	it('initializes the requested editor mode and synchronizes editing', () => {
 		const events = createMockEventDispatcherWithVitest();
 		const store = initState(events, {

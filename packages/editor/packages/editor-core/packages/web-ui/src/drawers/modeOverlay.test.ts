@@ -9,7 +9,7 @@ function createMockEngine(): Engine {
 }
 
 describe('drawModeOverlay', () => {
-	it('does not advertise presentation mode when there are no presentation stops', () => {
+	it('draws the view mode hint', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			featureFlags: {
@@ -20,9 +20,6 @@ describe('drawModeOverlay', () => {
 				fillColors: createSpriteIdLookupMock(),
 				fontDebugInfo: createSpriteIdLookupMock(),
 			} as never,
-			presentation: {
-				canPresent: false,
-			},
 		});
 
 		drawModeOverlay(engine, state);
@@ -35,20 +32,17 @@ describe('drawModeOverlay', () => {
 		);
 	});
 
-	it('advertises presentation mode when presentation stops are available', () => {
+	it('draws the edit mode hint', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			featureFlags: {
 				modeToggling: true,
 			},
-			editorMode: 'view',
+			editorMode: 'edit',
 			spriteLookups: {
 				fillColors: createSpriteIdLookupMock(),
 				fontDebugInfo: createSpriteIdLookupMock(),
 			} as never,
-			presentation: {
-				canPresent: true,
-			},
 		});
 
 		drawModeOverlay(engine, state);
@@ -56,7 +50,7 @@ describe('drawModeOverlay', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			state.viewport.vGrid,
 			0,
-			"You're in view mode, press e to edit or p to present",
+			"You're in edit mode, press ESC to enter view mode",
 			state.spriteLookups?.fontDebugInfo
 		);
 	});

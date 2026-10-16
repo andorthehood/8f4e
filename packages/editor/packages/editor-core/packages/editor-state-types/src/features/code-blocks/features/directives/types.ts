@@ -18,7 +18,6 @@ export type ViewportAnchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-
 
 export interface DirectiveBlockState {
 	disabled: boolean;
-	hidden: boolean;
 	isHome: boolean;
 	/** Effective viewport alignment for `; @home [alignment]`. Present only when the block is a valid home block. */
 	homeAlignment?: ViewportBlockAlignment;

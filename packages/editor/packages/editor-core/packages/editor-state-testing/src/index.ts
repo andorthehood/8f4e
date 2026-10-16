@@ -65,7 +65,6 @@ export function createMockCodeBlock(
 		blockType: 'unknown',
 		projectPath,
 		disabled: false,
-		hidden: false,
 		isHome: false,
 		isFavorite: false,
 		alwaysOnTop: false,
@@ -160,7 +159,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnchoredCodeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
-			showHiddenCodeBlocks: false,
 		},
 		contextMenu: {
 			highlightedItem: 0,
@@ -276,14 +274,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			targetY: 0,
 			active: false,
 			durationMs: 500,
-		},
-		presentation: {
-			canPresent: false,
-			activeStopIndex: 0,
-			totalStops: 0,
-			remainingMs: 0,
-			currentStopDurationMs: 0,
-			deadlineAt: undefined,
 		},
 	};
 

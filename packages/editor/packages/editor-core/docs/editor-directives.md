@@ -13,7 +13,7 @@ Editor directives use comment lines in this form:
 You can also chain multiple directives in one comment line:
 
 ```txt
-; @stop 1 01 @favorite
+; @pos 1 2 @favorite
 ```
 
 When directives are chained, parsing starts a new directive at the next `@name` token.
@@ -496,7 +496,7 @@ When a project loads, the viewport moves to the first code block containing the 
 - **Project Load**: On load, viewport moves to the first block with `@home` (determined by code block order).
 - **Multiple @home**: If multiple blocks have `@home`, only the first one (by project order) is used.
 - **No @home**: If no blocks have `@home`, viewport defaults to `(0,0)`.
-- **Alignment**: Optional alignment hints match `@stop`: `center` (default), `left`, `right`, `top`, or `bottom`.
+- **Alignment**: Optional alignment hints are: `center` (default), `left`, `right`, `top`, or `bottom`.
 - **During Editing**: Use the "Go @home" main menu action (right-click on empty space) to return the viewport to the home block at any time using the same alignment rule.
 
 **Format:**
@@ -538,23 +538,6 @@ Notes:
 - Selecting the block expands the full source again for editing.
 - Directives with arguments are ignored.
 - If multiple valid `@hide` directives exist, the first one wins.
-- Works with all block types (modules, functions, configs, constants, notes).
-
-### `@hidden`
-
-Hide the contents of a code block until it is selected, while still leaving its corner markers visible.
-
-```txt
-; @hidden
-```
-
-Notes:
-
-- While the block is unselected, only its `+` corner markers are rendered.
-- Selecting the block makes it visible again.
-- Holding `F9` reveals all hidden blocks temporarily without changing selection.
-- When selection moves away, it becomes hidden again.
-- Directives with arguments are ignored.
 - Works with all block types (modules, functions, configs, constants, notes).
 
 ### `@disabled`

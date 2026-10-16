@@ -515,7 +515,6 @@ noteEnd
 
 note
 ; @pos -24 -1
-; @stop 3 10 left @hidden
 ;
 ;                                    .
 ; Here you can see the event   ......;;.
@@ -526,7 +525,6 @@ noteEnd
 
 note
 ; @pos 28 -29
-; @stop 1 10 top @hidden
 
 ; This patch is a bare-bones
 ; MOD player implemented in 8f4e.
@@ -537,7 +535,6 @@ noteEnd
 
 note
 ; @pos 73 -30
-; @stop 2 15 top @hidden
 
 ; MOD is a classic tracker music format
 ; from the 16-bit home-computer era.
@@ -549,7 +546,6 @@ noteEnd
 
 note
 ; @pos 244 -36
-; @stop 4 10 top @hidden
 ;                                                     ;;;;;
 ; These modules are extracting the                    ;;;;;
 ; information from the rows. This particular song   ..;;;;;..
@@ -559,7 +555,6 @@ noteEnd
 
 note
 ; @pos 267 74
-; @stop 5 5 @hidden
 
 ; These four horizontal lanes represent
 ; the fourplayback channels of the MOD.
@@ -567,7 +562,6 @@ noteEnd
 
 note
 ; @pos 404 -17
-; @stop 11 5 top @hidden
 ;
 ; The samples are selected
 ; based on the sample number
@@ -576,7 +570,6 @@ noteEnd
 
 note
 ; @pos 416 44
-; @stop 9 10 right @hidden
 
 ;     .        The instrument samples are
 ;   .;;......  short recorded waveforms
@@ -588,7 +581,6 @@ noteEnd
 
 note
 ; @pos 421 36
-; @stop 10 10 bottom @hidden
 ;                                          .
 ; The sample players read from these     .:;:.
 ; buffers and advance through them at  .:;;;;;:.
@@ -598,7 +590,6 @@ noteEnd
 
 note
 ; @pos 587 -6
-; @stop 13 5 top @hidden
 ;                            ;;;;;
 ; The four channel signals ..:::::..
 ; are mixed together here.  `:::::'
@@ -607,7 +598,6 @@ noteEnd
 
 note
 ; @pos 701 -20
-; @stop 14 10 top @hidden
 
 ; Finally, the generated audio sample values
 ; are written to the output audio buffers
@@ -1597,7 +1587,6 @@ module modSamplePlayer2
 ; @pos 422 14
 ; @tab 6 20
 use env
-; @stop 12 20
 int*	period	&period2:out
 int*	trigger	&trigger2:out
 int	previousTrigger

@@ -15,7 +15,6 @@ import crossfadeDirective from './crossfade/plugin';
 import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
-import hiddenDirective from './hidden/plugin';
 import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
 import infoDirective from './info/plugin';
@@ -57,7 +56,6 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	homeDirective,
 	favoriteDirective,
 	hideDirective,
-	hiddenDirective,
 	groupDirective,
 	viewportDirective,
 	alwaysOnTopDirective,
@@ -74,7 +72,6 @@ export function deriveDirectiveState(
 		sourceCode: code,
 		blockState: {
 			disabled: false,
-			hidden: false,
 			isHome: false,
 			isFavorite: false,
 		},

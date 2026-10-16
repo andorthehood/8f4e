@@ -317,9 +317,10 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.y).toBe(-176);
 	});
 
-	it('should animate viewport when navigating between code blocks if animation callbacks are available', () => {
+	it.each(['view', 'edit'] as const)('animates viewport navigation in %s mode', editorMode => {
 		const frameCallbacks: Array<(time: number) => void> = [];
 		state = createMockState({
+			editorMode,
 			callbacks: {
 				requestAnimationFrame: vi.fn(callback => {
 					frameCallbacks.push(callback);
@@ -355,7 +356,13 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.y).toBe(0);
 
 		frameCallbacks[0](0);
-		frameCallbacks[1](state.viewportAnimation.durationMs);
+		frameCallbacks[1](state.viewportAnimation.durationMs / 2);
+
+		expect(state.viewport.x).toBe(24);
+		expect(state.viewport.y).toBe(-48);
+		expect(state.viewportAnimation.active).toBe(true);
+
+		frameCallbacks[2](state.viewportAnimation.durationMs);
 
 		expect(state.viewport.x).toBe(state.viewportAnimation.targetX);
 		expect(state.viewport.y).toBe(state.viewportAnimation.targetY);

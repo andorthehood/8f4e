@@ -3,19 +3,6 @@ import type { DrawContext } from '../drawContext';
 
 const EDIT_MODE_HINT = "You're in edit mode, press ESC to enter view mode";
 const VIEW_MODE_HINT = "You're in view mode, press e to edit";
-const VIEW_MODE_PRESENTATION_HINT = "You're in view mode, press e to edit or p to present";
-const PRESENTATION_MODE_HINT_PREFIX = "You're in presentation mode, press ESC to enter view mode";
-
-function formatPresentationCountdown(state: State): string {
-	const { totalStops, activeStopIndex, deadlineAt, remainingMs } = state.presentation;
-	if (totalStops === 0) {
-		return '';
-	}
-
-	const msUntilAdvance = deadlineAt === undefined ? remainingMs : Math.max(0, deadlineAt - Date.now());
-	const secondsUntilAdvance = Math.max(0, Math.ceil(msUntilAdvance / 100) / 10);
-	return ` ${activeStopIndex + 1}/${totalStops} ${secondsUntilAdvance.toFixed(1)}s`;
-}
 
 export default function drawModeOverlay(engine: DrawContext, state: State): void {
 	if (!state.spriteLookups) {
@@ -26,14 +13,7 @@ export default function drawModeOverlay(engine: DrawContext, state: State): void
 		return;
 	}
 
-	const modeHint =
-		state.editorMode === 'edit'
-			? EDIT_MODE_HINT
-			: state.editorMode === 'presentation'
-				? `${PRESENTATION_MODE_HINT_PREFIX}${formatPresentationCountdown(state)}`
-				: state.presentation.canPresent
-					? VIEW_MODE_PRESENTATION_HINT
-					: VIEW_MODE_HINT;
+	const modeHint = state.editorMode === 'edit' ? EDIT_MODE_HINT : VIEW_MODE_HINT;
 
 	engine.startGroup(0, 0);
 	engine.drawSprite(

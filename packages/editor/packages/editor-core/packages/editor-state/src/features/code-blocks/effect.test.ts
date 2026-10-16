@@ -97,40 +97,6 @@ describe('code block rendering error mapping', () => {
 	});
 });
 
-describe('code block rendering hidden directive', () => {
-	it('shows a hidden block only while selected', () => {
-		const hiddenBlock = createMockCodeBlock({
-			code: ['module hidden', '; @hidden', 'moduleEnd'],
-			parsedDirectives: [
-				{ prefix: '@', name: 'hidden', args: [], rawRow: 1, isTrailing: false, sourceLine: '; @hidden' },
-			],
-		});
-		const otherBlock = createMockCodeBlock({
-			name: 'other',
-			code: ['module other', 'moduleEnd'],
-		});
-		const state = createMockState({
-			codeBlockRendering: {
-				codeBlocks: [hiddenBlock, otherBlock],
-			},
-			spriteLookups: createSpriteLookups(),
-		});
-		const store = createStateManager(state);
-		const events = createMockEventDispatcherWithVitest();
-
-		codeBlockRenderingEffect(store, events);
-		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
-
-		expect(hiddenBlock.hidden).toBe(true);
-
-		store.set('codeBlockRendering.selectedCodeBlock', hiddenBlock);
-		expect(hiddenBlock.hidden).toBe(false);
-
-		store.set('codeBlockRendering.selectedCodeBlock', otherBlock);
-		expect(hiddenBlock.hidden).toBe(true);
-	});
-});
-
 describe('code block rendering cursor selection', () => {
 	it('updates the selected code block cursor through the store when a line is clicked', () => {
 		const selectedBlock = createMockCodeBlock({

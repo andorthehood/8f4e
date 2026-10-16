@@ -42,11 +42,9 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
  *
- * Additionally, holding F9 reveals blocks hidden by `; @hidden`.
- *
  * @param element - Focusable editor element that owns the keyboard input.
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
- * @param store - State manager for direct feature flag toggling.
+ * @param store - State manager for reading the editor mode and feature flags.
  * @returns A cleanup function that removes the keyboard event listeners.
  */
 export default function keyboardEvents(
@@ -54,21 +52,11 @@ export default function keyboardEvents(
 	events: EventDispatcher,
 	store: StateManager<State>
 ): () => void {
-	function hideTemporarilyRevealedCodeBlocks(): void {
-		if (store.getState().codeBlockRendering.showHiddenCodeBlocks) {
-			store.set('codeBlockRendering.showHiddenCodeBlocks', false);
-		}
-	}
-
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 		const state = store.getState();
 
-		// Presentation mode always retains an Escape route. Edit mode only exits when mode toggling is enabled.
-		if (
-			key === 'Escape' &&
-			(state.editorMode === 'presentation' || (state.editorMode === 'edit' && state.featureFlags.modeToggling))
-		) {
+		if (key === 'Escape' && state.editorMode === 'edit' && state.featureFlags.modeToggling) {
 			event.preventDefault();
 			events.dispatch('exitToViewMode');
 			return;
@@ -81,34 +69,6 @@ export default function keyboardEvents(
 				events.dispatch('enterEditMode');
 				return;
 			}
-
-			if (state.editorMode === 'view' && key === 'p' && !event.altKey && !event.ctrlKey && !event.metaKey) {
-				event.preventDefault();
-				events.dispatch('enterPresentationMode');
-				return;
-			}
-		}
-
-		if (state.editorMode === 'presentation') {
-			if (key === 'ArrowLeft') {
-				event.preventDefault();
-				events.dispatch('previousPresentationStop');
-			}
-
-			if (key === 'ArrowRight') {
-				event.preventDefault();
-				events.dispatch('nextPresentationStop');
-			}
-
-			return;
-		}
-
-		if (key === 'F9') {
-			event.preventDefault();
-			if (!state.codeBlockRendering.showHiddenCodeBlocks) {
-				store.set('codeBlockRendering.showHiddenCodeBlocks', true);
-			}
-			return;
 		}
 
 		// Platform-specific modifier key (metaKey on macOS, ctrlKey on Windows/Linux)
@@ -204,23 +164,9 @@ export default function keyboardEvents(
 		}
 	}
 
-	function onKeyup(event: KeyboardEvent) {
-		if (event.key !== 'F9') {
-			return;
-		}
-
-		event.preventDefault();
-
-		hideTemporarilyRevealedCodeBlocks();
-	}
-
 	element.addEventListener('keydown', onKeydown);
-	element.addEventListener('keyup', onKeyup);
-	element.addEventListener('blur', hideTemporarilyRevealedCodeBlocks);
 
 	return () => {
 		element.removeEventListener('keydown', onKeydown);
-		element.removeEventListener('keyup', onKeyup);
-		element.removeEventListener('blur', hideTemporarilyRevealedCodeBlocks);
 	};
 }

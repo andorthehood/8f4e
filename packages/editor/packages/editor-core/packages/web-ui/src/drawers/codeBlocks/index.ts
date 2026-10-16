@@ -47,7 +47,6 @@ export default function drawModules(
 
 	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
 		const codeCells = renderData.codeBlocks.get(codeBlock.creationIndex)?.codeCells ?? [];
-		const renderHiddenPreview = codeBlock.hidden && !state.codeBlockRendering.showHiddenCodeBlocks;
 
 		if (
 			codeBlock.x + offsetX > -1 * codeBlock.width &&
@@ -56,26 +55,24 @@ export default function drawModules(
 			codeBlock.y + offsetY < state.viewport.height
 		) {
 			engine.startGroup(codeBlock.x, codeBlock.y);
-			if (!renderHiddenPreview) {
-				if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
-					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDragged, codeBlock.width, codeBlock.height);
-				} else if (codeBlock.disabled) {
-					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDisabled, codeBlock.width, codeBlock.height);
-				} else {
-					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackground, codeBlock.width, codeBlock.height);
-				}
+			if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
+				engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDragged, codeBlock.width, codeBlock.height);
+			} else if (codeBlock.disabled) {
+				engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDisabled, codeBlock.width, codeBlock.height);
+			} else {
+				engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackground, codeBlock.width, codeBlock.height);
+			}
 
-				drawBlockHighlights(engine, state, codeBlock);
+			drawBlockHighlights(engine, state, codeBlock);
 
-				if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-					engine.drawSprite(
-						0,
-						codeBlock.cursor.y,
-						spriteLookups.fillColors.highlightedCodeLine,
-						codeBlock.width,
-						state.viewport.hGrid
-					);
-				}
+			if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+				engine.drawSprite(
+					0,
+					codeBlock.cursor.y,
+					spriteLookups.fillColors.highlightedCodeLine,
+					codeBlock.width,
+					state.viewport.hGrid
+				);
 			}
 
 			const cornerFont =
@@ -91,25 +88,23 @@ export default function drawModules(
 				cornerFont
 			);
 
-			if (!renderHiddenPreview) {
-				for (let i = 0; i < codeCells.length; i++) {
-					engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeCells[i]);
-				}
-
-				drawShapeDeclarations(engine, state, codeBlock);
-
-				if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-					engine.drawText(
-						codeBlock.cursor.x,
-						codeBlock.cursor.y,
-						'_',
-						codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode
-					);
-				}
-				drawAssertions(engine, state, codeBlock);
+			for (let i = 0; i < codeCells.length; i++) {
+				engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeCells[i]);
 			}
 
-			if (state.editorMode === 'presentation' && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+			drawShapeDeclarations(engine, state, codeBlock);
+
+			if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+				engine.drawText(
+					codeBlock.cursor.x,
+					codeBlock.cursor.y,
+					'_',
+					codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode
+				);
+			}
+			drawAssertions(engine, state, codeBlock);
+
+			if (state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);
 			}
 

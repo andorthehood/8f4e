@@ -2,8 +2,8 @@ import initState from '@8f4e/editor-state';
 import type {
 	Callbacks,
 	EditorConfigSchemaContributionRegistry,
+	EditorMode,
 	InfoRecord,
-	InitialEditorMode,
 	RuntimeRegistry,
 	State,
 } from '@8f4e/editor-state-types';
@@ -55,7 +55,6 @@ export type {
 	EditorMode,
 	FeatureFlags,
 	FeatureFlagsConfig,
-	InitialEditorMode,
 	JSONSchemaLike,
 	Options,
 	ParsedDirectiveRecord,
@@ -87,7 +86,7 @@ export interface EditorOptions {
 	captureWheel?: boolean;
 	featureFlags?: Partial<State['featureFlags']>;
 	/** Mode used when the editor is initialized. */
-	initialEditorMode?: InitialEditorMode;
+	initialEditorMode?: EditorMode;
 	callbacks: Omit<
 		Callbacks,
 		'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText' | 'exportCanvasScreenshot'
