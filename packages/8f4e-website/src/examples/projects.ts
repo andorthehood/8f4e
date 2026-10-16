@@ -126,6 +126,18 @@ export const projects = [
 		path: 'audio/amigaMods/hymn_to_aurora.8f4e',
 	},
 	{
+		id: 'escape-from-suicide',
+		title: 'Escape from Suicide',
+		description: 'Play an Amiga MOD track with four sample channels, volume slides and tempo changes.',
+		path: 'audio/amigaMods/escapeFromSuicide.8f4e',
+	},
+	{
+		id: 'chiller',
+		title: 'Chiller',
+		description: 'Play an Amiga MOD track through four sample channels with sample offsets and tempo controls.',
+		path: 'audio/amigaMods/chiller.8f4e',
+	},
+	{
 		id: 'lower-intentions',
 		title: 'Lower Intentions',
 		description: 'Follow an Amiga MOD track through its timing, sample players and stereo mixer.',
