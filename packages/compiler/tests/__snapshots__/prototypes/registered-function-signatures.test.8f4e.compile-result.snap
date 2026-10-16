@@ -303,7 +303,6 @@
           "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -323,7 +322,6 @@
           "isInherited": true,
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -343,7 +341,6 @@
       "integerCaller",
     ],
     "requiredMemoryBytes": 12,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

@@ -1,7 +1,5 @@
 /** Passive data segment used to initialize one WebAssembly memory at instantiation time. */
 export interface InitialMemoryDataSegment {
-	memoryIndex: number;
-	memoryRegionName?: string;
 	byteAddress: number;
 	bytes: Uint8Array;
 }

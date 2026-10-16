@@ -5832,7 +5832,6 @@
           "isFloat64": true,
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float64",
@@ -5850,7 +5849,6 @@
           "id": "result",
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -5877,7 +5875,6 @@
       "mapSignedZeroFloatAssertions",
     ],
     "requiredMemoryBytes": 20,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

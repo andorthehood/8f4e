@@ -60,7 +60,6 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
-		memoryIndex: 0,
 		byteAddress: 0,
 		elementByteLength: 4,
 		wordAlignedSize: 1,
@@ -496,7 +495,6 @@ describe('drawModules', () => {
 						test: {
 							id: 'test',
 							lineNumber: 1,
-							memoryIndex: 0,
 							byteAddress: 8,
 							wordAlignedSize: 1,
 							wordAlignedByteLength: 4,
@@ -510,7 +508,6 @@ describe('drawModules', () => {
 						},
 					},
 					moduleList: [],
-					nextByteAddressByMemoryIndex: { 0: 12 },
 				},
 			},
 			spriteLookups: {

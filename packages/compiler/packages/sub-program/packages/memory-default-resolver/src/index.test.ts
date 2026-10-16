@@ -180,10 +180,8 @@ describe('resolveMemoryDefaults', () => {
 							value: bufferDeclaration.byteAddress,
 							isInteger: true,
 							address: {
-								memoryIndex: 0,
 								safeRange: {
 									source: 'memory-start',
-									memoryIndex: 0,
 									byteAddress: bufferDeclaration.byteAddress,
 									safeByteLength: bufferDeclaration.elementByteLength,
 									moduleId: 'main',
@@ -197,7 +195,6 @@ describe('resolveMemoryDefaults', () => {
 		};
 		memoryReferences.pointerMetadataByModuleId.main = {
 			ptr: {
-				pointeeMemoryIndex: 0,
 				pointeeElementCount: 4,
 			},
 		};
@@ -213,7 +210,6 @@ describe('resolveMemoryDefaults', () => {
 			isInherited: false,
 		});
 		expect(result.pointerMetadataByModuleId.main.ptr).toEqual({
-			pointeeMemoryIndex: 0,
 			pointeeElementCount: 4,
 		});
 	});

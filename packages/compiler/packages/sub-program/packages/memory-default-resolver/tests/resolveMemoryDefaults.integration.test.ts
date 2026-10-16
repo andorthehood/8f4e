@@ -69,7 +69,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const inheritedCounterMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 4,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -87,7 +86,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const valuesMemory = {
 			numberOfElements: 3,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 8,
 			elementByteLength: 12,
 			wordAlignedSize: 3,
@@ -105,7 +103,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const ptrMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 20,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -124,7 +121,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const copiedCountMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 24,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -142,7 +138,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const gainMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 28,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -160,8 +155,6 @@ describe('resolveMemoryDefaults integration', () => {
 		const audioSamplesMemory = {
 			numberOfElements: 6,
 			elementWordSize: 2,
-			memoryIndex: 1,
-			memoryRegionName: 'audio',
 			byteAddress: 4,
 			elementByteLength: 12,
 			wordAlignedSize: 3,
@@ -186,7 +179,6 @@ describe('resolveMemoryDefaults integration', () => {
 					wordAlignedByteLength: 28,
 					endByteAddress: 28,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						inheritedCounter: inheritedCounterMemory,
 						values: valuesMemory,
@@ -211,8 +203,6 @@ describe('resolveMemoryDefaults integration', () => {
 					wordAlignedByteLength: 12,
 					endByteAddress: 12,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 1,
-					memoryRegionName: 'audio',
 					memory: {
 						samples: audioSamplesMemory,
 					},
@@ -229,7 +219,6 @@ describe('resolveMemoryDefaults integration', () => {
 					wordAlignedByteLength: 28,
 					endByteAddress: 28,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						inheritedCounter: inheritedCounterMemory,
 						values: valuesMemory,
@@ -254,8 +243,6 @@ describe('resolveMemoryDefaults integration', () => {
 					wordAlignedByteLength: 12,
 					endByteAddress: 12,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 1,
-					memoryRegionName: 'audio',
 					memory: {
 						samples: audioSamplesMemory,
 					},
@@ -263,10 +250,6 @@ describe('resolveMemoryDefaults integration', () => {
 					declarationSources: [{ line: audioSamplesLine, isInherited: false }],
 				},
 			],
-			nextByteAddressByMemoryIndex: {
-				0: 32,
-				1: 16,
-			},
 		} as const;
 		const memoryReferences = {
 			prototypes: [],
@@ -286,10 +269,8 @@ describe('resolveMemoryDefaults integration', () => {
 									value: 8,
 									isInteger: true,
 									address: {
-										memoryIndex: 0,
 										safeRange: {
 											source: 'memory-start',
-											memoryIndex: 0,
 											byteAddress: 8,
 											safeByteLength: 12,
 											moduleId: 'main',
@@ -315,7 +296,6 @@ describe('resolveMemoryDefaults integration', () => {
 			pointerMetadataByModuleId: {
 				main: {
 					ptr: {
-						pointeeMemoryIndex: 0,
 						pointeeElementCount: 3,
 					},
 				},

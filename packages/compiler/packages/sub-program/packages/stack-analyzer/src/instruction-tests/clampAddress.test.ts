@@ -6,7 +6,6 @@ import createStackAnalyzerTestContext from '../testUtils';
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',
-	memoryIndex: 0,
 	byteAddress: 0,
 	safeByteLength: 128,
 	memoryId: 'arr',
@@ -26,8 +25,6 @@ function createPlannedModule(overrides: Partial<PlannedMemoryModule> = {}): Plan
 		memory: overrides.memory ?? {},
 		declarations: overrides.declarations ?? [],
 		declarationSources: overrides.declarationSources ?? [],
-		memoryIndex: overrides.memoryIndex ?? 0,
-		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
 	};
 }
 
@@ -50,7 +47,7 @@ describe('clampAddress stack analysis', () => {
 			valueType: 'int',
 			isNonZero: true,
 			knownValue: 1024,
-			address: { memoryIndex: 0, clampRange: range },
+			address: { clampRange: range },
 		});
 
 		analyzeInstruction(createLine('clampAddress'), context);
@@ -62,7 +59,6 @@ describe('clampAddress stack analysis', () => {
 				isNonZero: true,
 				knownValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
 				address: {
-					memoryIndex: 0,
 					clampRange: range,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
@@ -77,7 +73,7 @@ describe('clampAddress stack analysis', () => {
 			valueType: 'int',
 			isNonZero: true,
 			knownValue: 1024,
-			address: { memoryIndex: 0, clampRange: range },
+			address: { clampRange: range },
 		});
 
 		analyzeInstruction(createLine('clampAddress', 1), context);
@@ -89,7 +85,6 @@ describe('clampAddress stack analysis', () => {
 				isNonZero: true,
 				knownValue: 127,
 				address: {
-					memoryIndex: 0,
 					clampRange: range,
 					safeAccessByteWidth: 1,
 				},
@@ -101,7 +96,6 @@ describe('clampAddress stack analysis', () => {
 		const context = createStackAnalyzerTestContext();
 		const shiftedRange: MemoryAddressRange = {
 			source: 'memory-start',
-			memoryIndex: 0,
 			byteAddress: 64,
 			safeByteLength: 128,
 			memoryId: 'arr',
@@ -111,7 +105,7 @@ describe('clampAddress stack analysis', () => {
 			valueType: 'int',
 			isNonZero: true,
 			knownValue: -1,
-			address: { memoryIndex: 0, clampRange: shiftedRange },
+			address: { clampRange: shiftedRange },
 		});
 
 		analyzeInstruction(createLine('clampAddress'), context);
@@ -123,7 +117,6 @@ describe('clampAddress stack analysis', () => {
 				isNonZero: true,
 				knownValue: 64,
 				address: {
-					memoryIndex: 0,
 					clampRange: shiftedRange,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
@@ -147,8 +140,6 @@ describe('clampAddress stack analysis', () => {
 			wordAlignedSize: 8,
 		});
 		const context = createStackAnalyzerTestContext({
-			startingByteAddress: 64,
-			currentModuleWordAlignedSize: 8,
 			currentPlannedModule: plannedModule,
 			namespace: {
 				...createStackAnalyzerTestContext().namespace,
@@ -166,10 +157,8 @@ describe('clampAddress stack analysis', () => {
 				isNonZero: true,
 				knownValue: 92,
 				address: {
-					memoryIndex: 0,
 					clampRange: {
 						source: 'module-start',
-						memoryIndex: 0,
 						byteAddress: 64,
 						safeByteLength: 32,
 						moduleId: 'osc',
@@ -192,7 +181,6 @@ describe('clampAddress stack analysis', () => {
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					memoryIndex: 0,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
 			},
@@ -206,8 +194,7 @@ describe('clampAddress stack analysis', () => {
 			valueType: 'int',
 			isNonZero: false,
 			address: {
-				memoryIndex: 0,
-				clampRange: { memoryIndex: 0, source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
+				clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
 			},
 		});
 

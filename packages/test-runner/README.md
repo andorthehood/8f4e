@@ -22,13 +22,13 @@ if (hasTestEntry(project)) {
 }
 ```
 
-Callers compile with assertions enabled and non-shared memory, adding any include resolver or memory regions they
-need. `runTests(compiled)` allocates fresh memory for each region, calls `initDefaults()` once, and executes `test()`.
-It returns `instance`, `memories`, `assertions`, and `failures`. Callers retain the compiler's source-site lookup and
+Callers compile with assertions enabled and non-shared memory, adding an include resolver when needed.
+`runTests(compiled)` allocates fresh memory, calls `initDefaults()` once, and executes `test()`.
+It returns `instance`, `memory`, `assertions`, and `failures`. Callers retain the compiler's source-site lookup and
 other output themselves. The runner has no compiler implementation dependency or source transformation step.
 
-`runTests({ codeBuffer, assertionSites, memories })` instead borrows the supplied
-`Record<string, WebAssembly.Memory>` host imports. This path needs no allocation sizes and executes against the
+`runTests({ codeBuffer, assertionSites, memory })` instead borrows the supplied
+`WebAssembly.Memory` for the `host.memory` import. This path needs no allocation sizes and executes against the
 current state without calling `initDefaults()` or resetting memory. The caller owns initialization and lifetime;
 supplied shared memory must match the compiled Wasm imports. The editor test runtime uses this path with memory
 already initialized by its compiler worker.

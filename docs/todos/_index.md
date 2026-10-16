@@ -63,7 +63,7 @@ Active todo files are listed below.
 | 491 | Migrate project testing to native assertions | 🟡 | 2-4d | 2026-10-09 | Use TODO 490 in the shared runner, migrate fixtures and CLI, remove the precompiler, and add an editor test runtime. |
 | 493 | Index compiled functions by project block ID | 🟡 | 2-4h | 2026-10-14 | Reuse a compilation-derived Map for function-block layout, stack-widget, and tooltip lookups instead of repeatedly scanning all compiled functions. |
 | 494 | Make editor block-highlight parsing linear | 🟡 | 3-6h | 2026-10-14 | Track open-block counts and matching stacks incrementally to avoid repeated history scans and array copies during highlight parsing. |
-| 495 | Index editor pointer targets by memory and address | 🟡 | 3-6h | 2026-10-14 | Index planned declarations by memory index and byte address to avoid repeated filter/flatten/find work when resolving pointer-based widgets. |
+| 495 | Index editor pointer targets by address | 🟡 | 3-6h | 2026-10-14 | Index planned declarations by memory index and byte address to avoid repeated filter/flatten/find work when resolving pointer-based widgets. |
 | 498 | Consolidate shared editor test-state builders | 🟡 | 4-8h | 2026-10-14 | Share complete typed state defaults and migrate cast-based editor/runtime fixtures so missing required fields are caught earlier. |
 | 499 | Unify project instruction syntax parsing | 🟡 | 4-8h | 2026-10-14 | Move exposure syntax into the tokenizer alongside pass and init, with shared comment handling, validation, and source diagnostics. |
 | 500 | Keep planned memory and its source together | 🟡 | 4-8h | 2026-10-14 | Attach effective source information to each planned declaration, removing parallel arrays and positional source lookups. |
@@ -184,7 +184,7 @@ Active todo files are listed below.
 | 396 | Add MIDI input editor environment plugin | 2026-05-11 | The editor MIDI plugin now lazy-loads from `@midiIn`, lists devices via `@info midi`, and forwards MIDI input bytes to exported 8f4e callbacks through a shared-memory Wasm instance. |
 | 402 | Restrict compiler directives to block prologue | 2026-05-19 | Compiler directives are now validated as module/function prologue metadata, with late directives rejected by a dedicated compiler diagnostic. |
 | 404 | Refactor address metadata into first-class shape | 2026-05-19 | Address metadata now lives under `StackItem.address` / normalized literal `address`, replacing scattered safe/clamp/access-width fields. |
-| 403 | Add logical memory regions for multi-memory | 2026-05-19 | `#region` and `memoryRegions` now allocate module declarations into logical Wasm memories, preserve address/pointer provenance through memory operations, and plumb extra memories through compiler-worker, runtimes, and CLI. |
+| 403 | Add logical memory regions for multi-memory | 2026-05-19 | Historical implementation, removed before release in favor of one shared linear address space. |
 | 391 | Add compiler AST cache for incremental compiles | 2026-05-04 | `compile()` now returns and accepts an opaque AST cache for unchanged expanded module and function inputs. |
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |

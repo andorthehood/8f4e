@@ -552,7 +552,6 @@
           "id": "previousInt",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -571,7 +570,6 @@
       "risingEdgeIntAssertions",
     ],
     "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

@@ -35,7 +35,6 @@ function createMemoryDeclaration(
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
 		byteAddress: 0,
-		memoryIndex: 0,
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,
@@ -61,7 +60,6 @@ function createPlannedModule(
 		lineNumber: 0,
 		byteAddress: 24,
 		wordAlignedSize: 5,
-		memoryIndex: 0,
 		memory,
 		declarations: Object.values(memory),
 		declarationSources: [],
@@ -80,7 +78,6 @@ function createMemoryPlan(moduleList: readonly PlannedMemoryModule[]): MemoryLay
 	return {
 		modules: Object.fromEntries(moduleList.map(module => [module.id, module])),
 		moduleList,
-		nextByteAddressByMemoryIndex: { 0: 0 },
 	};
 }
 
@@ -93,10 +90,6 @@ function createTestContext(
 		memoryAliases: new Map(),
 		currentModule,
 		pointerMetadata: {},
-		startingByteAddress: currentModule.byteAddress,
-		currentModuleWordAlignedSize: currentModule.wordAlignedSize,
-		currentMemoryIndex: currentModule.memoryIndex,
-		...(currentModule.memoryRegionName ? { currentMemoryRegionName: currentModule.memoryRegionName } : {}),
 		locals: {},
 		...overrides,
 	} as MemoryReferenceResolutionContext;
@@ -171,10 +164,8 @@ describe('resolveMemoryReferences', () => {
 			value: 20,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
-					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 12,
 					moduleId: 'main',
@@ -402,7 +393,6 @@ describe('resolveMemoryReferences', () => {
 			value: 5,
 		});
 		expect(result.references.pointerMetadataByModuleId.consumer.pointer).toEqual({
-			pointeeMemoryIndex: 0,
 			pointeeElementCount: 8,
 		});
 	});
@@ -696,10 +686,8 @@ describe('tryResolveValueArgument', () => {
 			value: 8,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
-					memoryIndex: 0,
 					byteAddress: 8,
 					safeByteLength: 16,
 					moduleId: 'source',
@@ -725,10 +713,8 @@ describe('tryResolveValueArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-end',
-					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 4,
 					moduleId: 'source',
@@ -747,10 +733,8 @@ describe('tryResolveValueArgument', () => {
 			value: 12,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'module-start',
-					memoryIndex: 0,
 					byteAddress: 12,
 					safeByteLength: 12,
 					moduleId: 'source',
@@ -769,10 +753,8 @@ describe('tryResolveValueArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'module-end',
-					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 4,
 					moduleId: 'source',
@@ -800,10 +782,8 @@ describe('tryResolveValueArgument', () => {
 			value: 24,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'module-start',
-					memoryIndex: 0,
 					byteAddress: 24,
 					safeByteLength: 20,
 					moduleId: 'main',
@@ -814,10 +794,8 @@ describe('tryResolveValueArgument', () => {
 			value: 40,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'module-end',
-					memoryIndex: 0,
 					byteAddress: 40,
 					safeByteLength: 4,
 					moduleId: 'main',
@@ -849,10 +827,8 @@ describe('tryResolveValueArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
-					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 12,
 					memoryId: 'arr',
@@ -874,10 +850,8 @@ describe('tryResolveValueArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
-					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 12,
 					memoryId: 'arr',

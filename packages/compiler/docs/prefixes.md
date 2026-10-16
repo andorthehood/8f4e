@@ -237,8 +237,8 @@ All of the address and metadata forms above have intermodular counterparts that 
 
 ### Module base address
 
-- `&module:` — start byte address of the module's memory region.
-- `module:&` — end-word base byte address of the module's memory region (base address of the last 4-byte word in the allocation).
+- `&module:` — start byte address of the module's memory allocation.
+- `module:&` — end-word base byte address of the module's memory allocation (base address of the last 4-byte word in the allocation).
 
 ```
 module targetModule

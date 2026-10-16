@@ -353,7 +353,6 @@
       "float64SqrtAssertions",
     ],
     "requiredMemoryBytes": 4,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

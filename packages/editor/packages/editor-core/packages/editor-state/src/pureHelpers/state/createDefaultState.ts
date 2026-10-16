@@ -12,10 +12,8 @@ export default function createDefaultState() {
 			memoryPlan: {
 				modules: {},
 				moduleList: [],
-				nextByteAddressByMemoryIndex: {},
 			},
 			memoryDefaultsByModuleId: {},
-			pointerMetadataByModuleId: {},
 			projectMemoryExposuresByGroupPath: {},
 		},
 		codeBlockRendering: {

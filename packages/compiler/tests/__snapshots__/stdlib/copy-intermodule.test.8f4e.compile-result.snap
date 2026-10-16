@@ -353,7 +353,6 @@
           "id": "dest",
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -372,7 +371,6 @@
           "id": "source",
           "isInteger": false,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
@@ -392,7 +390,6 @@
       "copySource",
     ],
     "requiredMemoryBytes": 12,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

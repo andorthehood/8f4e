@@ -457,7 +457,6 @@
           "id": "value",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -477,7 +476,6 @@
       "guardedLocalPointerDereferenceAssertions",
     ],
     "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

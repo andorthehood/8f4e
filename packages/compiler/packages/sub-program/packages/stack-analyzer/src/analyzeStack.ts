@@ -5,18 +5,14 @@ import type {
 	FunctionCompilationContext,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	ModuleCompilationContext,
-	Namespaces,
 	ResolvedDefaultLine,
-	ResolvedLocalSetLine,
 	ResolvedMapLine,
 	SemanticReferenceLine,
 	Stack,
 	StackAnalysisLineFacts,
-	StackAnalysisLocalPointerFact,
 } from '@8f4e/language-spec';
 import { ArgumentType, BlockType, ErrorCode, functionValueTypeToLocalMetadata, getError } from '@8f4e/language-spec';
 import type {
@@ -31,9 +27,7 @@ import { validateMapValueKind } from './mapValueKind';
 
 export interface AnalyzeStackSubProgramInput {
 	semanticReferences: SemanticReferenceReport;
-	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
-	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
@@ -63,32 +57,6 @@ function toCompiledStackAnalysisLine(line: CompilerASTLine, facts: StackAnalysis
 		lineNumber: line.lineNumber,
 		instruction: line.instruction,
 		stackAnalysis: facts.stackAnalysis,
-	};
-}
-
-function applyLocalSetLine(
-	line: CompilerASTLine,
-	facts: StackAnalysisLineFacts,
-	context: CompilationContext
-): StackAnalysisLocalPointerFact | undefined {
-	const [operand] = facts.stackAnalysis.consumedOperands;
-	const localName = (line as ResolvedLocalSetLine).binding.id;
-	const local = context.locals[localName]!;
-	if (!local.pointeeBaseType || operand?.kind !== 'address') {
-		return undefined;
-	}
-
-	local.pointeeMemoryIndex = operand.address.memoryIndex;
-	if (operand.address.memoryRegionName) {
-		local.pointeeMemoryRegionName = operand.address.memoryRegionName;
-	} else {
-		delete local.pointeeMemoryRegionName;
-	}
-
-	return {
-		bindingId: localName,
-		pointeeMemoryIndex: operand.address.memoryIndex,
-		...(operand.address.memoryRegionName ? { pointeeMemoryRegionName: operand.address.memoryRegionName } : {}),
 	};
 }
 
@@ -170,19 +138,8 @@ function applyDefaultLine(line: ResolvedDefaultLine, context: CompilationContext
 	mapState.defaultSet = true;
 }
 
-function applyStackLineEffect(
-	line: SemanticReferenceLine,
-	facts: StackAnalysisLineFacts,
-	context: CompilationContext
-): void {
+function applyStackLineEffect(line: SemanticReferenceLine, context: CompilationContext): void {
 	switch (line.instruction) {
-		case 'localSet': {
-			const localPointer = applyLocalSetLine(line, facts, context);
-			if (localPointer) {
-				facts.localPointer = localPointer;
-			}
-			return;
-		}
 		case 'block':
 			pushBlock(context, { blockType: BlockType.BLOCK, expectedResultTypes: getResultTypes(line) });
 			return;
@@ -224,7 +181,7 @@ function analyzeSemanticReferenceLine(
 	context: CompilationContext
 ): StackAnalysisLineFacts {
 	const facts = analyzeInstruction(line, context);
-	applyStackLineEffect(line, facts, context);
+	applyStackLineEffect(line, context);
 	return facts;
 }
 
@@ -236,7 +193,6 @@ function createModuleContext(
 	const plannedModule = input.memoryPlan.modules[ast.id];
 	return createCompilationContext<ModuleCompilationContext>({
 		namespace: {
-			namespaces: input.namespaces,
 			moduleName: ast.id,
 			functions: input.functions,
 			prototypeShapeIds: [],
@@ -247,15 +203,9 @@ function createModuleContext(
 		byteCode: [],
 		stack: [],
 		blockStack: [{ blockType: BlockType.MODULE, expectedResultTypes: [] }],
-		startingByteAddress: plannedModule.byteAddress,
-		currentModuleNextWordOffset: plannedModule.wordAlignedSize,
-		currentModuleWordAlignedSize: plannedModule.wordAlignedSize,
-		currentMemoryIndex: plannedModule.memoryIndex,
-		...(plannedModule.memoryRegionName ? { currentMemoryRegionName: plannedModule.memoryRegionName } : {}),
 		memoryPlan: input.memoryPlan,
 		currentPlannedModule: plannedModule,
-		memoryDefaults: input.memoryDefaultsByModuleId[ast.id],
-		pointerMetadata: input.pointerMetadataByModuleId[ast.id],
+		pointerMetadataByModuleId: input.pointerMetadataByModuleId,
 		mode: 'module',
 		codeBlockId: ast.id,
 		codeBlockType: 'module',
@@ -287,7 +237,6 @@ function createFunctionContext(
 	const { ast, metadata: functionMetadata } = resolved;
 	return createCompilationContext<FunctionCompilationContext>({
 		namespace: {
-			namespaces: input.namespaces,
 			moduleName: undefined,
 			functions: input.functions,
 			prototypeShapeIds: [],
@@ -298,13 +247,8 @@ function createFunctionContext(
 		byteCode: [],
 		stack: [],
 		blockStack: [{ blockType: BlockType.FUNCTION, expectedResultTypes: [] }],
-		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
 		memoryPlan: input.memoryPlan,
-		memoryDefaults: {},
-		pointerMetadata: {},
+		pointerMetadataByModuleId: input.pointerMetadataByModuleId,
 		mode: 'function',
 		codeBlockId: functionMetadata.name,
 		codeBlockType: 'function',

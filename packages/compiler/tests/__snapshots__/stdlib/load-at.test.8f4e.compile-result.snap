@@ -336,7 +336,6 @@
           "id": "buffer",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int",
@@ -354,7 +353,6 @@
       "loadAtAssertions",
     ],
     "requiredMemoryBytes": 20,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

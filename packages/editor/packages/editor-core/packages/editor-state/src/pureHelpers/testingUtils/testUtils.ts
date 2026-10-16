@@ -256,10 +256,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memoryPlan: {
 				modules: {},
 				moduleList: [],
-				nextByteAddressByMemoryIndex: {},
 			},
 			memoryDefaultsByModuleId: {},
-			pointerMetadataByModuleId: {},
 			projectMemoryExposuresByGroupPath: {},
 		},
 		callbacks: {

@@ -5,7 +5,7 @@ import type {
 	StackAddress,
 	StackItem,
 } from '@8f4e/language-spec';
-import { ArgumentType, getMemoryRegionFields, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/language-spec';
+import { ArgumentType, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/language-spec';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
@@ -30,7 +30,6 @@ export function getModuleAddressRange(context: Pick<CompilationContext, 'current
 	const plannedModule = context.currentPlannedModule!;
 	return {
 		source: 'module-start',
-		...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
 		byteAddress: plannedModule.byteAddress,
 		safeByteLength: plannedModule.wordAlignedByteLength,
 		moduleId: plannedModule.id,
@@ -55,9 +54,6 @@ export function getClampedAddressStackItem(
 	accessByteWidth: number
 ): StackAddress {
 	const safeAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
-	const memoryIndex = range?.memoryIndex ?? (operand.kind === 'address' ? operand.address.memoryIndex : 0);
-	const memoryRegionName =
-		range?.memoryRegionName ?? (operand.kind === 'address' ? operand.address.memoryRegionName : undefined);
 	const knownValue = range
 		? clampKnownIntegerValue(
 				operand.knownValue,
@@ -73,7 +69,6 @@ export function getClampedAddressStackItem(
 		...(knownValue !== undefined ? { knownValue } : {}),
 		...(operand.kind === 'address' && operand.pointsTo ? { pointsTo: { ...operand.pointsTo } } : {}),
 		address: {
-			...getMemoryRegionFields(memoryIndex, memoryRegionName),
 			...(range ? { clampRange: range } : {}),
 			...(safeAccessByteWidth > 0 ? { safeAccessByteWidth } : {}),
 		},

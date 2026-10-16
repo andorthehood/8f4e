@@ -15,7 +15,6 @@ function createMemory(
 		elementWordSize: 4,
 		elementByteLength: 4,
 		type: MemoryTypes.int,
-		memoryIndex: 0,
 		byteAddress,
 		wordAlignedAddress: byteAddress / 4,
 		wordAlignedSize: 1,
@@ -34,7 +33,6 @@ function createModule(id: string, declarations: PlannedMemoryDeclaration[]): Pla
 	return {
 		id,
 		lineNumber: 0,
-		memoryIndex: declarations[0]?.memoryIndex ?? 0,
 		byteAddress: declarations[0]?.byteAddress ?? 0,
 		wordAlignedSize: declarations.reduce((size, declaration) => size + declaration.wordAlignedSize, 0),
 		wordAlignedByteLength: declarations.reduce((size, declaration) => size + declaration.wordAlignedByteLength, 0),
@@ -72,9 +70,6 @@ describe('resolveMemoryIdentifier', () => {
 		const pointeeModule = createModule('pointee', [pointee]);
 		state.compiler.memoryPlan.modules = { watcher: watcherModule, pointee: pointeeModule };
 		state.compiler.memoryPlan.moduleList = [watcherModule, pointeeModule];
-		state.compiler.pointerMetadataByModuleId.watcher = {
-			pointer: { pointeeMemoryIndex: pointee.memoryIndex },
-		};
 		state.callbacks.getWordFromMemory = () => pointee.byteAddress;
 
 		expect(state.codeBlockRendering.outputsByWordAddress.size).toBe(0);

@@ -102,7 +102,6 @@ export function createCompilerService(createWorker: () => Worker = () => new Com
 								compiledModules: data.payload.compiledModules,
 								memoryPlan: data.payload.memoryPlan,
 								memoryDefaultsByModuleId: data.payload.memoryDefaultsByModuleId,
-								pointerMetadataByModuleId: data.payload.pointerMetadataByModuleId,
 								projectMemoryExposuresByGroupPath: data.payload.projectMemoryExposuresByGroupPath,
 								codeBuffer: data.payload.codeBuffer,
 								requiredMemoryBytes: data.payload.requiredMemoryBytes,

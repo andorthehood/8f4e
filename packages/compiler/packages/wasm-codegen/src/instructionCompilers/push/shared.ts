@@ -22,7 +22,7 @@ import { type PushValueKind, valueKindToWasmType } from '../../pushValueKind';
 import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
-type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memoryIndex: number };
+type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[] };
 
 export { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../pushValueKind';
 
@@ -33,11 +33,11 @@ export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	float64: f64const,
 };
 
-/** Memory load emitters keyed by resolved value kind. */
-export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]> = {
-	int32: memoryIndex => i32load(2, 0, memoryIndex),
-	float32: memoryIndex => f32load(2, 0, memoryIndex),
-	float64: memoryIndex => f64load(3, 0, memoryIndex),
+/** Memory load bytecode keyed by resolved value kind. */
+export const loadOpcode: Record<PushValueKind, number[]> = {
+	int32: i32load(2, 0),
+	float32: f32load(2, 0),
+	float64: f64load(3, 0),
 };
 
 function buildGuardedPointerLoadChain(
@@ -52,7 +52,6 @@ function buildGuardedPointerLoadChain(
 		(continuation, step) =>
 			guardedAddressOperation(context, {
 				accessByteWidth: step.accessByteWidth,
-				memoryIndex: step.memoryIndex,
 				lineNumber,
 				resultType,
 				buildTrueBranch: addressLocalIndex => [...localGet(addressLocalIndex), ...step.loadByteCode, ...continuation],
@@ -61,37 +60,28 @@ function buildGuardedPointerLoadChain(
 	);
 }
 
-function createPointerLoadStep(memoryIndex: number): PointerLoadStep {
-	return {
-		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
-		loadByteCode: i32load(2, 0, memoryIndex),
-		memoryIndex,
-	};
-}
-
 function getFinalDereferenceLoad(
 	pointerMetadata: PointerMetadata,
 	kind: PushValueKind,
-	dereferencedValueWordSize: number,
-	pointeeMemoryIndex: number
+	dereferencedValueWordSize: number
 ): number[] {
 	if (pointerMetadata.pointeeBaseType === 'int8u') {
-		return i32load8u(0, 0, pointeeMemoryIndex);
+		return i32load8u(0, 0);
 	}
 
 	if (pointerMetadata.pointeeBaseType === 'int16u') {
-		return i32load16u(1, 0, pointeeMemoryIndex);
+		return i32load16u(1, 0);
 	}
 
 	if (dereferencedValueWordSize === 1) {
-		return i32load8s(0, 0, pointeeMemoryIndex);
+		return i32load8s(0, 0);
 	}
 
 	if (dereferencedValueWordSize === 2) {
-		return i32load16s(1, 0, pointeeMemoryIndex);
+		return i32load16s(1, 0);
 	}
 
-	return loadOpcode[kind](pointeeMemoryIndex);
+	return loadOpcode[kind];
 }
 
 /**
@@ -117,29 +107,27 @@ export function buildPointerDereferenceByteCode(
 	const isFinalDereference = dereferenceDepth === declaredPointerDepth;
 	const kind = getDereferencedValueKindFromMetadata(pointerMetadata, dereferenceDepth);
 	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata, dereferenceDepth);
-	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
-	const finalLoad = getFinalDereferenceLoad(pointerMetadata, kind, dereferencedValueWordSize, pointeeMemoryIndex);
+	const finalLoad = getFinalDereferenceLoad(pointerMetadata, kind, dereferencedValueWordSize);
 
 	if (pointerValueSource === 'pointer-slot') {
-		const slotMemoryIndex = 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
 		const pointerLoads = [
-			...i32load(2, 0, slotMemoryIndex),
+			...i32load(2, 0),
 			...Array.from({ length: isFinalDereference ? dereferenceDepth - 1 : dereferenceDepth }, () =>
-				i32load(2, 0, pointeeMemoryIndex)
+				i32load(2, 0)
 			).flat(),
 		];
 
 		return { kind, byteCode: [...baseAddressByteCode, ...pointerLoads, ...(isFinalDereference ? finalLoad : [])] };
 	}
 
-	const guardedLoadSteps = Array.from({ length: isFinalDereference ? dereferenceDepth - 1 : dereferenceDepth }, () =>
-		createPointerLoadStep(pointeeMemoryIndex)
-	);
+	const guardedLoadSteps = Array.from({ length: isFinalDereference ? dereferenceDepth - 1 : dereferenceDepth }, () => ({
+		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+		loadByteCode: i32load(2, 0),
+	}));
 	if (isFinalDereference) {
 		guardedLoadSteps.push({
 			accessByteWidth: dereferencedValueWordSize,
 			loadByteCode: finalLoad,
-			memoryIndex: pointeeMemoryIndex,
 		});
 	}
 

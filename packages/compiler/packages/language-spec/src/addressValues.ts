@@ -1,5 +1,4 @@
 import type { PlannedMemoryDeclaration, PlannedMemoryModule } from './memory';
-import { getMemoryRegionFields } from './memoryRegions';
 import type { Const } from './semantic';
 
 /**
@@ -10,15 +9,12 @@ import type { Const } from './semantic';
  * @returns Integer value with address safe-range metadata.
  */
 export function memoryStartAddressValue(memoryItem: PlannedMemoryDeclaration, moduleId?: string): Const {
-	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.byteAddress,
 		isInteger: true,
 		address: {
-			...memoryRegionFields,
 			safeRange: {
 				source: 'memory-start',
-				...memoryRegionFields,
 				byteAddress: memoryItem.byteAddress,
 				safeByteLength: memoryItem.wordAlignedByteLength,
 				...(moduleId ? { moduleId } : {}),
@@ -36,15 +32,12 @@ export function memoryStartAddressValue(memoryItem: PlannedMemoryDeclaration, mo
  * @returns Integer value with address safe-range metadata.
  */
 export function memoryEndAddressValue(memoryItem: PlannedMemoryDeclaration, moduleId?: string): Const {
-	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.endByteAddress,
 		isInteger: true,
 		address: {
-			...memoryRegionFields,
 			safeRange: {
 				source: 'memory-end',
-				...memoryRegionFields,
 				byteAddress: memoryItem.endByteAddress,
 				safeByteLength: memoryItem.endAddressSafeByteLength,
 				...(moduleId ? { moduleId } : {}),
@@ -68,15 +61,12 @@ export function moduleAddressValue(
 	moduleId: string | undefined = module.id
 ): Const {
 	const byteAddress = source === 'module-start' ? module.byteAddress : module.endByteAddress;
-	const memoryRegionFields = getMemoryRegionFields(module.memoryIndex, module.memoryRegionName);
 	return {
 		value: byteAddress,
 		isInteger: true,
 		address: {
-			...memoryRegionFields,
 			safeRange: {
 				source,
-				...memoryRegionFields,
 				byteAddress,
 				safeByteLength: source === 'module-start' ? module.wordAlignedByteLength : module.endAddressSafeByteLength,
 				...(moduleId ? { moduleId } : {}),

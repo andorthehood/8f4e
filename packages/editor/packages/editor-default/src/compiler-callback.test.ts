@@ -50,7 +50,6 @@ function createSuccessMessage(codeBuffer: Uint8Array, wasmMemory: WebAssembly.Me
 			compiledModules: {},
 			memoryPlan: {},
 			memoryDefaultsByModuleId: {},
-			pointerMetadataByModuleId: {},
 			projectMemoryExposuresByGroupPath: {},
 			requiredMemoryBytes: 0,
 			allocatedMemoryBytes: 65536,

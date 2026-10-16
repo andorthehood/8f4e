@@ -1623,7 +1623,6 @@
   "memoryPlan": {
     "modules": {
       "activationFn": {
-        "memoryIndex": 0,
         "id": "activationFn",
         "lineNumber": 0,
         "byteAddress": 0,
@@ -1635,7 +1634,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1654,7 +1652,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 1,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1674,7 +1671,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1693,7 +1689,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 1,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1752,7 +1747,6 @@
         ]
       },
       "activationFn2": {
-        "memoryIndex": 0,
         "id": "activationFn2",
         "lineNumber": 0,
         "byteAddress": 8,
@@ -1764,7 +1758,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 2,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1783,7 +1776,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 3,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1803,7 +1795,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 2,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1822,7 +1813,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 3,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1881,7 +1871,6 @@
         ]
       },
       "activationFn3": {
-        "memoryIndex": 0,
         "id": "activationFn3",
         "lineNumber": 0,
         "byteAddress": 16,
@@ -1893,7 +1882,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 4,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1912,7 +1900,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 5,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1932,7 +1919,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 4,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -1951,7 +1937,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 5,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2010,7 +1995,6 @@
         ]
       },
       "inputs": {
-        "memoryIndex": 0,
         "id": "inputs",
         "lineNumber": 0,
         "byteAddress": 24,
@@ -2022,7 +2006,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 6,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2040,7 +2023,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 7,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2060,7 +2042,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 6,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2078,7 +2059,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 7,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2138,7 +2118,6 @@
         ]
       },
       "notes": {
-        "memoryIndex": 0,
         "id": "notes",
         "lineNumber": 0,
         "byteAddress": 32,
@@ -2151,7 +2130,6 @@
         "declarationSources": []
       },
       "perceptron": {
-        "memoryIndex": 0,
         "id": "perceptron",
         "lineNumber": 0,
         "byteAddress": 32,
@@ -2163,7 +2141,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 8,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2182,7 +2159,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 9,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2201,7 +2177,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 10,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2221,7 +2196,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 8,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2240,7 +2214,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 9,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2259,7 +2232,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 10,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2342,7 +2314,6 @@
         ]
       },
       "perceptron2": {
-        "memoryIndex": 0,
         "id": "perceptron2",
         "lineNumber": 0,
         "byteAddress": 44,
@@ -2354,7 +2325,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 11,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2373,7 +2343,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 12,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2392,7 +2361,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 13,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2412,7 +2380,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 11,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2431,7 +2398,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 12,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2450,7 +2416,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 13,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2533,7 +2498,6 @@
         ]
       },
       "perceptron3": {
-        "memoryIndex": 0,
         "id": "perceptron3",
         "lineNumber": 0,
         "byteAddress": 56,
@@ -2545,7 +2509,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 14,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2564,7 +2527,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 15,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2583,7 +2545,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 16,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2603,7 +2564,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 14,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2622,7 +2582,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 15,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2641,7 +2600,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 16,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2724,7 +2682,6 @@
         ]
       },
       "result": {
-        "memoryIndex": 0,
         "id": "result",
         "lineNumber": 0,
         "byteAddress": 68,
@@ -2736,7 +2693,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 17,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2757,7 +2713,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 17,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2804,7 +2759,6 @@
     },
     "moduleList": [
       {
-        "memoryIndex": 0,
         "id": "activationFn",
         "lineNumber": 0,
         "byteAddress": 0,
@@ -2816,7 +2770,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2835,7 +2788,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 1,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2855,7 +2807,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 0,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2874,7 +2825,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 1,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2933,7 +2883,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "activationFn2",
         "lineNumber": 0,
         "byteAddress": 8,
@@ -2945,7 +2894,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 2,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2964,7 +2912,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 3,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -2984,7 +2931,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 2,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3003,7 +2949,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 3,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3062,7 +3007,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "activationFn3",
         "lineNumber": 0,
         "byteAddress": 16,
@@ -3074,7 +3018,6 @@
           "in": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 4,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3093,7 +3036,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 5,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3113,7 +3055,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 4,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3132,7 +3073,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 5,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3191,7 +3131,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "inputs",
         "lineNumber": 0,
         "byteAddress": 24,
@@ -3203,7 +3142,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 6,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3221,7 +3159,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 7,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3241,7 +3178,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 6,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3259,7 +3195,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 7,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3319,7 +3254,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "notes",
         "lineNumber": 0,
         "byteAddress": 32,
@@ -3332,7 +3266,6 @@
         "declarationSources": []
       },
       {
-        "memoryIndex": 0,
         "id": "perceptron",
         "lineNumber": 0,
         "byteAddress": 32,
@@ -3344,7 +3277,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 8,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3363,7 +3295,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 9,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3382,7 +3313,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 10,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3402,7 +3332,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 8,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3421,7 +3350,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 9,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3440,7 +3368,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 10,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3523,7 +3450,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "perceptron2",
         "lineNumber": 0,
         "byteAddress": 44,
@@ -3535,7 +3461,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 11,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3554,7 +3479,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 12,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3573,7 +3497,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 13,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3593,7 +3516,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 11,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3612,7 +3534,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 12,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3631,7 +3552,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 13,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3714,7 +3634,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "perceptron3",
         "lineNumber": 0,
         "byteAddress": 56,
@@ -3726,7 +3645,6 @@
           "in1": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 14,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3745,7 +3663,6 @@
           "in2": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 15,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3764,7 +3681,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 16,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3784,7 +3700,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 14,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3803,7 +3718,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 15,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3822,7 +3736,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 16,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3905,7 +3818,6 @@
         ]
       },
       {
-        "memoryIndex": 0,
         "id": "result",
         "lineNumber": 0,
         "byteAddress": 68,
@@ -3917,7 +3829,6 @@
           "out": {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 17,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3938,7 +3849,6 @@
           {
             "numberOfElements": 1,
             "elementWordSize": 4,
-            "memoryIndex": 0,
             "wordAlignedAddress": 17,
             "wordAlignedSize": 1,
             "wordAlignedByteLength": 4,
@@ -3982,10 +3892,7 @@
           }
         ]
       }
-    ],
-    "nextByteAddressByMemoryIndex": {
-      "0": 72
-    }
+    ]
   },
   "memoryDefaultsByModuleId": {
     "activationFn": {
@@ -4097,52 +4004,15 @@
     }
   },
   "pointerMetadataByModuleId": {
-    "activationFn": {
-      "in": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "activationFn2": {
-      "in": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "activationFn3": {
-      "in": {
-        "pointeeMemoryIndex": 0
-      }
-    },
+    "activationFn": {},
+    "activationFn2": {},
+    "activationFn3": {},
     "inputs": {},
     "notes": {},
-    "perceptron": {
-      "in1": {
-        "pointeeMemoryIndex": 0
-      },
-      "in2": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "perceptron2": {
-      "in1": {
-        "pointeeMemoryIndex": 0
-      },
-      "in2": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "perceptron3": {
-      "in1": {
-        "pointeeMemoryIndex": 0
-      },
-      "in2": {
-        "pointeeMemoryIndex": 0
-      }
-    },
-    "result": {
-      "out": {
-        "pointeeMemoryIndex": 0
-      }
-    }
+    "perceptron": {},
+    "perceptron2": {},
+    "perceptron3": {},
+    "result": {}
   },
   "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMNDAAAAwAAAAAAAAAAAAcXAgxpbml0RGVmYXVsdHMAAARtYWluAAEMAQEKpAIMFwBBAEEAQcgA/AsAQQBBAEHIAPwIAAALFAAQAxAEEAUQBhAHEAgQCRAKEAsLJgEBfSAAIACLQwAAgD+SIQEgAUMAAAAAWwRAQwAAgD8hAQsgAZULAgALAgALAgALKgBBKEEgKAIAKgIAQ1bmIEGUQSQoAgAqAgBDxiUqwpSSQ4Are8CSOAIACyoAQTRBLCgCACoCAEOqoIzClEEwKAIAKgIAQ2gcxkGUkkPbPQzBkjgCAAsRAEEEQQAoAgAqAgAQAjgCAAsRAEEMQQgoAgAqAgAQAjgCAAsrAEHAAEE4KAIAKgIAQ65H3kCUQTwoAgAqAgBDsKzUQJSSQ6nZwUCSOAIACx8AQRRBECgCACoCABACQwAAAD9eBH9BAQVBAAs2AgALC0sBAUgoAAAAAAAAADQAAAAAAAAAQAAAAAAAAAAAAIA/AAAAABgAAAAcAAAAAAAAABgAAAAcAAAAAAAAAAQAAAAMAAAAAAAAABQAAAA=",
   "requiredMemoryBytes": 72

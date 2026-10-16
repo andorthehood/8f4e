@@ -15,10 +15,16 @@ describe('compileToAST', () => {
 		);
 	});
 
+	it('rejects the removed #region directive', () => {
+		expect(() => compileToAST(['module synth', '#region samples', 'moduleEnd'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
+	});
+
 	it('constructs module metadata from the source-block parse path', () => {
 		const ast = compileToAST([
 			'module target',
-			'#region fastMemory',
+			'#skipExecution',
 			'int counter',
 			'int sourceStart &source:buffer',
 			'moduleEnd',
@@ -32,7 +38,9 @@ describe('compileToAST', () => {
 		if (ast.type !== 'module') {
 			throw new Error('Expected module AST');
 		}
-		expect(ast.lines.find(line => line.instruction === '#region')).toMatchObject({ instruction: '#region' });
+		expect(ast.lines.find(line => line.instruction === '#skipExecution')).toMatchObject({
+			instruction: '#skipExecution',
+		});
 		expect(ast.lines.filter(isMemoryDeclarationLine).map(line => line.arguments[0].value)).toEqual([
 			'counter',
 			'sourceStart',
@@ -354,13 +362,7 @@ describe('compileToAST line parsing', () => {
 	});
 
 	it('marks directives in module and function prologues', () => {
-		const moduleAst = compileLinesFromAST([
-			'module test',
-			'#skipExecution',
-			'#region sampleMemory',
-			'int counter',
-			'moduleEnd',
-		]);
+		const moduleAst = compileLinesFromAST(['module test', '#skipExecution', 'int counter', 'moduleEnd']);
 		const functionAst = compileLinesFromAST([
 			'function readValue',
 			'#impure',
@@ -370,8 +372,7 @@ describe('compileToAST line parsing', () => {
 		]);
 
 		expect(isCompilerDirectiveLine(moduleAst[1]) && moduleAst[1].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(moduleAst[2]) && moduleAst[2].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(moduleAst[3])).toBe(false);
+		expect(isCompilerDirectiveLine(moduleAst[2])).toBe(false);
 		expect(isCompilerDirectiveLine(functionAst[1]) && functionAst[1].isBlockPrologue).toBe(true);
 		expect(isCompilerDirectiveLine(functionAst[2]) && functionAst[2].isBlockPrologue).toBe(true);
 		expect(isCompilerDirectiveLine(functionAst[3])).toBe(false);

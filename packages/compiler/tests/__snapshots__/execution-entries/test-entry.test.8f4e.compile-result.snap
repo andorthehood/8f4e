@@ -290,7 +290,6 @@
           "id": "values",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int",
@@ -310,7 +309,6 @@
       "testEntrySupportsPointerArguments",
     ],
     "requiredMemoryBytes": 12,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

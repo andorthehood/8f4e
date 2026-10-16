@@ -12,10 +12,8 @@ describe('store stack analysis', () => {
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					memoryIndex: 0,
 					safeRange: {
 						source: 'memory-start',
-						memoryIndex: 0,
 						byteAddress: 0,
 						safeByteLength: 8,
 						memoryId: 'test',

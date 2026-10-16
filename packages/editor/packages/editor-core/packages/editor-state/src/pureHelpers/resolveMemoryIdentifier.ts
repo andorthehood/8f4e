@@ -53,10 +53,7 @@ export default function resolveMemoryIdentifier(
 	let memory: PlannedMemoryDeclaration | undefined = target.memory;
 	if (operator === '*' && memory.pointeeBaseType) {
 		const pointerAddress = state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0;
-		const pointeeMemoryIndex =
-			state.compiler.pointerMetadataByModuleId[target.moduleId]?.[memory.id]?.pointeeMemoryIndex ?? memory.memoryIndex;
 		memory = state.compiler.memoryPlan.moduleList
-			.filter(module => module.memoryIndex === pointeeMemoryIndex)
 			.flatMap(module => module.declarations)
 			.find(declaration => declaration.byteAddress === pointerAddress);
 	}

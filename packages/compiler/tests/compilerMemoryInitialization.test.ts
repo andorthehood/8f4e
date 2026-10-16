@@ -10,6 +10,25 @@ async function compileToWat(codeBuffer: Uint8Array): Promise<string> {
 }
 
 describe('compiler memory initialization', () => {
+	test.each([
+		'',
+		`entry main
+module first
+int value 1
+moduleEnd
+module second
+float value 2.0
+moduleEnd
+entryEnd`,
+	])('imports exactly one host memory for any module count', async source => {
+		const { compileResult } = await compileFixtureProgramSource(`8f4e/v1
+${source}`);
+		const module = await WebAssembly.compile(new Uint8Array(compileResult.codeBuffer));
+		expect(WebAssembly.Module.imports(module).filter(item => item.kind === 'memory')).toEqual([
+			{ module: 'host', name: 'memory', kind: 'memory' },
+		]);
+	});
+
 	test('allows repeated initDefaults calls to verify reset behavior after mutation', async () => {
 		const fixture = await instantiateFixtureProgramSource(`
 8f4e/v1

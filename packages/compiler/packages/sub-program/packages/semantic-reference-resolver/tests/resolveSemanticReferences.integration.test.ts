@@ -116,7 +116,6 @@ describe('resolveSemanticReferences integration', () => {
 		const valueMemory = {
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 4,
 			elementByteLength: 4,
 			wordAlignedSize: 1,
@@ -169,7 +168,6 @@ describe('resolveSemanticReferences integration', () => {
 					wordAlignedByteLength: 4,
 					endByteAddress: 4,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						value: valueMemory,
 					},
@@ -188,7 +186,6 @@ describe('resolveSemanticReferences integration', () => {
 					wordAlignedByteLength: 4,
 					endByteAddress: 4,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						value: valueMemory,
 					},
@@ -198,9 +195,6 @@ describe('resolveSemanticReferences integration', () => {
 					],
 				},
 			],
-			nextByteAddressByMemoryIndex: {
-				0: 8,
-			},
 		} as const;
 		const memoryReferences = {
 			prototypes: [
@@ -221,10 +215,8 @@ describe('resolveSemanticReferences integration', () => {
 									value: 4,
 									isInteger: true,
 									address: {
-										memoryIndex: 0,
 										safeRange: {
 											source: 'memory-start',
-											memoryIndex: 0,
 											byteAddress: 4,
 											safeByteLength: 4,
 											moduleId: 'main',
@@ -273,22 +265,6 @@ describe('resolveSemanticReferences integration', () => {
 				},
 			],
 		} as const;
-		const namespaces = {
-			main: {
-				kind: 'module',
-				memoryIndex: 0,
-				byteAddress: 4,
-				wordAlignedSize: 1,
-				memoryDefaults: {
-					value: {
-						value: 0,
-						hasExplicitDefault: false,
-						isInherited: true,
-					},
-				},
-				pointerMetadata: {},
-			},
-		} as const;
 		const functions = {
 			byId: {
 				increment__int: {
@@ -309,15 +285,6 @@ describe('resolveSemanticReferences integration', () => {
 			signatures: [],
 			baseTypeIndex: 3,
 		} as const;
-		const memoryDefaultsByModuleId = {
-			main: {
-				value: {
-					value: 0,
-					hasExplicitDefault: false,
-					isInherited: true,
-				},
-			},
-		} as const;
 		const pointerMetadataByModuleId = {
 			main: {},
 		} as const;
@@ -328,10 +295,8 @@ describe('resolveSemanticReferences integration', () => {
 		const result = resolveSemanticReferences({
 			ast,
 			registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
-			namespaces,
 			memoryPlan,
 			memoryAliases: new Map(),
-			memoryDefaultsByModuleId,
 			pointerMetadataByModuleId,
 			constantReferences,
 			memoryReferences,

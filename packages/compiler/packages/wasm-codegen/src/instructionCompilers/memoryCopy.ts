@@ -3,7 +3,6 @@ import type { InstructionCompiler, ResolvedMemoryCopyLine } from '@8f4e/language
 import { getInstructionSpec } from '@8f4e/language-spec';
 import { guardedMemoryCopy, isSafeMemoryCopy } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 /**
  * Instruction compiler for `memoryCopy`.
@@ -12,12 +11,10 @@ import { requireStackAddress } from './utils/stackItem';
 const memoryCopy: InstructionCompiler<ResolvedMemoryCopyLine> = (line, context, facts) => {
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const destinationIndex = operation.addressOperandIndex;
-	const destination = requireStackAddress(facts.stackAnalysis.consumedOperands[destinationIndex], line, context);
-	const source = requireStackAddress(facts.stackAnalysis.consumedOperands[destinationIndex + 1], line, context);
+	const destination = facts.stackAnalysis.consumedOperands[destinationIndex];
+	const source = facts.stackAnalysis.consumedOperands[destinationIndex + 1];
 	const byteLength = line.arguments[0].value;
-	const destinationMemoryIndex = destination.address.memoryIndex;
-	const sourceMemoryIndex = source.address.memoryIndex;
-	const memoryCopyByteCode = wasmMemoryCopy(destinationMemoryIndex, sourceMemoryIndex);
+	const memoryCopyByteCode = wasmMemoryCopy();
 
 	if (byteLength === 0) {
 		return context;
@@ -31,10 +28,7 @@ const memoryCopy: InstructionCompiler<ResolvedMemoryCopyLine> = (line, context, 
 		context,
 		guardedMemoryCopy(context, {
 			byteLength,
-			destinationMemoryIndex,
-			sourceMemoryIndex,
 			lineNumber: line.lineNumber,
-			memoryCopyByteCode,
 		})
 	);
 };

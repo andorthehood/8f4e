@@ -43,7 +43,6 @@ describe('analyzeStack integration', () => {
 		const bufferMemory = {
 			numberOfElements: 4,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			byteAddress: 4,
 			elementByteLength: 16,
 			wordAlignedSize: 4,
@@ -60,7 +59,6 @@ describe('analyzeStack integration', () => {
 		} as const;
 		const bufferRange = {
 			source: 'memory-start',
-			memoryIndex: 0,
 			byteAddress: 4,
 			safeByteLength: 16,
 			moduleId: 'main',
@@ -162,22 +160,6 @@ describe('analyzeStack integration', () => {
 				},
 			],
 		} as const;
-		const namespaces = {
-			main: {
-				kind: 'module',
-				memoryIndex: 0,
-				byteAddress: 4,
-				wordAlignedSize: 4,
-				memoryDefaults: {
-					buffer: {
-						value: 0,
-						hasExplicitDefault: false,
-						isInherited: false,
-					},
-				},
-				pointerMetadata: {},
-			},
-		} as const;
 		const memoryPlan = {
 			modules: {
 				main: {
@@ -188,7 +170,6 @@ describe('analyzeStack integration', () => {
 					wordAlignedByteLength: 16,
 					endByteAddress: 16,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						buffer: bufferMemory,
 					},
@@ -210,7 +191,6 @@ describe('analyzeStack integration', () => {
 					wordAlignedByteLength: 16,
 					endByteAddress: 16,
 					endAddressSafeByteLength: 4,
-					memoryIndex: 0,
 					memory: {
 						buffer: bufferMemory,
 					},
@@ -223,18 +203,6 @@ describe('analyzeStack integration', () => {
 					],
 				},
 			],
-			nextByteAddressByMemoryIndex: {
-				0: 20,
-			},
-		} as const;
-		const memoryDefaultsByModuleId = {
-			main: {
-				buffer: {
-					value: 0,
-					hasExplicitDefault: false,
-					isInherited: false,
-				},
-			},
 		} as const;
 		const pointerMetadataByModuleId = {
 			main: {},
@@ -278,7 +246,7 @@ describe('analyzeStack integration', () => {
 												type: 'literal',
 												value: 4,
 												isInteger: true,
-												address: { memoryIndex: 0, safeRange: bufferRange },
+												address: { safeRange: bufferRange },
 											},
 										],
 									}
@@ -310,9 +278,7 @@ describe('analyzeStack integration', () => {
 		expect(
 			analyzeStack({
 				semanticReferences,
-				namespaces,
 				memoryPlan,
-				memoryDefaultsByModuleId,
 				pointerMetadataByModuleId,
 				functions,
 				functionTypeRegistry,

@@ -35,10 +35,8 @@ describe('storeBytes stack analysis', () => {
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					memoryIndex: 0,
 					safeRange: {
 						source: 'memory-start',
-						memoryIndex: 0,
 						byteAddress: 0,
 						safeByteLength: 3,
 						memoryId: 'test',
@@ -69,10 +67,8 @@ describe('storeBytes stack analysis', () => {
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					memoryIndex: 0,
 					safeRange: {
 						source: 'memory-start',
-						memoryIndex: 0,
 						byteAddress: 0,
 						safeByteLength: 1,
 						memoryId: 'test',
@@ -100,10 +96,8 @@ describe('storeBytes stack analysis', () => {
 			valueType: 'int',
 			isNonZero: false,
 			address: {
-				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
-					memoryIndex: 0,
 					byteAddress: 0,
 					safeByteLength: 0,
 					memoryId: 'test',

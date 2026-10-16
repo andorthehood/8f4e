@@ -8,7 +8,6 @@ import type {
 	CompiledModuleLookup,
 	MemoryDefaults,
 	MemoryLayoutPlan,
-	MemoryPointerMetadataMap,
 	ProjectMemoryExposuresByGroupPath,
 } from '@8f4e/language-spec';
 
@@ -21,7 +20,6 @@ export interface Compiler {
 	compiledFunctions?: CompiledFunctionLookup;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
-	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 }
 

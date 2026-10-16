@@ -47,7 +47,6 @@ exports[`resolveMemoryDefaults integration > resolves sub-program-level memory d
     "main": {
       "ptr": {
         "pointeeElementCount": 3,
-        "pointeeMemoryIndex": 0,
       },
     },
   },

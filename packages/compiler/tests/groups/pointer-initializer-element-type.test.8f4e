@@ -2,14 +2,12 @@
 
 note
 ; @config runtime TestRuntime
-; @memoryRegions sampleMemory
 
-A group initializer carries its source memory region and pointee element count into compilation.
+A group pointer initializer preserves the source element type and count.
 noteEnd
 
 entry test
 module source
-#region sampleMemory
 int8[] values 4 11 12 13 14
 moduleEnd
 

@@ -66,7 +66,6 @@ export default function compiler(store: StateManager<State>): () => void {
 			store.set('compiler.projectMemoryExposuresByGroupPath', result.projectMemoryExposuresByGroupPath);
 			store.set('compiler.memoryPlan', result.memoryPlan);
 			store.set('compiler.memoryDefaultsByModuleId', result.memoryDefaultsByModuleId);
-			store.set('compiler.pointerMetadataByModuleId', result.pointerMetadataByModuleId);
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({
 				isCompiling: false,

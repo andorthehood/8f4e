@@ -29,7 +29,6 @@ export interface CompileProjectResult {
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm: string;
 	requiredMemoryBytes: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
 export type BlockTypeValue = DocumentBlockType | 'unknown';

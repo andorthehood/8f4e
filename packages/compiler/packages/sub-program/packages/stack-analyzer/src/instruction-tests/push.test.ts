@@ -30,7 +30,6 @@ function createMemoryItem(
 	return {
 		numberOfElements: 1,
 		elementWordSize: 4,
-		memoryIndex: 0,
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
 		isInteger: true,
@@ -55,9 +54,7 @@ describe('push stack analysis', () => {
 						value: 12,
 						isInteger: true,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
-								memoryIndex: 0,
 								source: 'memory-start',
 								byteAddress: 12,
 								safeByteLength: 16,
@@ -75,8 +72,7 @@ describe('push stack analysis', () => {
 			valueType: 'int',
 			isNonZero: true,
 			address: {
-				memoryIndex: 0,
-				safeRange: { memoryIndex: 0, source: 'memory-start', byteAddress: 12, safeByteLength: 16, memoryId: 'buffer' },
+				safeRange: { source: 'memory-start', byteAddress: 12, safeByteLength: 16, memoryId: 'buffer' },
 			},
 		});
 	});
@@ -279,8 +275,6 @@ describe('push stack analysis', () => {
 			isInteger: true,
 			pointeeBaseType: 'int',
 			pointerDepth: 1,
-			pointeeMemoryIndex: 2,
-			pointeeMemoryRegionName: 'slow',
 			type: 'int*',
 		});
 		const context = createStackAnalyzerTestContext();
@@ -290,14 +284,9 @@ describe('push stack analysis', () => {
 		expect(context.stack[0]).toMatchObject({
 			kind: 'address',
 			valueType: 'int',
-			address: {
-				memoryIndex: 2,
-				memoryRegionName: 'slow',
-			},
+			address: {},
 			pointsTo: {
 				baseType: 'int',
-				memoryIndex: 2,
-				memoryRegionName: 'slow',
 				pointerDepth: 1,
 			},
 		});

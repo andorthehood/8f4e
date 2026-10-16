@@ -181,7 +181,6 @@ describe('tooltip effect', () => {
 						test: {
 							id: 'test',
 							lineNumber: 0,
-							memoryIndex: 0,
 							byteAddress: 0,
 							wordAlignedSize: 0,
 							wordAlignedByteLength: 0,
@@ -200,7 +199,6 @@ describe('tooltip effect', () => {
 						},
 					},
 					moduleList: [],
-					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			codeBlockRendering: {

@@ -42,6 +42,5 @@ export async function compileProject(
 		compiledFunctions: moduleResult.compiledFunctions,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
-		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
 	};
 }

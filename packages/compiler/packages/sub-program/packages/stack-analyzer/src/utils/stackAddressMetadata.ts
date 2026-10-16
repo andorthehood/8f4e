@@ -1,5 +1,4 @@
 import type { MemoryAddressRange, StackAddress, StackItem } from '@8f4e/language-spec';
-import { getMemoryRegionFields } from '@8f4e/language-spec';
 
 /** Shifts a proven safe range forward by a known byte offset, dropping it when unsafe. */
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
@@ -49,10 +48,6 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 					kind: 'address',
 					valueType: 'int',
 					address: {
-						...getMemoryRegionFields(
-							(safeRange ?? clampRange)!.memoryIndex,
-							(safeRange ?? clampRange)!.memoryRegionName
-						),
 						...(safeRange ? { safeRange } : {}),
 						...(clampRange ? { clampRange } : {}),
 					},
@@ -89,10 +84,6 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 					kind: 'address',
 					valueType: 'int',
 					address: {
-						...getMemoryRegionFields(
-							(safeRange ?? clampRange)!.memoryIndex,
-							(safeRange ?? clampRange)!.memoryRegionName
-						),
 						...(safeRange ? { safeRange } : {}),
 						...(clampRange ? { clampRange } : {}),
 					},

@@ -111,7 +111,6 @@
           "id": "output",
           "isInteger": true,
           "isUnsigned": false,
-          "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
@@ -127,7 +126,6 @@
       "branchAssertions",
     ],
     "requiredMemoryBytes": 8,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

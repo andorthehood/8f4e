@@ -51,11 +51,9 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
               },
               {
                 "address": {
-                  "memoryIndex": 0,
                   "safeRange": {
                     "byteAddress": 4,
                     "memoryId": "samples",
-                    "memoryIndex": 0,
                     "moduleId": "main",
                     "safeByteLength": 16,
                     "source": "memory-start",
@@ -103,11 +101,9 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
               },
               {
                 "address": {
-                  "memoryIndex": 0,
                   "safeRange": {
                     "byteAddress": 4,
                     "memoryId": "samples",
-                    "memoryIndex": 0,
                     "moduleId": "main",
                     "safeByteLength": 16,
                     "source": "memory-start",
@@ -123,11 +119,9 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
             "arguments": [
               {
                 "address": {
-                  "memoryIndex": 0,
                   "safeRange": {
                     "byteAddress": 8,
                     "memoryId": "samples",
-                    "memoryIndex": 0,
                     "moduleId": "main",
                     "safeByteLength": 12,
                     "source": "memory-start",
@@ -152,13 +146,9 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
             "arguments": [
               {
                 "address": {
-                  "memoryIndex": 1,
-                  "memoryRegionName": "audio",
                   "safeRange": {
                     "byteAddress": 4,
                     "memoryId": "samples",
-                    "memoryIndex": 1,
-                    "memoryRegionName": "audio",
                     "moduleId": "audio",
                     "safeByteLength": 12,
                     "source": "memory-start",
@@ -178,7 +168,6 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
           undefined,
           undefined,
           undefined,
-          undefined,
         ],
       },
     ],
@@ -187,7 +176,6 @@ exports[`resolveMemoryReferences integration > resolves sub-program-level memory
       "main": {
         "ptr": {
           "pointeeElementCount": 4,
-          "pointeeMemoryIndex": 0,
         },
       },
     },

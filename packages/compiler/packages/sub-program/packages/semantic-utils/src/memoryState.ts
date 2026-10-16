@@ -1,7 +1,6 @@
 import type {
 	CompilationContext,
 	MemoryLayoutPlan,
-	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 	ResolvedMemoryDeclaration,
@@ -12,7 +11,6 @@ export function createEmptyMemoryPlan(): MemoryLayoutPlan {
 	return {
 		modules: {},
 		moduleList: [],
-		nextByteAddressByMemoryIndex: {},
 	};
 }
 
@@ -30,35 +28,6 @@ function getPlannedMemoryDeclaration(
 	return module?.memory[memoryId];
 }
 
-function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | undefined): MemoryPointerMetadata {
-	return {
-		...(metadata?.pointeeMemoryIndex !== undefined ? { pointeeMemoryIndex: metadata.pointeeMemoryIndex } : {}),
-		...(metadata?.pointeeMemoryRegionName ? { pointeeMemoryRegionName: metadata.pointeeMemoryRegionName } : {}),
-		...(metadata?.pointeeElementCount !== undefined ? { pointeeElementCount: metadata.pointeeElementCount } : {}),
-	};
-}
-
-function createResolvedMemoryDeclaration(
-	declaration: PlannedMemoryDeclaration,
-	pointerMetadata: Record<string, MemoryPointerMetadata>
-): ResolvedMemoryDeclaration {
-	return {
-		...declaration,
-		...getPointerMetadataWithDefinedFields(pointerMetadata[declaration.id]),
-	};
-}
-
-function getResolvedPointerMetadata(
-	context: CompilationContext,
-	moduleId = context.namespace.moduleName
-): Record<string, MemoryPointerMetadata> {
-	if (!moduleId || moduleId === context.namespace.moduleName) {
-		return context.pointerMetadata;
-	}
-
-	return context.namespace.namespaces[moduleId].pointerMetadata;
-}
-
 /** Returns a resolved memory declaration for the active module, or for a target module namespace. */
 export function getResolvedMemoryDeclaration(
 	context: CompilationContext,
@@ -70,5 +39,10 @@ export function getResolvedMemoryDeclaration(
 		return undefined;
 	}
 
-	return createResolvedMemoryDeclaration(declaration, getResolvedPointerMetadata(context, moduleId));
+	const resolvedModuleId = moduleId ?? context.currentPlannedModule?.id;
+	const metadata = resolvedModuleId ? context.pointerMetadataByModuleId[resolvedModuleId]?.[memoryId] : undefined;
+	return {
+		...declaration,
+		...(metadata?.pointeeElementCount !== undefined ? { pointeeElementCount: metadata.pointeeElementCount } : {}),
+	};
 }

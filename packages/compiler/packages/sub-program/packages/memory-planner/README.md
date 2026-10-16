@@ -10,14 +10,13 @@ const memoryPlan = planSubProgramMemoryLayout({
 	modules,
 	constantReferences,
 	startingByteAddress,
-	memoryRegions,
 });
 ```
 
 The planner builds planner-ready memory layout source from those ASTs:
 
 - `prototypes`: prototype ids with normalized memory declaration lines.
-- `modules`: module ids, optional memory region lines, and ordered layout source lines.
+- `modules`: module ids and ordered layout source lines.
 
 Modules are allocated in alphabetical order by module id, independent from source or execution order. Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order within each module.
 
@@ -25,7 +24,6 @@ The returned plan contains:
 
 - `moduleList`: planned modules in layout order.
 - `modules`: planned modules keyed by id.
-- `nextByteAddressByMemoryIndex`: memory-size cursors after all modules are placed.
 - `declarationSources`: effective declaration source lines for each planned module, including inherited `shape` declarations.
 
 ## Ownership
@@ -34,7 +32,6 @@ This package owns:
 
 - Module byte addresses.
 - Memory declaration byte addresses.
-- Resolving and validating module `#region` directives against the configured memory regions before allocation.
 - Building planner-ready memory layout source from validated ASTs.
 - Declaration order after `shape` expansion.
 - Declaration size and type layout facts.
@@ -51,6 +48,4 @@ This package does not own:
 
 The planner reads constant-resolution facts before normalizing declaration sizes. It expects array element counts to become literal planner-ready values after those facts and pure literal arithmetic are applied. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not supported.
 
-Each `#region` directive is validated once while building planner-ready module source. The last directive selects the
-module's region. Later semantic resolution, stack analysis, and code generation consume the validated `memoryIndex` and
-`memoryRegionName` from the memory plan without interpreting or validating the directive again.
+All modules share one linear address space, with a single allocation cursor starting at `startingByteAddress`.

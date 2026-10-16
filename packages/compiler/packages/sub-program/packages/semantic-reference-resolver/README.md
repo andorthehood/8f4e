@@ -1,6 +1,6 @@
 # @8f4e/semantic-reference-resolver
 
-This pass resolves source bindings and produces executable module and function bodies after constants, memory layout, defaults, namespaces, and function registration are available.
+This pass resolves source bindings and produces executable module and function bodies after constants, memory layout, pointer counts, and function registration are available.
 
 Function registration supplies resolved signatures, imports, exports, impurity flags, and `paramShape` expansions. The resolver consumes those declarations once. It assigns each parameter and local declaration a binding identity, so references keep their original target even when a later declaration reuses the name.
 

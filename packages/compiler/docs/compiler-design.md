@@ -14,8 +14,8 @@ The intended pipeline is:
 3. Constant namespace pass
    - resolves constants from literals, already-resolved constants, and constant-only expressions
    - does not consult memory declarations, memory metadata, or memory addresses
-4. Semantic memory namespace pass
-   - collects memory declarations, `use` imports, and intermodule metadata availability
+4. Memory planning and reference resolution
+   - assigns declaration addresses in one linear memory and resolves address and pointer-count metadata
 5. AST normalization / compile-time folding pass
    - rewrites compile-time-resolvable arguments to plain literals
 6. Compilation / codegen
@@ -73,7 +73,7 @@ The exported `initDefaults` function is responsible for restoring the full decla
 
 The initial `memory.fill` is part of the contract. It makes implicit defaults cheap and gives repeated `initDefaults()` calls the same reset semantics as a fresh memory instance for declared program memory.
 
-When a program uses logical memory regions, each WebAssembly memory has the same initialization contract independently. The compiler clears the required byte range for memory `0` and for each used custom region, then applies passive data segments with the matching memory index. The compile result keeps `requiredMemoryBytes` scoped to memory `0` and reports custom regions through `requiredMemoryBytesByRegion`.
+All declarations share the one `host.memory` import. `requiredMemoryBytes` covers the complete planned allocation.
 
 ### Passive Data Segments
 

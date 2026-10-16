@@ -53,148 +53,23 @@ ordinary default conversion and `initDefaults()` timing, including for inherited
 ## Compiler Passes
 
 ```text
-                       8f4e Composed Program Pipeline
-                       ==============================
-
-  source modules       source functions       constants/prototypes
-       |                     |                       |
-       |                     |                       |
-       +---------------------+-----------------------+
-                             |
-                             v
-                  +-----------------------------+
-                  |  1. Tokenize / parse        |
-                  |  compileToAST()             |
-                  |                             |
-                  |  syntax errors live here    |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  2. Module identity checks  |
-                  |  assertUniqueModuleIds()    |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  3. Input-order contract    |
-                  |  composer-provided order    |
-                  |                             |
-                  |  module execution and       |
-                  |  memory layout preserve     |
-                  |  the incoming order         |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  4. Namespace collection    |
-                  |  collectNamespacesFromASTs()|
-                  |  discovery + layout         |
-                  |                             |
-                  |  resolves module memory,    |
-                  |  consts, addresses, sizes   |
-                  +-----------------------------+
-                                |
-                                v
-        +-----------------------+-----------------------+
-        |                                               |
-        v                                               v
-+-----------------------------+          +-----------------------------+
-|  5a. Function metadata      |          |  5b. Module layout ready    |
-|  collectFunctionMetadata... |          |  memory starts are known    |
-|                             |          |  intermodule refs resolved  |
-|  call targets/signatures    |          +-----------------------------+
-+-----------------------------+                         |
-        |                                               |
-        +-----------------------+-----------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  6. Semantic references     |
-                  |  resolveSemanticReferences()|
-                  |                             |
-                  |  resolve value refs once    |
-                  |  for the composed program   |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  7. Stack analysis          |
-                  |  analyzeStack()             |
-                  |                             |
-                  |  validate stack effects     |
-                  |  from reference report      |
-                  +-----------------------------+
-                                |
-                                v
-        +-----------------------+-----------------------+
-        |                                               |
-        v                                               v
-+-----------------------------+          +-----------------------------+
-|  8a. Function codegen       |          |  8b. Module codegen         |
-|  compileFunction()          |          |  compileModule()            |
-|                             |          |                             |
-|  emit WASM body from        |          |  emit WASM cycle fn from    |
-|  AST + semantic/stack facts |          |  AST + semantic/stack facts |
-+-----------------------------+          +-----------------------------+
-        |                                               |
-        +-----------------------+-----------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  9. Initial memory data     |
-                  |  createInitialMemory...     |
-                  |                             |
-                  |  defaults become passive    |
-                  |  WASM data segments         |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  10. WASM assembly          |
-                  |                             |
-                  |  type/import/function/      |
-                  |  export/code/data sections  |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  CompileResult              |
-                  |                             |
-                  |  codeBuffer                 |
-                  |  compiledModules            |
-                  |  compiledFunctions          |
-                  |  requiredMemoryBytes        |
-                  |  project memory exposures   |
-                  |  cache                      |
-                  +-----------------------------+
+composed, validated ASTs
+  -> check module identities
+  -> resolve constants
+  -> plan module/declaration addresses in one memory
+  -> resolve memory references, pointer element counts, and defaults
+  -> register functions and resolve semantic references
+  -> analyze stacks and plan assertions/functions
+  -> emit module/function bytecode and passive initialization segments
+  -> assemble WebAssembly and runtime metadata
 ```
 
-Short version:
+Module execution retains the composer-provided order; memory layout allocates modules alphabetically by id.
+Semantic resolution and stack analysis consume the authoritative memory plan and pointer counts directly. Codegen
+consumes resolved bodies and stack reports without replaying source declarations.
 
-```text
-source
-  -> AST
-  -> caller-provided module order
-  -> namespace + memory layout
-  -> semantic reference resolution
-  -> stack validation
-  -> instruction codegen from AST + pass reports
-  -> private emission artifacts
-  -> WASM module + runtime metadata
-```
+## Runtime memory
 
-## Test fixture configuration
-
-Compiler fixtures under `tests/` use comments to supply options to the test runners. For example:
-
-```8f4e
-; @memoryRegions sampleMemory displayMemory
-```
-
-The success-fixture runner in `tests/testUtils.ts` and the error-fixture runner in `tests/errors.test.ts` read this
-comment and pass `memoryRegions: ['sampleMemory', 'displayMemory']` to `compileProject`. It is test-fixture metadata,
-not an editor directive or a language instruction; the compiler treats the line as an ordinary comment.
-
-Programs select a configured region with `#region sampleMemory`. Outside these tests, the host supplies the available
-regions through the `memoryRegions` compile option.
+Compiled programs import one WebAssembly linear memory as `host.memory`. All module declarations share this address
+space. The memory planner lays modules out alphabetically by id, while module execution follows the composer-provided
+order. `CompileResult.requiredMemoryBytes` reports the allocation size, and `initDefaults()` initializes that memory.

@@ -7,15 +7,6 @@ import { compileProject, parseProjectSource, serializeDiagnostic } from '../src'
 import { resolveTestInclude } from './testIncludeResolver';
 
 const errorRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), 'errors');
-const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
-
-function getTestMemoryRegions(source: string): string[] {
-	return source
-		.split('\n')
-		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
-		.filter((regions): regions is string => regions !== undefined)
-		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
-}
 
 async function collectErrorFiles(directory: string): Promise<string[]> {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -41,7 +32,6 @@ async function compileErrorFixture(filePath: string) {
 	const source = await fs.readFile(filePath, 'utf8');
 	return compileProject(parseProjectSource(source), {
 		disableSharedMemory: true,
-		memoryRegions: getTestMemoryRegions(source),
 		resolveInclude: resolveTestInclude,
 	});
 }

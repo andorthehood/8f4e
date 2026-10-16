@@ -3606,7 +3606,6 @@
       "mapNumericTypeAssertions",
     ],
     "requiredMemoryBytes": 4,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
       "main",

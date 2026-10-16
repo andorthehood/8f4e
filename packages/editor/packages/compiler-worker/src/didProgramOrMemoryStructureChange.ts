@@ -10,8 +10,6 @@ function didMemoryDeclarationChange(current: PlannedMemoryDeclaration, previous:
 		current.type !== previous.type ||
 		current.numberOfElements !== previous.numberOfElements ||
 		current.elementWordSize !== previous.elementWordSize ||
-		current.memoryIndex !== previous.memoryIndex ||
-		current.memoryRegionName !== previous.memoryRegionName ||
 		current.byteAddress !== previous.byteAddress ||
 		current.wordAlignedAddress !== previous.wordAlignedAddress ||
 		current.wordAlignedSize !== previous.wordAlignedSize ||

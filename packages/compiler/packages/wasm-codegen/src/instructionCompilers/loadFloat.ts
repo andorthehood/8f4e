@@ -3,7 +3,6 @@ import type { ASTLineBase, FloatLoadInstructionSpecName, InstructionCompiler } f
 import { getInstructionSpec } from '@8f4e/language-spec';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
 
@@ -13,12 +12,11 @@ type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
  */
 const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context, facts) => {
 	const [rawAddress] = facts.stackAnalysis.consumedOperands;
-	const address = requireStackAddress(rawAddress, line, context);
+	const address = rawAddress;
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;
 
-	const memoryIndex = address.address.memoryIndex;
-	const instructions = f32load(2, 0, memoryIndex);
+	const instructions = f32load(2, 0);
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}
@@ -27,7 +25,6 @@ const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context, facts) => 
 		context,
 		guardedLoad(context, {
 			accessByteWidth,
-			memoryIndex,
 			lineNumber: line.lineNumber,
 			resultType: WASM_TYPE_F32,
 			loadByteCode: instructions,

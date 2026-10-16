@@ -24,8 +24,7 @@ export type SourceArgumentShapeRule =
 	| 'typeIdentifier'
 	| 'functionTypeIdentifier'
 	| 'ifResultType'
-	| 'pushValue'
-	| 'regionReference';
+	| 'pushValue';
 
 /** Top-level source block kinds that own independently parsed compiler ASTs. */
 export type SourceBlockPlacement = 'module' | 'function' | 'constants' | 'prototype';
@@ -700,13 +699,6 @@ export const instructionSpecs = {
 		placement: moduleOrFunctionPlacement,
 		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Sets the loop iteration cap for loops in the current block.' },
-		stack: stack({ inputs: [], outputs: [] }),
-	},
-	'#region': {
-		codegen: false,
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'regionReference' },
-		placement: modulePlacement,
-		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#export': {

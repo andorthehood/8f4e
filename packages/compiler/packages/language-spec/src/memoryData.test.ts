@@ -26,7 +26,6 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 		type: MemoryTypes.int,
 		numberOfElements: 10,
 		elementWordSize: 4,
-		memoryIndex: 0,
 		byteAddress,
 		wordAlignedAddress: byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		wordAlignedSize: 5,
@@ -51,7 +50,6 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 
 function pointer(pointeeBaseType: PointeeBaseType, overrides: Partial<PointerMetadata> = {}): PointerMetadata {
 	return {
-		memoryIndex: 0,
 		pointeeBaseType,
 		pointerDepth: 1,
 		...overrides,
@@ -93,11 +91,12 @@ describe('memoryData utilities', () => {
 			['int16', 1, 2],
 			['int', 2, 4],
 			['float64', 2, 4],
-		] as Array<
-			[PointeeBaseType, number, number]
-		>)('returns expected word size for %s pointer depth %i', (pointeeBaseType, pointerDepth, expectedWordSize) => {
-			expect(getPointeeElementWordSize(pointer(pointeeBaseType, { pointerDepth }))).toBe(expectedWordSize);
-		});
+		] as Array<[PointeeBaseType, number, number]>)(
+			'returns expected word size for %s pointer depth %i',
+			(pointeeBaseType, pointerDepth, expectedWordSize) => {
+				expect(getPointeeElementWordSize(pointer(pointeeBaseType, { pointerDepth }))).toBe(expectedWordSize);
+			}
+		);
 
 		it('returns zero for missing pointer metadata', () => {
 			expect(getPointeeElementWordSize(undefined)).toBe(0);
@@ -138,11 +137,14 @@ describe('memoryData utilities', () => {
 			[1, true, true, 255, 0],
 			[2, true, true, 65535, 0],
 			[4, true, true, 4294967295, 0],
-		])('returns range for wordSize=%i integer=%s unsigned=%s', (elementWordSize, isInteger, isUnsigned, expectedMax, expectedMin) => {
-			const declaration = memory({ elementWordSize, isInteger, isUnsigned });
-			expect(getElementMaxValue(declaration)).toBe(expectedMax);
-			expect(getElementMinValue(declaration)).toBe(expectedMin);
-		});
+		])(
+			'returns range for wordSize=%i integer=%s unsigned=%s',
+			(elementWordSize, isInteger, isUnsigned, expectedMax, expectedMin) => {
+				const declaration = memory({ elementWordSize, isInteger, isUnsigned });
+				expect(getElementMaxValue(declaration)).toBe(expectedMax);
+				expect(getElementMinValue(declaration)).toBe(expectedMin);
+			}
+		);
 	});
 
 	describe('pointee value ranges', () => {
@@ -155,12 +157,13 @@ describe('memoryData utilities', () => {
 			['float', 1, 3.4028234663852886e38, -3.4028234663852886e38],
 			['float64', 1, 1.7976931348623157e308, -1.7976931348623157e308],
 			['float64', 2, 2147483647, -2147483648],
-		] as Array<
-			[PointeeBaseType, number, number, number]
-		>)('returns range for %s pointer depth %i', (pointeeBaseType, pointerDepth, expectedMax, expectedMin) => {
-			const metadata = pointer(pointeeBaseType, { pointerDepth });
-			expect(getPointeeElementMaxValue(metadata)).toBe(expectedMax);
-			expect(getPointeeElementMinValue(metadata)).toBe(expectedMin);
-		});
+		] as Array<[PointeeBaseType, number, number, number]>)(
+			'returns range for %s pointer depth %i',
+			(pointeeBaseType, pointerDepth, expectedMax, expectedMin) => {
+				const metadata = pointer(pointeeBaseType, { pointerDepth });
+				expect(getPointeeElementMaxValue(metadata)).toBe(expectedMax);
+				expect(getPointeeElementMinValue(metadata)).toBe(expectedMin);
+			}
+		);
 	});
 });

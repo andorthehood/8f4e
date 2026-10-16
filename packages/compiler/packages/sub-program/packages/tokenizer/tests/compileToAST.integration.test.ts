@@ -7,7 +7,6 @@ describe('compileToAST integration', () => {
 			module: compileToAST([
 				'module synth',
 				'#skipExecution',
-				'#region fastMemory',
 				'float phase 0.5',
 				'int[] buffer',
 				'- 4',

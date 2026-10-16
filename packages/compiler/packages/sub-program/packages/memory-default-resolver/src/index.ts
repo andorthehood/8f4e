@@ -337,9 +337,8 @@ function resolveModuleMemoryDefaults(
 	plannedModule: PlannedMemoryModule,
 	memoryPlan: MemoryLayoutPlan,
 	memoryReferences: MemoryReferenceResolutionReport
-): { memoryDefaults: MemoryDefaults; pointerMetadata: MemoryPointerMetadataMap } {
+): MemoryDefaults {
 	const memoryDefaults: MemoryDefaults = {};
-	const pointerMetadata = memoryReferences.pointerMetadataByModuleId[plannedModule.id]!;
 	const declarationSourceFacts = memoryReferences.declarationSourcesByModuleId[plannedModule.id]!.lineFacts;
 
 	plannedModule.declarationSources.forEach(({ line, isInherited }, index) => {
@@ -367,7 +366,7 @@ function resolveModuleMemoryDefaults(
 		);
 	});
 
-	return { memoryDefaults, pointerMetadata };
+	return memoryDefaults;
 }
 
 /**
@@ -380,21 +379,15 @@ function resolveModuleMemoryDefaults(
  * @returns Defaults and pointer metadata keyed by module id.
  */
 export function resolveMemoryDefaults(input: ResolveMemoryDefaultsInput): ResolveMemoryDefaultsResult {
-	const pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap> = {};
 	const memoryDefaultsByModuleId: Record<string, MemoryDefaults> = {};
 
 	for (const plannedModule of input.memoryPlan.moduleList) {
-		const { memoryDefaults, pointerMetadata } = resolveModuleMemoryDefaults(
-			plannedModule,
-			input.memoryPlan,
-			input.memoryReferences
-		);
+		const memoryDefaults = resolveModuleMemoryDefaults(plannedModule, input.memoryPlan, input.memoryReferences);
 		memoryDefaultsByModuleId[plannedModule.id] = memoryDefaults;
-		pointerMetadataByModuleId[plannedModule.id] = pointerMetadata;
 	}
 
 	return {
 		memoryDefaultsByModuleId,
-		pointerMetadataByModuleId,
+		pointerMetadataByModuleId: input.memoryReferences.pointerMetadataByModuleId,
 	};
 }

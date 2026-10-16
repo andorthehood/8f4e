@@ -98,8 +98,8 @@ describe('call stack analysis', () => {
 		context.stack.push({
 			kind: 'address',
 			valueType: 'int',
-			address: { memoryIndex: 0 },
-			pointsTo: { baseType: 'float', memoryIndex: 0, pointerDepth: 1 },
+			address: {},
+			pointsTo: { baseType: 'float', pointerDepth: 1 },
 		});
 
 		const facts = analyzeInstruction(
@@ -125,7 +125,6 @@ describe('call stack analysis', () => {
 			endAddressSafeByteLength: 4,
 			numberOfElements: 1,
 			elementWordSize: 4,
-			memoryIndex: 0,
 			wordAlignedAddress: 0,
 			wordAlignedSize: 1,
 			byteAddress: 0,
@@ -143,7 +142,6 @@ describe('call stack analysis', () => {
 			wordAlignedByteLength: 4,
 			endByteAddress: 0,
 			endAddressSafeByteLength: 4,
-			memoryIndex: 0,
 			memory: { previousTrigger },
 			declarations: [previousTrigger],
 			declarationSources: [],
@@ -153,7 +151,6 @@ describe('call stack analysis', () => {
 			memoryPlan: {
 				modules: { test: plannedModule },
 				moduleList: [plannedModule],
-				nextByteAddressByMemoryIndex: { 0: 4 },
 			},
 		});
 		const targetFunction = {
@@ -181,10 +178,8 @@ describe('call stack analysis', () => {
 						value: 0,
 						isInteger: true,
 						address: {
-							memoryIndex: 0,
 							safeRange: {
 								source: 'memory-start',
-								memoryIndex: 0,
 								byteAddress: 0,
 								safeByteLength: 4,
 								memoryId: 'previousTrigger',

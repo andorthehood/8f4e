@@ -32,7 +32,6 @@ export function createMemory(
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
-		memoryIndex: 0,
 		wordAlignedSize: 1,
 		wordAlignedAddress: overrides.byteAddress / 4,
 		lineNumber: 0,
@@ -83,8 +82,6 @@ export function createMemoryPlan(
 		wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
 		endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
 		endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
-		memoryIndex: overrides.memoryIndex ?? 0,
-		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
 		memory,
 		declarations,
 		declarationSources: overrides.declarationSources ?? [],
@@ -95,7 +92,6 @@ export function createMemoryPlan(
 			[module.id]: module,
 		},
 		moduleList: [module],
-		nextByteAddressByMemoryIndex: {},
 	};
 }
 
@@ -111,11 +107,8 @@ export function createMemoryDefaults(defaults: Record<string, MemoryDefault>): R
  * @param segments - Memory data segments to serialize.
  * @returns Serializable segment objects with byte arrays expanded.
  */
-export function serializeSegments<T extends { memoryIndex: number; byteAddress: number; bytes: Uint8Array }>(
-	segments: T[]
-) {
+export function serializeSegments<T extends { byteAddress: number; bytes: Uint8Array }>(segments: T[]) {
 	return segments.map(segment => ({
-		memoryIndex: segment.memoryIndex,
 		byteAddress: segment.byteAddress,
 		bytes: Array.from(segment.bytes),
 	}));

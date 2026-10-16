@@ -40,7 +40,6 @@ const store = {
 						audioout: {
 							id: 'audioout',
 							lineNumber: 0,
-							memoryIndex: 0,
 							byteAddress: 0,
 							wordAlignedSize: 0,
 							wordAlignedByteLength: 0,
@@ -54,10 +53,8 @@ const store = {
 						},
 					},
 					moduleList: [],
-					nextByteAddressByMemoryIndex: {},
 				},
 				memoryDefaultsByModuleId: {},
-				pointerMetadataByModuleId: {},
 			},
 		}) as State,
 } as StateManager<State>;

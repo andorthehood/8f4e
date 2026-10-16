@@ -44,8 +44,6 @@ pointer: {
 		source: 'memory-start';
 		memoryId: string;
 		moduleId?: string;
-		memoryIndex: number;
-		memoryRegionName?: string;
 		elementCount?: number;
 	};
 }

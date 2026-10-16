@@ -274,7 +274,6 @@
       "shadowedLocalAssertions",
     ],
     "requiredMemoryBytes": 4,
-    "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "bindingSlots",
       "initDefaults",

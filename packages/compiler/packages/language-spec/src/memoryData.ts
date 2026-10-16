@@ -1,21 +1,8 @@
 import type { MemoryPointerMetadata, MemoryValueKind, PlannedMemoryDeclaration } from './memory';
 import { BASE_TYPE_METADATA } from './memory';
-import type { PointerLocalMetadata, StackAddress } from './semantic';
 
-export type PointerMetadata =
-	| (Pick<PlannedMemoryDeclaration, 'memoryIndex' | 'memoryRegionName' | 'pointeeBaseType' | 'pointerDepth'> &
-			Partial<MemoryPointerMetadata>)
-	| Pick<
-			PointerLocalMetadata,
-			'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
-	  >
-	| {
-			pointeeBaseType: NonNullable<StackAddress['pointsTo']>['baseType'];
-			pointerDepth: NonNullable<StackAddress['pointsTo']>['pointerDepth'];
-			pointeeMemoryIndex: NonNullable<StackAddress['pointsTo']>['memoryIndex'];
-			pointeeMemoryRegionName?: NonNullable<StackAddress['pointsTo']>['memoryRegionName'];
-			pointeeElementCount?: NonNullable<StackAddress['pointsTo']>['elementCount'];
-	  };
+export type PointerMetadata = Pick<PlannedMemoryDeclaration, 'pointeeBaseType' | 'pointerDepth'> &
+	MemoryPointerMetadata;
 
 function getDeclaredBaseTypeMetadata(
 	memoryItem: Pick<PlannedMemoryDeclaration, 'elementWordSize' | 'isInteger' | 'isUnsigned'>

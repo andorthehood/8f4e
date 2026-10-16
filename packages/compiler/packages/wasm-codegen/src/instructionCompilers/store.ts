@@ -3,7 +3,6 @@ import type { ASTLineBase, InstructionCompiler } from '@8f4e/language-spec';
 import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, getInstructionSpec, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/language-spec';
 import { guardedStore, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 type StoreLine = ASTLineBase<'store', []>;
 
@@ -13,20 +12,15 @@ type StoreLine = ASTLineBase<'store', []>;
  */
 const store: InstructionCompiler<StoreLine> = (line, context, facts) => {
 	const operation = getInstructionSpec(line.instruction).effects.memory;
-	const operand2Address = requireStackAddress(
-		facts.stackAnalysis.consumedOperands[operation.addressOperandIndex],
-		line,
-		context
-	);
+	const operand2Address = facts.stackAnalysis.consumedOperands[operation.addressOperandIndex];
 	const operand1Value = facts.stackAnalysis.consumedOperands[operation.valueOperandIndex];
 	const valueIsInteger = operand1Value.valueType === 'int';
 	const valueIsFloat64 = operand1Value.valueType === 'float64';
-	const memoryIndex = operand2Address.address.memoryIndex;
 	const instructions = valueIsInteger
-		? i32store(undefined, undefined, 2, 0, memoryIndex)
+		? i32store(undefined, undefined, 2, 0)
 		: valueIsFloat64
-			? f64store(undefined, undefined, 3, 0, memoryIndex)
-			: f32store(undefined, undefined, 2, 0, memoryIndex);
+			? f64store(undefined, undefined, 3, 0)
+			: f32store(undefined, undefined, 2, 0);
 	const accessByteWidth = valueIsFloat64 ? DOUBLE_WORD_MEMORY_ACCESS_WIDTH : WORD_MEMORY_ACCESS_WIDTH;
 	if (isSafeMemoryAccess(operand2Address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
@@ -37,7 +31,6 @@ const store: InstructionCompiler<StoreLine> = (line, context, facts) => {
 		guardedStore(context, {
 			value: operand1Value,
 			accessByteWidth,
-			memoryIndex,
 			lineNumber: line.lineNumber,
 			storeByteCode: instructions,
 		})

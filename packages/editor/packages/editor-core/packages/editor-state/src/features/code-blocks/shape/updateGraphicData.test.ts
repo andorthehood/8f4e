@@ -43,7 +43,6 @@ function createMemory(overrides: Partial<MemoryFixture> = {}): MemoryFixture {
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.float,
-		memoryIndex: 0,
 		byteAddress: 20,
 		wordAlignedAddress: 5,
 		wordAlignedSize: 1,
@@ -73,7 +72,6 @@ function createCompilerReports(memoryFixtures: Record<string, MemoryFixture> = {
 	const plannedModule = {
 		id: 'filterA',
 		lineNumber: 0,
-		memoryIndex: 0,
 		byteAddress: 0,
 		wordAlignedSize: 0,
 		wordAlignedByteLength: 0,
@@ -97,13 +95,9 @@ function createCompilerReports(memoryFixtures: Record<string, MemoryFixture> = {
 				filterA: plannedModule,
 			},
 			moduleList: [plannedModule],
-			nextByteAddressByMemoryIndex: {},
 		},
 		memoryDefaultsByModuleId: {
 			filterA: memoryDefaults,
-		},
-		pointerMetadataByModuleId: {
-			filterA: {},
 		},
 	};
 }

@@ -26,15 +26,9 @@ import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMe
 import type { CompilerDiagnosticContext } from './diagnostics';
 import type { WasmFunctionLayout } from './functionLayout';
 import type { FunctionValueType } from './functionTypes';
-import type {
-	CodegenInstructionName,
-	CompiledModuleBlockType,
-	CompilerSourceBlockType,
-	CompilerSourceCompilationMode,
-} from './instructions';
+import type { CodegenInstructionName, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type {
 	ArrayDeclarationInstruction,
-	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	PlannedMemoryModule,
@@ -46,8 +40,6 @@ import type { ProjectMemoryAliasLookup } from './project';
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
 	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
-	memoryIndex: number;
-	memoryRegionName?: string;
 	byteAddress: number;
 	safeByteLength: number;
 	moduleId?: string;
@@ -56,10 +48,6 @@ export interface MemoryAddressRange {
 
 /** Compiler metadata carried alongside values known to represent memory addresses. */
 export interface AddressMetadata {
-	/** Resolved WebAssembly memory index that this address points into. */
-	memoryIndex: number;
-	/** Configured logical region name for non-default memories. */
-	memoryRegionName?: string;
 	/**
 	 * Proven safe byte range for memory operations at this exact value.
 	 * Pointer arithmetic may shrink or remove this range when the compiler can no
@@ -102,8 +90,6 @@ export interface ScalarLocalMetadata {
 	isInteger: boolean;
 	isFloat64?: boolean;
 	pointeeBaseType?: undefined;
-	pointeeMemoryIndex?: number;
-	pointeeMemoryRegionName?: string;
 }
 
 /** Pointer local value facts, independent of WebAssembly storage. */
@@ -112,8 +98,6 @@ export interface PointerLocalMetadata {
 	isFloat64?: false;
 	pointeeBaseType: PointeeBaseType;
 	pointerDepth: number;
-	pointeeMemoryIndex?: number;
-	pointeeMemoryRegionName?: string;
 	pointeeElementCount?: number;
 }
 
@@ -136,23 +120,9 @@ export interface SourceLocalBinding {
 /** Mutable namespace state available while compiling modules, constants, and functions. */
 export interface Namespace {
 	moduleName: string | undefined;
-	namespaces: Namespaces;
 	functions?: FunctionRegistry;
 	prototypeShapeIds: string[];
 }
-
-/** Compiled namespace summary recorded for later imports and cross-module references. */
-export interface CollectedNamespace {
-	kind: CompiledModuleBlockType;
-	memoryIndex: number;
-	memoryRegionName?: string;
-	byteAddress: number;
-	wordAlignedSize: number;
-	memoryDefaults: MemoryDefaults;
-	pointerMetadata: MemoryPointerMetadataMap;
-}
-
-export type Namespaces = Record<string, CollectedNamespace>;
 
 export type CompilationMode = CompilerSourceCompilationMode;
 
@@ -161,17 +131,10 @@ export interface CompilationContext extends BlockState {
 	namespace: Namespace;
 	locals: LocalMap;
 	stack: Stack;
-	startingByteAddress: number;
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
-	currentMemoryIndex: number;
-	currentMemoryRegionName?: string;
 	memoryPlan: MemoryLayoutPlan;
 	memoryAliases: ProjectMemoryAliasLookup;
 	currentPlannedModule?: PlannedMemoryModule;
-	memoryDefaults: MemoryDefaults;
-	pointerMetadata: MemoryPointerMetadataMap;
-	memoryRegions: string[];
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	mode: CompilationMode;
 	codeBlockId?: string;
@@ -188,24 +151,12 @@ export interface CompilationContext extends BlockState {
 /** Compilation context narrowed to a module body. */
 export interface ModuleCompilationContext extends CompilationContext {
 	mode: 'module';
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
-}
-
-/** Compilation context used while collecting a compiled namespace block. */
-export interface NamespaceBuildContext extends CompilationContext {
-	mode: 'module';
-	codeBlockType: CompiledModuleBlockType;
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
 }
 
 /** Compilation context narrowed to a function body with function metadata resolved. */
 export interface FunctionCompilationContext extends CompilationContext {
 	mode: 'function';
 	codeBlockType: 'function';
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
 	currentFunctionId: string;
 	currentFunctionName: string;
 	currentFunctionMetadata: FunctionMetadata;
@@ -217,8 +168,6 @@ export type StackValueType = 'int' | 'float' | 'float64';
 /** Metadata describing values reachable from an address stack item. */
 export interface PointeeMetadata {
 	baseType: PointeeBaseType;
-	memoryIndex: number;
-	memoryRegionName?: string;
 	pointerDepth: number;
 	elementCount?: number;
 }
@@ -259,12 +208,6 @@ export interface StackAnalysisResult {
 	droppedStackItems?: Stack;
 }
 
-export interface StackAnalysisLocalPointerFact {
-	bindingId: number;
-	pointeeMemoryIndex: number;
-	pointeeMemoryRegionName?: string;
-}
-
 export type StackAnalysisNumericValueKind = 'int32' | 'float32' | 'float64';
 
 export interface StackAnalysisMapFact {
@@ -274,14 +217,12 @@ export interface StackAnalysisMapFact {
 
 export interface StackAnalysisClampFact {
 	accessByteWidth: number;
-	memoryIndex: number;
 	range?: MemoryAddressRange;
 }
 
 export interface StackAnalysisLineFacts {
 	stackAnalysis: StackAnalysisResult;
 	targetFunctionId?: string;
-	localPointer?: StackAnalysisLocalPointerFact;
 	numericOperandKind?: StackAnalysisNumericValueKind;
 	map?: StackAnalysisMapFact;
 	clamp?: StackAnalysisClampFact;

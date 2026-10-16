@@ -14,6 +14,6 @@ const result = resolveMemoryDefaults({
 The result contains:
 
 - `memoryDefaultsByModuleId`: scalar defaults, array initializer defaults, explicit-default flags, and inherited-shape flags.
-- `pointerMetadataByModuleId`: pointer target memory metadata supplied by the memory-reference report.
+- `pointerMetadataByModuleId`: pointer target element counts supplied by the memory-reference report.
 
 This package does not decide addresses, expand `shape` declarations, expand function parameter shapes, validate duplicate declarations, resolve memory references, or compile instructions.

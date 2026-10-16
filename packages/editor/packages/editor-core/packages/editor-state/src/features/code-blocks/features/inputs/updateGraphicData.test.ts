@@ -11,7 +11,6 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes['int*'],
-		memoryIndex: 0,
 		byteAddress: 20,
 		wordAlignedAddress: 5,
 		wordAlignedSize: 1,
@@ -31,7 +30,6 @@ function setModuleMemory(
 	const plannedModule = {
 		id: 'test-block',
 		lineNumber: 0,
-		memoryIndex: 0,
 		byteAddress: 0,
 		wordAlignedSize: 1,
 		wordAlignedByteLength: 4,

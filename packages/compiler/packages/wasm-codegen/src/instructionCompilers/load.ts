@@ -11,7 +11,6 @@ import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryL
 import { getInstructionSpec } from '@8f4e/language-spec';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
 
@@ -19,22 +18,20 @@ type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
  * Instruction compiler for `load` variants.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => number[]> = {
-	i32: memoryIndex => i32load(2, 0, memoryIndex),
-	i32_8s: memoryIndex => i32load8s(0, 0, memoryIndex),
-	i32_8u: memoryIndex => i32load8u(0, 0, memoryIndex),
-	i32_16s: memoryIndex => i32load16s(1, 0, memoryIndex),
-	i32_16u: memoryIndex => i32load16u(1, 0, memoryIndex),
-	f32: memoryIndex => f32load(2, 0, memoryIndex),
+const loadVariantByteCode: Record<MemoryLoadVariant, number[]> = {
+	i32: i32load(2, 0),
+	i32_8s: i32load8s(0, 0),
+	i32_8u: i32load8u(0, 0),
+	i32_16s: i32load16s(1, 0),
+	i32_16u: i32load16u(1, 0),
+	f32: f32load(2, 0),
 };
 
 const load: InstructionCompiler<LoadLine> = (line, context, facts) => {
 	const [rawAddress] = facts.stackAnalysis.consumedOperands;
-	const address = requireStackAddress(rawAddress, line, context);
+	const address = rawAddress;
 	const operation = getInstructionSpec(line.instruction).effects.memory;
-	const buildInstructions = loadVariantByteCode[operation.loadVariant];
-	const memoryIndex = address.address.memoryIndex;
-	const instructions = buildInstructions(memoryIndex);
+	const instructions = loadVariantByteCode[operation.loadVariant];
 	const accessByteWidth = operation.accessByteWidth;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
@@ -44,7 +41,6 @@ const load: InstructionCompiler<LoadLine> = (line, context, facts) => {
 		context,
 		guardedLoad(context, {
 			accessByteWidth,
-			memoryIndex,
 			lineNumber: line.lineNumber,
 			resultType: WASM_TYPE_I32,
 			loadByteCode: instructions,

@@ -128,7 +128,6 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                 "isInteger": true,
                 "isUnsigned": false,
                 "lineNumber": 2,
-                "memoryIndex": 0,
                 "numberOfElements": 1,
                 "pointerDepth": 0,
                 "type": "int",
@@ -145,11 +144,9 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
             "arguments": [
               {
                 "address": {
-                  "memoryIndex": 0,
                   "safeRange": {
                     "byteAddress": 4,
                     "memoryId": "value",
-                    "memoryIndex": 0,
                     "moduleId": "main",
                     "safeByteLength": 4,
                     "source": "memory-start",
@@ -205,7 +202,6 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                     "isInteger": true,
                     "isUnsigned": false,
                     "lineNumber": 2,
-                    "memoryIndex": 0,
                     "numberOfElements": 1,
                     "pointerDepth": 0,
                     "type": "int",
@@ -240,11 +236,9 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                   "arguments": [
                     {
                       "address": {
-                        "memoryIndex": 0,
                         "safeRange": {
                           "byteAddress": 4,
                           "memoryId": "value",
-                          "memoryIndex": 0,
                           "moduleId": "main",
                           "safeByteLength": 4,
                           "source": "memory-start",
