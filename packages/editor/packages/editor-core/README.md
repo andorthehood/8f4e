@@ -25,6 +25,10 @@ Hosts can pause rendering without releasing memory through `pauseRendering()`. `
 releases reloadable GPU textures, dynamic buffers, and the canvas drawing buffer. `resumeRendering()` restores the
 resources and applies any canvas resize that happened while they were released.
 
+The editor supports view and edit modes. Selected code blocks have a continuously animated outline in both modes.
+Command+Arrow (or Control+Arrow) navigates between blocks with smooth viewport movement. Use `e` to enter edit mode
+and Escape to return to view mode when `modeToggling` is enabled.
+
 ## Project loading
 
 Hosts can provide `getProject(url)` for loading individual projects by URL and `importProject` for the Open From Disk

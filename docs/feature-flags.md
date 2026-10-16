@@ -79,20 +79,6 @@ const state = init(events, project, {
 });
 ```
 
-### Presentation Mode
-
-```typescript
-import init from '@8f4e/editor-core';
-
-const state = init(events, project, {
-  featureFlags: {
-    contextMenu: false,
-    moduleDragging: false,
-    // viewportDragging and localStorage remain enabled for navigation
-  }
-});
-```
-
 ### Clean Export Rendering
 
 Screenshot export temporarily disables visual guide features such as `modeOverlay` and `offscreenBlockArrows` through

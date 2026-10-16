@@ -58,26 +58,6 @@ describe('editorMode', () => {
 		expect(state.featureFlags.codeLineSelection).toBe(true);
 	});
 
-	it('enters presentation mode from view mode', () => {
-		const { emit, state } = setup();
-
-		emit('enterPresentationMode');
-
-		expect(state.editorMode).toBe('presentation');
-		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(false);
-	});
-
-	it('returns to view mode from presentation mode', () => {
-		const { emit, state } = setup('presentation', false);
-
-		emit('exitToViewMode');
-
-		expect(state.editorMode).toBe('view');
-		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(true);
-	});
-
 	it('returns to view mode from edit mode', () => {
 		const { emit, state } = setup('edit', true);
 

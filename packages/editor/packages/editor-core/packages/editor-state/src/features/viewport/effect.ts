@@ -1,5 +1,6 @@
 import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { stopViewportAnimation } from './animateViewport';
 import resize from './resize';
 import snapToGrid from './snapToGrid';
 import snapToGridConsideringDirection from './snapToGridConsideringDirection';
@@ -51,6 +52,7 @@ export default function viewport(store: StateManager<State>, events: EventDispat
 	events.on('viewportscrollend', onViewportScrollEnd);
 
 	return () => {
+		stopViewportAnimation(state);
 		events.off('mousemove', onMouseMove);
 		events.off('resize', onResize);
 		events.off('mouseup', onMouseUp);

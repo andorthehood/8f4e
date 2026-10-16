@@ -70,16 +70,16 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse multiple directives from a single comment line', () => {
-		expect(parseBlockDirectives(['; @stop 1 01 @favorite'])).toEqual([
+		expect(parseBlockDirectives(['; @pos 1 2 @favorite'])).toEqual([
 			{
 				prefix: '@',
-				name: 'stop',
-				args: ['1', '01'],
+				name: 'pos',
+				args: ['1', '2'],
 				rawRow: 0,
-				sourceLine: '; @stop 1 01 @favorite',
+				sourceLine: '; @pos 1 2 @favorite',
 				isTrailing: false,
 			},
-			{ prefix: '@', name: 'favorite', args: [], rawRow: 0, sourceLine: '; @stop 1 01 @favorite', isTrailing: false },
+			{ prefix: '@', name: 'favorite', args: [], rawRow: 0, sourceLine: '; @pos 1 2 @favorite', isTrailing: false },
 		]);
 	});
 

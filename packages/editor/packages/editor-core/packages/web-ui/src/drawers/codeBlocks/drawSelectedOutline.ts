@@ -1,11 +1,14 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { DrawContext } from '../../drawContext';
 
+const OUTLINE_STEP_DURATION_MS = 80;
+
 export default function drawSelectedOutline(
 	engine: DrawContext,
 	state: State,
 	codeBlockWidth: number,
-	codeBlockHeight: number
+	codeBlockHeight: number,
+	now = performance.now()
 ): void {
 	const { vGrid, hGrid } = state.viewport;
 	const leftX = -vGrid * 2;
@@ -20,13 +23,7 @@ export default function drawSelectedOutline(
 	const leftSteps = Math.floor(codeBlockHeight / hGrid) + 1;
 	const perimeterLength = topSteps + rightSteps + bottomSteps + leftSteps;
 	const startOffset = Math.max(0, perimeterLength - segmentLength);
-	const { currentStopDurationMs, deadlineAt } = state.presentation;
-	const remainingMs = deadlineAt ? Math.max(0, deadlineAt - Date.now()) : 0;
-	const progress =
-		currentStopDurationMs > 0
-			? Math.min(1, Math.max(0, (currentStopDurationMs - remainingMs) / currentStopDurationMs))
-			: 0;
-	const animationOffset = (Math.floor(progress * perimeterLength) + startOffset) % perimeterLength;
+	const animationOffset = (Math.floor(now / OUTLINE_STEP_DURATION_MS) + startOffset) % perimeterLength;
 
 	const font = state.spriteLookups!.fontNumbers;
 

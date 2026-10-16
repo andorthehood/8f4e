@@ -1,7 +1,7 @@
 import { createMockCodeBlock } from '@8f4e/editor-state-testing';
 import init from '@8f4e/web-ui';
 import type { CodeBlockRenderData, WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
 import createMockSpriteData from './utils/createMockSpriteData';
@@ -16,7 +16,7 @@ test('switches', async () => {
 	const codeBlocks = new Map<number, CodeBlockRenderData>();
 	const renderData: WebUiRenderDataSource = { getSnapshot: () => ({ codeBlocks }) };
 
-	await init(mockState, renderData, canvas, memoryViews, spriteData);
+	const renderer = await init(mockState, renderData, canvas, memoryViews, spriteData);
 
 	const buttons = [
 		{
@@ -83,5 +83,13 @@ test('switches', async () => {
 		codeBlocks.set(otherCodeBlock.creationIndex, { codeCells: codeToRender2 });
 	}
 
-	await expect(canvas).toMatchScreenshot();
+	renderer.pauseRendering();
+	const now = vi.spyOn(performance, 'now').mockReturnValue(0);
+	try {
+		renderer.renderFrame();
+		await expect(canvas).toMatchScreenshot();
+	} finally {
+		now.mockRestore();
+		renderer.destroy();
+	}
 });

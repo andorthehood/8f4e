@@ -8,25 +8,11 @@ import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnC
 import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
 import { deriveDirectiveState } from '../directives/registry';
 
-type StateSource = StateManager<State> | State;
 type CodeBlockCursor = NonNullable<State['codeBlockRendering']['selectedCodeBlock']>['cursor'];
 type CodeBlockCursorUpdate = Partial<CodeBlockCursor> & Pick<CodeBlockCursor, 'row' | 'col'>;
 
-function getState(source: StateSource): State {
-	return 'getState' in source ? source.getState() : source;
-}
-
-function setSelectedCodeBlock(source: StateSource, codeBlock: State['codeBlockRendering']['selectedCodeBlock']): void {
-	if ('set' in source) {
-		source.set('codeBlockRendering.selectedCodeBlock', codeBlock);
-		return;
-	}
-
-	source.codeBlockRendering.selectedCodeBlock = codeBlock;
-}
-
 function setSelectedCodeBlockCursor(
-	source: StateSource,
+	store: StateManager<State>,
 	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	cursor: CodeBlockCursorUpdate
 ): void {
@@ -35,16 +21,11 @@ function setSelectedCodeBlockCursor(
 		...cursor,
 	};
 
-	if ('set' in source && getState(source).codeBlockRendering.selectedCodeBlock === block) {
-		source.set('codeBlockRendering.selectedCodeBlock.cursor', nextCursor);
-		return;
-	}
-
-	block.cursor = nextCursor;
+	store.set('codeBlockRendering.selectedCodeBlock.cursor', nextCursor);
 }
 
 function alignTargetBlockCursorForHorizontalNavigation(
-	source: StateSource,
+	store: StateManager<State>,
 	sourceBlock: State['codeBlockRendering']['selectedCodeBlock'],
 	targetBlock: State['codeBlockRendering']['selectedCodeBlock']
 ): void {
@@ -52,7 +33,7 @@ function alignTargetBlockCursorForHorizontalNavigation(
 		return;
 	}
 
-	const state = getState(source);
+	const state = store.getState();
 	const sourceAbsoluteCursorY = sourceBlock.y + sourceBlock.cursor.y;
 	const targetRelativeCursorY = sourceAbsoluteCursorY - targetBlock.y;
 	const targetPhysicalRow = Math.max(Math.floor(targetRelativeCursorY / state.viewport.hGrid), 0);
@@ -66,7 +47,7 @@ function alignTargetBlockCursorForHorizontalNavigation(
 	);
 	const targetRawRow = targetDirectiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
 
-	setSelectedCodeBlockCursor(source, targetBlock, {
+	setSelectedCodeBlockCursor(store, targetBlock, {
 		row: targetRawRow,
 		col: Math.min(sourceBlock.cursor.col, targetBlock.code[targetRawRow]?.length ?? 0),
 		y: gapCalculator(boundedDisplayRow, targetBlock.gaps) * state.viewport.hGrid,
@@ -74,12 +55,12 @@ function alignTargetBlockCursorForHorizontalNavigation(
 }
 
 function setBlockCursorToDisplayRow(
-	source: StateSource,
+	store: StateManager<State>,
 	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	displayRow: number,
 	sourceCol?: number
 ): void {
-	const state = getState(source);
+	const state = store.getState();
 	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
 		isExpandedForEditing: true,
 	});
@@ -87,7 +68,7 @@ function setBlockCursorToDisplayRow(
 	const boundedDisplayRow = Math.min(Math.max(displayRow, 0), maxDisplayRow);
 	const targetRawRow = directiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
 
-	setSelectedCodeBlockCursor(source, block, {
+	setSelectedCodeBlockCursor(store, block, {
 		row: targetRawRow,
 		col: Math.min(sourceCol ?? block.cursor.col, block.code[targetRawRow]?.length ?? 0),
 		y: gapCalculator(boundedDisplayRow, block.gaps) * state.viewport.hGrid,
@@ -103,11 +84,11 @@ function getSelectedBlockDisplayRow(
 }
 
 function moveSelectionToCurrentBlockVerticalEdge(
-	source: StateSource,
+	store: StateManager<State>,
 	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
 ): boolean {
-	const state = getState(source);
+	const state = store.getState();
 	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
 		isExpandedForEditing: true,
 	});
@@ -119,12 +100,12 @@ function moveSelectionToCurrentBlockVerticalEdge(
 		return false;
 	}
 
-	setBlockCursorToDisplayRow(source, block, edgeDisplayRow);
+	setBlockCursorToDisplayRow(store, block, edgeDisplayRow);
 	return true;
 }
 
 function alignTargetBlockCursorForVerticalNavigation(
-	source: StateSource,
+	store: StateManager<State>,
 	sourceBlock: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	targetBlock: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
@@ -135,7 +116,7 @@ function alignTargetBlockCursorForVerticalNavigation(
 	const maxDisplayRow = Math.max(targetDirectiveState.displayModel.displayRowToRawRow.length - 1, 0);
 	const targetDisplayRow = direction === 'up' ? maxDisplayRow : 0;
 
-	setBlockCursorToDisplayRow(source, targetBlock, targetDisplayRow, sourceBlock.cursor.col);
+	setBlockCursorToDisplayRow(store, targetBlock, targetDisplayRow, sourceBlock.cursor.col);
 }
 
 /**
@@ -144,24 +125,22 @@ function alignTargetBlockCursorForVerticalNavigation(
 interface JumpToFavoriteCodeBlockEvent {
 	/** Primary identifier: stable runtime creationIndex */
 	creationIndex: number;
-	/** Human-facing block name used for labels. */
-	name: string;
 }
 
 /**
  * Navigates to a code block in the specified direction.
  * This is a reusable helper that handles both keyboard and automated navigation.
  *
- * @param state - The editor state
+ * @param store - The editor state manager
  * @param direction - The direction to navigate
  * @returns {boolean} true if navigation to a different block occurred, false if no block is selected or the target is the same as the current block
  */
 export function navigateToCodeBlockInDirection(
-	stateSource: StateSource,
+	store: StateManager<State>,
 	direction: Direction,
-	events?: EventDispatcher
+	events: EventDispatcher
 ): boolean {
-	const state = getState(stateSource);
+	const state = store.getState();
 	// Only proceed if a code block is currently selected
 	if (!state.codeBlockRendering.selectedCodeBlock) {
 		return false;
@@ -174,7 +153,7 @@ export function navigateToCodeBlockInDirection(
 	// Find the closest code block in the specified direction
 	if (
 		(direction === 'up' || direction === 'down') &&
-		moveSelectionToCurrentBlockVerticalEdge(stateSource, currentBlock, direction)
+		moveSelectionToCurrentBlockVerticalEdge(store, currentBlock, direction)
 	) {
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
 		animateViewport(state, x, y, events);
@@ -185,12 +164,12 @@ export function navigateToCodeBlockInDirection(
 
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
-		setSelectedCodeBlock(stateSource, targetBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', targetBlock);
 
 		if (direction === 'left' || direction === 'right') {
-			alignTargetBlockCursorForHorizontalNavigation(stateSource, currentBlock, targetBlock);
+			alignTargetBlockCursorForHorizontalNavigation(store, currentBlock, targetBlock);
 		} else {
-			alignTargetBlockCursorForVerticalNavigation(stateSource, currentBlock, targetBlock, direction);
+			alignTargetBlockCursorForVerticalNavigation(store, currentBlock, targetBlock, direction);
 		}
 
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
@@ -202,30 +181,24 @@ export function navigateToCodeBlockInDirection(
 }
 
 /**
- * Jumps to a specific code block by its identifiers.
+ * Jumps to a specific code block by its creation index.
  *
  * Resolves the target block using creationIndex.
  * If the block is found, selects it and centers the viewport on it.
  *
- * @param state - The editor state
+ * @param store - The editor state manager
  * @param creationIndex - The stable runtime identifier of the target block
- * @param name - Human-facing name of the target block.
  * @returns {boolean} true if the block was found and jumped to, false otherwise
  */
-export function jumpToCodeBlock(
-	stateSource: StateSource,
-	creationIndex: number,
-	_name: string,
-	events?: EventDispatcher
-): boolean {
-	const state = getState(stateSource);
+export function jumpToCodeBlock(store: StateManager<State>, creationIndex: number, events: EventDispatcher): boolean {
+	const state = store.getState();
 	const codeBlocks = state.codeBlockRendering.codeBlocks;
 
 	const targetBlock = codeBlocks.find(block => block.creationIndex === creationIndex);
 
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
-		setSelectedCodeBlock(stateSource, targetBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', targetBlock);
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		animateViewport(state, x, y, events);
 		return true;
@@ -241,14 +214,14 @@ export function jumpToCodeBlock(
  * Selects the first code block with isHome=true (regardless of disabled state),
  * centers the viewport on it. If no home block exists, centers the viewport at (0,0).
  *
- * @param state - The editor state
+ * @param store - The editor state manager
  */
-export function goHome(stateSource: StateSource, events?: EventDispatcher): void {
-	const state = getState(stateSource);
+export function goHome(store: StateManager<State>, events: EventDispatcher): void {
+	const state = store.getState();
 	const homeBlock = state.codeBlockRendering.codeBlocks.find(block => block.isHome);
 
 	if (homeBlock) {
-		setSelectedCodeBlock(stateSource, homeBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', homeBlock);
 		const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
 			alignment: homeBlock.homeAlignment,
 		});
@@ -277,7 +250,7 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
  * - Select that code block
  * - Center the viewport on the newly selected block
  *
- * @param state - The editor state
+ * @param store - The editor state manager
  * @param events - The event dispatcher
  */
 export default function codeBlockNavigation(store: StateManager<State>, events: EventDispatcher): void {
@@ -286,7 +259,7 @@ export default function codeBlockNavigation(store: StateManager<State>, events: 
 	};
 
 	const onJumpToFavoriteCodeBlock = (event: JumpToFavoriteCodeBlockEvent) => {
-		jumpToCodeBlock(store, event.creationIndex, event.name, events);
+		jumpToCodeBlock(store, event.creationIndex, events);
 	};
 
 	const onGoHome = () => {

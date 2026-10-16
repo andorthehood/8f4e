@@ -1,6 +1,8 @@
 import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import updateViewport from './updateViewport';
 
+const VIEWPORT_ANIMATION_DURATION_MS = 500;
+
 const scheduledFrames = new WeakMap<State, number>();
 
 function easeInOutCubic(progress: number): number {
@@ -23,7 +25,7 @@ export function stopViewportAnimation(state: State): void {
 	state.viewportAnimation.startTime = undefined;
 }
 
-export default function animateViewport(state: State, x: number, y: number, events?: EventDispatcher): void {
+export default function animateViewport(state: State, x: number, y: number, events: EventDispatcher): void {
 	state.viewportAnimation.startX = state.viewport.x;
 	state.viewportAnimation.startY = state.viewport.y;
 	state.viewportAnimation.targetX = x;
@@ -31,7 +33,7 @@ export default function animateViewport(state: State, x: number, y: number, even
 	state.viewportAnimation.startTime = undefined;
 
 	const requestAnimationFrame = state.callbacks.requestAnimationFrame;
-	if (!requestAnimationFrame || !events) {
+	if (!requestAnimationFrame) {
 		stopViewportAnimation(state);
 		updateViewport(state, x, y, events);
 		return;
@@ -57,8 +59,7 @@ export default function animateViewport(state: State, x: number, y: number, even
 		const startTime = state.viewportAnimation.startTime ?? frameTime;
 		state.viewportAnimation.startTime = startTime;
 
-		const durationMs = Math.max(state.viewportAnimation.durationMs, 1);
-		const progress = Math.min(Math.max((frameTime - startTime) / durationMs, 0), 1);
+		const progress = Math.min(Math.max((frameTime - startTime) / VIEWPORT_ANIMATION_DURATION_MS, 0), 1);
 		const easedProgress = easeInOutCubic(progress);
 		const nextX =
 			state.viewportAnimation.startX +

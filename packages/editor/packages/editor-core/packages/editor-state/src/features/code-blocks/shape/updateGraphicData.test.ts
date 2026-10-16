@@ -9,7 +9,7 @@ import shape, { updateShapeDeclarations } from './updateGraphicData';
 
 function createDirectiveState(): DirectiveDerivedState {
 	return {
-		blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
+		blockState: { disabled: false, isHome: false, isFavorite: false },
 		displayState: {},
 		displayModel: {
 			lines: [],

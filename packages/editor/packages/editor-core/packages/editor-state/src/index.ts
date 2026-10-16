@@ -37,7 +37,6 @@ import editorMode from './features/editor-mode/effect';
 import font from './features/font/effect';
 import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
 import contextMenu from './features/menu/effect';
-import presentation from './features/presentation/effect';
 import compiler from './features/program-compiler/effect';
 import projectExport from './features/project-export/effect';
 import projectImport from './features/project-import/effect';
@@ -97,7 +96,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	registerEffect(runtime(store, events));
 	registerEffect(editorMode(store, events));
-	registerEffect(presentation(store, events));
 	registerEffect(projectImport(store, events));
 	registerEffect(codeBlockDragger(store, events));
 	registerEffect(codeBlockNavigation(store, events));

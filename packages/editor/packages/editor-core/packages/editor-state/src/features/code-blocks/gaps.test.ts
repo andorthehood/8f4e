@@ -6,7 +6,7 @@ import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 describe('gaps', () => {
 	it('inserts directive gaps using display rows', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
+			blockState: { disabled: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -30,7 +30,7 @@ describe('gaps', () => {
 
 	it('adds multiple layout contributions on the same display row', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
+			blockState: { disabled: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -57,7 +57,7 @@ describe('gaps', () => {
 
 	it('adds error gaps to layout contributions on the same display row', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
+			blockState: { disabled: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -100,7 +100,7 @@ describe('gaps', () => {
 
 	it('skips gaps for raw rows hidden from the display model', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
+			blockState: { disabled: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [

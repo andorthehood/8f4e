@@ -109,7 +109,6 @@ describe('directive registry', () => {
 
 		expect(result.blockState).toEqual({
 			disabled: true,
-			hidden: false,
 			isHome: true,
 			homeAlignment: 'center',
 			isFavorite: true,
@@ -162,7 +161,6 @@ describe('directive registry', () => {
 
 		expect(result.blockState).toEqual({
 			disabled: false,
-			hidden: false,
 			isHome: true,
 			homeAlignment: 'center',
 			isFavorite: false,
@@ -204,13 +202,6 @@ describe('directive registry', () => {
 
 		expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3]);
 		expect(result.displayModel.isCollapsed).toBe(false);
-	});
-
-	it('derives hidden block state from @hidden', () => {
-		const code = ['module foo', '; @hidden', 'moduleEnd'];
-		const result = deriveDirectiveState(code, parseBlockDirectives(code));
-
-		expect(result.blockState.hidden).toBe(true);
 	});
 
 	it('deriveDirectiveState and parseEditorDirectives agree on trailing directive behavior', () => {

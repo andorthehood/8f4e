@@ -49,7 +49,6 @@ import type {
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { ConsoleState, LogMessage } from './features/logger/types';
 import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
-import type { PresentationState } from './features/presentation/types';
 import type { CompilationResult, Compiler } from './features/program-compiler/types';
 import type {
 	RuntimeEnvConstantsContributor,
@@ -242,7 +241,7 @@ export interface FeatureFlags {
 	/** Whether the editor is currently in an edit-enabled state. */
 	editing: boolean;
 
-	/** Enable/disable keyboard switching into and out of edit mode, and into presentation mode. */
+	/** Enable/disable keyboard switching into and out of edit mode. */
 	modeToggling: boolean;
 
 	/** Enable/disable the mode hint overlay at the top of the viewport */
@@ -267,8 +266,7 @@ export interface FeatureFlags {
  */
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
 
-export type EditorMode = 'view' | 'edit' | 'presentation';
-export type InitialEditorMode = Exclude<EditorMode, 'presentation'>;
+export type EditorMode = 'view' | 'edit';
 
 // Callbacks interface contains all callback functions (top-level public API)
 export interface Callbacks {
@@ -346,7 +344,7 @@ export interface Callbacks {
 export interface Options {
 	featureFlags?: FeatureFlagsConfig;
 	/** Mode used when the editor is initialized. */
-	initialEditorMode?: InitialEditorMode;
+	initialEditorMode?: EditorMode;
 	callbacks: Callbacks;
 	/**
 	 * Runtime registry mapping runtime IDs to runtime implementations.
@@ -397,7 +395,6 @@ export interface State {
 	dialogStack: DialogContent[];
 	viewport: Viewport;
 	viewportAnimation: ViewportAnimation;
-	presentation: PresentationState;
 }
 
 export type * from './features/binary-assets/types';
@@ -416,7 +413,6 @@ export type {
 export type * from './features/global-editor-directives/types';
 export type * from './features/logger/types';
 export type * from './features/menu/types';
-export type * from './features/presentation/types';
 export type * from './features/program-compiler/types';
 export type * from './features/runtime/types';
 export type * from './features/viewport/blockAlignment';

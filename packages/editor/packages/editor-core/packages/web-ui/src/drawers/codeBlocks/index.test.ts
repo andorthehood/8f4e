@@ -1,7 +1,7 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { WebUiRenderData } from '@8f4e/web-ui-render-projection';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSpriteIdLookupMock } from '../../__tests__/rendering';
 import type { DrawContext as Engine } from '../../drawContext';
 import type { MemoryViews } from '../../types';
@@ -76,7 +76,51 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 }
 
 describe('drawModules', () => {
-	it('draws assertion rectangles over the rendered line numbers and suppresses them in hidden previews', () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it.each(['view', 'edit'] as const)('draws an animated outline only for the selected block in %s mode', editorMode => {
+		const selectedBlock = createMockCodeBlock({ creationIndex: 0, width: 96, height: 64 });
+		const otherBlock = createMockCodeBlock({ creationIndex: 1, x: 160, width: 96, height: 64 });
+		const state = createMockState({
+			editorMode,
+			spriteLookups: {
+				fillColors: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+			} as never,
+			codeBlockRendering: {
+				codeBlocks: [selectedBlock, otherBlock],
+				selectedCodeBlock: selectedBlock,
+			},
+		});
+		const engine = createMockEngine();
+		const now = vi.spyOn(performance, 'now').mockReturnValue(0);
+		const outlineCalls = () => vi.mocked(engine.drawText).mock.calls.filter(call => call[2] !== '+' && call[2] !== '_');
+
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
+		const initialOutline = outlineCalls();
+		expect(initialOutline).toHaveLength(4);
+
+		vi.mocked(engine.drawText).mockClear();
+		now.mockReturnValue(80);
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
+		expect(outlineCalls()).toHaveLength(4);
+		expect(outlineCalls()).not.toEqual(initialOutline);
+
+		vi.mocked(engine.drawText).mockClear();
+		state.codeBlockRendering.selectedCodeBlock = otherBlock;
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
+		expect(outlineCalls()).toHaveLength(4);
+
+		vi.mocked(engine.drawText).mockClear();
+		state.codeBlockRendering.selectedCodeBlock = undefined;
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
+		expect(outlineCalls()).toHaveLength(0);
+	});
+
+	it('draws assertion rectangles over the rendered line numbers', () => {
 		const block = createMockCodeBlock({ creationIndex: 4, width: 100, height: 64 });
 		block.widgets.assertions = [{ lineNumber: 2, passed: true, x: 8, y: 32, width: 8, height: 16 }];
 		const state = createMockState({
@@ -93,10 +137,6 @@ describe('drawModules', () => {
 		expect(sprites.mock.invocationCallOrder[markerIndex]).toBeGreaterThan(
 			vi.mocked(engine.drawResolvedText).mock.invocationCallOrder.at(-1)!
 		);
-		block.hidden = true;
-		sprites.mockClear();
-		drawModules(engine, state, createMemoryViews(), renderData);
-		expect(sprites.mock.calls.some(call => call[2] === markerSprite)).toBe(false);
 	});
 	it('draws resolved code cells from projected render data', () => {
 		const block = createMockCodeBlock({ creationIndex: 4, width: 100, height: 50 });
@@ -186,76 +226,6 @@ describe('drawModules', () => {
 			16,
 			'main',
 			state.spriteLookups?.fontEntryName
-		);
-	});
-
-	it('renders only the corners for hidden blocks by default', () => {
-		const hiddenBlock = createMockCodeBlock({
-			hidden: true,
-			width: 100,
-			height: 50,
-			code: ['module hidden', 'moduleEnd'],
-		});
-		const state = createMockState({
-			spriteLookups: {
-				fillColors: createSpriteIdLookupMock(),
-				fontNumbers: createSpriteIdLookupMock(),
-				fontCode: createSpriteIdLookupMock(),
-				fontDisabledCode: createSpriteIdLookupMock(),
-				fontLineNumber: createSpriteIdLookupMock(),
-				fontCodeComment: createSpriteIdLookupMock(),
-			} as never,
-			codeBlockRendering: {
-				codeBlocks: [hiddenBlock],
-			},
-			featureFlags: {
-				codeLineSelection: true,
-				editing: true,
-			},
-		});
-		const engine = createMockEngine();
-
-		drawModules(engine, state, createMemoryViews(), emptyRenderData);
-
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledTimes(4);
-		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
-	});
-
-	it('renders hidden blocks when the reveal override is active', () => {
-		const hiddenBlock = createMockCodeBlock({
-			hidden: true,
-			width: 100,
-			height: 50,
-			code: ['module hidden', 'moduleEnd'],
-		});
-		const state = createMockState({
-			spriteLookups: {
-				fillColors: createSpriteIdLookupMock(),
-				fontNumbers: createSpriteIdLookupMock(),
-				fontCode: createSpriteIdLookupMock(),
-				fontDisabledCode: createSpriteIdLookupMock(),
-				fontLineNumber: createSpriteIdLookupMock(),
-				fontCodeComment: createSpriteIdLookupMock(),
-			} as never,
-			codeBlockRendering: {
-				codeBlocks: [hiddenBlock],
-				showHiddenCodeBlocks: true,
-			},
-			featureFlags: {
-				codeLineSelection: true,
-				editing: true,
-			},
-		});
-		const engine = createMockEngine();
-
-		drawModules(engine, state, createMemoryViews(), emptyRenderData);
-
-		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			0,
-			0,
-			'moduleBackground',
-			100,
-			50
 		);
 	});
 

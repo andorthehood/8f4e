@@ -1452,7 +1452,6 @@ module modSamplePlayer2
 ; @pos 546 14
 ; @group ch2
 use env
-; @stop 12 20
 int*  period &period2:out
 int* offset &sampleOffset2:out ; @w *
 int*  trigger &trigger2:out
