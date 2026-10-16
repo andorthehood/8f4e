@@ -3894,5 +3894,51 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "bd5e7eb9ef310c3bc39226857e3ced058dc21a11",
+		"recordedAt": "2026-10-16T09:26:29.008Z",
+		"coverage": {
+			"documented": 160,
+			"total": 1014,
+			"percentage": 15.8,
+			"byKind": {
+				"variable": {
+					"documented": 5,
+					"total": 90,
+					"percentage": 5.6
+				},
+				"function": {
+					"documented": 135,
+					"total": 511,
+					"percentage": 26.4
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 319,
+					"percentage": 3.1
+				},
+				"type": {
+					"documented": 2,
+					"total": 34,
+					"percentage": 5.9
+				},
+				"interface": {
+					"documented": 8,
+					"total": 56,
+					"percentage": 14.3
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
