@@ -4,11 +4,15 @@ Thanks for helping improve 8f4e. This repository contains the 8f4e language comp
 
 ## Looking for a Place to Start?
 
-Welcome. If you want to contribute but are not sure where to begin, the todo notes in `docs/todos/` are usually a good place to start. They collect follow-up work that tends to be approachable for new contributors, while still being useful for the project.
+Welcome! Start with the [open good first issues](https://github.com/andorthehood/8f4e/labels/good%20first%20issue), which are selected as entry points for new contributors.
+
+Before starting, check the issue's assignees, recent comments, and linked pull requests to avoid duplicating work. If the scope or setup is unclear, ask in the issue; we're happy to help.
+
+The notes in `docs/todos/` provide background on planned work. Use the current GitHub issue for the latest scope and discussion.
 
 ## Prerequisites
 
-- Node.js `24.11.0`; run `nvm use` from the repository root.
+- Node.js `24.16.0` (see `.nvmrc`); run `nvm use` from the repository root.
 - npm `10` or newer.
 - Git submodules initialized. `npm install` runs this automatically through the `preinstall` script.
 
