@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -113 4
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 4 4
 ; @config runtime TestRuntime
 
 Intermodule min(...) and
@@ -10,7 +20,20 @@ element bounds.
 noteEnd
 
 entry test
+module floatBoundsSource
+; @pos 1 39
+float[] floats 7 0.0
+moduleEnd
+module lateBoundsSource
+; @pos 2 117
+int[] buffer 8 0
+moduleEnd
+module combinedBoundsSource
+; @pos 12 22
+int[] buffer 12 12
+moduleEnd
 module intBoundsSource
+; @pos 16 57
 int[] ints 10 0
 int32[] int32s 5 0
 int16[] signed16 10 0
@@ -18,12 +41,35 @@ int16u[] unsigned16 10 0
 int8[] signed8 10 0
 int8u[] unsigned8 10 0
 moduleEnd
+module floatBoundAssertions
+; @pos 37 39
+; Float min/max references
+; should use the finite float32
+; bounds.
+float minFloat min(floatBoundsSource:floats)
+float maxFloat max(floatBoundsSource:floats)
 
-module floatBoundsSource
-float[] floats 7 0.0
+push minFloat
+assertEqual -3.4028234663852886e38
+
+push maxFloat
+assertEqual 3.4028234663852886e38
 moduleEnd
+module outOfOrderBoundsAssertions
+; @pos 37 117
+; Bounds references can resolve
+; to modules declared later.
+int minValue min(lateBoundsSource:buffer)
+int maxValue max(lateBoundsSource:buffer)
 
+push minValue
+assertEqual -2147483648
+
+push maxValue
+assertEqual 2147483647
+moduleEnd
 module integerBoundAssertions
+; @pos 52 57
 ; Integer min/max references
 ; should reflect the source
 ; element
@@ -77,39 +123,8 @@ assertEqual 0
 push maxUnsigned8
 assertEqual 255
 moduleEnd
-
-module floatBoundAssertions
-; Float min/max references
-; should use the finite float32
-; bounds.
-float minFloat min(floatBoundsSource:floats)
-float maxFloat max(floatBoundsSource:floats)
-
-push minFloat
-assertEqual -3.4028234663852886e38
-
-push maxFloat
-assertEqual 3.4028234663852886e38
-moduleEnd
-
-module outOfOrderBoundsAssertions
-; Bounds references can resolve
-; to modules declared later.
-int minValue min(lateBoundsSource:buffer)
-int maxValue max(lateBoundsSource:buffer)
-
-push minValue
-assertEqual -2147483648
-
-push maxValue
-assertEqual 2147483647
-moduleEnd
-
-module lateBoundsSource
-int[] buffer 8 0
-moduleEnd
-
 module combinedBoundsAssertions
+; @pos 53 13
 ; Bounds, count, and address
 ; references can be used
 ; together in
@@ -130,9 +145,5 @@ assertEqual -2147483648
 
 push maxValue
 assertEqual 2147483647
-moduleEnd
-
-module combinedBoundsSource
-int[] buffer 12 12
 moduleEnd
 entryEnd
