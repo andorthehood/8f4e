@@ -33,6 +33,7 @@
   - [greaterThan](instructions/comparison.md#greaterthan)
   - [lessOrEqual](instructions/comparison.md#lessorequal)
   - [lessThan](instructions/comparison.md#lessthan)
+  - [notEqual](instructions/comparison.md#notequal)
 
 - [Control flow instructions](instructions/control-flow.md)
   - [block](instructions/control-flow.md#block)
@@ -48,6 +49,8 @@
   - [map](instructions/control-flow.md#map)
   - [default](instructions/control-flow.md#default)
   - [mapEnd](instructions/control-flow.md#mapend)
+  - [exitIfTrue](instructions/control-flow.md#exitiftrue)
+  - [loopIndex](instructions/control-flow.md#loopindex)
 
 - [Conversion](instructions/conversion.md)
   - [castToFloat](instructions/conversion.md#casttofloat)
@@ -72,6 +75,7 @@
   - [clampModuleAddress](instructions/memory.md#clampmoduleaddress)
   - [clampGlobalAddress](instructions/memory.md#clampglobaladdress)
   - [init](instructions/memory.md#init)
+  - [memoryCopy](instructions/memory.md#memorycopy)
 
 - [Declarations and locals](instructions/declarations-and-locals.md)
   - [const](instructions/declarations-and-locals.md#const)
