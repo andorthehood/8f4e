@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -92 31
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 4 2
 ; @config runtime TestRuntime
 
 Intermodule count(...) and
@@ -10,20 +20,25 @@ defaults.
 noteEnd
 
 entry test
+module combinedCountSizeSource
+; @pos 11 16
+int[] buffer 12 12
+moduleEnd
+module shortSizeSource
+; @pos 13 50
+int16[] buffer 12 0
+moduleEnd
 module countSizeSource
+; @pos 13 56
 int[] buffer 10 0
 float[] data 7 0.0
 moduleEnd
-
 module pointerSizeSource
+; @pos 14 62
 int* ptr
 moduleEnd
-
-module shortSizeSource
-int16[] buffer 12 0
-moduleEnd
-
 module countSizeAssertions
+; @pos 50 44
 ; count(...) returns the
 ; word-aligned element count for
 ; arrays.
@@ -55,27 +70,8 @@ assertEqual 4
 push doubledShortSize
 assertEqual 4
 moduleEnd
-
-module outOfOrderCountSizeAssertions
-; Intermodule count and sizeof
-; references can resolve to
-; modules
-; declared later.
-int laterCount count(lateCountSizeSource:buffer)
-int laterSize sizeof(lateCountSizeSource:buffer)
-
-push laterCount
-assertEqual 8
-
-push laterSize
-assertEqual 4
-moduleEnd
-
-module lateCountSizeSource
-int[] buffer 8 0
-moduleEnd
-
 module combinedCountSizeAssertions
+; @pos 58 14
 ; Count, sizeof, and address
 ; references can be used
 ; together in
@@ -93,8 +89,23 @@ assertEqual 12
 push elemSize
 assertEqual 4
 moduleEnd
+module lateCountSizeSource
+; @pos 128 56
+int[] buffer 8 0
+moduleEnd
+module outOfOrderCountSizeAssertions
+; @pos 165 51
+; Intermodule count and sizeof
+; references can resolve to
+; modules
+; declared later.
+int laterCount count(lateCountSizeSource:buffer)
+int laterSize sizeof(lateCountSizeSource:buffer)
 
-module combinedCountSizeSource
-int[] buffer 12 12
+push laterCount
+assertEqual 8
+
+push laterSize
+assertEqual 4
 moduleEnd
 entryEnd
