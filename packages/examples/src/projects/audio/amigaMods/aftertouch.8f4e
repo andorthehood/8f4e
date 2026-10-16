@@ -1196,7 +1196,7 @@ loopEnd
 
 moduleEnd
 module scope2
-; @pos 64 -17
+; @pos 65 -17
 float* in &amp2:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1224,7 +1224,7 @@ store
 
 moduleEnd
 module rowBuffer2
-; @pos 64 -1
+; @pos 65 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1267,7 +1267,7 @@ loopEnd
 
 moduleEnd
 module scope3
-; @pos 100 -17
+; @pos 102 -17
 float* in &amp3:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1295,7 +1295,7 @@ store
 
 moduleEnd
 module rowBuffer3
-; @pos 100 -1
+; @pos 102 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1338,7 +1338,7 @@ loopEnd
 
 moduleEnd
 module scope4
-; @pos 136 -17
+; @pos 139 -17
 float* in &amp4:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1366,7 +1366,7 @@ store
 
 moduleEnd
 module rowBuffer4
-; @pos 136 -1
+; @pos 139 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
