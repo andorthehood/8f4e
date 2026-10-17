@@ -330,7 +330,7 @@ describe('constant resolver', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('keeps memory operands and only resolves constant operands inside expressions', () => {
+	it('folds pure constant expressions and only substitutes resolvable operands in memory expressions', () => {
 		const mainLine = moduleLine(1, 'main');
 		const sizeTimesElementSize = expression(id('SIZE', 'constant'), '*', sizeofId('buffer'));
 		const literalExpression = expression(literal(2), '*', literal(3));
@@ -364,7 +364,9 @@ describe('constant resolver', () => {
 				},
 			],
 		});
-		expect(result.references.modules[0].lineFacts[3]).toBeUndefined();
+		expect(result.references.modules[0].lineFacts[3]).toEqual({
+			arguments: [literal(6)],
+		});
 	});
 
 	it('applies explicit rounding after resolving constant expressions', () => {

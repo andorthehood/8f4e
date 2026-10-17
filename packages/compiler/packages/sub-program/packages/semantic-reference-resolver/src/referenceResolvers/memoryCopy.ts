@@ -6,7 +6,7 @@ import {
 	type ResolvedMemoryCopyLine,
 } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
-import { resolveAndValidateValueArguments } from './helpers';
+import { validateValueArguments } from './helpers';
 
 /**
  * Resolves and validates the byte-length argument for `memoryCopy`.
@@ -19,7 +19,7 @@ export default function resolveMemoryCopyReferences(
 	line: MemoryCopyLine,
 	context: ReferenceResolutionContext
 ): ResolvedMemoryCopyLine | MemoryCopyLine {
-	const resolved = resolveAndValidateValueArguments(line, context, [0]);
+	const resolved = validateValueArguments(line, context, [0]);
 
 	const argument = resolved.arguments[0];
 	if (argument?.type === ArgumentType.LITERAL && !argument.isInteger) {

@@ -3,7 +3,6 @@ import type {
 	ArgumentLiteral,
 	CompilerASTLine,
 	CompileTimeOperand,
-	CompileTimeOperator,
 	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
@@ -15,12 +14,8 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import {
-	ArgumentType,
-	applyCompileTimeRounding,
-	createProjectModuleId,
-	isBinaryCompileTimeExpression,
-} from '@8f4e/language-spec';
+import { ArgumentType, createProjectModuleId, isBinaryCompileTimeExpression } from '@8f4e/language-spec';
+import { resolveCompileTimeExpression } from '@8f4e/semantic-utils';
 
 type ConstantResolvableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
@@ -116,31 +111,6 @@ function resolveConstantOperand(operand: CompileTimeOperand, constants: Constant
 	return operand.referenceKind === 'constant' ? constants[operand.value] : undefined;
 }
 
-function evaluateExpression(lhsConst: Const, rhsConst: Const, operator: CompileTimeOperator): Const | undefined {
-	if (operator === '/' && rhsConst.value === 0) {
-		return undefined;
-	}
-
-	const value =
-		operator === '+'
-			? lhsConst.value + rhsConst.value
-			: operator === '-'
-				? lhsConst.value - rhsConst.value
-				: operator === '*'
-					? lhsConst.value * rhsConst.value
-					: operator === '/'
-						? lhsConst.value / rhsConst.value
-						: lhsConst.value ** rhsConst.value;
-	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
-	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
-
-	return {
-		value,
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
 function resolveConstantArgument(argument: Argument, constants: ConstantEnvironment): Const | undefined {
 	if (argument.type === ArgumentType.LITERAL) {
 		return literalToConst(argument);
@@ -154,18 +124,7 @@ function resolveConstantArgument(argument: Argument, constants: ConstantEnvironm
 		return undefined;
 	}
 
-	const leftConst = resolveConstantOperand(argument.left, constants);
-	if (!leftConst) {
-		return undefined;
-	}
-
-	if (!isBinaryCompileTimeExpression(argument)) {
-		return applyCompileTimeRounding(leftConst, argument.rounding);
-	}
-
-	const rightConst = resolveConstantOperand(argument.right, constants);
-	const resolved = rightConst ? evaluateExpression(leftConst, rightConst, argument.operator) : undefined;
-	return resolved ? applyCompileTimeRounding(resolved, argument.rounding) : undefined;
+	return resolveCompileTimeExpression(argument, operand => resolveConstantOperand(operand, constants));
 }
 
 function resolveConstantArgumentReference(argument: Argument, constants: ConstantEnvironment): Argument {
@@ -176,6 +135,10 @@ function resolveConstantArgumentReference(argument: Argument, constants: Constan
 
 	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
+	}
+	const resolved = resolveCompileTimeExpression(argument, operand => resolveConstantOperand(operand, constants));
+	if (resolved) {
+		return constToLiteral(resolved);
 	}
 
 	const left = resolveConstantOperandReference(argument.left, constants);

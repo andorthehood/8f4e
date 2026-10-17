@@ -1,8 +1,6 @@
 import type {
 	Argument,
 	CompilerASTLine,
-	CompileTimeOperator,
-	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
 	MemoryDeclarationLine,
@@ -20,7 +18,6 @@ import type {
 } from '@8f4e/language-spec';
 import {
 	ArgumentType,
-	applyCompileTimeRounding,
 	ErrorCode,
 	type ErrorCodeValue,
 	GLOBAL_ALIGNMENT_BOUNDARY,
@@ -154,74 +151,6 @@ function getPrototypeSources(
 	});
 }
 
-function literalToConst(argument: Extract<Argument, { type: typeof ArgumentType.LITERAL }>): Const {
-	return {
-		value: argument.value,
-		isInteger: argument.isInteger,
-		...(argument.isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
-function constToLiteral(resolved: Const): Extract<Argument, { type: typeof ArgumentType.LITERAL }> {
-	return {
-		type: ArgumentType.LITERAL,
-		value: resolved.value,
-		isInteger: resolved.isInteger,
-		...(resolved.isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
-function evaluateLiteralExpression(left: Const, right: Const, operator: CompileTimeOperator): Const | undefined {
-	if (operator === '/' && right.value === 0) {
-		return undefined;
-	}
-
-	const value =
-		operator === '+'
-			? left.value + right.value
-			: operator === '-'
-				? left.value - right.value
-				: operator === '*'
-					? left.value * right.value
-					: operator === '/'
-						? left.value / right.value
-						: left.value ** right.value;
-	const isFloat64 = !!left.isFloat64 || !!right.isFloat64;
-	const isInteger = !isFloat64 && left.isInteger && right.isInteger && Number.isInteger(value);
-
-	return {
-		value,
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
-function normalizePlannerArgument(argument: Argument): Argument {
-	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return argument;
-	}
-
-	if (argument.left.type !== ArgumentType.LITERAL) {
-		return argument;
-	}
-
-	if (!isBinaryCompileTimeExpression(argument)) {
-		return constToLiteral(applyCompileTimeRounding(literalToConst(argument.left), argument.rounding));
-	}
-
-	if (argument.right.type !== ArgumentType.LITERAL) {
-		return argument;
-	}
-
-	const resolved = evaluateLiteralExpression(
-		literalToConst(argument.left),
-		literalToConst(argument.right),
-		argument.operator
-	);
-
-	return resolved ? constToLiteral(applyCompileTimeRounding(resolved, argument.rounding)) : argument;
-}
-
 function getUnresolvedArgumentIdentifier(argument: Argument): string {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const expression = isBinaryCompileTimeExpression(argument)
@@ -241,7 +170,7 @@ function normalizeLayoutMemoryDeclarationLine(
 		return line;
 	}
 
-	const elementCount = normalizePlannerArgument(line.arguments[1]);
+	const elementCount = line.arguments[1];
 	if (elementCount.type !== ArgumentType.LITERAL) {
 		throw plannerError(ErrorCode.UNDECLARED_IDENTIFIER, sourceLine, 'Unable to resolve memory declaration size.', {
 			identifier: getUnresolvedArgumentIdentifier(elementCount),
@@ -424,7 +353,7 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 /**
  * Builds planner-ready source from validated sub-program ASTs and plans module memory layout.
  * Constant references are supplied as pass facts, so array declaration counts
- * are either literal values or pure literal arithmetic that can be folded here.
+ * must already be resolved literals when they reach this pass.
  *
  * @param input - Validated sub-program ASTs plus optional layout settings.
  * @returns Address and size metadata for modules and memory declarations.

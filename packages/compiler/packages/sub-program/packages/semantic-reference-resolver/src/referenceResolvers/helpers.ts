@@ -2,14 +2,10 @@ import {
 	type Argument,
 	type ArgumentIdentifier,
 	ArgumentType,
-	applyCompileTimeRounding,
 	type CompilerASTLine,
-	type CompileTimeOperator,
-	type Const,
 	ErrorCode,
 	getError,
 	isBinaryCompileTimeExpression,
-	type ResolvedArgumentLiteral,
 	resolveProjectMemoryAlias,
 } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
@@ -81,83 +77,6 @@ export function validateIntermoduleAddressReference(
 	}
 }
 
-function literalToConst(argument: Extract<Argument, { type: typeof ArgumentType.LITERAL }>): Const {
-	return {
-		value: argument.value,
-		isInteger: argument.isInteger,
-		...(argument.isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
-function constToLiteral(resolved: Const): ResolvedArgumentLiteral {
-	return {
-		type: ArgumentType.LITERAL,
-		value: resolved.value,
-		isInteger: resolved.isInteger,
-		...(resolved.isFloat64 ? { isFloat64: true } : {}),
-		...(resolved.address ? { address: resolved.address } : {}),
-	};
-}
-
-function evaluateLiteralExpression(left: Const, right: Const, operator: CompileTimeOperator): Const | undefined {
-	if (operator === '/' && right.value === 0) {
-		return undefined;
-	}
-
-	const value =
-		operator === '+'
-			? left.value + right.value
-			: operator === '-'
-				? left.value - right.value
-				: operator === '*'
-					? left.value * right.value
-					: operator === '/'
-						? left.value / right.value
-						: left.value ** right.value;
-	const isFloat64 = !!left.isFloat64 || !!right.isFloat64;
-	const isInteger = !isFloat64 && left.isInteger && right.isInteger && Number.isInteger(value);
-
-	return {
-		value,
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-		...(left.address ? { address: left.address } : {}),
-	};
-}
-
-/**
- * Attempts to fold pure literal arithmetic after constant and memory-reference
- * facts have already been applied by earlier sub-program-level passes.
- *
- * @param argument - Argument whose literal value should be used.
- * @returns The computed result.
- */
-export function foldLiteralExpressionArgument(argument: Argument): Argument | ResolvedArgumentLiteral {
-	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return argument;
-	}
-
-	if (argument.left.type !== ArgumentType.LITERAL) {
-		return argument;
-	}
-
-	if (!isBinaryCompileTimeExpression(argument)) {
-		return constToLiteral(applyCompileTimeRounding(literalToConst(argument.left), argument.rounding));
-	}
-
-	if (argument.right.type !== ArgumentType.LITERAL) {
-		return argument;
-	}
-
-	const resolved = evaluateLiteralExpression(
-		literalToConst(argument.left),
-		literalToConst(argument.right),
-		argument.operator
-	);
-
-	return resolved ? constToLiteral(applyCompileTimeRounding(resolved, argument.rounding)) : argument;
-}
-
 /**
  * Validates an unresolved value expression argument and throws UNDECLARED_IDENTIFIER.
  *
@@ -204,56 +123,21 @@ export function validateUnresolvedIdentifier(
 }
 
 /**
- * Folds literal expression arguments at the given indexes for a line.
- * Returns the (possibly updated) line and whether any argument changed.
- * This helper only folds pure literal expressions; it does not itself throw
- * unresolved value expressions or identifiers. Callers are responsible for
- * invoking validation helpers when that behavior is required.
- *
- * @param line - AST line being processed.
- * @param context - Compilation context used by the operation.
- * @param indexes - Argument indexes that should be folded.
- * @returns The computed result.
- */
-export function resolveArgumentsAtIndexes<TLine extends CompilerASTLine>(
-	line: TLine,
-	context: ReferenceResolutionContext,
-	indexes: number[]
-): { line: TLine; changed: boolean } {
-	let changed = false;
-	const nextArguments = line.arguments.map((argument, index) => {
-		if (!indexes.includes(index)) {
-			return argument;
-		}
-
-		const resolved = foldLiteralExpressionArgument(argument);
-		if (resolved !== argument) {
-			changed = true;
-		}
-		return resolved;
-	});
-
-	return { line: changed ? ({ ...line, arguments: nextArguments } as TLine) : line, changed };
-}
-
-/**
- * Resolves arguments at the given indexes, then validates any remaining unresolved
- * value expressions or identifiers as errors.
+ * Validates unresolved value expressions or identifiers at indexes that must have
+ * been resolved by earlier compiler passes.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
  * @param indexes - Argument indexes that must be fully resolved.
  * @returns The computed result.
  */
-export function resolveAndValidateValueArguments<TLine extends CompilerASTLine>(
+export function validateValueArguments<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: ReferenceResolutionContext,
 	indexes: number[]
 ): TLine {
-	const { line: resolved } = resolveArgumentsAtIndexes(line, context, indexes);
-
 	for (const index of indexes) {
-		const argument = resolved.arguments[index];
+		const argument = line.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 			validateUnresolvedValueExpression(argument, line, context);
 		}
@@ -262,5 +146,5 @@ export function resolveAndValidateValueArguments<TLine extends CompilerASTLine>(
 		}
 	}
 
-	return resolved as TLine;
+	return line;
 }

@@ -180,37 +180,4 @@ export function isBinaryCompileTimeExpression(
 	return expression.operator !== undefined;
 }
 
-type CompileTimeNumericValue = {
-	value: number;
-	isInteger: boolean;
-};
-
-/**
- * Applies an optional explicit rounding conversion to an already resolved value.
- * Rounded results intentionally retain only numeric value metadata: the conversion
- * produces an integer value and invalidates float precision and address proofs.
- */
-export function applyCompileTimeRounding<TValue extends CompileTimeNumericValue>(
-	resolved: TValue,
-	rounding: CompileTimeRoundingValue | undefined
-): TValue | CompileTimeNumericValue {
-	if (rounding === undefined) {
-		return resolved;
-	}
-
-	let value: number;
-	if (rounding === CompileTimeRounding.FLOOR) {
-		value = Math.floor(resolved.value);
-	} else if (rounding === CompileTimeRounding.CEIL) {
-		value = Math.ceil(resolved.value);
-	} else {
-		value = resolved.value < 0 ? -Math.round(-resolved.value) : Math.round(resolved.value);
-	}
-
-	return {
-		value,
-		isInteger: Number.isInteger(value),
-	};
-}
-
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;

@@ -1,7 +1,7 @@
 import type { MapLine, ResolvedArgumentLiteral, ResolvedMapLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
-import { resolveAndValidateValueArguments } from './helpers';
+import { validateValueArguments } from './helpers';
 
 /** Creates the implicit key argument for one-argument `map` rows from the active map state. */
 function createImplicitKeyArgument(context: ReferenceResolutionContext): ResolvedArgumentLiteral {
@@ -27,7 +27,7 @@ function createImplicitKeyArgument(context: ReferenceResolutionContext): Resolve
  */
 export default function resolveMapReferences(line: MapLine, context: ReferenceResolutionContext): ResolvedMapLine {
 	if (line.arguments.length === 1) {
-		const resolved = resolveAndValidateValueArguments(line, context, [0]);
+		const resolved = validateValueArguments(line, context, [0]);
 
 		return {
 			...resolved,
@@ -35,7 +35,7 @@ export default function resolveMapReferences(line: MapLine, context: ReferenceRe
 		} as ResolvedMapLine;
 	}
 
-	const resolved = resolveAndValidateValueArguments(line, context, [0, 1]);
+	const resolved = validateValueArguments(line, context, [0, 1]);
 
 	return resolved as ResolvedMapLine;
 }
