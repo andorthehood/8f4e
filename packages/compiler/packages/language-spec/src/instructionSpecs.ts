@@ -358,13 +358,13 @@ export const instructionSpecs = {
 		effects: blockClose(BlockType.BLOCK, { restoreResult: true }),
 	},
 	branch: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Branches out of one or more enclosing blocks.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	branchIfTrue: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'int',
