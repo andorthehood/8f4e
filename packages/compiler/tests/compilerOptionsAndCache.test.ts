@@ -1,7 +1,8 @@
 import { createFunctionId, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { describe, expect, test } from 'vitest';
 
-import { compileFixtureProgramSource } from './testUtils';
+import { compileProject, parseProjectSource } from '../src';
+import { compileFixtureProgramSource, createMemory, getExportedFunction } from './testUtils';
 
 describe('compiler options and cache', () => {
 	test('always exposes AST and exposes stack analysis only when requested', async () => {
@@ -120,6 +121,22 @@ functionEnd int
 		expect(second.compileResult.cache.ast.entries.get('root:entry:main:module:0')?.ast).toBe(cachedModuleAst);
 		expect(second.compileResult.cache.ast.entries.get('root:function:0')?.ast).toBe(cachedFunctionAst);
 		expect(second.compileResult.cache.ast.stats.hits).toBeGreaterThanOrEqual(2);
+	});
+
+	test('recompiles an exported function after an in-place source edit', async () => {
+		const project = parseProjectSource(`8f4e/v1
+function example
+#export
+push 1
+functionEnd int`);
+		const first = await compileProject(project, { disableSharedMemory: true });
+		project.functions[0]!.code[2] = 'push 2';
+		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
+		const { instance } = await WebAssembly.instantiate(new Uint8Array(second.codeBuffer), {
+			host: { memory: createMemory(second.requiredMemoryBytes) },
+		});
+
+		expect(getExportedFunction(instance.exports, 'example')()).toBe(2);
 	});
 
 	test('re-resolves constants when reusing an unchanged module AST from cache', async () => {

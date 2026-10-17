@@ -6,7 +6,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, arrayMemoryDeclarationInstructions, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from './index';
 
@@ -23,7 +23,7 @@ function literal(value: number) {
 	return {
 		type: ArgumentType.LITERAL,
 		value,
-		isInteger: true,
+		isInteger: Number.isInteger(value),
 	} as const;
 }
 
@@ -241,6 +241,28 @@ describe('planSubProgramMemoryLayout', () => {
 });
 
 describe('planner input building', () => {
+	it.each(
+		arrayMemoryDeclarationInstructions.flatMap(instruction =>
+			[0.5, -1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY].map(
+				size => [instruction, size] as const
+			)
+		)
+	)('rejects %s with invalid element count %s', (instruction, size) => {
+		const line = {
+			lineNumber: 4,
+			instruction,
+			arguments: [identifier('values'), literal(size)],
+		} satisfies MemoryDeclarationLine;
+
+		expect(() =>
+			planSubProgramMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [line])],
+				constantReferences: noConstantReferences(),
+			})
+		).toThrow(expect.objectContaining({ compilerErrorCode: ErrorCode.INVALID_ARRAY_SIZE, line }));
+	});
+
 	it('builds planner-ready source from validated module and prototype ASTs', () => {
 		const inherited = {
 			lineNumber: 20,

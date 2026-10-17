@@ -1,0 +1,8 @@
+8f4e/v1
+
+entry main
+module example
+const SIZE 3
+int[] values SIZE/2
+moduleEnd
+entryEnd
