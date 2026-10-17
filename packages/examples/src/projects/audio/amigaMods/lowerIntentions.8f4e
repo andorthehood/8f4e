@@ -1,6 +1,7 @@
 8f4e/v1
 
 includes
+; @pos 3 -85
 include std/events/risingEdge
 include std/events/hasChanged
 includesEnd
@@ -1099,7 +1100,7 @@ push *in
 store
 moduleEnd
 module scope1
-; @pos 28 -17
+; @pos 27 -17
 float* in &amp1:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1127,7 +1128,7 @@ store
 
 moduleEnd
 module rowBuffer1
-; @pos 28 -1
+; @pos 27 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1240,7 +1241,7 @@ loopEnd
 
 moduleEnd
 module scope3
-; @pos 100 -17
+; @pos 101 -17
 float* in &amp3:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1268,7 +1269,7 @@ store
 
 moduleEnd
 module rowBuffer3
-; @pos 100 -1
+; @pos 101 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1311,7 +1312,7 @@ loopEnd
 
 moduleEnd
 module scope4
-; @pos 136 -17
+; @pos 138 -17
 float* in &amp4:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1339,7 +1340,7 @@ store
 
 moduleEnd
 module rowBuffer4
-; @pos 136 -1
+; @pos 138 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x

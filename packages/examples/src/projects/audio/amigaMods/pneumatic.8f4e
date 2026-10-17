@@ -599,6 +599,14 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 9984
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 9984
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 9984
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 9984
 ; 'sample_1.pcm'
 const ASSET_SAMPLE1_SIZE 2104
 ; 'sample_2.pcm'
@@ -659,14 +667,6 @@ const ASSET_SAMPLE29_SIZE 12636
 const ASSET_SAMPLE30_SIZE 22586
 ; 'sample_31.pcm'
 const ASSET_SAMPLE31_SIZE 20432
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 9984
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 9984
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 9984
-; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 9984
 
 constantsEnd
 
@@ -1513,7 +1513,7 @@ store
 
 moduleEnd
 module sampleOffset1
-; @pos 198 -73
+; @pos 200 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1596,7 +1596,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset3
-; @pos 200 20
+; @pos 200 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1638,7 +1638,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset4
-; @pos 200 65
+; @pos 200 71
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1680,7 +1680,7 @@ ifEnd
 
 moduleEnd
 module tempo1
-; @pos 236 -73
+; @pos 234 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1716,7 +1716,7 @@ ifEnd
 
 moduleEnd
 module tempo2
-; @pos 236 -25
+; @pos 234 -25
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -1752,7 +1752,7 @@ ifEnd
 
 moduleEnd
 module tempo3
-; @pos 236 20
+; @pos 234 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1788,7 +1788,7 @@ ifEnd
 
 moduleEnd
 module tempo4
-; @pos 237 65
+; @pos 234 71
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1824,7 +1824,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber1
-; @pos 275 -73
+; @pos 274 -73
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -1844,29 +1844,8 @@ store
 ifEnd
 
 moduleEnd
-module sampleNumber3
-; @pos 277 20
-; @group ch3
-int* row &rowBuffer3:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
 module sampleNumber2
-; @pos 278 -25
+; @pos 274 -25
 ; @group ch2
 int* row &rowBuffer2:
 int out
@@ -1886,8 +1865,29 @@ store
 ifEnd
 
 moduleEnd
+module sampleNumber3
+; @pos 274 23
+; @group ch3
+int* row &rowBuffer3:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
 module sampleNumber4
-; @pos 278 65
+; @pos 274 71
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -1908,7 +1908,7 @@ ifEnd
 
 moduleEnd
 module period1
-; @pos 309 -73
+; @pos 308 -73
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1935,36 +1935,8 @@ store
 ifEnd
 
 moduleEnd
-module period3
-; @pos 311 20
-; @group ch3
-int* row &rowBuffer3:
-int* sampleNumber &sampleNumber3:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
 module period2
-; @pos 312 -25
+; @pos 308 -25
 ; @group ch2
 int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
@@ -1991,8 +1963,36 @@ store
 ifEnd
 
 moduleEnd
+module period3
+; @pos 308 23
+; @group ch3
+int* row &rowBuffer3:
+int* sampleNumber &sampleNumber3:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
 module period4
-; @pos 312 65
+; @pos 308 71
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -2020,7 +2020,7 @@ ifEnd
 
 moduleEnd
 module trigger1
-; @pos 354 -73
+; @pos 353 -73
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -2046,7 +2046,7 @@ ifEnd
 
 moduleEnd
 module trigger2
-; @pos 357 -25
+; @pos 353 -25
 ; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -2072,7 +2072,7 @@ ifEnd
 
 moduleEnd
 module trigger3
-; @pos 358 20
+; @pos 353 23
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -2098,7 +2098,7 @@ ifEnd
 
 moduleEnd
 module trigger4
-; @pos 358 65
+; @pos 353 71
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2168,7 +2168,7 @@ ifEnd
 
 moduleEnd
 module volume2
-; @pos 396 -25
+; @pos 393 -25
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2214,7 +2214,7 @@ ifEnd
 
 moduleEnd
 module volume3
-; @pos 397 20
+; @pos 393 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2260,7 +2260,7 @@ ifEnd
 
 moduleEnd
 module volume4
-; @pos 397 65
+; @pos 393 71
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2405,8 +2405,7 @@ int8[] sample31 ASSET_SAMPLE31_SIZE
 ; @wave &sample31 count(sample31)
 moduleEnd
 module modSamplePlayer1
-; @pos 548 -8
-; @group ch1
+; @pos 549 -7
 ; @home
 use env
 ; @tab 6 20
@@ -2509,7 +2508,6 @@ ifEnd
 moduleEnd
 module modSamplePlayer2
 ; @pos 549 15
-; @group ch2
 use env
 int*  period &period2:out
 int* offset &sampleOffset2:out ; @w *
@@ -2610,7 +2608,6 @@ ifEnd
 moduleEnd
 module modSamplePlayer3
 ; @pos 601 -7
-; @group ch3
 use env
 
 int* period &period3:out
@@ -2712,7 +2709,6 @@ ifEnd
 moduleEnd
 module modSamplePlayer4
 ; @pos 601 15
-; @group ch4
 use env
 
 int* period &period4:out
