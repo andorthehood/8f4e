@@ -104,6 +104,9 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 			const trimmed = line.trim();
 			currentBlockLines.push(line);
 			const closer = getProjectCloserKeyword(trimmed);
+			if (blockType === 'note' && closer !== expectedCloser) {
+				continue;
+			}
 			if (closer) {
 				if (closer !== expectedCloser) {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
