@@ -41,8 +41,8 @@ note
 ; @config color.fill.menuItemBackground #043a2f
 ; @config color.fill.menuItemBackgroundHighlighted #83f5c7
 ; @config color.fill.background #096
-; @config color.fill.backgroundDots #008469
-; @config color.fill.backgroundDots2 #00745d
+; @config color.fill.backgroundDots #14b77e
+; @config color.fill.backgroundDots2 #3fd497
 ; @config color.fill.moduleBackground #02251f
 ; @config color.fill.debugInfoBackground #011c18
 ; @config color.fill.moduleBackgroundDragged #02251f
