@@ -69,6 +69,7 @@ Active todo files are listed below.
 | 500 | Keep planned memory and its source together | 🟡 | 4-8h | 2026-10-14 | Attach effective source information to each planned declaration, removing parallel arrays and positional source lookups. |
 | 501 | Preserve known pointee counts of one | 🟡 | 1-2h | 2026-10-16 | Retain proven single-element pointee counts so count(*pointer) resolves correctly while unknown counts remain errors. |
 | 502 | Add browser-driven accessibility color-scheme overrides | 🟡 | 2-4d | 2026-10-18 | Add tested alternative editor palettes selected automatically from supported browser contrast and forced-color preferences. |
+| 503 | Explore WebMCP tools for inspecting and editing projects | 🟡 | 1-2d | 2026-10-18 | Research and prototype a safe browser-agent command surface for semantic project inspection and code-block changes. |
 
 ### 🟢 Low Priority
 
