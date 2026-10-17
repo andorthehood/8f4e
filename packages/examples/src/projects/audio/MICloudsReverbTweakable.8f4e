@@ -366,7 +366,7 @@ module allpassDiffuser
 ; @group smearStage1
 use cloudsReverb
 
-const DELAY_SIZE 113*CLOUDS_RATIO
+const DELAY_SIZE round(113*CLOUDS_RATIO)
 
 float* in &pcmPlayer:out
 float out
@@ -413,7 +413,7 @@ module allpassDiffuser2
 ; @group smearStage2
 use cloudsReverb
 
-const DELAY_SIZE 162*CLOUDS_RATIO
+const DELAY_SIZE round(162*CLOUDS_RATIO)
 
 float* in &allpassDiffuser:out
 float out
@@ -460,7 +460,7 @@ module allpassDiffuser3
 ; @group smearStage3
 use cloudsReverb
 
-const DELAY_SIZE 241*CLOUDS_RATIO
+const DELAY_SIZE round(241*CLOUDS_RATIO)
 
 float* in &allpassDiffuser2:out
 float out
@@ -507,7 +507,7 @@ module allpassDiffuser4
 ; @group smearStage4
 use cloudsReverb
 
-const DELAY_SIZE 399*CLOUDS_RATIO
+const DELAY_SIZE round(399*CLOUDS_RATIO)
 
 float* in &allpassDiffuser3:out
 float out
@@ -555,7 +555,7 @@ module tank1DelayRead
 ; Reads Clouds del2.
 use cloudsReverb
 
-const DELAY_SIZE 4782*CLOUDS_RATIO
+const DELAY_SIZE round(4782*CLOUDS_RATIO)
 
 float[] buffer DELAY_SIZE
 float out
@@ -681,7 +681,7 @@ module tank2DelayRead
 ; Reads Clouds del1.
 use cloudsReverb
 
-const DELAY_SIZE 3411*CLOUDS_RATIO
+const DELAY_SIZE round(3411*CLOUDS_RATIO)
 
 float[] buffer DELAY_SIZE 
 float out
@@ -792,7 +792,7 @@ module tank1AllpassA
 ; @group tank1
 use cloudsReverb
 
-const DELAY_SIZE 1653*CLOUDS_RATIO
+const DELAY_SIZE round(1653*CLOUDS_RATIO)
 
 float* in &tank1Damping:out
 float out
@@ -842,7 +842,7 @@ module tank2AllpassA
 ; @group tank2
 use cloudsReverb
 
-const DELAY_SIZE 1913*CLOUDS_RATIO
+const DELAY_SIZE round(1913*CLOUDS_RATIO)
 
 float* in &tank2Damping:out
 float out
@@ -888,7 +888,7 @@ module tank1AllpassB
 ; @group tank1
 use cloudsReverb
 
-const DELAY_SIZE 2038*CLOUDS_RATIO
+const DELAY_SIZE round(2038*CLOUDS_RATIO)
 
 float* in &tank1AllpassA:out
 float out
@@ -934,7 +934,7 @@ module tank2AllpassB
 ; @group tank2
 use cloudsReverb
 
-const DELAY_SIZE 1663*CLOUDS_RATIO
+const DELAY_SIZE round(1663*CLOUDS_RATIO)
 
 float* in &tank2AllpassA:out
 float out

@@ -13,11 +13,7 @@ import {
 } from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 import type { ReferenceResolutionContext } from '../context';
-import {
-	resolveArgumentsAtIndexes,
-	validateIntermoduleAddressReference,
-	validateUnresolvedValueExpression,
-} from './helpers';
+import { validateIntermoduleAddressReference, validateUnresolvedValueExpression } from './helpers';
 
 function isResolvedPointerLocal(
 	local: ReferenceResolutionContext['locals'][string] | undefined
@@ -66,12 +62,9 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: ReferenceResoluti
  * @returns Push line with resolved target metadata where needed.
  */
 export default function resolvePushReferences(line: PushLine, context: ReferenceResolutionContext): SemanticPushLine {
-	const { line: resolved } = resolveArgumentsAtIndexes(line, context, [0]);
-	const resolvedPushLine = resolved as PushLine;
+	throwIfPointeeCountIsUnknown(line, context);
 
-	throwIfPointeeCountIsUnknown(resolvedPushLine, context);
-
-	const argument = resolved.arguments[0];
+	const argument = line.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		validateUnresolvedValueExpression(argument, line, context);
 	}
@@ -82,7 +75,7 @@ export default function resolvePushReferences(line: PushLine, context: Reference
 			const local = context.locals[value];
 			if (local) {
 				const resolvedLine: Omit<ResolvedLocalPushLine, 'resolvedTarget'> = {
-					...resolvedPushLine,
+					...line,
 					arguments: [argument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, binding: context.bindingsByName[value]! } };
@@ -91,7 +84,7 @@ export default function resolvePushReferences(line: PushLine, context: Reference
 			const memoryItem = getResolvedMemoryDeclaration(context, value);
 			if (memoryItem) {
 				const resolvedLine: Omit<ResolvedMemoryPushLine, 'resolvedTarget'> = {
-					...resolvedPushLine,
+					...line,
 					arguments: [argument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'memory' as const, memoryItem } };
@@ -103,7 +96,7 @@ export default function resolvePushReferences(line: PushLine, context: Reference
 			if (memoryItem) {
 				validateDereferenceDepth(pointerArgument, memoryItem, line, context);
 				const resolvedLine: Omit<ResolvedMemoryPointerPushLine, 'resolvedTarget'> = {
-					...resolvedPushLine,
+					...line,
 					arguments: [pointerArgument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'memory-pointer' as const, memoryItem } };
@@ -113,7 +106,7 @@ export default function resolvePushReferences(line: PushLine, context: Reference
 			if (isResolvedPointerLocal(local)) {
 				validateDereferenceDepth(pointerArgument, local, line, context);
 				const resolvedLine: Omit<ResolvedLocalPointerPushLine, 'resolvedTarget'> = {
-					...resolvedPushLine,
+					...line,
 					arguments: [pointerArgument],
 				};
 				return {
@@ -129,5 +122,5 @@ export default function resolvePushReferences(line: PushLine, context: Reference
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
 	}
 
-	return resolved as SemanticPushLine;
+	return line as SemanticPushLine;
 }

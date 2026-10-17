@@ -6,7 +6,6 @@ import {
 } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
 import {
-	resolveArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateUnresolvedIdentifier,
 	validateUnresolvedValueExpression,
@@ -42,14 +41,10 @@ export default function resolveMemoryDeclarationReferences(
 	context: ReferenceResolutionContext
 ): MemoryDeclarationLine {
 	const isArrayDeclaration = isArrayMemoryDeclarationLine(line);
-	const resolveIndexes = isArrayDeclaration
-		? line.arguments.map((_, index) => index).filter(index => index > 0)
-		: [0, 1];
-	const { line: resolved } = resolveArgumentsAtIndexes(line, context, resolveIndexes);
 
 	const scalarValidationIndexes = isArrayDeclaration ? [0] : [0, 1];
 	for (const index of scalarValidationIndexes) {
-		const argument = resolved.arguments[index];
+		const argument = line.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 			validateUnresolvedValueExpression(argument, line, context);
 		}
@@ -58,13 +53,13 @@ export default function resolveMemoryDeclarationReferences(
 		}
 	}
 
-	if (isArrayMemoryDeclarationLine(resolved)) {
-		requireResolvedArrayValue(resolved.arguments[1], line, context);
+	if (isArrayMemoryDeclarationLine(line)) {
+		requireResolvedArrayValue(line.arguments[1], line, context);
 
-		for (let index = 2; index < resolved.arguments.length; index++) {
-			requireResolvedArrayValue(resolved.arguments[index], line, context);
+		for (let index = 2; index < line.arguments.length; index++) {
+			requireResolvedArrayValue(line.arguments[index], line, context);
 		}
 	}
 
-	return resolved;
+	return line;
 }

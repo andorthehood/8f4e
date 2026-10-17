@@ -10,6 +10,9 @@ The right-hand side can also be a constant expression with exactly one operator:
 - `CONST*number`
 - `CONST/number`
 
+Use `round(...)`, `floor(...)`, or `ceil(...)` to convert a literal, constant, or one-operator expression explicitly to
+an integer. `round(...)` resolves halfway values away from zero.
+
 Rules:
 - Left-hand side must be an existing constant identifier.
 - Right-hand side must be a numeric literal.
@@ -21,6 +24,7 @@ Rules:
 const MAX 120
 const HALF_MAX MAX/2
 const DOUBLE_MAX MAX*2
+const SCALED_SIZE round(MAX*1.5)
 int output
 push &output
 push MAX
@@ -195,7 +199,7 @@ float* endPtr samples&
 The int[] instruction declares a buffer of integers in module memory. Variants include `int8[]`, `int8u[]`, `int16[]`, `int16u[]`, `int32[]`, `int*[]`, and `int**[]`.
 
 Unsigned variants (`int8u[]`, `int16u[]`) interpret values as unsigned integers (0-255 for int8u, 0-65535 for int16u) in debuggers, plotters, and when using min/max prefixes.
-Buffer size arguments also support constant expressions with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
+Buffer size arguments also support constant expressions with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`). Fractional results can be converted explicitly with `round(...)`, `floor(...)`, or `ceil(...)`.
 The element count must resolve to a finite nonnegative whole number. Zero length arrays are allowed and whole numbers written as `1.0` are valid. This applies to all array declaration variants.
 Trailing values initialize array elements from index 0 onward. Omitted elements remain zero-initialized, and the initializer list must not be longer than the declared element count.
 The compiler may encode these initializer values sparsely in WebAssembly passive data segments; this does not change the runtime memory image after `initDefaults()`.
@@ -205,6 +209,7 @@ The compiler may encode these initializer values sparsely in WebAssembly passive
 ```text
 int[] values 4 48 50 53
 int[] halfValues SIZE/2
+int[] scaledValues round(SIZE*1.5)
 int8u[] unsignedBytes 256
 int16u[] unsignedShorts 128
 ```

@@ -1,7 +1,7 @@
 import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
-import { resolveAndValidateValueArguments } from './helpers';
+import { validateValueArguments } from './helpers';
 
 /**
  * Resolves and validates optional access-width arguments for clamp-address instructions.
@@ -14,7 +14,7 @@ export default function resolveClampAddressReferences(
 	line: CompilerASTLine,
 	context: ReferenceResolutionContext
 ): CompilerASTLine {
-	const resolved = resolveAndValidateValueArguments(line, context, [0]);
+	const resolved = validateValueArguments(line, context, [0]);
 	const argument = resolved.arguments[0];
 
 	if (

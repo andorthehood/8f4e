@@ -111,7 +111,7 @@ function isIntermodularMemorySourceArgument(argument: CompilerASTLine['arguments
 
 	return (
 		argument.type === ArgumentType.COMPILE_TIME_EXPRESSION &&
-		(isIntermodularOperand(argument.left) || isIntermodularOperand(argument.right))
+		(isIntermodularOperand(argument.left) || (argument.right !== undefined && isIntermodularOperand(argument.right)))
 	);
 }
 

@@ -1,6 +1,5 @@
 import type {
 	Argument,
-	ArgumentCompileTimeExpression,
 	ArgumentLiteral,
 	CompilerASTLine,
 	CompileTimeOperand,
@@ -15,7 +14,8 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType, createProjectModuleId } from '@8f4e/language-spec';
+import { ArgumentType, createProjectModuleId, isBinaryCompileTimeExpression } from '@8f4e/language-spec';
+import { resolveCompileTimeExpression } from '@8f4e/semantic-utils';
 
 type ConstantResolvableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
@@ -111,35 +111,6 @@ function resolveConstantOperand(operand: CompileTimeOperand, constants: Constant
 	return operand.referenceKind === 'constant' ? constants[operand.value] : undefined;
 }
 
-function evaluateExpression(
-	lhsConst: Const,
-	rhsConst: Const,
-	operator: ArgumentCompileTimeExpression['operator']
-): Const | undefined {
-	if (operator === '/' && rhsConst.value === 0) {
-		return undefined;
-	}
-
-	const value =
-		operator === '+'
-			? lhsConst.value + rhsConst.value
-			: operator === '-'
-				? lhsConst.value - rhsConst.value
-				: operator === '*'
-					? lhsConst.value * rhsConst.value
-					: operator === '/'
-						? lhsConst.value / rhsConst.value
-						: lhsConst.value ** rhsConst.value;
-	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
-	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
-
-	return {
-		value,
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-	};
-}
-
 function resolveConstantArgument(argument: Argument, constants: ConstantEnvironment): Const | undefined {
 	if (argument.type === ArgumentType.LITERAL) {
 		return literalToConst(argument);
@@ -153,9 +124,7 @@ function resolveConstantArgument(argument: Argument, constants: ConstantEnvironm
 		return undefined;
 	}
 
-	const leftConst = resolveConstantOperand(argument.left, constants);
-	const rightConst = resolveConstantOperand(argument.right, constants);
-	return leftConst && rightConst ? evaluateExpression(leftConst, rightConst, argument.operator) : undefined;
+	return resolveCompileTimeExpression(argument, operand => resolveConstantOperand(operand, constants));
 }
 
 function resolveConstantArgumentReference(argument: Argument, constants: ConstantEnvironment): Argument {
@@ -167,8 +136,16 @@ function resolveConstantArgumentReference(argument: Argument, constants: Constan
 	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
 	}
+	const resolved = resolveCompileTimeExpression(argument, operand => resolveConstantOperand(operand, constants));
+	if (resolved) {
+		return constToLiteral(resolved);
+	}
 
 	const left = resolveConstantOperandReference(argument.left, constants);
+	if (!isBinaryCompileTimeExpression(argument)) {
+		return left === argument.left ? argument : { ...argument, left };
+	}
+
 	const right = resolveConstantOperandReference(argument.right, constants);
 	if (left === argument.left && right === argument.right) {
 		return argument;

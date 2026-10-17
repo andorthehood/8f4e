@@ -45,4 +45,14 @@ describe('remove intermodular memory connections from code', () => {
 
 		expect(result).toEqual(['module synth', 'int countSource', 'int endSource', 'moduleEnd']);
 	});
+
+	it('removes an intermodular rounded single-operand default', () => {
+		const result = removeIntermodularMemoryConnectionsFromCode([
+			'module synth',
+			'int size round(sizeof(source:buffer))',
+			'moduleEnd',
+		]);
+
+		expect(result).toEqual(['module synth', 'int size', 'moduleEnd']);
+	});
 });

@@ -3,6 +3,8 @@ import type {
 	ArgumentIdentifier,
 	ArgumentLiteral,
 	CompilerASTLine,
+	CompileTimeOperator,
+	CompileTimeRoundingValue,
 	ConstantsLine,
 	ConstLine,
 	ModuleEndLine,
@@ -32,7 +34,7 @@ function literal(value: number): ArgumentLiteral {
 	return {
 		type: ArgumentType.LITERAL,
 		value,
-		isInteger: true,
+		isInteger: Number.isInteger(value),
 	};
 }
 
@@ -48,14 +50,27 @@ function sizeofId(targetMemoryId: string): ArgumentIdentifier {
 
 function expression(
 	left: ArgumentCompileTimeExpression['left'],
-	operator: ArgumentCompileTimeExpression['operator'],
-	right: ArgumentCompileTimeExpression['right']
+	operator: CompileTimeOperator,
+	right: NonNullable<ArgumentCompileTimeExpression['right']>,
+	rounding?: CompileTimeRoundingValue
 ): ArgumentCompileTimeExpression {
 	return {
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,
 		left,
 		operator,
 		right,
+		...(rounding ? { rounding } : {}),
+	};
+}
+
+function roundedOperand(
+	left: ArgumentCompileTimeExpression['left'],
+	rounding: CompileTimeRoundingValue
+): ArgumentCompileTimeExpression {
+	return {
+		type: ArgumentType.COMPILE_TIME_EXPRESSION,
+		left,
+		rounding,
 	};
 }
 
@@ -315,7 +330,7 @@ describe('constant resolver', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('keeps memory operands and only resolves constant operands inside expressions', () => {
+	it('folds pure constant expressions and only substitutes resolvable operands in memory expressions', () => {
 		const mainLine = moduleLine(1, 'main');
 		const sizeTimesElementSize = expression(id('SIZE', 'constant'), '*', sizeofId('buffer'));
 		const literalExpression = expression(literal(2), '*', literal(3));
@@ -349,7 +364,41 @@ describe('constant resolver', () => {
 				},
 			],
 		});
-		expect(result.references.modules[0].lineFacts[3]).toBeUndefined();
+		expect(result.references.modules[0].lineFacts[3]).toEqual({
+			arguments: [literal(6)],
+		});
+	});
+
+	it('applies explicit rounding after resolving constant expressions', () => {
+		const mainLine = moduleLine(1, 'main');
+		const ast = moduleAst(
+			'main',
+			[
+				mainLine,
+				constLine(2, 'ROUNDED_UP', expression(literal(3), '/', literal(2), 'round')),
+				constLine(3, 'ROUNDED_DOWN', expression(literal(-3), '/', literal(2), 'round')),
+				constLine(4, 'FLOORED', roundedOperand(literal(1.9), 'floor')),
+				constLine(5, 'CEILED', roundedOperand(literal(1.1), 'ceil')),
+				moduleEndLine(6),
+			],
+			mainLine
+		);
+
+		const result = resolveConstants({
+			ast: {
+				prototypes: [],
+				modules: [ast],
+				constants: [],
+				functions: [],
+			},
+		});
+
+		expect(result.namespaces.main).toMatchObject({
+			ROUNDED_UP: { value: 2, isInteger: true },
+			ROUNDED_DOWN: { value: -2, isInteger: true },
+			FLOORED: { value: 1, isInteger: true },
+			CEILED: { value: 2, isInteger: true },
+		});
 	});
 
 	it('throws when a constant declaration needs memory knowledge', () => {

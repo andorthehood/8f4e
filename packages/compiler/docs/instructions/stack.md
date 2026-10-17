@@ -12,6 +12,9 @@ For constants, `push` also supports compile-time expressions with exactly one op
 - `CONST*number`
 - `CONST/number`
 
+Compile-time values can be converted explicitly to integers with `round(...)`, `floor(...)`, or `ceil(...)`. Each helper
+accepts either one compile-time operand or one supported one-operator expression.
+
 A quoted string literal is expanded at compile time into one `i32.const` per byte (in source order).
 Supported escape sequences: `\"`, `\\`, `\n`, `\r`, `\t`, `\xNN`.
 
@@ -37,6 +40,7 @@ push "hello"
 push "line1\nline2"
 push "\x41\x42"
 push SIZE/2
+push round(SIZE/3)
 local int temp
 push temp
 local float64 x

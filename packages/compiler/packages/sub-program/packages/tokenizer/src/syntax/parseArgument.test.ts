@@ -511,6 +511,44 @@ describe('parseArgument', () => {
 		});
 	});
 
+	it('parses explicit compile-time rounding on operands and expressions', () => {
+		expect(parseArgument('round(-1.5)')).toEqual({
+			type: ArgumentType.COMPILE_TIME_EXPRESSION,
+			left: { type: ArgumentType.LITERAL, value: -1.5, isInteger: false },
+			rounding: 'round',
+		});
+		expect(parseArgument('floor(SIZE*1.5)')).toEqual({
+			type: ArgumentType.COMPILE_TIME_EXPRESSION,
+			left: {
+				type: ArgumentType.IDENTIFIER,
+				value: 'SIZE',
+				referenceKind: 'constant',
+				scope: 'local',
+			},
+			operator: '*',
+			right: { type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
+			rounding: 'floor',
+		});
+		expect(parseArgument('ceil(sizeof(buffer))')).toEqual({
+			type: ArgumentType.COMPILE_TIME_EXPRESSION,
+			left: {
+				type: ArgumentType.IDENTIFIER,
+				value: 'sizeof(buffer)',
+				referenceKind: 'element-word-size',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			rounding: 'ceil',
+		});
+	});
+
+	it('rejects malformed or nested compile-time rounding expressions', () => {
+		expect(() => parseArgument('round()')).toThrow('Invalid compile-time rounding expression');
+		expect(() => parseArgument('floor(SIZE*2/3)')).toThrow('Invalid compile-time rounding expression');
+		expect(() => parseArgument('ceil(round(SIZE))')).toThrow('Invalid compile-time rounding expression');
+		expect(() => parseArgument('round(SIZE')).toThrow('Invalid compile-time rounding expression');
+	});
+
 	it('keeps intermodular operand metadata inside compile-time expressions', () => {
 		expect(parseArgument('2*sizeof(source:buffer)')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
