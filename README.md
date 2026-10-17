@@ -80,3 +80,9 @@ You can use `npx nx graph` to explore the relationship between the packages.
    npx nx run @8f4e/editor-website:dev
    ```
    The app will be available at http://localhost:3000
+
+## Contributors
+
+Thanks to everyone who has contributed to 8f4e.
+
+[![Contributors](https://contrib.rocks/image?repo=andorthehood/8f4e)](https://github.com/andorthehood/8f4e/graphs/contributors)
