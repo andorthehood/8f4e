@@ -26,6 +26,8 @@ include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
 include std/events/hasChanged
+include std/random/lcg
+include std/random/xorshift
 include std/memory/advancePointer
 include std/memory/loadAt
 include std/memory/readInterpolated
@@ -789,3 +791,97 @@ store
 moduleEnd
 entryEnd
 ```
+
+## `std/random/lcg`
+
+Provides `lcg`, which advances a 16-bit linear congruential generator seed and returns the next integer.
+
+Available overloads:
+
+- `lcg(int* seed) -> int`
+
+The argument must be an address for the seed state. The function normalizes the stored seed modulo `65536`, computes `(seed * 26125 + 62303) % 65536`, writes that value back through the pointer, and returns it. The result is always an integer in `0..65535`.
+
+Because the seed is updated in place, successive calls advance one stream rather than restarting it. Pass `&seed`, keep the seed in memory between calls, and the same starting value always produces the same sequence. `lcg` does not take a seed by value and does not return a normalized float.
+
+Example:
+
+```8f4e
+includes
+include std/random/lcg
+includesEnd
+
+entry main
+module lcgExample
+int seed 69420
+int value
+
+push &value
+push &seed
+call lcg
+store
+; value: 16539
+
+push &value
+push &seed
+call lcg
+store
+; value: 64830
+
+push &value
+push &seed
+call lcg
+store
+; value: 33669
+moduleEnd
+entryEnd
+```
+
+Starting from `69420`, the first three calls return `16539`, `64830`, and `33669`, and the seed holds the returned value after each call.
+
+## `std/random/xorshift`
+
+Provides `xorshift`, which advances a signed 32-bit XORShift seed and returns the next integer value.
+
+Available overloads:
+
+- `xorshift(int* seed) -> int`
+
+The argument must be an address for the seed state. The function applies a left shift of `13`, an unsigned right shift of `17`, and a left shift of `5`, in that order, exclusive-or-ing each result into the stored seed, and returns the final bit pattern as a signed 32-bit integer. Results can therefore be negative.
+
+As with `lcg`, the seed is updated in place, so repeated calls advance one stream and identical starting state reproduces the same sequence. A seed of `0` stays `0`: every shift and exclusive-or of zero is zero, so the generator cannot leave that state on its own.
+
+Example:
+
+```8f4e
+includes
+include std/random/xorshift
+includesEnd
+
+entry main
+module xorshiftExample
+int seed 69420
+int value
+
+push &value
+push &seed
+call xorshift
+store
+; value: 494363678
+
+push &value
+push &seed
+call xorshift
+store
+; value: -814792604
+
+push &value
+push &seed
+call xorshift
+store
+; value: -887510667
+moduleEnd
+entryEnd
+```
+
+Starting from `69420`, the first three calls return `494363678`, `-814792604`, and `-887510667`.
