@@ -23,6 +23,7 @@ import {
 	ErrorCode,
 	type ErrorCodeValue,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getError,
 	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
@@ -96,7 +97,7 @@ export interface SubProgramMemoryLayoutPlanInput<
 function plannerError(
 	compilerErrorCode: ErrorCodeValue,
 	line: CompilerASTLine,
-	message: string,
+	message = getError(compilerErrorCode, line).message,
 	details?: MemoryPlannerErrorDetails
 ): MemoryPlannerError {
 	return new MemoryPlannerError(compilerErrorCode, line, message, details);
@@ -142,7 +143,10 @@ function getPrototypeSources(
 		return {
 			id: prototype.id,
 			declarationLines: prototype.lines
-				.map((line, lineIndex) => applyConstantFacts(line, blockFacts?.lineFacts[lineIndex]))
+				.map((sourceLine, lineIndex) => {
+					const line = applyConstantFacts(sourceLine, blockFacts?.lineFacts[lineIndex]);
+					return isMemoryDeclarationLine(line) ? normalizeLayoutMemoryDeclarationLine(line, sourceLine) : line;
+				})
 				.filter(isMemoryDeclarationLine),
 		};
 	});
@@ -220,16 +224,23 @@ function getUnresolvedArgumentIdentifier(argument: Argument): string {
 	return argument.type === ArgumentType.IDENTIFIER ? argument.value : String(argument.type);
 }
 
-function normalizeLayoutMemoryDeclarationLine(line: MemoryDeclarationLine): MemoryDeclarationLine {
+function normalizeLayoutMemoryDeclarationLine(
+	line: MemoryDeclarationLine,
+	sourceLine: CompilerASTLine = line
+): MemoryDeclarationLine {
 	if (!isArrayMemoryDeclarationLine(line)) {
 		return line;
 	}
 
 	const elementCount = normalizePlannerArgument(line.arguments[1]);
 	if (elementCount.type !== ArgumentType.LITERAL) {
-		throw plannerError(ErrorCode.UNDECLARED_IDENTIFIER, line, 'Unable to resolve memory declaration size.', {
+		throw plannerError(ErrorCode.UNDECLARED_IDENTIFIER, sourceLine, 'Unable to resolve memory declaration size.', {
 			identifier: getUnresolvedArgumentIdentifier(elementCount),
 		});
+	}
+
+	if (!Number.isInteger(elementCount.value) || elementCount.value < 0) {
+		throw plannerError(ErrorCode.INVALID_ARRAY_SIZE, sourceLine);
 	}
 
 	return elementCount === line.arguments[1]
@@ -255,10 +266,11 @@ function collectModuleMemoryLayoutSourceLines(
 	};
 
 	for (let lineIndex = 0; lineIndex < ast.lines.length; lineIndex++) {
-		const line = applyConstantFacts(ast.lines[lineIndex], constantReferences?.lineFacts[lineIndex]);
+		const sourceLine = ast.lines[lineIndex];
+		const line = applyConstantFacts(sourceLine, constantReferences?.lineFacts[lineIndex]);
 
 		if (isMemoryDeclarationLine(line)) {
-			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line)];
+			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line, sourceLine)];
 			continue;
 		}
 
