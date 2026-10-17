@@ -1,28 +1,56 @@
 8f4e/v1
 
-note
-; @pos -129 -37
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_peaceful_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_2_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_3_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_6_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_2_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_3_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_6_48khz_16s.raw
-noteEnd
+includes
+; @pos -64 3
+include std/events/risingEdge
+include std/memory/wrapPointer
+include std/math/fract
+include std/memory/readInterpolated
+include std/math/trig/cosine
+include std/math/trig/sine
+include std/math/trig/triangle
+include std/math/trig/saw
+include std/memory/advancePointer
+include std/math/trig/advancePhase
+
+includesEnd
+
+function buffer
+; @pos -116 -9
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants cloudsReverb
+; @pos -76 -8
+use env
+
+const CLOUDS_SAMPLE_RATE 32000
+const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
+
+constantsEnd
+
+constants env
+; @pos -69 -24
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'lubadh_violin_6_48khz_16s.raw'
+const ASSET_PIANO_SIZE 960000
+
+constantsEnd
 
 note
-; @pos -129 -32
+; @pos -217 -43
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
@@ -101,54 +129,26 @@ note
 ; @config color.icons.feedbackScale5 #dd665f
 noteEnd
 
-function buffer
-; @pos -111 -8
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd
-
-constants env
-; @pos -67 -23
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'lubadh_aimo4_48khz_16s.raw'
-const ASSET_PIANO_SIZE 1316572
-
-constantsEnd
-
-constants cloudsReverb
-; @pos -67 -7
-use env
-
-const CLOUDS_SAMPLE_RATE 32000
-const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
-
-constantsEnd
-
-includes
-; @pos -54 2
-include std/events/risingEdge
-include std/memory/wrapPointer
-include std/math/fract
-include std/memory/readInterpolated
-include std/math/trig/cosine
-include std/math/trig/sine
-include std/math/trig/triangle
-include std/math/trig/saw
-include std/memory/advancePointer
-include std/math/trig/advancePhase
-
-includesEnd
+note
+; @pos -123 -46
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_peaceful_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_2_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_3_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_6_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_2_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_3_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_6_48khz_16s.raw
+noteEnd
 
 entry main
 module pcmPlayer
@@ -253,7 +253,8 @@ const MOD_DEPTH
 
 push &out
 ; pointer + 
-; int((10 + mod * 60) * ratio) * sizeof(*buffer)
+; int((10 + mod * 60) * ratio)
+; * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
 push *mod
@@ -282,7 +283,7 @@ store
 
 moduleEnd
 module delayOffsetWriter
-; @pos 173 -27
+; @pos 171 -27
 ; @group smearStage1
 ; Writes an input sample into a
 ; shared delay buffer at a fixed
@@ -313,7 +314,7 @@ store
 
 moduleEnd
 module allpassDiffuser
-; @pos 214 -27
+; @pos 212 -27
 ; @group smearStage1
 use cloudsReverb
 
@@ -407,7 +408,7 @@ call advancePointer
 
 moduleEnd
 module allpassDiffuser3
-; @pos 308 -27
+; @pos 310 -27
 ; @group smearStage3
 use cloudsReverb
 
@@ -454,7 +455,7 @@ call advancePointer
 
 moduleEnd
 module allpassDiffuser4
-; @pos 355 -27
+; @pos 359 -27
 ; @group smearStage4
 use cloudsReverb
 
@@ -520,7 +521,7 @@ store
 
 moduleEnd
 module tank1DelayLfo
-; @pos 459 -60
+; @pos 463 -60
 ; @group tank1
 ; Clouds LFO_2 for the
 ; modulated del2 tap.
@@ -548,7 +549,7 @@ store
 
 moduleEnd
 module tank1ModulatedTap
-; @pos 496 -60
+; @pos 500 -60
 ; @group tank1
 ; Reads a modulated, 
 ; interpolated tap 
@@ -566,7 +567,8 @@ const MOD_DEPTH 100.0*CLOUDS_RATIO
 
 push &out
 ; pointer + 
-; int((4680 + mod * 100) * ratio) * sizeof(*buffer)
+; int((4680 + mod * 100) * ratio)
+; * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
 push *mod
@@ -614,7 +616,7 @@ store
 
 moduleEnd
 module tank1Mixer
-; @pos 546 -60
+; @pos 550 -60
 ; @group tank1
 float* in1 &allpassDiffuser4:out
 float* in2 &tank1ModulatedTap:out
@@ -632,7 +634,7 @@ store
 
 moduleEnd
 module tank2Mixer
-; @pos 547 -6
+; @pos 550 -6
 ; @group tank2
 float* in1 &allpassDiffuser4:out
 float* in2 &tank2DelayRead:out
@@ -649,27 +651,8 @@ add
 store
 
 moduleEnd
-module tank1Damping
-; @pos 588 -60
-; @group tank1
-float* in &tank1Mixer:out
-float* damping
-- &controlValues:damping
-float out
-
-push &out
-push out
-push *in
-push out
-sub
-push *damping
-mul
-add
-store
-
-moduleEnd
 module tank2Damping
-; @pos 588 -6
+; @pos 591 -6
 ; @group tank2
 float* in &tank2Mixer:out
 float* damping
@@ -687,8 +670,73 @@ add
 store
 
 moduleEnd
+module tank1Damping
+; @pos 592 -60
+; @group tank1
+float* in &tank1Mixer:out
+float* damping
+- &controlValues:damping
+float out
+
+push &out
+push out
+push *in
+push out
+sub
+push *damping
+mul
+add
+store
+
+moduleEnd
+module tank2AllpassA
+; @pos 625 -6
+; @group tank2
+use cloudsReverb
+
+const DELAY_SIZE round(1913*CLOUDS_RATIO)
+
+float* in &tank2Damping:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion
+- &controlValues:diffusion
+
+; @wave &buffer count(buffer) pointer
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
 module tank1AllpassA
-; @pos 622 -60
+; @pos 626 -60
 ; @group tank1
 use cloudsReverb
 
@@ -737,100 +785,8 @@ push count(buffer)
 call advancePointer
 
 moduleEnd
-module tank2AllpassA
-; @pos 622 -6
-; @group tank2
-use cloudsReverb
-
-const DELAY_SIZE round(1913*CLOUDS_RATIO)
-
-float* in &tank2Damping:out
-float out
-float[] buffer DELAY_SIZE
-float* pointer &buffer 
-float* diffusion
-- &controlValues:diffusion
-
-; @wave &buffer count(buffer) pointer
-local float writeValue 
-
-; input + delayed * gain
-push *in
-push *pointer
-push *diffusion
-mul
-add
-localSet writeValue
-
-; delayed - writeValue * gain
-push &out
-push *pointer
-push writeValue
-push *diffusion
-mul
-sub
-store
-
-; Store allpass write value
-push pointer
-push writeValue
-store 
-
-; Advance circular buffer pointer
-push &pointer
-push &buffer
-push count(buffer)
-call advancePointer
-
-moduleEnd
-module tank1AllpassB
-; @pos 668 -60
-; @group tank1
-use cloudsReverb
-
-const DELAY_SIZE round(2038*CLOUDS_RATIO)
-
-float* in &tank1AllpassA:out
-float out
-float[] buffer DELAY_SIZE
-float* pointer &buffer 
-float* diffusion 
-- &controlValues:diffusion
-
-; @wave &buffer count(buffer) pointer
-local float writeValue 
-
-; input + delayed * gain
-push *in
-push *pointer
-push *diffusion
-mul
-add
-localSet writeValue
-
-; delayed - writeValue * gain
-push &out
-push *pointer
-push writeValue
-push *diffusion
-mul
-sub
-store
-
-; Store allpass write value
-push pointer
-push writeValue
-store 
-
-; Advance circular buffer pointer
-push &pointer
-push &buffer
-push count(buffer)
-call advancePointer
-
-moduleEnd
 module tank2AllpassB
-; @pos 668 -6
+; @pos 675 -6
 ; @group tank2
 use cloudsReverb
 
@@ -879,27 +835,54 @@ push count(buffer)
 call advancePointer
 
 moduleEnd
-module tank1DelayWrite
-; @pos 714 -60
+module tank1AllpassB
+; @pos 676 -60
 ; @group tank1
-; Writes Clouds del1.
+use cloudsReverb
 
-float* buffer &tank2DelayRead:buffer
-float** pointer &tank2DelayRead:pointer
-float* in &tank1AllpassB:out
+const DELAY_SIZE round(2038*CLOUDS_RATIO)
 
-push *pointer
+float* in &tank1AllpassA:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion 
+- &controlValues:diffusion
+
+; @wave &buffer count(buffer) pointer
+local float writeValue 
+
+; input + delayed * gain
 push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
 store
 
+; Store allpass write value
 push pointer
-push buffer
-push count(*buffer)
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
 call advancePointer
 
 moduleEnd
 module tank2DelayWrite
-; @pos 715 -6
+; @pos 725 -6
 ; @group tank2
 ; Writes Clouds del2.
 
@@ -917,8 +900,27 @@ push count(*buffer)
 call advancePointer
 
 moduleEnd
+module tank1DelayWrite
+; @pos 726 -60
+; @group tank1
+; Writes Clouds del1.
+
+float* buffer &tank2DelayRead:buffer
+float** pointer &tank2DelayRead:pointer
+float* in &tank1AllpassB:out
+
+push *pointer
+push *in
+store
+
+push pointer
+push buffer
+push count(*buffer)
+call advancePointer
+
+moduleEnd
 module tank1OutputMix
-; @pos 762 -60
+; @pos 774 -60
 ; @group tank1
 
 float* dry &pcmPlayer:out
@@ -940,7 +942,7 @@ store
 
 moduleEnd
 module tank2OutputMix
-; @pos 763 -6
+; @pos 774 -6
 ; @group tank2
 
 float* dry &pcmPlayer:out
@@ -962,7 +964,7 @@ store
 
 moduleEnd
 module audiooutL
-; @pos 819 -35
+; @pos 831 -35
 use env
 
 float* in &tank1OutputMix:out
@@ -1000,7 +1002,7 @@ ifEnd
 
 moduleEnd
 module audiooutR
-; @pos 860 -35
+; @pos 872 -35
 use env
 
 float* in &tank2OutputMix:out
