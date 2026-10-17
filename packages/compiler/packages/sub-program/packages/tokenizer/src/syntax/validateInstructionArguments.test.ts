@@ -286,4 +286,40 @@ describe('validateInstructionArguments', () => {
 			validateInstructionArguments('blockEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
 		).toThrowError(SyntaxRulesError);
 	});
+
+	it.each(['branch', 'branchIfTrue'] as const)(
+		'requires one non-negative integer literal argument for %s',
+		instruction => {
+			for (const validArg of [
+				{ type: ArgumentType.LITERAL as const, value: 0, isInteger: true },
+				{ type: ArgumentType.LITERAL as const, value: 1, isInteger: true },
+				{ type: ArgumentType.LITERAL as const, value: 0x10, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL as const, value: 0b10, isInteger: true },
+			]) {
+				expect(() => validateInstructionArguments(instruction, [validArg])).not.toThrow();
+			}
+
+			for (const invalidArg of [
+				{ type: ArgumentType.LITERAL as const, value: -1, isInteger: true },
+				{ type: ArgumentType.LITERAL as const, value: 0.5, isInteger: false },
+				{ type: ArgumentType.LITERAL as const, value: 1, isInteger: false },
+				{ type: ArgumentType.LITERAL as const, value: 1, isInteger: false, isFloat64: true },
+				classifyIdentifier('DEPTH'),
+			]) {
+				expect(() => validateInstructionArguments(instruction, [invalidArg])).toThrow(
+					expect.objectContaining({ code: SyntaxErrorCode.INVALID_ARGUMENT })
+				);
+			}
+
+			expect(() => validateInstructionArguments(instruction, [])).toThrow(
+				expect.objectContaining({ code: SyntaxErrorCode.MISSING_ARGUMENT })
+			);
+			expect(() =>
+				validateInstructionArguments(instruction, [
+					{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				])
+			).toThrow(expect.objectContaining({ code: SyntaxErrorCode.INVALID_ARGUMENT }));
+		}
+	);
 });

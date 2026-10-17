@@ -155,4 +155,39 @@ describe('parseLine', () => {
 			{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
 		]);
 	});
+
+	it.each(['branch', 'branchIfTrue'] as const)(
+		'accepts non-negative decimal, hex, and binary integer literals for %s and rejects negative or floating-point literals with source-line metadata',
+		instruction => {
+			expect(parseLine(`${instruction} 0`, 3).arguments).toEqual([
+				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
+			]);
+			expect(parseLine(`${instruction} 2`, 4).arguments).toEqual([
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+			]);
+			expect(parseLine(`${instruction} 0x2`, 5).arguments).toEqual([
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true, isHex: true },
+			]);
+			expect(parseLine(`${instruction} 0b10`, 6).arguments).toEqual([
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+			]);
+
+			for (const badLiteral of ['-1', '0.5', '1.0', '1f64']) {
+				let thrownError: SyntaxRulesError | undefined;
+				try {
+					parseLine(`${instruction} ${badLiteral}`, 14);
+				} catch (error) {
+					thrownError = error as SyntaxRulesError;
+				}
+				expect(thrownError).toBeInstanceOf(SyntaxRulesError);
+				expect(thrownError?.code).toBe(SyntaxErrorCode.INVALID_ARGUMENT);
+				expect(thrownError?.line).toEqual(
+					expect.objectContaining({
+						lineNumber: 14,
+						instruction,
+					})
+				);
+			}
+		}
+	);
 });
