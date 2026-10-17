@@ -1,0 +1,2402 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "integerSizes": {
+      "id": "integerSizes",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "integerSizes",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floats",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "integers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "signedBytes",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int8[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bytes",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int8u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "shorts",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int16[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "unsignedShorts",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int16u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "words",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int32[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "int**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doubles",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float64[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float64*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "float64**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floats",
+              "type": "identifier",
+              "value": "count(floats)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "integers",
+              "type": "identifier",
+              "value": "count(integers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "signedBytes",
+              "type": "identifier",
+              "value": "count(signedBytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "count(bytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "shorts",
+              "type": "identifier",
+              "value": "count(shorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "unsignedShorts",
+              "type": "identifier",
+              "value": "count(unsignedShorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "words",
+              "type": "identifier",
+              "value": "count(words)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointers",
+              "type": "identifier",
+              "value": "count(floatPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointerPointers",
+              "type": "identifier",
+              "value": "count(floatPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointers",
+              "type": "identifier",
+              "value": "count(intPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointerPointers",
+              "type": "identifier",
+              "value": "count(intPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doubles",
+              "type": "identifier",
+              "value": "count(doubles)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointers",
+              "type": "identifier",
+              "value": "count(doublePointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointerPointers",
+              "type": "identifier",
+              "value": "count(doublePointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "prototypeArraySizes": {
+      "id": "prototypeArraySizes",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "prototypeArraySizes",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "arraySizeBoundaries",
+            },
+          ],
+          "instruction": "shape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "empty",
+              "type": "identifier",
+              "value": "count(empty)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "single",
+              "type": "identifier",
+              "value": "count(single)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "multiple",
+              "type": "identifier",
+              "value": "count(multiple)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "wholeFloatSizes": {
+      "id": "wholeFloatSizes",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "wholeFloatSizes",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floats",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "integers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "signedBytes",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int8[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bytes",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int8u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "shorts",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int16[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "unsignedShorts",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int16u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "words",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int32[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointerPointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointerPointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "int**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doubles",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float64[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float64*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointerPointers",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "float64**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floats",
+              "type": "identifier",
+              "value": "count(floats)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "integers",
+              "type": "identifier",
+              "value": "count(integers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "signedBytes",
+              "type": "identifier",
+              "value": "count(signedBytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "count(bytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "shorts",
+              "type": "identifier",
+              "value": "count(shorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "unsignedShorts",
+              "type": "identifier",
+              "value": "count(unsignedShorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "words",
+              "type": "identifier",
+              "value": "count(words)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointers",
+              "type": "identifier",
+              "value": "count(floatPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointerPointers",
+              "type": "identifier",
+              "value": "count(floatPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointers",
+              "type": "identifier",
+              "value": "count(intPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointerPointers",
+              "type": "identifier",
+              "value": "count(intPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doubles",
+              "type": "identifier",
+              "value": "count(doubles)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointers",
+              "type": "identifier",
+              "value": "count(doublePointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointerPointers",
+              "type": "identifier",
+              "value": "count(doublePointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "zeroLengthArrays": {
+      "id": "zeroLengthArrays",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "zeroLengthArrays",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floats",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "integers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "signedBytes",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int8[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bytes",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int8u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "shorts",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int16[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "unsignedShorts",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int16u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "words",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int32[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatPointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "int**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doubles",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float64[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float64*[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doublePointerPointers",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "float64**[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floats",
+              "type": "identifier",
+              "value": "count(floats)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "integers",
+              "type": "identifier",
+              "value": "count(integers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "signedBytes",
+              "type": "identifier",
+              "value": "count(signedBytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "count(bytes)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "shorts",
+              "type": "identifier",
+              "value": "count(shorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "unsignedShorts",
+              "type": "identifier",
+              "value": "count(unsignedShorts)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "words",
+              "type": "identifier",
+              "value": "count(words)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointers",
+              "type": "identifier",
+              "value": "count(floatPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "floatPointerPointers",
+              "type": "identifier",
+              "value": "count(floatPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointers",
+              "type": "identifier",
+              "value": "count(intPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "intPointerPointers",
+              "type": "identifier",
+              "value": "count(intPointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doubles",
+              "type": "identifier",
+              "value": "count(doubles)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointers",
+              "type": "identifier",
+              "value": "count(doublePointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "doublePointerPointers",
+              "type": "identifier",
+              "value": "count(doublePointerPointers)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "integerSizes": {
+      "memory": {
+        "bytes": {
+          "byteAddress": 32,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "bytes",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int8u",
+          "wordAlignedAddress": 8,
+          "wordAlignedSize": 1,
+        },
+        "doublePointerPointers": {
+          "byteAddress": 148,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 2,
+          "type": "float64**",
+          "wordAlignedAddress": 37,
+          "wordAlignedSize": 3,
+        },
+        "doublePointers": {
+          "byteAddress": 136,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 1,
+          "type": "float64*",
+          "wordAlignedAddress": 34,
+          "wordAlignedSize": 3,
+        },
+        "doubles": {
+          "byteAddress": 112,
+          "default": {},
+          "elementWordSize": 8,
+          "id": "doubles",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "float64",
+          "wordAlignedAddress": 28,
+          "wordAlignedSize": 6,
+        },
+        "floatPointerPointers": {
+          "byteAddress": 76,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "float",
+          "pointerDepth": 2,
+          "type": "float**",
+          "wordAlignedAddress": 19,
+          "wordAlignedSize": 3,
+        },
+        "floatPointers": {
+          "byteAddress": 64,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "float",
+          "pointerDepth": 1,
+          "type": "float*",
+          "wordAlignedAddress": 16,
+          "wordAlignedSize": 3,
+        },
+        "floats": {
+          "byteAddress": 4,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floats",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 3,
+        },
+        "intPointerPointers": {
+          "byteAddress": 100,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "int",
+          "pointerDepth": 2,
+          "type": "int**",
+          "wordAlignedAddress": 25,
+          "wordAlignedSize": 3,
+        },
+        "intPointers": {
+          "byteAddress": 88,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointeeBaseType": "int",
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 22,
+          "wordAlignedSize": 3,
+        },
+        "integers": {
+          "byteAddress": 16,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "integers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 3,
+        },
+        "shorts": {
+          "byteAddress": 36,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "shorts",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int16",
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 2,
+        },
+        "signedBytes": {
+          "byteAddress": 28,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "signedBytes",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int8",
+          "wordAlignedAddress": 7,
+          "wordAlignedSize": 1,
+        },
+        "unsignedShorts": {
+          "byteAddress": 44,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "unsignedShorts",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int16u",
+          "wordAlignedAddress": 11,
+          "wordAlignedSize": 2,
+        },
+        "words": {
+          "byteAddress": 52,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "words",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int32",
+          "wordAlignedAddress": 13,
+          "wordAlignedSize": 3,
+        },
+      },
+    },
+    "prototypeArraySizes": {
+      "memory": {
+        "empty": {
+          "byteAddress": 160,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "empty",
+          "isInherited": true,
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 40,
+          "wordAlignedSize": 0,
+        },
+        "multiple": {
+          "byteAddress": 164,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "multiple",
+          "isInherited": true,
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 41,
+          "wordAlignedSize": 3,
+        },
+        "single": {
+          "byteAddress": 160,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "single",
+          "isInherited": true,
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 40,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "wholeFloatSizes": {
+      "memory": {
+        "bytes": {
+          "byteAddress": 188,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "bytes",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int8u",
+          "wordAlignedAddress": 47,
+          "wordAlignedSize": 1,
+        },
+        "doublePointerPointers": {
+          "byteAddress": 236,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 2,
+          "type": "float64**",
+          "wordAlignedAddress": 59,
+          "wordAlignedSize": 1,
+        },
+        "doublePointers": {
+          "byteAddress": 232,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 1,
+          "type": "float64*",
+          "wordAlignedAddress": 58,
+          "wordAlignedSize": 1,
+        },
+        "doubles": {
+          "byteAddress": 224,
+          "default": {},
+          "elementWordSize": 8,
+          "id": "doubles",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float64",
+          "wordAlignedAddress": 56,
+          "wordAlignedSize": 3,
+        },
+        "floatPointerPointers": {
+          "byteAddress": 208,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "float",
+          "pointerDepth": 2,
+          "type": "float**",
+          "wordAlignedAddress": 52,
+          "wordAlignedSize": 1,
+        },
+        "floatPointers": {
+          "byteAddress": 204,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "float",
+          "pointerDepth": 1,
+          "type": "float*",
+          "wordAlignedAddress": 51,
+          "wordAlignedSize": 1,
+        },
+        "floats": {
+          "byteAddress": 176,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floats",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 44,
+          "wordAlignedSize": 1,
+        },
+        "intPointerPointers": {
+          "byteAddress": 216,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointerDepth": 2,
+          "type": "int**",
+          "wordAlignedAddress": 54,
+          "wordAlignedSize": 1,
+        },
+        "intPointers": {
+          "byteAddress": 212,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 53,
+          "wordAlignedSize": 1,
+        },
+        "integers": {
+          "byteAddress": 180,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "integers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 45,
+          "wordAlignedSize": 1,
+        },
+        "shorts": {
+          "byteAddress": 192,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "shorts",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int16",
+          "wordAlignedAddress": 48,
+          "wordAlignedSize": 1,
+        },
+        "signedBytes": {
+          "byteAddress": 184,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "signedBytes",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int8",
+          "wordAlignedAddress": 46,
+          "wordAlignedSize": 1,
+        },
+        "unsignedShorts": {
+          "byteAddress": 196,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "unsignedShorts",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int16u",
+          "wordAlignedAddress": 49,
+          "wordAlignedSize": 1,
+        },
+        "words": {
+          "byteAddress": 200,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "words",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int32",
+          "wordAlignedAddress": 50,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "zeroLengthArrays": {
+      "memory": {
+        "bytes": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "bytes",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int8u",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "doublePointerPointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 2,
+          "type": "float64**",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "doublePointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "doublePointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "float64",
+          "pointerDepth": 1,
+          "type": "float64*",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "doubles": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 8,
+          "id": "doubles",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "float64",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "floatPointerPointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "float",
+          "pointerDepth": 2,
+          "type": "float**",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "floatPointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floatPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "float",
+          "pointerDepth": 1,
+          "type": "float*",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "floats": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "floats",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "intPointerPointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointerPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "int",
+          "pointerDepth": 2,
+          "type": "int**",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "intPointers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "intPointers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointeeBaseType": "int",
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "integers": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "integers",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "shorts": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "shorts",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int16",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "signedBytes": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 1,
+          "id": "signedBytes",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int8",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "unsignedShorts": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 2,
+          "id": "unsignedShorts",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int16u",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+        "words": {
+          "byteAddress": 240,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "words",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 0,
+          "pointerDepth": 0,
+          "type": "int32",
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 0,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "integerSizes",
+      "prototypeArraySizes",
+      "wholeFloatSizes",
+      "zeroLengthArrays",
+    ],
+    "requiredMemoryBytes": 240,
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}
