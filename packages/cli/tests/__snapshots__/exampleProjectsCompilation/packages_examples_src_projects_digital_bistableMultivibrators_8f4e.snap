@@ -3,106 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "projectConfig": {
-      "id": "projectConfig",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "projectConfig",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "projectConfig",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 77,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "projectConfig",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 4,
-        "sourceIdentity": {
-          "projectGroupPath": "",
-          "codeBlockId": "projectConfig"
-        }
-      },
-      "index": 0,
-      "executionEntryName": "main"
-    },
-    "notes": {
-      "id": "notes",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "notes",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "notes",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "notes",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 82,
-        "sourceIdentity": {
-          "projectGroupPath": "",
-          "codeBlockId": "notes"
-        }
-      },
-      "index": 1,
-      "executionEntryName": "main"
-    },
     "setButton": {
       "id": "setButton",
       "cycleFunction": [
@@ -156,13 +56,13 @@
             }
           ]
         },
-        "projectBlockId": 91,
+        "projectBlockId": 103,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "setButton"
         }
       },
-      "index": 2,
+      "index": 0,
       "executionEntryName": "main"
     },
     "resetButton": {
@@ -218,13 +118,13 @@
             }
           ]
         },
-        "projectBlockId": 101,
+        "projectBlockId": 113,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "resetButton"
         }
       },
-      "index": 3,
+      "index": 1,
       "executionEntryName": "main"
     },
     "norGate2": {
@@ -480,13 +380,13 @@
             }
           ]
         },
-        "projectBlockId": 110,
+        "projectBlockId": 122,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate2"
         }
       },
-      "index": 4,
+      "index": 2,
       "executionEntryName": "main"
     },
     "norGate": {
@@ -742,13 +642,13 @@
             }
           ]
         },
-        "projectBlockId": 134,
+        "projectBlockId": 146,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate"
         }
       },
-      "index": 5,
+      "index": 3,
       "executionEntryName": "main"
     },
     "scope": {
@@ -1100,13 +1000,13 @@
             }
           ]
         },
-        "projectBlockId": 158,
+        "projectBlockId": 170,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope"
         }
       },
-      "index": 6,
+      "index": 4,
       "executionEntryName": "main"
     },
     "buttons": {
@@ -1174,13 +1074,13 @@
             }
           ]
         },
-        "projectBlockId": 187,
+        "projectBlockId": 199,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "buttons"
         }
       },
-      "index": 7,
+      "index": 5,
       "executionEntryName": "main"
     },
     "negate": {
@@ -1387,13 +1287,13 @@
             }
           ]
         },
-        "projectBlockId": 202,
+        "projectBlockId": 214,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "negate"
         }
       },
-      "index": 8,
+      "index": 6,
       "executionEntryName": "main"
     },
     "orGate": {
@@ -1649,13 +1549,13 @@
             }
           ]
         },
-        "projectBlockId": 220,
+        "projectBlockId": 232,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "orGate"
         }
       },
-      "index": 9,
+      "index": 7,
       "executionEntryName": "main"
     },
     "andGate": {
@@ -1911,13 +1811,13 @@
             }
           ]
         },
-        "projectBlockId": 243,
+        "projectBlockId": 255,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "andGate"
         }
       },
-      "index": 10,
+      "index": 8,
       "executionEntryName": "main"
     },
     "scope2": {
@@ -2269,13 +2169,13 @@
             }
           ]
         },
-        "projectBlockId": 266,
+        "projectBlockId": 278,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope2"
         }
       },
-      "index": 11,
+      "index": 9,
       "executionEntryName": "main"
     }
   },
@@ -3070,18 +2970,6 @@
           }
         ]
       },
-      "notes": {
-        "id": "notes",
-        "lineNumber": 0,
-        "byteAddress": 52,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 52,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
-      },
       "orGate": {
         "id": "orGate",
         "lineNumber": 0,
@@ -3265,18 +3153,6 @@
             "isInherited": false
           }
         ]
-      },
-      "projectConfig": {
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 64,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 64,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       },
       "resetButton": {
         "id": "resetButton",
@@ -4570,18 +4446,6 @@
         ]
       },
       {
-        "id": "notes",
-        "lineNumber": 0,
-        "byteAddress": 52,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 52,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
-      },
-      {
         "id": "orGate",
         "lineNumber": 0,
         "byteAddress": 52,
@@ -4764,18 +4628,6 @@
             "isInherited": false
           }
         ]
-      },
-      {
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 64,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 64,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       },
       {
         "id": "resetButton",
@@ -5355,7 +5207,6 @@
         "isInherited": false
       }
     },
-    "notes": {},
     "orGate": {
       "in1": {
         "value": 4,
@@ -5373,7 +5224,6 @@
         "isInherited": false
       }
     },
-    "projectConfig": {},
     "resetButton": {
       "out": {
         "value": 0,
@@ -5429,14 +5279,12 @@
     "negate": {},
     "norGate": {},
     "norGate2": {},
-    "notes": {},
     "orGate": {},
-    "projectConfig": {},
     "resetButton": {},
     "scope": {},
     "scope2": {},
     "setButton": {}
   },
-  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIRAQRob3N0Bm1lbW9yeQIDAQEDDw4AAAAAAAAAAAAAAAAAAAcXAgxpbml0RGVmYXVsdHMAAARtYWluAAEMAQMKuAMOLQBBAEEAQdgE/AsAQQBBAEHIAPwIAABByAJBAEEI/AgBAEHQBEEAQQT8CAIACxoAEAIQAxAEEAUQBhAHEAgQCRAKEAsQDBANCwIACwIACwIACwIACyMAQSxBKCgCACgCAEEwKAIAKAIAakEARgR/QQEFQQALNgIACyMAQSBBHCgCACgCAEEkKAIAKAIAakEARgR/QQEFQQALNgIAC1kCAX8Bf0HIAkHIAigCAEEEajYCAEHIAigCAEHEAkoEQEHIAkHIADYCAAtByAIoAgBBxAAoAgAoAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATYCAAULCwIACxoAQRhBFCgCACgCAEEARgR/QQEFQQALNgIACyMAQThBNCgCACgCAEE8KAIAKAIAakEBTgR/QQEFQQALNgIACyMAQQRBACgCACgCAEEIKAIAKAIAbEEBTgR/QQEFQQALNgIAC1kCAX8Bf0HQBEHQBCgCAEEEajYCAEHQBCgCAEHMBEoEQEHQBEHQAjYCAAtB0AQoAgBBzAIoAgAoAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATYCAAULCwtbAwFIOAAAAAAAAAAYAAAAAAAAAAAAAAAQAAAAAAAAACwAAAAAAAAAQAAAACAAAAAAAAAAVAIAAAQAAAAAAAAADAAAAAAAAAAgAAAAAQhIAAAABAAAAAEEUAEAAA==",
+  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIRAQRob3N0Bm1lbW9yeQIDAQEDDQwAAAAAAAAAAAAAAAAHFwIMaW5pdERlZmF1bHRzAAAEbWFpbgABDAEDCq4DDC0AQQBBAEHYBPwLAEEAQQBByAD8CAAAQcgCQQBBCPwIAQBB0ARBAEEE/AgCAAsWABACEAMQBBAFEAYQBxAIEAkQChALCwIACwIACyMAQSxBKCgCACgCAEEwKAIAKAIAakEARgR/QQEFQQALNgIACyMAQSBBHCgCACgCAEEkKAIAKAIAakEARgR/QQEFQQALNgIAC1kCAX8Bf0HIAkHIAigCAEEEajYCAEHIAigCAEHEAkoEQEHIAkHIADYCAAtByAIoAgBBxAAoAgAoAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATYCAAULCwIACxoAQRhBFCgCACgCAEEARgR/QQEFQQALNgIACyMAQThBNCgCACgCAEE8KAIAKAIAakEBTgR/QQEFQQALNgIACyMAQQRBACgCACgCAEEIKAIAKAIAbEEBTgR/QQEFQQALNgIAC1kCAX8Bf0HQBEHQBCgCAEEEajYCAEHQBCgCAEHMBEoEQEHQBEHQAjYCAAtB0AQoAgBBzAIoAgAoAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATYCAAULCwtbAwFIOAAAAAAAAAAYAAAAAAAAAAAAAAAQAAAAAAAAACwAAAAAAAAAQAAAACAAAAAAAAAAVAIAAAQAAAAAAAAADAAAAAAAAAAgAAAAAQhIAAAABAAAAAEEUAEAAA==",
   "requiredMemoryBytes": 600
 }
