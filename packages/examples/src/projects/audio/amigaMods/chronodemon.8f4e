@@ -1024,9 +1024,6 @@ note
 ; MOD player by Andor Polgar (c)2026
 ; The song is:
 ; 'Chronodemon'
-; Source: ko_kki_-_chronodemon.mod
-; EDx note delay uses one pending
-; note per channel until its tick.
 noteEnd
 
 entry main
@@ -1883,9 +1880,10 @@ int noteRow ; @w 0x
 int sampleNumber ; @w
 int out ; @w
 int targetTick -1 ; @w
-; @hide
 int selectedSampleNumber
 int pendingRow
+
+; @hide
 
 push &out
 push 0
@@ -1949,9 +1947,10 @@ int noteRow ; @w 0x
 int sampleNumber ; @w
 int out ; @w
 int targetTick -1 ; @w
-; @hide
 int selectedSampleNumber
 int pendingRow
+
+; @hide
 
 push &out
 push 0
@@ -2015,9 +2014,10 @@ int noteRow ; @w 0x
 int sampleNumber ; @w
 int out ; @w
 int targetTick -1 ; @w
-; @hide
 int selectedSampleNumber
 int pendingRow
+
+; @hide
 
 push &out
 push 0
@@ -2081,9 +2081,10 @@ int noteRow ; @w 0x
 int sampleNumber ; @w
 int out ; @w
 int targetTick -1 ; @w
-; @hide
 int selectedSampleNumber
 int pendingRow
+
+; @hide
 
 push &out
 push 0
@@ -2695,7 +2696,7 @@ ifEnd
 
 moduleEnd
 module samplePlayer3
-; @pos 597 -4
+; @pos 599 -4
 use env
 ; @tab 6 20
 int*	period	&period3:out
@@ -2796,7 +2797,7 @@ ifEnd
 
 moduleEnd
 module samplePlayer4
-; @pos 597 17
+; @pos 599 17
 use env
 ; @tab 6 20
 int*	period	&period4:out
