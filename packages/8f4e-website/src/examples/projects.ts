@@ -144,6 +144,12 @@ export const projects = [
 		path: 'audio/amigaMods/chronodemon.8f4e',
 	},
 	{
+		id: 'movin-shadows',
+		title: 'Movin’ Thru Da Shadows',
+		description: 'Play version 1.3 of an Amiga MOD track with sample offsets, immediate note cuts and volume changes.',
+		path: 'audio/amigaMods/movinShadows.8f4e',
+	},
+	{
 		id: 'lower-intentions',
 		title: 'Lower Intentions',
 		description: 'Follow an Amiga MOD track through its timing, sample players and stereo mixer.',
