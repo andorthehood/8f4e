@@ -91,7 +91,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: '4.114.0'
+          wranglerVersion: '4.151.1'
           command: pages deploy packages/8f4e-website/dist --project-name=8f4e-website --branch=main
 
       - name: Deploy editor.8f4e.com to Cloudflare Pages
@@ -99,5 +99,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: '4.114.0'
+          wranglerVersion: '4.151.1'
           command: pages deploy packages/editor/packages/editor-website/dist --project-name=8f4e --branch=main
