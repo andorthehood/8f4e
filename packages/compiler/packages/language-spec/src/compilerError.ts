@@ -570,6 +570,13 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.INVALID_ARRAY_SIZE:
+			return {
+				code,
+				message: 'Array size must be a finite nonnegative integer. (' + code + ')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,
