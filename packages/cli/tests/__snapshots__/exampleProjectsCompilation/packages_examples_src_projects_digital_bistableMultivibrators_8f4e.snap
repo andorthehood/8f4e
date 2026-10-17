@@ -27,7 +27,7 @@
             ]
           },
           {
-            "lineNumber": 6,
+            "lineNumber": 77,
             "instruction": "moduleEnd",
             "arguments": []
           }
@@ -94,7 +94,7 @@
             }
           ]
         },
-        "projectBlockId": 11,
+        "projectBlockId": 82,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "notes"
@@ -156,7 +156,7 @@
             }
           ]
         },
-        "projectBlockId": 20,
+        "projectBlockId": 91,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "setButton"
@@ -218,7 +218,7 @@
             }
           ]
         },
-        "projectBlockId": 30,
+        "projectBlockId": 101,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "resetButton"
@@ -480,7 +480,7 @@
             }
           ]
         },
-        "projectBlockId": 39,
+        "projectBlockId": 110,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate2"
@@ -742,7 +742,7 @@
             }
           ]
         },
-        "projectBlockId": 63,
+        "projectBlockId": 134,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate"
@@ -1100,7 +1100,7 @@
             }
           ]
         },
-        "projectBlockId": 87,
+        "projectBlockId": 158,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope"
@@ -1174,7 +1174,7 @@
             }
           ]
         },
-        "projectBlockId": 116,
+        "projectBlockId": 187,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "buttons"
@@ -1387,7 +1387,7 @@
             }
           ]
         },
-        "projectBlockId": 131,
+        "projectBlockId": 202,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "negate"
@@ -1649,7 +1649,7 @@
             }
           ]
         },
-        "projectBlockId": 149,
+        "projectBlockId": 220,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "orGate"
@@ -1911,7 +1911,7 @@
             }
           ]
         },
-        "projectBlockId": 172,
+        "projectBlockId": 243,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "andGate"
@@ -2269,7 +2269,7 @@
             }
           ]
         },
-        "projectBlockId": 195,
+        "projectBlockId": 266,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope2"

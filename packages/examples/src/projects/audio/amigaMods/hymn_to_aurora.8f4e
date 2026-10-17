@@ -794,7 +794,7 @@ float[] buffer 64
 ; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
-
+; @home left
 push &bufferPointer
 push bufferPointer
 push sizeof(buffer)
@@ -861,7 +861,7 @@ module scope2
 ; @pos 65 -17
 float* in &amp2:out
 float[] buffer 64
-; @plot &buffer 64 @home
+; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
 

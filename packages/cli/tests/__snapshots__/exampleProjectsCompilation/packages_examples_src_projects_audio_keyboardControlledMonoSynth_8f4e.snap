@@ -3,56 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "projectConfig": {
-      "id": "projectConfig",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "projectConfig",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "projectConfig",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "projectConfig",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 8,
-        "sourceIdentity": {
-          "projectGroupPath": "",
-          "codeBlockId": "projectConfig"
-        }
-      },
-      "index": 0,
-      "executionEntryName": "main"
-    },
     "keyboard": {
       "id": "keyboard",
       "cycleFunction": [
@@ -118,13 +68,13 @@
             }
           ]
         },
-        "projectBlockId": 17,
+        "projectBlockId": 387,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "keyboard"
         }
       },
-      "index": 1,
+      "index": 0,
       "executionEntryName": "main"
     },
     "janko": {
@@ -263,13 +213,13 @@
             }
           ]
         },
-        "projectBlockId": 33,
+        "projectBlockId": 403,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "janko"
         }
       },
-      "index": 2,
+      "index": 1,
       "executionEntryName": "main"
     },
     "midiLUT": {
@@ -1721,13 +1671,13 @@
             }
           ]
         },
-        "projectBlockId": 55,
+        "projectBlockId": 425,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "midiLUT"
         }
       },
-      "index": 3,
+      "index": 2,
       "executionEntryName": "main"
     },
     "midiNote2Freq": {
@@ -1954,13 +1904,13 @@
             }
           ]
         },
-        "projectBlockId": 188,
+        "projectBlockId": 558,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "midiNote2Freq"
         }
       },
-      "index": 4,
+      "index": 3,
       "executionEntryName": "main"
     },
     "arEnv": {
@@ -2646,13 +2596,13 @@
             }
           ]
         },
-        "projectBlockId": 207,
+        "projectBlockId": 577,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "arEnv"
         }
       },
-      "index": 5,
+      "index": 4,
       "executionEntryName": "main"
     },
     "phaseAccumulator": {
@@ -3096,13 +3046,13 @@
             }
           ]
         },
-        "projectBlockId": 268,
+        "projectBlockId": 638,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "phaseAccumulator"
         }
       },
-      "index": 6,
+      "index": 5,
       "executionEntryName": "main"
     },
     "vca": {
@@ -3277,13 +3227,13 @@
             }
           ]
         },
-        "projectBlockId": 311,
+        "projectBlockId": 681,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "vca"
         }
       },
-      "index": 7,
+      "index": 6,
       "executionEntryName": "main"
     },
     "audioout": {
@@ -3646,13 +3596,13 @@
             }
           ]
         },
-        "projectBlockId": 325,
+        "projectBlockId": 695,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "audioout"
         }
       },
-      "index": 8,
+      "index": 7,
       "executionEntryName": "main"
     }
   },
@@ -11102,18 +11052,6 @@
             "isInherited": false
           }
         ]
-      },
-      "projectConfig": {
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 1108,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 1108,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       },
       "vca": {
         "id": "vca",
@@ -18747,18 +18685,6 @@
         ]
       },
       {
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 1108,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 1108,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
-      },
-      {
         "id": "vca",
         "lineNumber": 0,
         "byteAddress": 1108,
@@ -19709,7 +19635,6 @@
         "isInherited": false
       }
     },
-    "projectConfig": {},
     "vca": {
       "in": {
         "value": 1104,
@@ -19736,9 +19661,8 @@
     "midiLUT": {},
     "midiNote2Freq": {},
     "phaseAccumulator": {},
-    "projectConfig": {},
     "vca": {}
   },
-  "compiledWasm": "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",
+  "compiledWasm": "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",
   "requiredMemoryBytes": 1120
 }

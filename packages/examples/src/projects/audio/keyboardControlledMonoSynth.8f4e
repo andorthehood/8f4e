@@ -4,23 +4,393 @@ includes
 include std/events/risingEdge
 includesEnd
 
-entry main
-module projectConfig
+function buffer
+; @pos 2 72
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+function sine
+; @pos 36 93
+; Polynomial approximation
+; of the sine function with
+; Taylor series (7th order)
+; Only works in the range of
+; [-PI, PI]
+param float x
+
+use math
+
+; Fold to [-pi/2, pi/2]
+push x
+push HALF_PI
+greaterThan
+if
+push PI
+push x
+sub
+localSet x
+ifEnd
+
+push x
+push HALF_PI
+push -1.0
+mul
+lessThan
+if
+push PI
+push -1.0
+mul
+push x
+sub
+localSet x
+ifEnd
+
+local float x2
+push x
+push x
+mul
+localSet x2
+
+; Taylor coefficients
+const T1 -0.1666666666
+const T2 0.0083333333
+const T3 -0.000198412
+
+push x2
+push T3
+mul
+push T2
+add
+push x2
+mul
+push T1
+add
+push x2
+mul
+push 1.0
+add
+push x
+mul
+
+functionEnd float
+
+function jankoMap
+; @pos 210 48
+; @group janko
+param int keycode
+use midiCodes
+push keycode
+mapBegin int
+map 53 C3  ; Maps HID
+map 4  C#3 ; keycodes
+map 29 D3  ; to MIDI note
+map 22 D#3 ; numbers
+map 27 E3  ; based on
+map 7  F3  ; the Janko
+map 6  F#3 ; piano layout
+map 9  G3  ;
+map 25 G#3 ; These key
+map 10 A3  ; positions
+map 5  A#3 ; are based on
+map 11 B3  ; my Apple
+map 17 C4  ; Magic
+map 13 C#4 ; Keyboard's
+map 16 D4  ; layout, feel
+map 14 D#4 ; free to
+map 54 E4  ; adjust them
+map 15 F4  ; to your own.
+map 55 F#4
+map 51 G4
+map 56 G#4
+map 52 A4
+map 49 B4
+mapEnd int
+functionEnd int
+
+constants env
+; @pos 2 60
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+constants math
+; @pos 50 60
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+constants midiCodes
+; @pos 91 60
+
+const A0  21
+const A#0 22
+const BB0 22
+const B0  23
+const C1  24
+const C#1 25
+const DB1 25
+const D1  26
+const D#1 27
+const EB1 27
+const E1  28
+const F1  29
+const F#1 30
+const GB1 30
+const G1  31
+const G#1 32
+const AB1 32
+const A1  33
+const A#1 34
+const BB1 34
+const B1  35
+const C2  36
+const C#2 37
+const DB2 37
+const D2  38
+const D#2 39
+const EB2 39
+const E2  40
+const F2  41
+const F#2 42
+const GB2 42
+const G2  43
+const G#2 44
+const AB2 44
+const A2  45
+const A#2 46
+const BB2 46
+const B2  47
+const C3  48
+const C#3 49
+const DB3 49
+const D3  50
+const D#3 51
+const EB3 51
+const E3  52
+const F3  53
+const F#3 54
+const GB3 54
+const G3  55
+const G#3 56
+const AB3 56
+const A3  57
+const A#3 58
+const BB3 58
+const B3  59
+const C4  60
+const C#4 61
+const DB4 61
+const D4  62
+const D#4 63
+const EB4 63
+const E4  64
+const F4  65
+const F#4 66
+const GB4 66
+const G4  67
+const G#4 68
+const AB4 68
+const A4  69
+const A#4 70
+const BB4 70
+const B4  71
+const C5  72
+const C#5 73
+const DB5 73
+const D5  74
+const D#5 75
+const EB5 75
+const E5  76
+const F5  77
+const F#5 78
+const GB5 78
+const G5  79
+const G#5 80
+const AB5 80
+const A5  81
+const A#5 82
+const BB5 82
+const B5  83
+const C6  84
+const C#6 85
+const DB6 85
+const D6  86
+const D#6 87
+const EB6 87
+const E6  88
+const F6  89
+const F#6 90
+const GB6 90
+const G6  91
+const G#6 92
+const AB6 92
+const A6  93
+const A#6 94
+const BB6 94
+const B6  95
+const C7  96
+const C#7 97
+const DB7 97
+const D7  98
+const D#7 99
+const EB7 99
+const E7  100
+const F7  101
+const F#7 102
+const GB7 102
+const G7  103
+const G#7 104
+const AB7 104
+const A7  105
+const A#7 106
+const BB7 106
+const B7  107
+const C8  108
+const C#8 109
+const DB8 109
+const D8  110
+const D#8 111
+const EB8 111
+const E8  112
+const F8  113
+const F#8 114
+const GB8 114
+const G8  115
+const G#8 116
+const AB8 116
+const A8  117
+const A#8 118
+const AB8 118
+const B8  119
+const C9  120
+const C#9 121
+const DB9 121
+const D9  122
+const D#9 123
+const EB9 123
+const E9  124
+const F9  125
+const F#9 126
+const GB9 126
+const G9  127
+
+constantsEnd
+
+note
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName keyboardControlledMonoSynth
+; @config color.text.lineNumber #756d63
+; @config color.text.entryName #f2eadb
+; @config color.text.debugInfo #93897d
+; @config color.text.arrow #f29a4a
+; @config color.text.instruction #e1843d
+; @config color.text.codeComment #9b9083
+; @config color.text.code #e7dfcf
+; @config color.text.infoKey #77a7b5
+; @config color.text.infoValue #efba62
+; @config color.text.errorMessage #fff4ec
+; @config color.text.disabledCode #5e5750
+; @config color.text.numbers #efba62
+; @config color.text.menuItemText #ede4d5
+; @config color.text.menuItemTextHighlighted #1b1815
+; @config color.text.dialogTitle #f0aa58
+; @config color.text.dialogText #ede4d5
+; @config color.text.binaryZero #706961
+; @config color.text.binaryOne #e1843d
+; @config color.text.basePrefix #d9a152
+; @config color.text.pianoKeyWhitePressedOverlay rgba(27,24,21,0.36)
+; @config color.text.pianoKeyBlackPressedOverlay rgba(240,170,88,0.72)
+; @config color.text.tooltipText #211a14
+; @config color.text.tooltipHighlight #aa5b2e
+; @config color.fill.menuItemBackground #352f29
+; @config color.fill.menuItemBackgroundHighlighted #f0aa58
+; @config color.fill.background #191613
+; @config color.fill.backgroundDots #2b2621
+; @config color.fill.backgroundDots2 #483d33
+; @config color.fill.moduleBackground #2f2a25
+; @config color.fill.debugInfoBackground #211e1a
+; @config color.fill.moduleBackgroundDragged #453b32
+; @config color.fill.moduleBackgroundDisabled #24201d
+; @config color.fill.wire rgba(232,139,66,0.52)
+; @config color.fill.wireHighlighted #ffc07a
+; @config color.fill.errorMessageBackground #9c4035
+; @config color.fill.assertionPassed #6ca474
+; @config color.fill.assertionFailed #d26858
+; @config color.fill.dialogBackground #352f29
+; @config color.fill.dialogDimmer rgba(10,8,6,0.78)
+; @config color.fill.highlightedCodeLine #493d32
+; @config color.fill.trace #9ddf91
+; @config color.fill.plotterBackground #0e100f
+; @config color.fill.bars #e1843d
+; @config color.fill.waveformBackground #15110d
+; @config color.fill.waveform #efba62
+; @config color.fill.meterGreen #72ad78
+; @config color.fill.meterYellow #e0b45f
+; @config color.fill.meterRed #d26858
+; @config color.fill.scanLine #f29a4a
+; @config color.fill.track #51463b
+; @config color.fill.fill #d87533
+; @config color.fill.handle #f0e6d5
+; @config color.fill.codeBlockHighlightLevel1 #3c342c
+; @config color.fill.codeBlockHighlightLevel2 #473c32
+; @config color.fill.codeBlockHighlightLevel3 #524335
+; @config color.fill.pianoKeyWhite #e6ddcc
+; @config color.fill.pianoKeyBlack #151311
+; @config color.fill.tooltipBackground #f0d39b
+; @config color.fill.tooltipAddedHighlight #9ac695
+; @config color.fill.tooltipConsumedHighlight #df9176
+; @config color.icons.inputConnector #5794ae
+; @config color.icons.outputConnector #e1843d
+; @config color.icons.inputConnectorBackground #3e3832
+; @config color.icons.outputConnectorBackground #3e3832
+; @config color.icons.switchBackground #d87533
+; @config color.icons.feedbackScale0 #28394c
+; @config color.icons.feedbackScale1 #365775
+; @config color.icons.feedbackScale2 #4d7f9b
+; @config color.icons.feedbackScale3 #72ad78
+; @config color.icons.feedbackScale4 #e0b45f
+; @config color.icons.feedbackScale5 #d26858
 
-moduleEnd
+noteEnd
+
+entry main
 module keyboard
 ; @pos 138 45
 ; @config
 ; - keyboard.keyPressedMemory
 ; - keyPressed
-; @config 
-; - keyboard.keyCodeMemory 
+; @config
+; - keyboard.keyCodeMemory
 ; - keyCode
 
 int keyPressed
@@ -32,7 +402,7 @@ int keyCode
 moduleEnd
 module janko
 ; @pos 176 35
-; @home
+; @home left
 ; Converts HID keycodes to MIDI note numbers              .---------.
 ; based on the Janko layout                               |  Enter  |
 ;                                                         |       | |
@@ -363,301 +733,3 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos 2 60
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
-function buffer
-; @pos 2 72
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd
-
-function sine
-; @pos 36 93
-; Polynomial approximation
-; of the sine function with
-; Taylor series (7th order)
-; Only works in the range of
-; [-PI, PI]
-param float x
-
-use math
-
-; Fold to [-pi/2, pi/2]
-push x
-push HALF_PI
-greaterThan
-if
-push PI
-push x
-sub
-localSet x
-ifEnd
-
-push x
-push HALF_PI
-push -1.0
-mul
-lessThan
-if
-push PI
-push -1.0
-mul
-push x
-sub
-localSet x
-ifEnd
-
-local float x2
-push x
-push x
-mul
-localSet x2
-
-; Taylor coefficients
-const T1 -0.1666666666
-const T2 0.0083333333
-const T3 -0.000198412
-
-push x2
-push T3
-mul
-push T2
-add
-push x2
-mul
-push T1
-add
-push x2
-mul
-push 1.0
-add
-push x
-mul
-
-functionEnd float
-
-constants math
-; @pos 57 60
-
-const PI      3.141592653589793
-const NEG_PI -3.141592653589793
-const TAU     6.283185307179586
-const HALF_PI 1.570796326794896
-const INV_PI  0.318309886183790
-const INV_TAU 0.159154943091895
-const PHI     1.618033988749895
-const DEG2RAD 0.017453292519943
-const RAD2DEG 57.29577951308232
-const SQRT2   1.414213562373095
-const SQRT1_2 0.707106781186547
-const LN2     0.693147180559945
-const LN10    2.302585092994046
-const LOG2E   1.442695040888963
-const LOG10E  0.434294481903251
-const E       2.718281828459045
-
-constantsEnd
-
-constants midiCodes
-; @pos 98 60
-
-const A0  21
-const A#0 22
-const BB0 22
-const B0  23
-const C1  24
-const C#1 25
-const DB1 25
-const D1  26
-const D#1 27
-const EB1 27
-const E1  28
-const F1  29
-const F#1 30
-const GB1 30
-const G1  31
-const G#1 32
-const AB1 32
-const A1  33
-const A#1 34
-const BB1 34
-const B1  35
-const C2  36
-const C#2 37
-const DB2 37
-const D2  38
-const D#2 39
-const EB2 39
-const E2  40
-const F2  41
-const F#2 42
-const GB2 42
-const G2  43
-const G#2 44
-const AB2 44
-const A2  45
-const A#2 46
-const BB2 46
-const B2  47
-const C3  48
-const C#3 49
-const DB3 49
-const D3  50
-const D#3 51
-const EB3 51
-const E3  52
-const F3  53
-const F#3 54
-const GB3 54
-const G3  55
-const G#3 56
-const AB3 56
-const A3  57
-const A#3 58
-const BB3 58
-const B3  59
-const C4  60
-const C#4 61
-const DB4 61
-const D4  62
-const D#4 63
-const EB4 63
-const E4  64
-const F4  65
-const F#4 66
-const GB4 66
-const G4  67
-const G#4 68
-const AB4 68
-const A4  69
-const A#4 70
-const BB4 70
-const B4  71
-const C5  72
-const C#5 73
-const DB5 73
-const D5  74
-const D#5 75
-const EB5 75
-const E5  76
-const F5  77
-const F#5 78
-const GB5 78
-const G5  79
-const G#5 80
-const AB5 80
-const A5  81
-const A#5 82
-const BB5 82
-const B5  83
-const C6  84
-const C#6 85
-const DB6 85
-const D6  86
-const D#6 87
-const EB6 87
-const E6  88
-const F6  89
-const F#6 90
-const GB6 90
-const G6  91
-const G#6 92
-const AB6 92
-const A6  93
-const A#6 94
-const BB6 94
-const B6  95
-const C7  96
-const C#7 97
-const DB7 97
-const D7  98
-const D#7 99
-const EB7 99
-const E7  100
-const F7  101
-const F#7 102
-const GB7 102
-const G7  103
-const G#7 104
-const AB7 104
-const A7  105
-const A#7 106
-const BB7 106
-const B7  107
-const C8  108
-const C#8 109
-const DB8 109
-const D8  110
-const D#8 111
-const EB8 111
-const E8  112
-const F8  113
-const F#8 114
-const GB8 114
-const G8  115
-const G#8 116
-const AB8 116
-const A8  117
-const A#8 118
-const AB8 118
-const B8  119
-const C9  120
-const C#9 121
-const DB9 121
-const D9  122
-const D#9 123
-const EB9 123
-const E9  124
-const F9  125
-const F#9 126
-const GB9 126
-const G9  127
-
-constantsEnd
-
-function jankoMap
-; @pos 210 48
-; @group janko
-param int keycode
-use midiCodes
-push keycode
-mapBegin int
-map 53 C3  ; Maps HID
-map 4  C#3 ; keycodes
-map 29 D3  ; to MIDI note
-map 22 D#3 ; numbers
-map 27 E3  ; based on
-map 7  F3  ; the Janko
-map 6  F#3 ; piano layout
-map 9  G3  ;
-map 25 G#3 ; These key
-map 10 A3  ; positions
-map 5  A#3 ; are based on
-map 11 B3  ; my Apple
-map 17 C4  ; Magic
-map 13 C#4 ; Keyboard's
-map 16 D4  ; layout, feel
-map 14 D#4 ; free to
-map 54 E4  ; adjust them
-map 15 F4  ; to your own.
-map 55 F#4
-map 51 G4
-map 56 G#4
-map 52 A4
-map 49 B4
-mapEnd int
-functionEnd int
