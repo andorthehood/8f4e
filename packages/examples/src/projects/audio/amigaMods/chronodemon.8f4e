@@ -200,6 +200,34 @@ mapEnd float
 
 functionEnd float
 
+function noteDelayTick
+; @pos 435 -112
+; -1 means there is no note.
+use mod
+param int row
+
+push row
+call maskPeriod
+equalToZero
+if
+push -1
+return
+ifEnd
+
+push row
+call maskExtendedEffect
+push NOTE_DELAY
+equal
+if
+push row
+call maskParamLo
+return
+ifEnd
+
+push 0
+
+functionEnd int
+
 function sampleNumberToRepeatOffset
 ; @pos 491 -210
 ; @tab 8
@@ -997,7 +1025,8 @@ note
 ; The song is:
 ; 'Chronodemon'
 ; Source: ko_kki_-_chronodemon.mod
-; EDx note delay is not implemented yet.
+; EDx note delay uses one pending
+; note per channel until its tick.
 noteEnd
 
 entry main
@@ -1227,7 +1256,7 @@ push *in
 store
 moduleEnd
 module scope1
-; @pos 28 -17
+; @pos 27 -17
 float* in &amp1:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -1255,7 +1284,7 @@ store
 
 moduleEnd
 module rowBuffer1
-; @pos 28 -1
+; @pos 27 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1510,7 +1539,7 @@ loopEnd
 
 moduleEnd
 module rowCount2
-; @pos 152 -33
+; @pos 172 -33
 int* in &rowCounter:out
 int out
 
@@ -1520,7 +1549,7 @@ store
 
 moduleEnd
 module sampleOffset1
-; @pos 195 -73
+; @pos 225 -74
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1561,7 +1590,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset2
-; @pos 195 -24
+; @pos 226 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -1603,7 +1632,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset3
-; @pos 195 24
+; @pos 226 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1645,7 +1674,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset4
-; @pos 195 72
+; @pos 226 74
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1687,7 +1716,7 @@ ifEnd
 
 moduleEnd
 module tempo1
-; @pos 231 -73
+; @pos 259 -74
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1726,7 +1755,7 @@ ifEnd
 
 moduleEnd
 module tempo2
-; @pos 231 -24
+; @pos 260 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -1765,7 +1794,7 @@ ifEnd
 
 moduleEnd
 module tempo3
-; @pos 231 24
+; @pos 260 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1804,7 +1833,7 @@ ifEnd
 
 moduleEnd
 module tempo4
-; @pos 231 72
+; @pos 260 74
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1842,95 +1871,275 @@ ifEnd
 ifEnd
 
 moduleEnd
-module sampleNumber1
-; @pos 272 -73
+module scheduler1
+; @pos 299 -74
 ; @group ch1
+use mod
 int* row &rowBuffer1:
-int out
-int param
+int* rowStart &rowClock:out
+int* tick &tickClock:out
+int* tickNumber &rowClock:counter
+int noteRow ; @w 0x
+int sampleNumber ; @w
+int out ; @w
+int targetTick -1 ; @w
+; @hide
+int selectedSampleNumber
+int pendingRow
 
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
 push &out
+push 0
+store
+
+; Capture the new row and
+; replace any waiting note.
+push *rowStart
+if
+push &pendingRow
 push *row
+store
+
+push pendingRow
+call maskSampleNumber
+if
+push &selectedSampleNumber
+push pendingRow
 call maskSampleNumber
 store
 ifEnd
 
+push &targetTick
+push pendingRow
+call noteDelayTick
+store
+ifEnd
+
+; Clock outputs are already
+; single-sample pulses.
+push *tick
+push *tickNumber
+push targetTick
+equal
+and
+if
+push &noteRow
+push pendingRow
+store
+push &sampleNumber
+push selectedSampleNumber
+store
+push &out
+push 1
+store
+push &targetTick
+push -1
+store
+ifEnd
+
 moduleEnd
-module sampleNumber2
-; @pos 272 -24
+module scheduler2
+; @pos 300 -24
 ; @group ch2
+use mod
 int* row &rowBuffer2:
-int out
-int param
+int* rowStart &rowClock:out
+int* tick &tickClock:out
+int* tickNumber &rowClock:counter
+int noteRow ; @w 0x
+int sampleNumber ; @w
+int out ; @w
+int targetTick -1 ; @w
+; @hide
+int selectedSampleNumber
+int pendingRow
 
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
 push &out
+push 0
+store
+
+; Capture the new row and
+; replace any waiting note.
+push *rowStart
+if
+push &pendingRow
 push *row
+store
+
+push pendingRow
+call maskSampleNumber
+if
+push &selectedSampleNumber
+push pendingRow
 call maskSampleNumber
 store
 ifEnd
 
+push &targetTick
+push pendingRow
+call noteDelayTick
+store
+ifEnd
+
+; Clock outputs are already
+; single-sample pulses.
+push *tick
+push *tickNumber
+push targetTick
+equal
+and
+if
+push &noteRow
+push pendingRow
+store
+push &sampleNumber
+push selectedSampleNumber
+store
+push &out
+push 1
+store
+push &targetTick
+push -1
+store
+ifEnd
+
 moduleEnd
-module sampleNumber3
-; @pos 272 24
+module scheduler3
+; @pos 300 24
 ; @group ch3
+use mod
 int* row &rowBuffer3:
-int out
-int param
+int* rowStart &rowClock:out
+int* tick &tickClock:out
+int* tickNumber &rowClock:counter
+int noteRow ; @w 0x
+int sampleNumber ; @w
+int out ; @w
+int targetTick -1 ; @w
+; @hide
+int selectedSampleNumber
+int pendingRow
 
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
 push &out
+push 0
+store
+
+; Capture the new row and
+; replace any waiting note.
+push *rowStart
+if
+push &pendingRow
 push *row
+store
+
+push pendingRow
+call maskSampleNumber
+if
+push &selectedSampleNumber
+push pendingRow
 call maskSampleNumber
 store
 ifEnd
 
-moduleEnd
-module sampleNumber4
-; @pos 272 72
-; @group ch4
-int* row &rowBuffer4:
-int out
-int param
+push &targetTick
+push pendingRow
+call noteDelayTick
+store
+ifEnd
 
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
+; Clock outputs are already
+; single-sample pulses.
+push *tick
+push *tickNumber
+push targetTick
+equal
+and
 if
+push &noteRow
+push pendingRow
+store
+push &sampleNumber
+push selectedSampleNumber
+store
 push &out
+push 1
+store
+push &targetTick
+push -1
+store
+ifEnd
+
+moduleEnd
+module scheduler4
+; @pos 300 74
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* rowStart &rowClock:out
+int* tick &tickClock:out
+int* tickNumber &rowClock:counter
+int noteRow ; @w 0x
+int sampleNumber ; @w
+int out ; @w
+int targetTick -1 ; @w
+; @hide
+int selectedSampleNumber
+int pendingRow
+
+push &out
+push 0
+store
+
+; Capture the new row and
+; replace any waiting note.
+push *rowStart
+if
+push &pendingRow
 push *row
+store
+
+push pendingRow
 call maskSampleNumber
+if
+push &selectedSampleNumber
+push pendingRow
+call maskSampleNumber
+store
+ifEnd
+
+push &targetTick
+push pendingRow
+call noteDelayTick
+store
+ifEnd
+
+; Clock outputs are already
+; single-sample pulses.
+push *tick
+push *tickNumber
+push targetTick
+equal
+and
+if
+push &noteRow
+push pendingRow
+store
+push &sampleNumber
+push selectedSampleNumber
+store
+push &out
+push 1
+store
+push &targetTick
+push -1
 store
 ifEnd
 
 moduleEnd
 module period1
-; @pos 308 -73
+; @pos 341 -74
 ; @group ch1
-int* row &rowBuffer1:
-int* sampleNumber &sampleNumber1:out
+int* row &scheduler1:noteRow
+int* sampleNumber &scheduler1:sampleNumber
 int out
 
 ; @watch out
@@ -1955,10 +2164,10 @@ ifEnd
 
 moduleEnd
 module period2
-; @pos 308 -24
+; @pos 342 -24
 ; @group ch2
-int* row &rowBuffer2:
-int* sampleNumber &sampleNumber2:out
+int* row &scheduler2:noteRow
+int* sampleNumber &scheduler2:sampleNumber
 int out
 
 ; @watch out
@@ -1983,10 +2192,10 @@ ifEnd
 
 moduleEnd
 module period3
-; @pos 308 24
+; @pos 342 24
 ; @group ch3
-int* row &rowBuffer3:
-int* sampleNumber &sampleNumber3:out
+int* row &scheduler3:noteRow
+int* sampleNumber &scheduler3:sampleNumber
 int out
 
 ; @watch out
@@ -2011,10 +2220,10 @@ ifEnd
 
 moduleEnd
 module period4
-; @pos 308 72
+; @pos 342 74
 ; @group ch4
-int* row &rowBuffer4:
-int* sampleNumber &sampleNumber4:out
+int* row &scheduler4:noteRow
+int* sampleNumber &scheduler4:sampleNumber
 int out
 
 ; @watch out
@@ -2038,110 +2247,8 @@ store
 ifEnd
 
 moduleEnd
-module trigger1
-; @pos 355 -73
-; @group ch1
-int* row &rowBuffer1:
-int* rowCounter &rowCount2:out
-int* period &period1:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger2
-; @pos 355 -24
-; @group ch2
-int* row &rowBuffer2:
-int* rowCounter &rowCount2:out
-int* period &period2:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger3
-; @pos 355 24
-; @group ch3
-int* row &rowBuffer3:
-int* rowCounter &rowCount2:out
-int* period &period3:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger4
-; @pos 355 72
-; @group ch4
-int* row &rowBuffer4:
-int* rowCounter &rowCount2:out
-int* period &period4:out
-int out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
 module volume1
-; @pos 396 -73
+; @pos 392 -74
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2188,7 +2295,7 @@ store
 
 moduleEnd
 module volume2
-; @pos 396 -24
+; @pos 393 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2234,7 +2341,7 @@ store
 
 moduleEnd
 module volume3
-; @pos 396 24
+; @pos 393 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2280,7 +2387,7 @@ store
 
 moduleEnd
 module volume4
-; @pos 396 72
+; @pos 393 74
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2376,7 +2483,7 @@ int8[] sample15 ASSET_SAMPLE15_SIZE
 ; @wave &sample15 count(sample15)
 moduleEnd
 module samplePack2
-; @pos 491 -7
+; @pos 493 -7
 use env
 int8[] sample16 ASSET_SAMPLE16_SIZE
 ; @config bin.sample16.memory sample16
@@ -2391,9 +2498,9 @@ use env
 ; @tab 6 20
 int*	period	&period1:out
 int*	offset	&sampleOffset1:out
-int*	trigger	&trigger1:out
+int*	trigger	&scheduler1:out
 int	previousTrigger
-int*	sampleNumber	&sampleNumber1:out
+int*	sampleNumber	&scheduler1:sampleNumber
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
 int	sampleSize	; @w
@@ -2492,9 +2599,9 @@ use env
 ; @tab 6 20
 int*	period	&period2:out
 int*	offset	&sampleOffset2:out
-int*	trigger	&trigger2:out
+int*	trigger	&scheduler2:out
 int	previousTrigger
-int*	sampleNumber	&sampleNumber2:out
+int*	sampleNumber	&scheduler2:sampleNumber
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
 int8*	playhead	; @w
@@ -2593,9 +2700,9 @@ use env
 ; @tab 6 20
 int*	period	&period3:out
 int*	offset	&sampleOffset3:out
-int*	trigger	&trigger3:out
+int*	trigger	&scheduler3:out
 int	previousTrigger
-int*	sampleNumber	&sampleNumber3:out
+int*	sampleNumber	&scheduler3:sampleNumber
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
 int8*	playhead	; @w
@@ -2694,9 +2801,9 @@ use env
 ; @tab 6 20
 int*	period	&period4:out
 int*	offset	&sampleOffset4:out
-int*	trigger	&trigger4:out
+int*	trigger	&scheduler4:out
 int	previousTrigger
-int*	sampleNumber	&sampleNumber4:out
+int*	sampleNumber	&scheduler4:sampleNumber
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
 int8*	playhead	; @w
