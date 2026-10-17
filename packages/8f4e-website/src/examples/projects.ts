@@ -138,6 +138,12 @@ export const projects = [
 		path: 'audio/amigaMods/chiller.8f4e',
 	},
 	{
+		id: 'chronodemon',
+		title: 'Chronodemon',
+		description: 'Explore an Amiga MOD track with four sample channels, pattern sequencing and tempo controls.',
+		path: 'audio/amigaMods/chronodemon.8f4e',
+	},
+	{
 		id: 'lower-intentions',
 		title: 'Lower Intentions',
 		description: 'Follow an Amiga MOD track through its timing, sample players and stereo mixer.',
