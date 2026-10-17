@@ -254,5 +254,21 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "4144e5bc392dd0916f6a182b0909256494a78d8b",
+		"recordedAt": "2026-10-17T12:41:06.554Z",
+		"coverage": {
+			"documented": 0,
+			"total": 4,
+			"percentage": 0,
+			"byKind": {
+				"variable": {
+					"documented": 0,
+					"total": 4,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
