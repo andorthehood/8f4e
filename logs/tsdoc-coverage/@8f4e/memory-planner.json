@@ -1992,5 +1992,51 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "0997f37f3010bf0c0126eafb0e0c66a2402c10db",
+		"recordedAt": "2026-10-17T20:37:24.856Z",
+		"coverage": {
+			"documented": 9,
+			"total": 73,
+			"percentage": 12.3,
+			"byKind": {
+				"function": {
+					"documented": 9,
+					"total": 32,
+					"percentage": 28.1
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 30,
+					"percentage": 0
+				},
+				"interface": {
+					"documented": 0,
+					"total": 5,
+					"percentage": 0
+				},
+				"class": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"class-property": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"constructor": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
