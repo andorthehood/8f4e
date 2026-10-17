@@ -22,6 +22,25 @@ const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
+const noteContentMarkers = [
+	'module declarations hold state',
+	'function example',
+	'constants values',
+	'prototype state',
+	'includes',
+	'note another reminder',
+	'entry main',
+	'group audio',
+	'moduleEnd',
+	'functionEnd int',
+	'constantsEnd',
+	'prototypeEnd',
+	'includesEnd',
+	'entryEnd',
+	'groupEnd',
+	'noteEndless prose',
+	'moduleEndless prose',
+];
 
 function readProjectFixtureNames(): string[] {
 	return readdirSync(fixtureDirectory, { withFileTypes: true })
@@ -81,6 +100,71 @@ describe('parseProjectSource', () => {
 		expect(project.prototypes).toEqual([{ id: 19, code: validPrototypeBlock }]);
 		expect(project.notes).toEqual([{ id: 24, code: validNoteBlock }]);
 		expect(project.groups).toEqual([]);
+	});
+
+	it.each(noteContentMarkers)('preserves %s as root note content', marker => {
+		const noteCode = ['  note', '; @pos 2 3', `\t${marker}  `, '', '  \t', '  noteEnd  '];
+		const project = parseProjectSource(
+			['8f4e/v1', '', ...noteCode, '', ...validFunctionBlock, 'entry main', ...validModuleBlock, 'entryEnd'].join('\n')
+		);
+
+		expect(project.notes).toEqual([{ id: 3, code: noteCode }]);
+		expect(project.functions).toEqual([{ id: 10, code: validFunctionBlock }]);
+		expect(project.modules).toEqual([{ id: 14, code: validModuleBlock, entry: 'main' }]);
+		expect(project.constants).toEqual([]);
+		expect(project.prototypes).toEqual([]);
+		expect(project.includes).toEqual([]);
+		expect(project.groups).toEqual([]);
+	});
+
+	it('preserves note text and following blocks inside nested groups', () => {
+		const noteCode = [
+			'\tnote',
+			'\t; @pos 2 3',
+			'',
+			...noteContentMarkers.map(marker => `\t${marker}  `),
+			'  \t',
+			'\tnoteEnd',
+		];
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'entry main',
+				'group audio',
+				'group docs',
+				...noteCode,
+				...validModuleBlock,
+				'groupEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+
+		expect(project.notes).toEqual([]);
+		expect(project.groups[0].code).toEqual(['group audio', 'groupEnd']);
+		expect(project.groups[0].groups[0]).toEqual({
+			name: 'docs',
+			entry: 'main',
+			code: ['group docs', 'groupEnd'],
+			exposures: [],
+			modules: [{ id: 5 + noteCode.length, code: validModuleBlock, entry: 'main' }],
+			functions: [],
+			constants: [],
+			prototypes: [],
+			includes: [],
+			notes: [{ id: 5, code: noteCode }],
+			unknown: [],
+			groups: [],
+		});
+	});
+
+	it.each([
+		{ name: 'root', before: ['8f4e/v1'], after: [] },
+		{ name: 'group', before: ['8f4e/v1', 'entry main', 'group docs'], after: ['groupEnd', 'entryEnd'] },
+	])('reports an unclosed $name note despite other block markers', ({ before, after }) => {
+		expect(() => parseProjectSource([...before, 'note', ...noteContentMarkers, ...after].join('\n'))).toThrow(
+			'Parse error: unclosed block with opener "note"'
+		);
 	});
 
 	it('keeps top-level includes as project blocks without expanding them', () => {
