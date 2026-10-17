@@ -18,15 +18,3 @@ Both deployments use the same checkout as the release, including its version cha
 
 The repository must provide the `CLOUDFLARE_API_TOKEN` Actions secret and the `CLOUDFLARE_ACCOUNT_ID` Actions
 variable. Existing release tags are required; the workflow refuses to initialize a first release.
-
-## Cloudflare Git Integration
-
-Cloudflare can also build and deploy directly from GitHub, independently of GitHub Actions. Removing a deployment
-workflow does not disable those builds. For each Git-connected Pages project (`8f4e` and `8f4e-website`, if connected):
-
-1. Open the project's **Settings > Build > Branch control** in Cloudflare.
-2. Turn off **Enable automatic production branch deployments**.
-3. Set **Preview branch** to **None (Disable automatic branch deployments)** and save.
-
-These settings stop builds triggered by commits while allowing the Release workflow to upload both sites with
-Wrangler. See [Cloudflare's branch deployment controls](https://developers.cloudflare.com/pages/configuration/branch-build-controls/).
