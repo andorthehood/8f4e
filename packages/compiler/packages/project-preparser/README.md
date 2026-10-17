@@ -12,6 +12,9 @@ It understands document delimiters, entries, recursively owned groups, group mem
 block markers. Parsing classifies every block once into the corresponding `ProjectObjectModel` collection. The model
 itself is defined only by `@8f4e/language-spec`.
 
+Note blocks (`note` through `noteEnd`) preserve their content as text until the closing `noteEnd`.
+Lines that look like other block markers remain note content at the project root and inside groups.
+
 This package owns:
 
 - Parsing raw project source into `ProjectObjectModel` collections and groups.
