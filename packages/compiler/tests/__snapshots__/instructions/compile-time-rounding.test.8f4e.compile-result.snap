@@ -1,0 +1,361 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "explicitRoundingAssertions": {
+      "id": "explicitRoundingAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "explicitRoundingAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "SCALE",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1.5,
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEAREST",
+            },
+            {
+              "left": {
+                "isInteger": true,
+                "type": "literal",
+                "value": 3,
+              },
+              "operator": "*",
+              "right": {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SCALE",
+              },
+              "rounding": "round",
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEGATIVE",
+            },
+            {
+              "left": {
+                "isInteger": true,
+                "type": "literal",
+                "value": -3,
+              },
+              "operator": "*",
+              "right": {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SCALE",
+              },
+              "rounding": "round",
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LOWER",
+            },
+            {
+              "left": {
+                "isInteger": true,
+                "type": "literal",
+                "value": 3,
+              },
+              "operator": "*",
+              "right": {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SCALE",
+              },
+              "rounding": "floor",
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "UPPER",
+            },
+            {
+              "left": {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SCALE",
+              },
+              "rounding": "ceil",
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEAREST",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEGATIVE",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -5,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "nearestBuffer",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEAREST",
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "lowerBuffer",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LOWER",
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "upperBuffer",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "UPPER",
+            },
+          ],
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "nearestBuffer",
+              "type": "identifier",
+              "value": "count(nearestBuffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "lowerBuffer",
+              "type": "identifier",
+              "value": "count(lowerBuffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "upperBuffer",
+              "type": "identifier",
+              "value": "count(upperBuffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "explicitRoundingAssertions": {
+      "memory": {
+        "lowerBuffer": {
+          "byteAddress": 24,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "lowerBuffer",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 4,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 4,
+        },
+        "nearestBuffer": {
+          "byteAddress": 4,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "nearestBuffer",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 5,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 5,
+        },
+        "upperBuffer": {
+          "byteAddress": 40,
+          "default": {},
+          "elementWordSize": 4,
+          "id": "upperBuffer",
+          "isInteger": false,
+          "isUnsigned": false,
+          "numberOfElements": 2,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 10,
+          "wordAlignedSize": 2,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "explicitRoundingAssertions",
+    ],
+    "requiredMemoryBytes": 48,
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

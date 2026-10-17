@@ -1,5 +1,5 @@
 import type { Argument, CompileTimeOperand, Const } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, applyCompileTimeRounding, isBinaryCompileTimeExpression } from '@8f4e/language-spec';
 import { evaluateResolvedValueExpression } from './evaluateResolvedValueExpression';
 import type { MemoryReferenceResolutionContext } from './resolveMemoryExpressionOperand';
 import { resolveMemoryExpressionOperand } from './resolveMemoryExpressionOperand';
@@ -37,17 +37,26 @@ export function tryResolveValueArgument(
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const leftConst = resolveValueOperand(argument.left, context);
-		const rightConst = resolveValueOperand(argument.right, context);
-
-		if (leftConst === undefined || rightConst === undefined) {
+		if (leftConst === undefined) {
 			return undefined;
 		}
 
+		if (!isBinaryCompileTimeExpression(argument)) {
+			return applyCompileTimeRounding(leftConst, argument.rounding);
+		}
+
+		const rightConst = resolveValueOperand(argument.right, context);
+		if (rightConst === undefined) {
+			return undefined;
+		}
 		if (argument.operator === '/' && rightConst.value === 0) {
 			return undefined;
 		}
 
-		return evaluateResolvedValueExpression(leftConst, rightConst, argument.operator);
+		return applyCompileTimeRounding(
+			evaluateResolvedValueExpression(leftConst, rightConst, argument.operator),
+			argument.rounding
+		);
 	}
 
 	return resolveValueOperand(argument, context);

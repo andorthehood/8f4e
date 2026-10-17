@@ -2,10 +2,13 @@ import {
 	type Argument,
 	type ArgumentIdentifier,
 	ArgumentType,
+	applyCompileTimeRounding,
 	type CompilerASTLine,
+	type CompileTimeOperator,
 	type Const,
 	ErrorCode,
 	getError,
+	isBinaryCompileTimeExpression,
 	type ResolvedArgumentLiteral,
 	resolveProjectMemoryAlias,
 } from '@8f4e/language-spec';
@@ -96,11 +99,7 @@ function constToLiteral(resolved: Const): ResolvedArgumentLiteral {
 	};
 }
 
-function evaluateLiteralExpression(
-	left: Const,
-	right: Const,
-	operator: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>['operator']
-): Const | undefined {
+function evaluateLiteralExpression(left: Const, right: Const, operator: CompileTimeOperator): Const | undefined {
 	if (operator === '/' && right.value === 0) {
 		return undefined;
 	}
@@ -138,7 +137,15 @@ export function foldLiteralExpressionArgument(argument: Argument): Argument | Re
 		return argument;
 	}
 
-	if (argument.left.type !== ArgumentType.LITERAL || argument.right.type !== ArgumentType.LITERAL) {
+	if (argument.left.type !== ArgumentType.LITERAL) {
+		return argument;
+	}
+
+	if (!isBinaryCompileTimeExpression(argument)) {
+		return constToLiteral(applyCompileTimeRounding(literalToConst(argument.left), argument.rounding));
+	}
+
+	if (argument.right.type !== ArgumentType.LITERAL) {
 		return argument;
 	}
 
@@ -148,7 +155,7 @@ export function foldLiteralExpressionArgument(argument: Argument): Argument | Re
 		argument.operator
 	);
 
-	return resolved ? constToLiteral(resolved) : argument;
+	return resolved ? constToLiteral(applyCompileTimeRounding(resolved, argument.rounding)) : argument;
 }
 
 /**
@@ -167,11 +174,14 @@ export function validateUnresolvedValueExpression(
 	if (argument.left.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.left, line, context);
 	}
-	if (argument.right.type === ArgumentType.IDENTIFIER) {
+	if (isBinaryCompileTimeExpression(argument) && argument.right.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.right, line, context);
 	}
+	const expression = isBinaryCompileTimeExpression(argument)
+		? `${argument.left.value}${argument.operator}${argument.right.value}`
+		: String(argument.left.value);
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-		identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
+		identifier: argument.rounding ? `${argument.rounding}(${expression})` : expression,
 	});
 }
 

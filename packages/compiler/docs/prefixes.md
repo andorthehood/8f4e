@@ -210,6 +210,8 @@ Supported operators:
 
 | Operator | Meaning        | Example       |
 |----------|----------------|---------------|
+| `+`      | Addition       | `SIZE+2`      |
+| `-`      | Subtraction    | `SIZE-2`      |
 | `*`      | Multiplication | `SIZE*2`      |
 | `/`      | Division       | `SIZE/2`      |
 | `^`      | Exponentiation | `2^16`        |
@@ -217,6 +219,12 @@ Supported operators:
 Each side can be a numeric literal or a constant name. In memory-aware operands such as `push` arguments and memory declaration arguments, each side can also be a supported metadata query such as `sizeof(name)`, `sizeof(*name)`, `count(name)`, `count(*name)`, `max(name)`, `max(*name)`, `min(name)`, or `min(*name)`.
 `const` declarations are resolved in the constant namespace and should use literals and constants only.
 Exactly one operator is allowed; chained forms like `2^3^4` or `SIZE*2/4` are not valid.
+
+The result can be converted explicitly to an integer with `round(...)`, `floor(...)`, or `ceil(...)`. Each helper accepts
+either one compile-time operand or one supported compile-time expression. `round(...)` selects the nearest integer and
+rounds exact halfway values away from zero; `floor(...)` rounds toward negative infinity; `ceil(...)` rounds toward
+positive infinity. The conversion is part of compile-time folding and emits no runtime instructions. Rounding helpers
+cannot be nested.
 
 **Note**: `^` means exponentiation in compile-time expressions, not bitwise XOR (which is the runtime `xor` instruction).
 
@@ -227,8 +235,11 @@ const WIDTH  2^16          ; 65536
 const TOTAL  SIZE^2        ; SIZE squared
 const HALF   SIZE/2        ; integer or float division
 const DOUBLE SIZE*2        ; multiplication
+const NEAREST round(SIZE/3)
+const LOWER   floor(SIZE/3)
+const UPPER   ceil(SIZE/3)
 
-int[] buffer SIZE^2        ; allocate SIZE² elements
+int[] buffer round(SIZE*1.5) ; allocate an explicitly rounded number of elements
 push sizeof(buf)^2         ; push element word size squared
 push 2^EXP                 ; push 2 raised to EXP
 ```

@@ -1,7 +1,7 @@
 import type {
 	Argument,
-	ArgumentCompileTimeExpression,
 	CompilerASTLine,
+	CompileTimeOperator,
 	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
@@ -20,11 +20,13 @@ import type {
 } from '@8f4e/language-spec';
 import {
 	ArgumentType,
+	applyCompileTimeRounding,
 	ErrorCode,
 	type ErrorCodeValue,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	getError,
 	isArrayMemoryDeclarationLine,
+	isBinaryCompileTimeExpression,
 	isMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
 } from '@8f4e/language-spec';
@@ -169,11 +171,7 @@ function constToLiteral(resolved: Const): Extract<Argument, { type: typeof Argum
 	};
 }
 
-function evaluateLiteralExpression(
-	left: Const,
-	right: Const,
-	operator: ArgumentCompileTimeExpression['operator']
-): Const | undefined {
+function evaluateLiteralExpression(left: Const, right: Const, operator: CompileTimeOperator): Const | undefined {
 	if (operator === '/' && right.value === 0) {
 		return undefined;
 	}
@@ -203,7 +201,15 @@ function normalizePlannerArgument(argument: Argument): Argument {
 		return argument;
 	}
 
-	if (argument.left.type !== ArgumentType.LITERAL || argument.right.type !== ArgumentType.LITERAL) {
+	if (argument.left.type !== ArgumentType.LITERAL) {
+		return argument;
+	}
+
+	if (!isBinaryCompileTimeExpression(argument)) {
+		return constToLiteral(applyCompileTimeRounding(literalToConst(argument.left), argument.rounding));
+	}
+
+	if (argument.right.type !== ArgumentType.LITERAL) {
 		return argument;
 	}
 
@@ -213,12 +219,15 @@ function normalizePlannerArgument(argument: Argument): Argument {
 		argument.operator
 	);
 
-	return resolved ? constToLiteral(resolved) : argument;
+	return resolved ? constToLiteral(applyCompileTimeRounding(resolved, argument.rounding)) : argument;
 }
 
 function getUnresolvedArgumentIdentifier(argument: Argument): string {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return `${argument.left.value}${argument.operator}${argument.right.value}`;
+		const expression = isBinaryCompileTimeExpression(argument)
+			? `${argument.left.value}${argument.operator}${argument.right.value}`
+			: String(argument.left.value);
+		return argument.rounding ? `${argument.rounding}(${expression})` : expression;
 	}
 
 	return argument.type === ArgumentType.IDENTIFIER ? argument.value : String(argument.type);

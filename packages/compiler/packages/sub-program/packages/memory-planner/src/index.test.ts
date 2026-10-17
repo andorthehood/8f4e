@@ -1,6 +1,8 @@
 import type {
 	ArgumentCompileTimeExpression,
 	CompilerASTLine,
+	CompileTimeOperator,
+	CompileTimeRoundingValue,
 	MemoryDeclarationLine,
 	ShapeLine,
 	ValidatedModuleAST,
@@ -29,14 +31,16 @@ function literal(value: number) {
 
 function expression(
 	left: ReturnType<typeof literal>,
-	operator: ArgumentCompileTimeExpression['operator'],
-	right: ReturnType<typeof literal>
+	operator: CompileTimeOperator,
+	right: ReturnType<typeof literal>,
+	rounding?: CompileTimeRoundingValue
 ): ArgumentCompileTimeExpression {
 	return {
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,
 		left,
 		operator,
 		right,
+		...(rounding ? { rounding } : {}),
 	};
 }
 
@@ -241,6 +245,26 @@ describe('planSubProgramMemoryLayout', () => {
 });
 
 describe('planner input building', () => {
+	it.each([
+		['round', 2],
+		['floor', 1],
+		['ceil', 2],
+	] as const)('accepts explicitly %s array element counts', (rounding, expectedElementCount) => {
+		const line = {
+			lineNumber: 4,
+			instruction: 'float[]',
+			arguments: [identifier('values'), expression(literal(3), '/', literal(2), rounding)],
+		} satisfies MemoryDeclarationLine;
+
+		const plan = planSubProgramMemoryLayout({
+			prototypes: [],
+			modules: [validatedModuleAst('main', 1, [line])],
+			constantReferences: noConstantReferences(),
+		});
+
+		expect(plan.modules.main.memory.values.numberOfElements).toBe(expectedElementCount);
+	});
+
 	it.each(
 		arrayMemoryDeclarationInstructions.flatMap(instruction =>
 			[0.5, -1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY].map(

@@ -1,9 +1,9 @@
 import type {
 	Argument,
-	ArgumentCompileTimeExpression,
 	ArgumentLiteral,
 	CompilerASTLine,
 	CompileTimeOperand,
+	CompileTimeOperator,
 	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
@@ -15,7 +15,12 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType, createProjectModuleId } from '@8f4e/language-spec';
+import {
+	ArgumentType,
+	applyCompileTimeRounding,
+	createProjectModuleId,
+	isBinaryCompileTimeExpression,
+} from '@8f4e/language-spec';
 
 type ConstantResolvableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
@@ -111,11 +116,7 @@ function resolveConstantOperand(operand: CompileTimeOperand, constants: Constant
 	return operand.referenceKind === 'constant' ? constants[operand.value] : undefined;
 }
 
-function evaluateExpression(
-	lhsConst: Const,
-	rhsConst: Const,
-	operator: ArgumentCompileTimeExpression['operator']
-): Const | undefined {
+function evaluateExpression(lhsConst: Const, rhsConst: Const, operator: CompileTimeOperator): Const | undefined {
 	if (operator === '/' && rhsConst.value === 0) {
 		return undefined;
 	}
@@ -154,8 +155,17 @@ function resolveConstantArgument(argument: Argument, constants: ConstantEnvironm
 	}
 
 	const leftConst = resolveConstantOperand(argument.left, constants);
+	if (!leftConst) {
+		return undefined;
+	}
+
+	if (!isBinaryCompileTimeExpression(argument)) {
+		return applyCompileTimeRounding(leftConst, argument.rounding);
+	}
+
 	const rightConst = resolveConstantOperand(argument.right, constants);
-	return leftConst && rightConst ? evaluateExpression(leftConst, rightConst, argument.operator) : undefined;
+	const resolved = rightConst ? evaluateExpression(leftConst, rightConst, argument.operator) : undefined;
+	return resolved ? applyCompileTimeRounding(resolved, argument.rounding) : undefined;
 }
 
 function resolveConstantArgumentReference(argument: Argument, constants: ConstantEnvironment): Argument {
@@ -169,6 +179,10 @@ function resolveConstantArgumentReference(argument: Argument, constants: Constan
 	}
 
 	const left = resolveConstantOperandReference(argument.left, constants);
+	if (!isBinaryCompileTimeExpression(argument)) {
+		return left === argument.left ? argument : { ...argument, left };
+	}
+
 	const right = resolveConstantOperandReference(argument.right, constants);
 	if (left === argument.left && right === argument.right) {
 		return argument;

@@ -8,7 +8,7 @@ export type CompileTimeMulDivExpression = {
  * Finds the index of the single `+`, `-`, `*`, `/`, or `^` operator that appears outside of parentheses.
  * Returns -1 if there is no such operator, or -2 if there is more than one.
  */
-function findOperatorOutsideParens(value: string): number {
+export function findOperatorOutsideParens(value: string): number {
 	let depth = 0;
 	let operatorIndex = -1;
 
