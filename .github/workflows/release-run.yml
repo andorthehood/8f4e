@@ -55,7 +55,7 @@ jobs:
           npx nx release --skip-publish
 
       - name: Build sites, collect metrics, and test
-        run: npx nx run @8f4e/8f4e-website:release-check --parallel=2
+        run: npx nx run @8f4e/release:check --parallel=2
 
       - name: Commit release metrics
         run: |

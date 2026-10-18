@@ -8,7 +8,7 @@ deployment stages are implemented by `release-run.yml` and `release-deploy.yml` 
 
 The workflow performs these stages:
 
-1. One job checks out and installs dependencies once, versions packages with Nx, and runs the `release-check` Nx
+1. One job checks out and installs dependencies once, versions packages with Nx, and runs the `@8f4e/release:check` Nx
    target. Nx builds both websites while tests run in parallel on the same runner, records release metrics, saves
    the website artifacts, and atomically pushes the release commits and tags to `main`.
 2. After the push succeeds, two jobs deploy the saved website artifacts in parallel: 8f4e.com to the `8f4e-website`

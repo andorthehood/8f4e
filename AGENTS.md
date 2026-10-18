@@ -33,7 +33,7 @@
 - `npx nx run @8f4e/editor-website:build`: Builds the default composition and website production bundle.
 - `npx nx run @8f4e/8f4e-website:dev`: Starts the example product website on `http://localhost:3001`.
 - `npx nx run @8f4e/8f4e-website:build`: Builds the example product website and its editor dependencies.
-- `npx nx run @8f4e/8f4e-website:release-check --parallel=2`: Runs release builds and metrics in parallel with
+- `npx nx run @8f4e/release:check --parallel=2`: Runs release builds and metrics in parallel with
   tests and coverage on one runner.
 - `npx nx run @8f4e/vite-plugin-sources:build|test|typecheck`: Build or verify the reusable source collection plugin.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
