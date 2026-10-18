@@ -1,20 +1,20 @@
 ---
-name: Release / Prepare
+name: Release / Run
 
 on:
   workflow_call:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD || 'true' }}
 
 jobs:
-  prepare:
-    name: Prepare release
+  release:
+    name: Build, test, and publish
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
 
     steps:
       - name: Validate branch
@@ -53,21 +53,32 @@ jobs:
           fi
 
           npx nx release --skip-publish
-          git branch prepared-release HEAD
 
-          prepared_tags=()
-          while IFS= read -r prepared_tag; do
-            prepared_tags+=("$prepared_tag")
-          done < <(git tag --points-at HEAD --format='%(refname)')
+      - name: Build sites, collect metrics, and test
+        run: npx nx run @8f4e/release:check --parallel=2
 
-          git bundle create prepared-release.bundle \
-            refs/heads/prepared-release \
-            "${prepared_tags[@]}" \
-            "^$GITHUB_SHA"
+      - name: Commit release metrics
+        run: |
+          git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): record release metrics" --no-verify
+          fi
 
-      - name: Upload prepared release
+      - name: Upload 8f4e.com
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: prepared-release
-          path: prepared-release.bundle
+          name: 8f4e-website
+          path: packages/8f4e-website/dist
+          include-hidden-files: true
           retention-days: 1
+
+      - name: Upload editor.8f4e.com
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: editor-website
+          path: packages/editor/packages/editor-website/dist
+          include-hidden-files: true
+          retention-days: 1
+
+      - name: Push release
+        run: git push origin HEAD:main --follow-tags --no-verify --atomic
