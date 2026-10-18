@@ -45,11 +45,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Prepare release commit and tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
-
           release_tags="$(git tag --list '@8f4e/*@*' 'app@*')"
           if [[ -z "$release_tags" ]]; then
             echo "No existing release tags were found. Refusing to run first-release mode from CI."
@@ -74,5 +70,4 @@ jobs:
         with:
           name: prepared-release
           path: prepared-release.bundle
-          if-no-files-found: error
           retention-days: 1

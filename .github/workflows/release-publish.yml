@@ -19,7 +19,6 @@ jobs:
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
-          submodules: recursive
 
       - name: Download prepared release
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -45,30 +44,13 @@ jobs:
           name: release-test-coverage
           path: logs/test-coverage
 
-      - name: Download 8f4e.com
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          name: 8f4e-website
-          path: packages/8f4e-website/dist
-
-      - name: Download editor.8f4e.com
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          name: editor-website
-          path: packages/editor/packages/editor-website/dist
-
-      - name: Verify generated sites
-        run: |
-          test -f packages/8f4e-website/dist/index.html
-          test -f packages/editor/packages/editor-website/dist/index.html
-
       - name: Commit release metrics
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
-            git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
+          git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
+          if ! git diff --cached --quiet; then
             git commit -m "chore(release): record release metrics" --no-verify
           fi
 

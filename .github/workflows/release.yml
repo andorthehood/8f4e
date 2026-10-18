@@ -14,15 +14,11 @@ concurrency:
 jobs:
   prepare:
     name: Prepare
-    permissions:
-      contents: read
     uses: ./.github/workflows/release-prepare.yml
 
   verify:
     name: Verify
     needs: prepare
-    permissions:
-      contents: read
     uses: ./.github/workflows/release-verify.yml
 
   publish:
@@ -35,8 +31,7 @@ jobs:
   deploy:
     name: Deploy
     needs: publish
-    permissions:
-      contents: read
+    permissions: {}
     uses: ./.github/workflows/release-deploy.yml
     secrets:
       cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}

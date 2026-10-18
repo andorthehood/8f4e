@@ -13,9 +13,8 @@ The workflow performs these stages:
    workflow artifact.
 2. Two jobs restore the prepared release and run in parallel. One runs tests and records test coverage. The other
    builds both websites and records bundle size, bytecode size, compiler coverage, and TSDoc coverage metrics.
-3. The publishing job restores the same prepared release, combines the generated metrics and website artifacts,
-   verifies both website builds, commits changed release metrics, and atomically pushes the release commits and tags
-   to `main`.
+3. The publishing job restores the same prepared release, combines the generated metrics, commits any changes, and
+   atomically pushes the release commits and tags to `main`.
 4. After the push succeeds, two jobs deploy the saved website artifacts in parallel: 8f4e.com to the `8f4e-website`
    Cloudflare Pages project and editor.8f4e.com to the `8f4e` project. Both deployments use their production `main`
    branch.
