@@ -54,21 +54,32 @@ jobs:
 
           npx nx release --skip-publish
 
-      - name: Build editor.8f4e.com and collect metrics
-        run: |
-          npx nx run @8f4e/editor-website:build
-          node scripts/log-bundle-sizes.mjs
-          npx nx run @8f4e/examples:log-bytecode-size
-          npx nx run @8f4e/examples:log-compiler-coverage-counts
-          npx nx run @8f4e/compiler:docs-coverage
+      - name: Build config package
+        run: npx nx run @8f4e/config:build
 
-      - name: Run tests with coverage
+      - name: Build sites, collect metrics, and test
         run: |
-          npx nx run-many --target=test --all --exclude=@8f4e/editor-website,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
-          node scripts/log-test-coverage.mjs
+          (
+            export NX_PARALLEL=2
+            npx nx run @8f4e/editor-website:build
+            node scripts/log-bundle-sizes.mjs
+            npx nx run @8f4e/examples:log-bytecode-size
+            npx nx run @8f4e/examples:log-compiler-coverage-counts
+            npx nx run @8f4e/compiler:docs-coverage
+            npx nx run @8f4e/8f4e-website:build
+          ) &
+          build_pid=$!
 
-      - name: Build 8f4e.com
-        run: npx nx run @8f4e/8f4e-website:build
+          (
+            npx nx run-many --target=test --all --exclude=@8f4e/editor-website,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
+            node scripts/log-test-coverage.mjs
+          ) &
+          test_pid=$!
+
+          status=0
+          wait "$build_pid" || status=$?
+          wait "$test_pid" || status=$?
+          exit "$status"
 
       - name: Commit release metrics
         run: |
