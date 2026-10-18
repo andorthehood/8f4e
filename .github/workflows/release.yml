@@ -12,25 +12,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  prepare:
-    name: Prepare
-    uses: ./.github/workflows/release-prepare.yml
-
-  verify:
-    name: Verify
-    needs: prepare
-    uses: ./.github/workflows/release-verify.yml
-
-  publish:
-    name: Publish
-    needs: verify
+  release:
+    name: Release
     permissions:
       contents: write
-    uses: ./.github/workflows/release-publish.yml
+    uses: ./.github/workflows/release-run.yml
 
   deploy:
     name: Deploy
-    needs: publish
+    needs: release
     permissions: {}
     uses: ./.github/workflows/release-deploy.yml
     secrets:
