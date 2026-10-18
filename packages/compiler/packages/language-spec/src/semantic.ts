@@ -485,7 +485,6 @@ export type BlockStack = BlockStackFrame[];
 /** Mutable block tracking shared by analysis and bytecode emission. */
 export interface BlockState<TLoop extends LoopBlockStackFrame = LoopBlockStackFrame> {
 	blockStack: Array<Exclude<BlockStackFrame, LoopBlockStackFrame> | TLoop>;
-	activeBlockDepths: Record<BlockTypeValue, number>;
 	activeLoopBlocks: TLoop[];
 	activeMapBlock?: MapBlockStackFrame;
 }
