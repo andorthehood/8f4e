@@ -90,7 +90,8 @@ export function planScalarDeclarationLayout(input: {
 	const absoluteWordOffset = getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset);
 	const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, nonPointerElementWordSize);
 	const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-	const wordAlignedSize = alignmentPadding + 2;
+	const occupiedWordSize = nonPointerElementWordSize / GLOBAL_ALIGNMENT_BOUNDARY;
+	const wordAlignedSize = alignmentPadding + occupiedWordSize;
 	const byteAddress = getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset);
 
 	return {
@@ -99,11 +100,11 @@ export function planScalarDeclarationLayout(input: {
 			elementWordSize: nonPointerElementWordSize,
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			wordAlignedSize,
-			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+			wordAlignedByteLength: getWordAlignedByteLength(occupiedWordSize),
 			byteAddress,
 			elementByteLength: numberOfElements * nonPointerElementWordSize,
-			endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
-			endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
+			endByteAddress: getEndByteAddress(byteAddress, occupiedWordSize),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(occupiedWordSize),
 			id: input.id,
 			lineNumber: input.lineNumber,
 			type: input.instruction,
@@ -132,8 +133,8 @@ export function planArrayDeclarationLayout(input: {
 	const absoluteWordOffset = getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset);
 	const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, elementWordSize);
 	const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-	const wordAlignedSize =
-		alignmentPadding + Math.ceil((input.numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
+	const occupiedWordSize = Math.ceil((input.numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
+	const wordAlignedSize = alignmentPadding + occupiedWordSize;
 	const pointeeBaseType = getArrayPointeeBaseType(input.instruction);
 	const byteAddress = getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset);
 
@@ -142,14 +143,14 @@ export function planArrayDeclarationLayout(input: {
 			numberOfElements: input.numberOfElements,
 			elementWordSize,
 			wordAlignedSize,
-			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+			wordAlignedByteLength: getWordAlignedByteLength(occupiedWordSize),
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			id: input.id,
 			lineNumber: input.lineNumber,
 			byteAddress,
 			elementByteLength: input.numberOfElements * elementWordSize,
-			endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
-			endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
+			endByteAddress: getEndByteAddress(byteAddress, occupiedWordSize),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(occupiedWordSize),
 			isInteger: input.instruction.startsWith('int') || input.instruction.includes('*'),
 			pointerDepth,
 			...(pointeeBaseType ? { pointeeBaseType } : {}),

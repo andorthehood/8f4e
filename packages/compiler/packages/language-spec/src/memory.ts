@@ -160,8 +160,9 @@ export interface PlannedMemoryDeclaration {
 	byteAddress: number;
 	/** Actual value bytes covered by declared elements, excluding alignment padding. */
 	elementByteLength: number;
+	/** Allocation words consumed, including any leading alignment padding. */
 	wordAlignedSize: number;
-	/** Byte length represented by `wordAlignedSize`. */
+	/** Word-aligned storage length from `byteAddress`, excluding leading alignment padding. */
 	wordAlignedByteLength: number;
 	wordAlignedAddress: number;
 	/** Last aligned byte address occupied by this declaration. */
