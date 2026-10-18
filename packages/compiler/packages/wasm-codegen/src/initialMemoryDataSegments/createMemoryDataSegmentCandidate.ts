@@ -68,6 +68,7 @@ function createArrayDataSegmentCandidates(
 			value,
 		}))
 		.sort((left, right) => left.elementIndex - right.elementIndex)) {
+		// Skip encoding positive zero while preserving floating-point negative zero's sign bit.
 		if (Object.is(value, 0)) {
 			flushRun();
 			continue;
