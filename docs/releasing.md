@@ -3,6 +3,10 @@
 To release and deploy production, manually run the **Release** GitHub Actions workflow from `main`.
 The workflow rejects other branches. Pushes and merges to `main` run checks without deploying.
 
+The entry workflow in `.github/workflows/release.yml` only defines the stage order and permissions. Each stage is
+implemented by a focused reusable workflow beside it: `release-prepare.yml`, `release-verify.yml`,
+`release-publish.yml`, and `release-deploy.yml`.
+
 The workflow performs these stages:
 
 1. The preparation job versions packages with Nx, creates release tags, and saves that unpushed Git state as a
