@@ -413,6 +413,98 @@
       "name": "increment",
       "type": "function",
     },
+    "mix__int__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mix",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "left",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "right",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "left",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "right",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mix",
+      "type": "function",
+    },
     "readScaledBlep__float_p__int__float": {
       "lines": [
         {
@@ -795,6 +887,18 @@
         ],
         "returns": [
           "int",
+        ],
+      },
+    },
+    "mix__int__float": {
+      "id": "mix__int__float",
+      "signature": {
+        "parameters": [
+          "int",
+          "float",
+        ],
+        "returns": [
+          "float",
         ],
       },
     },
@@ -1413,6 +1517,58 @@
       ],
       "type": "module",
     },
+    "inlineCallArguments": {
+      "id": "inlineCallArguments",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "inlineCallArguments",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mix",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1.5,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.5,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
   },
   "moduleMemory": {
     "callConstantFunction": {
@@ -1509,6 +1665,9 @@
         },
       },
     },
+    "inlineCallArguments": {
+      "memory": {},
+    },
   },
   "overview": {
     "compiledFunctions": [
@@ -1520,6 +1679,7 @@
       "getTwo__void",
       "identityFloat64__float64",
       "increment__int",
+      "mix__int__float",
       "readScaledBlep__float_p__int__float",
       "scaleInto__float_p__float_p__float",
     ],
@@ -1532,6 +1692,7 @@
       "callMultipleFunctions",
       "callNestedFunction",
       "callPointerParamsWithLocalDereference",
+      "inlineCallArguments",
     ],
     "requiredMemoryBytes": 148,
     "wasmExports": [
