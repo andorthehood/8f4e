@@ -465,6 +465,21 @@ describe('tryResolveValueArgument', () => {
 		});
 	});
 
+	it('applies explicit rounding after resolving memory expressions', () => {
+		expect(tryResolveValueArgument(mockContext, parseArgument('round(count(samples)/3)'))).toEqual({
+			value: 3,
+			isInteger: true,
+		});
+		expect(tryResolveValueArgument(mockContext, parseArgument('floor(count(samples)/3)'))).toEqual({
+			value: 2,
+			isInteger: true,
+		});
+		expect(tryResolveValueArgument(mockContext, parseArgument('ceil(sizeof(samples))'))).toEqual({
+			value: 2,
+			isInteger: true,
+		});
+	});
+
 	it('resolves local memory metadata queries', () => {
 		expect(tryResolveValueArgument(mockContext, parseArgument('count(*floatPtr)'))).toEqual({
 			value: 4,

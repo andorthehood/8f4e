@@ -57,6 +57,7 @@ export const ErrorCode = {
 	GROUP_MEMORY_INITIALIZER_OUTSIDE_GROUP: 74,
 	INVALID_GROUP_MEMORY_INITIALIZER_TARGET: 75,
 	DUPLICATE_GROUP_MEMORY_INITIALIZER: 76,
+	INVALID_ARRAY_SIZE: 77,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

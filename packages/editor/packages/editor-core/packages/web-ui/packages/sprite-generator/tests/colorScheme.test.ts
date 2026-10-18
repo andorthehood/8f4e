@@ -11,6 +11,7 @@ describe('color scheme resolution', () => {
 		expect(colorScheme.text).not.toBe(defaultColorScheme.text);
 		expect(colorScheme.fill).not.toBe(defaultColorScheme.fill);
 		expect(colorScheme.icons).not.toBe(defaultColorScheme.icons);
+		expect(colorScheme.fill.waveformBackground).toBe('rgba(0,0,0,0)');
 	});
 
 	it('merges partial overrides with sprite-generator defaults', () => {

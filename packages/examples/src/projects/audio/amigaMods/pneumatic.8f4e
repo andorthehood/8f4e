@@ -1,2214 +1,10 @@
 8f4e/v1
 
 includes
+; @pos -50 -96
 include std/events/risingEdge
 include std/events/hasChanged
 includesEnd
-
-entry main
-module modTickClock
-; @pos -175 -28
-use mod
-
-int tempo 125 ; @w
-int out
-int counter ; @w
-
-; @watch counter
-
-push &out
-push 0
-store
-
-push counter
-push 1
-add
-
-push SAMPLE_RATE
-push 5
-mul
-
-push tempo
-ensureNonZero
-push 2
-mul
-ensureNonZero
-div
-
-greaterOrEqual
-if
-push &counter
-push 0
-store
-
-push &out
-push 1
-store
-ifEnd
-
-push &counter
-push counter
-push 1
-add
-store
-
-moduleEnd
-module patternOrder
-; @pos -141 -28
-; @tab 6
-int	0x02
-int	0x03
-int	0x04
-int	0x05
-int	0x01
-int	0x06
-int	0x07
-int	0x08
-int	0x09
-int	0x0a
-int	0x0b
-int	0x0c
-int	0x09
-int	0x0a
-int	0x0b
-int	0x10
-int	0x11
-int	0x12
-int	0x14
-int	0x15
-int	0x13
-int	0x16
-int	0x17
-int	0x18
-int	0x0d
-int	0x0e
-int	0x00
-int	0x1b
-int	0x0d
-int	0x0d
-int	0x0d
-int	0x19
-int	0x1a
-int	0x1a
-int	0x1a
-int	0x1c
-int	0x1d
-int	0x1e
-int	0x1d
-int	0x1e
-int	0x1f
-int	0x20
-int	0x21
-int	0x22
-int	0x21
-int	0x23
-int	0x24
-int	0x25
-int	0x26
-
-moduleEnd
-module modRowClock
-; @pos -107 -28
-use env
-int* tick &modTickClock:out
-int previousTick
-int ticks 6 ; @w
-int out
-int counter
-
-push &out
-push 0
-store
-
-push *tick
-call risingEdge &previousTick
-if
-push counter
-push 1
-add
-push ticks
-ensureNonZero
-greaterOrEqual
-if
-push &counter
-push 0
-store
-
-push &out
-push 1
-store
-else
-push &counter
-push counter
-push 1
-add
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module modRowCounter
-; @pos -71 -28
-use env
-int* trigger &modRowClock:out
-int previousTrigger
-int rowCounter -1
-int* patternPointer &patternOrder:0
-int out ; @w
-
-; @watch rowCounter
-; @watch out
-; @watch patternCounter
-
-; Advance the playhead
-push *trigger
-call risingEdge &previousTrigger
-if
-push &rowCounter
-push rowCounter
-push 1
-add
-store
-ifEnd
-
-push rowCounter
-push 64
-equal
-if
-push &rowCounter
-push 0
-store
-
-push &patternPointer
-push patternPointer
-push sizeof(*patternPointer)
-add
-store
-ifEnd
-
-push patternPointer
-push patternOrder:&
-greaterThan
-if
-push &patternPointer
-push &patternOrder:
-store
-ifEnd
-
-push &out
-push rowCounter
-push *patternPointer
-push 64
-mul
-add
-store
-
-moduleEnd
-module assets
-; @pos -3 -116
-; @tab 22
-; @config bin.sample1.url https://static.8f4e.com/assets/mods/pneumatic/sample_1.pcm
-; @config bin.sample2.url https://static.8f4e.com/assets/mods/pneumatic/sample_2.pcm
-; @config bin.sample3.url https://static.8f4e.com/assets/mods/pneumatic/sample_3.pcm
-; @config bin.sample4.url https://static.8f4e.com/assets/mods/pneumatic/sample_4.pcm
-; @config bin.sample5.url https://static.8f4e.com/assets/mods/pneumatic/sample_5.pcm
-; @config bin.sample6.url https://static.8f4e.com/assets/mods/pneumatic/sample_6.pcm
-; @config bin.sample7.url https://static.8f4e.com/assets/mods/pneumatic/sample_7.pcm
-; @config bin.sample8.url https://static.8f4e.com/assets/mods/pneumatic/sample_8.pcm
-; @config bin.sample10.url https://static.8f4e.com/assets/mods/pneumatic/sample_10.pcm
-; @config bin.sample11.url https://static.8f4e.com/assets/mods/pneumatic/sample_11.pcm
-; @config bin.sample12.url https://static.8f4e.com/assets/mods/pneumatic/sample_12.pcm
-; @config bin.sample13.url https://static.8f4e.com/assets/mods/pneumatic/sample_13.pcm
-; @config bin.sample14.url https://static.8f4e.com/assets/mods/pneumatic/sample_14.pcm
-; @config bin.sample15.url https://static.8f4e.com/assets/mods/pneumatic/sample_15.pcm
-; @config bin.sample16.url https://static.8f4e.com/assets/mods/pneumatic/sample_16.pcm
-; @config bin.sample17.url https://static.8f4e.com/assets/mods/pneumatic/sample_17.pcm
-; @config bin.sample18.url https://static.8f4e.com/assets/mods/pneumatic/sample_18.pcm
-; @config bin.sample19.url https://static.8f4e.com/assets/mods/pneumatic/sample_19.pcm
-; @config bin.sample20.url https://static.8f4e.com/assets/mods/pneumatic/sample_20.pcm
-; @config bin.sample21.url https://static.8f4e.com/assets/mods/pneumatic/sample_21.pcm
-; @config bin.sample22.url https://static.8f4e.com/assets/mods/pneumatic/sample_22.pcm
-; @config bin.sample23.url https://static.8f4e.com/assets/mods/pneumatic/sample_23.pcm
-; @config bin.sample24.url https://static.8f4e.com/assets/mods/pneumatic/sample_24.pcm
-; @config bin.sample25.url https://static.8f4e.com/assets/mods/pneumatic/sample_25.pcm
-; @config bin.sample26.url https://static.8f4e.com/assets/mods/pneumatic/sample_26.pcm
-; @config bin.sample27.url https://static.8f4e.com/assets/mods/pneumatic/sample_27.pcm
-; @config bin.sample28.url https://static.8f4e.com/assets/mods/pneumatic/sample_28.pcm
-; @config bin.sample29.url https://static.8f4e.com/assets/mods/pneumatic/sample_29.pcm
-; @config bin.sample30.url https://static.8f4e.com/assets/mods/pneumatic/sample_30.pcm
-; @config bin.sample31.url https://static.8f4e.com/assets/mods/pneumatic/sample_31.pcm
-; @config bin.ch1.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch1.bin
-; @config bin.ch2.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch2.bin
-; @config bin.ch3.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch3.bin
-; @config bin.ch4.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch4.bin
-
-moduleEnd
-module rowCount1
-; @pos -2 19
-int* in &modRowCounter:out
-int out
-; We can afford some reading
-; and writing to memory
-; for better aesthethics.
-push &out
-push *in
-store
-moduleEnd
-module projectConfig
-; @pos 9 -125
-; @config runtime AudioWorkletRuntime
-; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
-; @config export.fileName pneumatic
-
-moduleEnd
-module scope1
-; @pos 28 -17
-float* in &amp1:out
-float[] buffer 64
-; @plot &buffer 64
-; @hide
-int bufferPointer &buffer
-
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-module rowBuffer1
-; @pos 28 -1
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-
-int* row &rowCount1:out
-; @hide
-use env
-int[] _dat ASSET_CH1_SIZE/4
-; @config bin.ch1.memory _dat
-local int loopCounter
-
-loop 8
-push &this
-push loopCounter
-push sizeof(_dat)
-mul
-add
-push &_dat
-push *row
-push loopCounter
-add
-push sizeof(_dat)
-mul
-add
-load
-store
-
-push loopCounter
-push 1
-add
-localSet loopCounter
-
-loopEnd
-
-moduleEnd
-module scope2
-; @pos 64 -17
-float* in &amp2:out
-float[] buffer 64
-; @plot &buffer 64
-; @hide
-int bufferPointer &buffer
-
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-module rowBuffer2
-; @pos 64 -1
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-
-int* row &rowCount1:out
-; @hide
-use env
-int[] _dat ASSET_CH2_SIZE/4
-; @config bin.ch2.memory _dat
-
-local int loopCounter
-
-loop 8
-push &this
-push loopCounter
-push sizeof(_dat)
-mul
-add
-push &_dat
-push *row
-push loopCounter
-add
-push sizeof(_dat)
-mul
-add
-load
-store
-
-push loopCounter
-push 1
-add
-localSet loopCounter
-
-loopEnd
-
-moduleEnd
-module scope3
-; @pos 100 -17
-float* in &amp3:out
-float[] buffer 64
-; @plot &buffer 64
-; @hide
-int bufferPointer &buffer
-
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-module rowBuffer3
-; @pos 100 -1
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-
-int* row &rowCount1:out
-; @hide
-use env
-int[] _dat ASSET_CH3_SIZE/4
-; @config bin.ch3.memory _dat
-
-local int loopCounter
-
-loop 8
-push &this
-push loopCounter
-push sizeof(_dat)
-mul
-add
-push &_dat
-push *row
-push loopCounter
-add
-push sizeof(_dat)
-mul
-add
-load
-store
-
-push loopCounter
-push 1
-add
-localSet loopCounter
-
-loopEnd
-
-moduleEnd
-module scope4
-; @pos 136 -17
-float* in &amp4:out
-float[] buffer 64
-; @plot &buffer 64
-; @hide
-int bufferPointer &buffer
-
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-module rowBuffer4
-; @pos 136 -1
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-
-int* row &rowCount1:out
-; @hide
-use env
-int[] _dat ASSET_CH4_SIZE/4
-; @config bin.ch4.memory _dat
-
-local int loopCounter
-
-loop 8
-push &this
-push loopCounter
-push sizeof(_dat)
-mul
-add
-push &_dat
-push *row
-push loopCounter
-add
-push sizeof(_dat)
-mul
-add
-load
-store
-
-push loopCounter
-push 1
-add
-localSet loopCounter
-
-loopEnd
-
-moduleEnd
-module rowCount2
-; @pos 152 -33
-int* in &modRowCounter:out
-int out
-
-push &out
-push *in
-store
-
-moduleEnd
-module sampleOffset3
-; @pos 196 21
-; @group ch3
-use mod
-int* row &rowBuffer3:
-int out ;@w
-int memory ;@w
-
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleOffset4
-; @pos 196 68
-; @group ch4
-use mod
-int* row &rowBuffer4:
-int out ;@w
-int memory ;@w
-
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleOffset2
-; @pos 197 -26
-; @group ch2
-use mod
-int* row &rowBuffer2:
-int out ;@w
-int memory ;@w
-
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleOffset1
-; @pos 198 -73
-; @group ch1
-use mod
-int* row &rowBuffer1:
-int out ;@w
-int memory ;@w
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module tempo3
-; @pos 232 21
-; @group ch3
-use mod
-int* row &rowBuffer3:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
-int* rowCounter &rowCount2:out
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call maskEffect
-push SET_SPEED
-equal
-if
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-module tempo2
-; @pos 233 -26
-; @group ch2
-use mod
-int* row &rowBuffer2:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
-int* rowCounter &rowCount2:out
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call maskEffect
-push SET_SPEED
-equal
-if
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-module tempo4
-; @pos 233 68
-; @group ch4
-use mod
-int* row &rowBuffer4:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
-int* rowCounter &rowCount2:out
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call maskEffect
-push SET_SPEED
-equal
-if
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-module tempo1
-; @pos 236 -73
-; @group ch1
-use mod
-int* row &rowBuffer1:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
-int* rowCounter &rowCount2:out
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call maskEffect
-push SET_SPEED
-equal
-if
-	push *row
-	call maskParam
-	push 32
-	greaterOrEqual
-		if
-		push tempo
-		push *row
-		call maskParam
-		store
-		else
-		push ticks
-		push *row
-	call maskParam
-	store
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleNumber3
-; @pos 273 21
-; @group ch3
-int* row &rowBuffer3:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
-module sampleNumber4
-; @pos 274 68
-; @group ch4
-int* row &rowBuffer4:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
-module sampleNumber1
-; @pos 275 -73
-; @group ch1
-int* row &rowBuffer1:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
-module sampleNumber2
-; @pos 275 -26
-; @group ch2
-int* row &rowBuffer2:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
-module period3
-; @pos 307 21
-; @group ch3
-int* row &rowBuffer3:
-int* sampleNumber &sampleNumber3:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
-module period4
-; @pos 308 68
-; @group ch4
-int* row &rowBuffer4:
-int* sampleNumber &sampleNumber4:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
-module period1
-; @pos 309 -73
-; @group ch1
-int* row &rowBuffer1:
-int* sampleNumber &sampleNumber1:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
-module period2
-; @pos 309 -26
-; @group ch2
-int* row &rowBuffer2:
-int* sampleNumber &sampleNumber2:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
-module trigger1
-; @pos 354 -73
-; @group ch1
-int* row &rowBuffer1:
-int* rowCounter &rowCount2:out
-int* period &period1:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger2
-; @pos 354 -26
-; @group ch2
-int* row &rowBuffer2:
-int* rowCounter &rowCount2:out
-int* period &period2:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger3
-; @pos 354 21
-; @group ch3
-int* row &rowBuffer3:
-int* rowCounter &rowCount2:out
-int* period &period3:out
-int out
-
-; @watch out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module trigger4
-; @pos 354 68
-; @group ch4
-int* row &rowBuffer4:
-int* rowCounter &rowCount2:out
-int* period &period4:out
-int out
-
-int prevRowCounter
-push &out
-push 0
-store
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push &out
-push *row
-call maskPeriod
-push 0
-greaterThan
-store
-ifEnd
-
-moduleEnd
-module volume1
-; @pos 393 -73
-; @group ch1
-use mod
-int* row &rowBuffer1:
-int* tick &modTickClock:out
-int previousTick
-int* rowTrigger &modRowClock:out
-int* rowCounter &rowCount2:out
-int out ; @w
-
-; Reload base volume on
-; tick 0 / row advance.
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call rowShouldReloadVolume
-if
-push &out
-push *row
-call loadRowVolume
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-call risingEdge &previousTick
-if
-push &out
-push out
-push *row
-call rowVolumeSlideDelta
-add
-call clampVolume
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module volume2
-; @pos 393 -26
-; @group ch2
-use mod
-int* row &rowBuffer2:
-int* tick &modTickClock:out
-int previousTick
-int* rowTrigger &modRowClock:out
-int* rowCounter &rowCount2:out
-int out ; @w
-
-; Reload base volume on
-; tick 0 / row advance.
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call rowShouldReloadVolume
-if
-push &out
-push *row
-call loadRowVolume
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-call risingEdge &previousTick
-if
-push &out
-push out
-push *row
-call rowVolumeSlideDelta
-add
-call clampVolume
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module volume3
-; @pos 393 21
-; @group ch3
-use mod
-int* row &rowBuffer3:
-int* tick &modTickClock:out
-int previousTick
-int* rowTrigger &modRowClock:out
-int* rowCounter &rowCount2:out
-int out ; @w
-
-; Reload base volume on
-; tick 0 / row advance.
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call rowShouldReloadVolume
-if
-push &out
-push *row
-call loadRowVolume
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-call risingEdge &previousTick
-if
-push &out
-push out
-push *row
-call rowVolumeSlideDelta
-add
-call clampVolume
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module volume4
-; @pos 393 68
-; @group ch4
-use mod
-int* row &rowBuffer4:
-int* tick &modTickClock:out
-int previousTick
-int* rowTrigger &modRowClock:out
-int* rowCounter &rowCount2:out
-int out ; @w
-
-; Reload base volume on
-; tick 0 / row advance.
-int prevRowCounter
-push *rowCounter
-call hasChanged &prevRowCounter
-if
-push *row
-call rowShouldReloadVolume
-if
-push &out
-push *row
-call loadRowVolume
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-call risingEdge &previousTick
-if
-push &out
-push out
-push *row
-call rowVolumeSlideDelta
-add
-call clampVolume
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module samplePack1
-; @pos 445 -16
-use env
-int8[] sample0 1
-int8[] sample1 ASSET_SAMPLE1_SIZE
-; @config bin.sample1.memory sample1
-; @wave &sample1 count(sample1)
-int8[] sample2 ASSET_SAMPLE2_SIZE
-; @config bin.sample2.memory sample2
-; @wave &sample2 count(sample2)
-int8[] sample3 ASSET_SAMPLE3_SIZE
-; @config bin.sample3.memory sample3
-; @wave &sample3 count(sample3)
-int8[] sample4 ASSET_SAMPLE4_SIZE
-; @config bin.sample4.memory sample4
-; @wave &sample4 count(sample4)
-int8[] sample5 ASSET_SAMPLE5_SIZE
-; @config bin.sample5.memory sample5
-; @wave &sample5 count(sample5)
-int8[] sample6 ASSET_SAMPLE6_SIZE
-; @config bin.sample6.memory sample6
-; @wave &sample6 count(sample6)
-int8[] sample7 ASSET_SAMPLE7_SIZE
-; @config bin.sample7.memory sample7
-; @wave &sample7 count(sample7)
-int8[] sample8 ASSET_SAMPLE8_SIZE
-; @config bin.sample8.memory sample8
-; @wave &sample8 count(sample8)
-int8[] sample10 ASSET_SAMPLE10_SIZE
-; @config bin.sample10.memory sample10
-; @wave &sample10 count(sample10)
-int8[] sample11 ASSET_SAMPLE11_SIZE
-; @config bin.sample11.memory sample11
-; @wave &sample11 count(sample11)
-int8[] sample12 ASSET_SAMPLE12_SIZE
-; @config bin.sample12.memory sample12
-; @wave &sample12 count(sample12)
-int8[] sample13 ASSET_SAMPLE13_SIZE
-; @config bin.sample13.memory sample13
-; @wave &sample13 count(sample13)
-int8[] sample14 ASSET_SAMPLE14_SIZE
-; @config bin.sample14.memory sample14
-; @wave &sample14 count(sample14)
-int8[] sample15 ASSET_SAMPLE15_SIZE
-; @config bin.sample15.memory sample15
-; @wave &sample15 count(sample15)
-moduleEnd
-module samplePack2
-; @pos 492 -16
-use env
-int8[] sample16 ASSET_SAMPLE16_SIZE
-; @config bin.sample16.memory sample16
-; @wave &sample16 count(sample16)
-int8[] sample17 ASSET_SAMPLE17_SIZE
-; @config bin.sample17.memory sample17
-; @wave &sample17 count(sample17)
-int8[] sample18 ASSET_SAMPLE18_SIZE
-; @config bin.sample18.memory sample18
-; @wave &sample18 count(sample18)
-int8[] sample19 ASSET_SAMPLE19_SIZE
-; @config bin.sample19.memory sample19
-; @wave &sample19 count(sample19)
-int8[] sample20 ASSET_SAMPLE20_SIZE
-; @config bin.sample20.memory sample20
-; @wave &sample20 count(sample20)
-int8[] sample21 ASSET_SAMPLE21_SIZE
-; @config bin.sample21.memory sample21
-; @wave &sample21 count(sample21)
-int8[] sample22 ASSET_SAMPLE22_SIZE
-; @config bin.sample22.memory sample22
-; @wave &sample22 count(sample22)
-int8[] sample23 ASSET_SAMPLE23_SIZE
-; @config bin.sample23.memory sample23
-; @wave &sample23 count(sample23)
-int8[] sample24 ASSET_SAMPLE24_SIZE
-; @config bin.sample24.memory sample24
-; @wave &sample24 count(sample24)
-int8[] sample25 ASSET_SAMPLE25_SIZE
-; @config bin.sample25.memory sample25
-; @wave &sample25 count(sample25)
-int8[] sample26 ASSET_SAMPLE26_SIZE
-; @config bin.sample26.memory sample26
-; @wave &sample26 count(sample26)
-int8[] sample27 ASSET_SAMPLE27_SIZE
-; @config bin.sample27.memory sample27
-; @wave &sample27 count(sample27)
-int8[] sample28 ASSET_SAMPLE28_SIZE
-; @config bin.sample28.memory sample28
-; @wave &sample28 count(sample28)
-int8[] sample29 ASSET_SAMPLE29_SIZE
-; @config bin.sample29.memory sample29
-; @wave &sample29 count(sample29)
-int8[] sample30 ASSET_SAMPLE30_SIZE
-; @config bin.sample30.memory sample30
-; @wave &sample30 count(sample30)
-int8[] sample31 ASSET_SAMPLE31_SIZE
-; @config bin.sample31.memory sample31
-; @wave &sample31 count(sample31)
-moduleEnd
-module modSamplePlayer2
-; @pos 546 14
-; @group ch2
-use env
-int*  period &period2:out
-int* offset &sampleOffset2:out ; @w *
-int*  trigger &trigger2:out
-int previousTrigger
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-call risingEdge &previousTrigger
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress) ; max value
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-module modSamplePlayer1
-; @pos 548 -8
-; @group ch1
-; @home
-use env
-; @tab 6 20
-int*	period	&period1:out
-int*	offset	&sampleOffset1:out
-int*	trigger	&trigger1:out
-int	previousTrigger
-int*	sampleNumber	&sampleNumber1:out
-int8*	sampleAddress	; @w
-int8*	playhead	; @w
-int	sampleSize	; @w
-; @wave2 sampleAddress sampleSize playhead
-float out; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-call risingEdge &previousTrigger
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress) ; max value
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-module ultimateSoundtrackerColors
-; @pos 573 -174
-; @tab 46
-; @config color.fill.moduleBackground	#000
-; @config color.fill.background	#000
-; @config color.fill.backgroundDots	#036
-; @config color.fill.backgroundDots2	#630
-; @config color.fill.highlightedCodeLine	#036
-; @config color.fill.moduleBackgroundDragged	#000
-; @config color.text.instruction	#369
-; @config color.text.code	#c96
-; @config color.text.lineNumber	#630
-; @config color.text.codeComment	#963
-; @config color.text.numbers	#fc9
-; @config color.text.debugInfo	#369
-; @config color.fill.debugInfoBackground	#000
-; @config color.fill.wire	rgba(255,255,255,0.3)
-; @config color.fill.wireHighlighted	#fff
-; @config color.fill.menuItemBackground	#036
-; @config color.fill.menuItemBackgroundHighlighted	#fff
-; @config color.fill.errorMessageBackground	#900
-; @config color.fill.dialogBackground	#036
-; @config color.fill.dialogDimmer	#000
-; @config color.fill.codeBlockHighlightLevel1	#000a14
-; @config color.fill.codeBlockHighlightLevel2	#001429
-; @config color.fill.codeBlockHighlightLevel3	#001f3d
-; @config color.fill.trace	#0f0
-; @config color.fill.scanLine	#fc9
-; @config color.fill.waveform	#369
-; @config color.icons.outputConnectorBackground	#369
-; @config color.icons.outputConnector	#000
-; @config color.icons.inputConnectorBackground	#369
-; @config color.icons.inputConnector	#000
-; @config color.text.arrow	#369
-; @config color.fill.meterGreen	#0f0
-; @config color.fill.meterYellow	#ff0
-; @config color.fill.meterRed	#f00
-moduleEnd
-module modSamplePlayer3
-; @pos 597 -6
-; @group ch3
-use env
-
-int* period &period3:out
-int* offset &sampleOffset3:out ; @w *
-int* trigger &trigger3:out
-int previousTrigger
-int* sampleNumber &sampleNumber3:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-call risingEdge &previousTrigger
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-module modSamplePlayer4
-; @pos 597 18
-; @group ch4
-use env
-
-int* period &period4:out
-int* offset &sampleOffset4:out ; @w *
-int* trigger &trigger4:out
-int previousTrigger
-int* sampleNumber &sampleNumber4:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-call risingEdge &previousTrigger
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-module amp1
-; @pos 661 -22
-
-float* in &modSamplePlayer1:out
-int* volume &volume1:out
-float out ; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 64.0
-div
-mul
-store
-
-moduleEnd
-module amp2
-; @pos 661 -4
-float* in &modSamplePlayer2:out
-int* volume &volume2:out
-float out; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 64.0
-div
-mul
-store
-
-moduleEnd
-module amp3
-; @pos 662 13
-float* in &modSamplePlayer3:out
-int* volume &volume3:out
-float out ; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 64.0
-div
-mul
-store
-
-moduleEnd
-module amp4
-; @pos 662 30
-float* in &modSamplePlayer4:out
-int* volume &volume4:out
-float out; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 64.0
-div
-mul
-store
-
-moduleEnd
-module mixer
-; @pos 708 2
-float* in1 &amp1:out
-float* in2 &amp2:out
-float* in3 &amp3:out
-float* in4 &amp4:out
-
-float outL ; @meter
-float outR ; @meter
-
-push &outL
-push *in1
-push *in3
-add
-push 2.0
-div
-push *in2
-push *in4
-add
-push 5.0
-div
-add
-store
-
-push &outR
-push *in2
-push *in4
-add
-push 2.0
-div
-
-push *in1
-push *in3
-add
-push 5.0
-div
-add
-store
-
-moduleEnd
-module lowpassL
-; @pos 744 -15
-float* in &mixer:outL
-float state 0.0 ; @w
-float out ; @w
-
-use math
-use env
-
-const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*4400
-const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const DECAY E^EXPONENT
-const COEFFICIENT 1-DECAY
-
-push &out
-push state
-push *in
-push state
-sub
-push COEFFICIENT
-mul
-add
-store
-
-push &state
-push out
-store
-
-moduleEnd
-module lowpassR
-; @pos 744 16
-float* in &mixer:outR
-float state 0.0 ; @w
-float out ; @w
-
-use math
-use env
-
-const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*4400
-const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const DECAY E^EXPONENT
-const COEFFICIENT 1-DECAY
-
-push &out
-push state
-push *in
-push state
-sub
-push COEFFICIENT
-mul
-add
-store
-
-push &state
-push out
-store
-
-moduleEnd
-module audiooutL
-; @pos 797 -10
-use env
-
-float* in &lowpassL:out
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer
-; pointer with the word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-module audiooutR
-; @pos 839 -10
-use env
-
-float* in &lowpassR:out
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer
-; pointer with the word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-entryEnd
-
-constants env
-; @pos 96 -158
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2104
-; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 4904
-; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 15938
-; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 11062
-; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 10276
-; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 16404
-; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 16016
-; 'sample_8.pcm'
-const ASSET_SAMPLE8_SIZE 4926
-; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 25774
-; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 52982
-; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 14260
-; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 30708
-; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 6970
-; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 62562
-; 'sample_16.pcm'
-const ASSET_SAMPLE16_SIZE 9826
-; 'sample_17.pcm'
-const ASSET_SAMPLE17_SIZE 4836
-; 'sample_18.pcm'
-const ASSET_SAMPLE18_SIZE 4906
-; 'sample_19.pcm'
-const ASSET_SAMPLE19_SIZE 64490
-; 'sample_20.pcm'
-const ASSET_SAMPLE20_SIZE 10132
-; 'sample_21.pcm'
-const ASSET_SAMPLE21_SIZE 37218
-; 'sample_22.pcm'
-const ASSET_SAMPLE22_SIZE 16426
-; 'sample_23.pcm'
-const ASSET_SAMPLE23_SIZE 10964
-; 'sample_24.pcm'
-const ASSET_SAMPLE24_SIZE 53156
-; 'sample_25.pcm'
-const ASSET_SAMPLE25_SIZE 4540
-; 'sample_26.pcm'
-const ASSET_SAMPLE26_SIZE 12602
-; 'sample_27.pcm'
-const ASSET_SAMPLE27_SIZE 52974
-; 'sample_28.pcm'
-const ASSET_SAMPLE28_SIZE 52892
-; 'sample_29.pcm'
-const ASSET_SAMPLE29_SIZE 12636
-; 'sample_30.pcm'
-const ASSET_SAMPLE30_SIZE 22586
-; 'sample_31.pcm'
-const ASSET_SAMPLE31_SIZE 20432
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 9984
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 9984
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 9984
-; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 9984
-
-constantsEnd
 
 function buffer
 ; @pos 96 -146
@@ -2219,191 +15,6 @@ loop AUDIO_BUFFER_SIZE
 call main
 loopEnd
 functionEnd
-
-constants mod
-; @pos 232 -197
-; @tab 30
-use env
-; Row layout (little-endian)
-const SAMPLE_HI_NIBBLE	0x000000F0
-const PERIOD_HI	0x0000000F
-const PERIOD_LO	0x0000FF00
-const PERIOD_SHIFT	8
-const SAMPLE_LO_NIBBLE	0x00F00000
-const SAMPLE_LO_NIBBLE_SHIFT	20
-const EFFECT_NIBBLE	0x000F0000
-const EFFECT_NIBBLE_SHIFT	16
-const EFFECT_PARAM	0xFF000000
-const EFFECT_PARAM_SHIFT	24
-; AMIGA magic const
-const PAL_AMIGA_CLOCK	7093789.2
-; Default ticks per row
-const SPEED	6
-; PAL VBlank: ticks/sec = BPM * 2/5
-const TICKS_X5	SPEED*5
-const TICKS_HALF	TICKS_X5/2
-; Samples per row = ROW_SAMPLES / tempo
-const ROW_SAMPLES	SAMPLE_RATE*TICKS_HALF
-; Effects
-const ARPEGGIO	0x0
-const PITCH_SLIDE_UP	0x1
-const PITCH_SLIDE_DOWN	0x2
-const TONE_PORTAMENTO	0x3
-const VIBRATE	0x4
-const TONE_PORTA_VOL_SLIDE	0x5
-const VIBRATO_VOL_SLIDE	0x6
-const TREMOLO	0x7
-const SAMPLE_OFFSET	0x9
-const VOLUME_SLIDE	0xA
-const PATTERN_JUMP	0xB
-const SET_VOLUME	0xC
-const PATTERN_BREAK	0xD
-const EXTENDED_EFFECTS	0xE
-const SET_SPEED	0xF
-; Extended effects
-const SET_FILTER	0xE0
-const FINE_SLIDE_UP	0xE1
-const FINE_SLIDE_DOWN	0xE2
-const GLISSANDO_CONTROL	0xE3
-const SET_VIBRATO_WAVEFORM	0xE4
-const SET_FINETUNE	0xE5
-const PATTERN_LOOP	0xE6
-const SET_TREMOLO_WAVEFORM	0xE7
-const RETRIGGER_NOTE	0xE9
-const FINE_VOLUME_SLIDE_UP	0xEA
-const FINE_VOLUME_SLIDE_DOWN	0xEB
-const NOTE_CUT	0xEC
-const NOTE_DELAY	0xED
-const PATTERN_DELAY	0xEE
-const INVERT_LOOP	0xEF
-
-constantsEnd
-
-constants sampleMeta
-; @pos 293 -264
-; @tab 26
-const S01_VOLUME	64
-const S01_FINETUNE	1
-const S01_REPEAT_OFFSET	0
-const S01_REPEAT_LENGTH	2
-const S02_VOLUME	64
-const S02_FINETUNE	1
-const S02_REPEAT_OFFSET	0
-const S02_REPEAT_LENGTH	2
-const S03_VOLUME	64
-const S03_FINETUNE	0
-const S03_REPEAT_OFFSET	0
-const S03_REPEAT_LENGTH	2
-const S04_VOLUME	64
-const S04_FINETUNE	0
-const S04_REPEAT_OFFSET	0
-const S04_REPEAT_LENGTH	2
-const S05_VOLUME	64
-const S05_FINETUNE	4
-const S05_REPEAT_OFFSET	6576
-const S05_REPEAT_LENGTH	3700
-const S06_VOLUME	50
-const S06_FINETUNE	-1
-const S06_REPEAT_OFFSET	0
-const S06_REPEAT_LENGTH	2
-const S07_VOLUME	64
-const S07_FINETUNE	4
-const S07_REPEAT_OFFSET	0
-const S07_REPEAT_LENGTH	2
-const S08_VOLUME	64
-const S08_FINETUNE	0
-const S08_REPEAT_OFFSET	0
-const S08_REPEAT_LENGTH	2
-const S10_VOLUME	52
-const S10_FINETUNE	-2
-const S10_REPEAT_OFFSET	10916
-const S10_REPEAT_LENGTH	14858
-const S11_VOLUME	56
-const S11_FINETUNE	2
-const S11_REPEAT_OFFSET	0
-const S11_REPEAT_LENGTH	2
-const S12_VOLUME	48
-const S12_FINETUNE	2
-const S12_REPEAT_OFFSET	11348
-const S12_REPEAT_LENGTH	2908
-const S13_VOLUME	52
-const S13_FINETUNE	-2
-const S13_REPEAT_OFFSET	23718
-const S13_REPEAT_LENGTH	6990
-const S14_VOLUME	64
-const S14_FINETUNE	1
-const S14_REPEAT_OFFSET	0
-const S14_REPEAT_LENGTH	2
-const S15_VOLUME	64
-const S15_FINETUNE	0
-const S15_REPEAT_OFFSET	0
-const S15_REPEAT_LENGTH	2
-const S16_VOLUME	64
-const S16_FINETUNE	2
-const S16_REPEAT_OFFSET	0
-const S16_REPEAT_LENGTH	2
-const S17_VOLUME	64
-const S17_FINETUNE	1
-const S17_REPEAT_OFFSET	0
-const S17_REPEAT_LENGTH	2
-const S18_VOLUME	64
-const S18_FINETUNE	1
-const S18_REPEAT_OFFSET	0
-const S18_REPEAT_LENGTH	2
-const S19_VOLUME	64
-const S19_FINETUNE	-1
-const S19_REPEAT_OFFSET	17112
-const S19_REPEAT_LENGTH	47378
-const S20_VOLUME	64
-const S20_FINETUNE	2
-const S20_REPEAT_OFFSET	2
-const S20_REPEAT_LENGTH	10130
-const S21_VOLUME	64
-const S21_FINETUNE	2
-const S21_REPEAT_OFFSET	28380
-const S21_REPEAT_LENGTH	8836
-const S22_VOLUME	64
-const S22_FINETUNE	4
-const S22_REPEAT_OFFSET	0
-const S22_REPEAT_LENGTH	2
-const S23_VOLUME	64
-const S23_FINETUNE	0
-const S23_REPEAT_OFFSET	0
-const S23_REPEAT_LENGTH	2
-const S24_VOLUME	56
-const S24_FINETUNE	2
-const S24_REPEAT_OFFSET	0
-const S24_REPEAT_LENGTH	2
-const S25_VOLUME	64
-const S25_FINETUNE	1
-const S25_REPEAT_OFFSET	0
-const S25_REPEAT_LENGTH	2
-const S26_VOLUME	64
-const S26_FINETUNE	2
-const S26_REPEAT_OFFSET	2248
-const S26_REPEAT_LENGTH	10352
-const S27_VOLUME	56
-const S27_FINETUNE	2
-const S27_REPEAT_OFFSET	0
-const S27_REPEAT_LENGTH	2
-const S28_VOLUME	56
-const S28_FINETUNE	2
-const S28_REPEAT_OFFSET	0
-const S28_REPEAT_LENGTH	2
-const S29_VOLUME	64
-const S29_FINETUNE	2
-const S29_REPEAT_OFFSET	0
-const S29_REPEAT_LENGTH	2
-const S30_VOLUME	64
-const S30_FINETUNE	2
-const S30_REPEAT_OFFSET	15536
-const S30_REPEAT_LENGTH	7050
-const S31_VOLUME	64
-const S31_FINETUNE	2
-const S31_REPEAT_OFFSET	16410
-const S31_REPEAT_LENGTH	4020
-
-constantsEnd
 
 function maskSampleNumber
 ; @pos 297 -128
@@ -2978,8 +589,274 @@ sub
 
 functionEnd int
 
+constants env
+; @pos 96 -158
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 9984
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 9984
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 9984
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 9984
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2104
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 4904
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 15938
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 11062
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 10276
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 16404
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 16016
+; 'sample_8.pcm'
+const ASSET_SAMPLE8_SIZE 4926
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 25774
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 52982
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 14260
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 30708
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 6970
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 62562
+; 'sample_16.pcm'
+const ASSET_SAMPLE16_SIZE 9826
+; 'sample_17.pcm'
+const ASSET_SAMPLE17_SIZE 4836
+; 'sample_18.pcm'
+const ASSET_SAMPLE18_SIZE 4906
+; 'sample_19.pcm'
+const ASSET_SAMPLE19_SIZE 64490
+; 'sample_20.pcm'
+const ASSET_SAMPLE20_SIZE 10132
+; 'sample_21.pcm'
+const ASSET_SAMPLE21_SIZE 37218
+; 'sample_22.pcm'
+const ASSET_SAMPLE22_SIZE 16426
+; 'sample_23.pcm'
+const ASSET_SAMPLE23_SIZE 10964
+; 'sample_24.pcm'
+const ASSET_SAMPLE24_SIZE 53156
+; 'sample_25.pcm'
+const ASSET_SAMPLE25_SIZE 4540
+; 'sample_26.pcm'
+const ASSET_SAMPLE26_SIZE 12602
+; 'sample_27.pcm'
+const ASSET_SAMPLE27_SIZE 52974
+; 'sample_28.pcm'
+const ASSET_SAMPLE28_SIZE 52892
+; 'sample_29.pcm'
+const ASSET_SAMPLE29_SIZE 12636
+; 'sample_30.pcm'
+const ASSET_SAMPLE30_SIZE 22586
+; 'sample_31.pcm'
+const ASSET_SAMPLE31_SIZE 20432
+
+constantsEnd
+
+constants mod
+; @pos 232 -197
+; @tab 30
+use env
+; Row layout (little-endian)
+const SAMPLE_HI_NIBBLE	0x000000F0
+const PERIOD_HI	0x0000000F
+const PERIOD_LO	0x0000FF00
+const PERIOD_SHIFT	8
+const SAMPLE_LO_NIBBLE	0x00F00000
+const SAMPLE_LO_NIBBLE_SHIFT	20
+const EFFECT_NIBBLE	0x000F0000
+const EFFECT_NIBBLE_SHIFT	16
+const EFFECT_PARAM	0xFF000000
+const EFFECT_PARAM_SHIFT	24
+; AMIGA magic const
+const PAL_AMIGA_CLOCK	7093789.2
+; Default ticks per row
+const SPEED	6
+; PAL VBlank: ticks/sec = BPM * 2/5
+const TICKS_X5	SPEED*5
+const TICKS_HALF	TICKS_X5/2
+; Samples per row = ROW_SAMPLES / tempo
+const ROW_SAMPLES	SAMPLE_RATE*TICKS_HALF
+; Effects
+const ARPEGGIO	0x0
+const PITCH_SLIDE_UP	0x1
+const PITCH_SLIDE_DOWN	0x2
+const TONE_PORTAMENTO	0x3
+const VIBRATE	0x4
+const TONE_PORTA_VOL_SLIDE	0x5
+const VIBRATO_VOL_SLIDE	0x6
+const TREMOLO	0x7
+const SAMPLE_OFFSET	0x9
+const VOLUME_SLIDE	0xA
+const PATTERN_JUMP	0xB
+const SET_VOLUME	0xC
+const PATTERN_BREAK	0xD
+const EXTENDED_EFFECTS	0xE
+const SET_SPEED	0xF
+; Extended effects
+const SET_FILTER	0xE0
+const FINE_SLIDE_UP	0xE1
+const FINE_SLIDE_DOWN	0xE2
+const GLISSANDO_CONTROL	0xE3
+const SET_VIBRATO_WAVEFORM	0xE4
+const SET_FINETUNE	0xE5
+const PATTERN_LOOP	0xE6
+const SET_TREMOLO_WAVEFORM	0xE7
+const RETRIGGER_NOTE	0xE9
+const FINE_VOLUME_SLIDE_UP	0xEA
+const FINE_VOLUME_SLIDE_DOWN	0xEB
+const NOTE_CUT	0xEC
+const NOTE_DELAY	0xED
+const PATTERN_DELAY	0xEE
+const INVERT_LOOP	0xEF
+
+constantsEnd
+
+constants sampleMeta
+; @pos 293 -264
+; @tab 26
+const S01_VOLUME	64
+const S01_FINETUNE	1
+const S01_REPEAT_OFFSET	0
+const S01_REPEAT_LENGTH	2
+const S02_VOLUME	64
+const S02_FINETUNE	1
+const S02_REPEAT_OFFSET	0
+const S02_REPEAT_LENGTH	2
+const S03_VOLUME	64
+const S03_FINETUNE	0
+const S03_REPEAT_OFFSET	0
+const S03_REPEAT_LENGTH	2
+const S04_VOLUME	64
+const S04_FINETUNE	0
+const S04_REPEAT_OFFSET	0
+const S04_REPEAT_LENGTH	2
+const S05_VOLUME	64
+const S05_FINETUNE	4
+const S05_REPEAT_OFFSET	6576
+const S05_REPEAT_LENGTH	3700
+const S06_VOLUME	50
+const S06_FINETUNE	-1
+const S06_REPEAT_OFFSET	0
+const S06_REPEAT_LENGTH	2
+const S07_VOLUME	64
+const S07_FINETUNE	4
+const S07_REPEAT_OFFSET	0
+const S07_REPEAT_LENGTH	2
+const S08_VOLUME	64
+const S08_FINETUNE	0
+const S08_REPEAT_OFFSET	0
+const S08_REPEAT_LENGTH	2
+const S10_VOLUME	52
+const S10_FINETUNE	-2
+const S10_REPEAT_OFFSET	10916
+const S10_REPEAT_LENGTH	14858
+const S11_VOLUME	56
+const S11_FINETUNE	2
+const S11_REPEAT_OFFSET	0
+const S11_REPEAT_LENGTH	2
+const S12_VOLUME	48
+const S12_FINETUNE	2
+const S12_REPEAT_OFFSET	11348
+const S12_REPEAT_LENGTH	2908
+const S13_VOLUME	52
+const S13_FINETUNE	-2
+const S13_REPEAT_OFFSET	23718
+const S13_REPEAT_LENGTH	6990
+const S14_VOLUME	64
+const S14_FINETUNE	1
+const S14_REPEAT_OFFSET	0
+const S14_REPEAT_LENGTH	2
+const S15_VOLUME	64
+const S15_FINETUNE	0
+const S15_REPEAT_OFFSET	0
+const S15_REPEAT_LENGTH	2
+const S16_VOLUME	64
+const S16_FINETUNE	2
+const S16_REPEAT_OFFSET	0
+const S16_REPEAT_LENGTH	2
+const S17_VOLUME	64
+const S17_FINETUNE	1
+const S17_REPEAT_OFFSET	0
+const S17_REPEAT_LENGTH	2
+const S18_VOLUME	64
+const S18_FINETUNE	1
+const S18_REPEAT_OFFSET	0
+const S18_REPEAT_LENGTH	2
+const S19_VOLUME	64
+const S19_FINETUNE	-1
+const S19_REPEAT_OFFSET	17112
+const S19_REPEAT_LENGTH	47378
+const S20_VOLUME	64
+const S20_FINETUNE	2
+const S20_REPEAT_OFFSET	2
+const S20_REPEAT_LENGTH	10130
+const S21_VOLUME	64
+const S21_FINETUNE	2
+const S21_REPEAT_OFFSET	28380
+const S21_REPEAT_LENGTH	8836
+const S22_VOLUME	64
+const S22_FINETUNE	4
+const S22_REPEAT_OFFSET	0
+const S22_REPEAT_LENGTH	2
+const S23_VOLUME	64
+const S23_FINETUNE	0
+const S23_REPEAT_OFFSET	0
+const S23_REPEAT_LENGTH	2
+const S24_VOLUME	56
+const S24_FINETUNE	2
+const S24_REPEAT_OFFSET	0
+const S24_REPEAT_LENGTH	2
+const S25_VOLUME	64
+const S25_FINETUNE	1
+const S25_REPEAT_OFFSET	0
+const S25_REPEAT_LENGTH	2
+const S26_VOLUME	64
+const S26_FINETUNE	2
+const S26_REPEAT_OFFSET	2248
+const S26_REPEAT_LENGTH	10352
+const S27_VOLUME	56
+const S27_FINETUNE	2
+const S27_REPEAT_OFFSET	0
+const S27_REPEAT_LENGTH	2
+const S28_VOLUME	56
+const S28_FINETUNE	2
+const S28_REPEAT_OFFSET	0
+const S28_REPEAT_LENGTH	2
+const S29_VOLUME	64
+const S29_FINETUNE	2
+const S29_REPEAT_OFFSET	0
+const S29_REPEAT_LENGTH	2
+const S30_VOLUME	64
+const S30_FINETUNE	2
+const S30_REPEAT_OFFSET	15536
+const S30_REPEAT_LENGTH	7050
+const S31_VOLUME	64
+const S31_FINETUNE	2
+const S31_REPEAT_OFFSET	16410
+const S31_REPEAT_LENGTH	4020
+
+constantsEnd
+
 constants math
-; @pos 741 -47
+; @pos 663 -161
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -3007,3 +884,2161 @@ const LOG10E  0.434294481903251
 const E       2.718281828459045
 
 constantsEnd
+
+note
+; @pos -3 -127
+; @config runtime AudioWorkletRuntime
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
+; @config export.fileName pneumatic
+noteEnd
+
+note
+; @pos -3 -116
+; @tab 22
+; @config bin.sample1.url https://static.8f4e.com/assets/mods/pneumatic/sample_1.pcm
+; @config bin.sample2.url https://static.8f4e.com/assets/mods/pneumatic/sample_2.pcm
+; @config bin.sample3.url https://static.8f4e.com/assets/mods/pneumatic/sample_3.pcm
+; @config bin.sample4.url https://static.8f4e.com/assets/mods/pneumatic/sample_4.pcm
+; @config bin.sample5.url https://static.8f4e.com/assets/mods/pneumatic/sample_5.pcm
+; @config bin.sample6.url https://static.8f4e.com/assets/mods/pneumatic/sample_6.pcm
+; @config bin.sample7.url https://static.8f4e.com/assets/mods/pneumatic/sample_7.pcm
+; @config bin.sample8.url https://static.8f4e.com/assets/mods/pneumatic/sample_8.pcm
+; @config bin.sample10.url https://static.8f4e.com/assets/mods/pneumatic/sample_10.pcm
+; @config bin.sample11.url https://static.8f4e.com/assets/mods/pneumatic/sample_11.pcm
+; @config bin.sample12.url https://static.8f4e.com/assets/mods/pneumatic/sample_12.pcm
+; @config bin.sample13.url https://static.8f4e.com/assets/mods/pneumatic/sample_13.pcm
+; @config bin.sample14.url https://static.8f4e.com/assets/mods/pneumatic/sample_14.pcm
+; @config bin.sample15.url https://static.8f4e.com/assets/mods/pneumatic/sample_15.pcm
+; @config bin.sample16.url https://static.8f4e.com/assets/mods/pneumatic/sample_16.pcm
+; @config bin.sample17.url https://static.8f4e.com/assets/mods/pneumatic/sample_17.pcm
+; @config bin.sample18.url https://static.8f4e.com/assets/mods/pneumatic/sample_18.pcm
+; @config bin.sample19.url https://static.8f4e.com/assets/mods/pneumatic/sample_19.pcm
+; @config bin.sample20.url https://static.8f4e.com/assets/mods/pneumatic/sample_20.pcm
+; @config bin.sample21.url https://static.8f4e.com/assets/mods/pneumatic/sample_21.pcm
+; @config bin.sample22.url https://static.8f4e.com/assets/mods/pneumatic/sample_22.pcm
+; @config bin.sample23.url https://static.8f4e.com/assets/mods/pneumatic/sample_23.pcm
+; @config bin.sample24.url https://static.8f4e.com/assets/mods/pneumatic/sample_24.pcm
+; @config bin.sample25.url https://static.8f4e.com/assets/mods/pneumatic/sample_25.pcm
+; @config bin.sample26.url https://static.8f4e.com/assets/mods/pneumatic/sample_26.pcm
+; @config bin.sample27.url https://static.8f4e.com/assets/mods/pneumatic/sample_27.pcm
+; @config bin.sample28.url https://static.8f4e.com/assets/mods/pneumatic/sample_28.pcm
+; @config bin.sample29.url https://static.8f4e.com/assets/mods/pneumatic/sample_29.pcm
+; @config bin.sample30.url https://static.8f4e.com/assets/mods/pneumatic/sample_30.pcm
+; @config bin.sample31.url https://static.8f4e.com/assets/mods/pneumatic/sample_31.pcm
+; @config bin.ch1.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch1.bin
+; @config bin.ch2.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch2.bin
+; @config bin.ch3.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch3.bin
+; @config bin.ch4.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch4.bin
+
+noteEnd
+
+note
+; @pos 579 -194
+; @tab 46
+; @config color.text.lineNumber #66788c
+; @config color.text.entryName #e6edf2
+; @config color.text.debugInfo #7893ad
+; @config color.text.arrow #55ffff
+; @config color.text.instruction #55ffff
+; @config color.text.codeComment #cc9966
+; @config color.text.code #e6edf2
+; @config color.text.infoKey #66aadd
+; @config color.text.infoValue #ffcc88
+; @config color.text.errorMessage #ffffff
+; @config color.text.disabledCode #5f6a73
+; @config color.text.numbers #ffcc88
+; @config color.text.menuItemText #e6edf2
+; @config color.text.menuItemTextHighlighted #05070b
+; @config color.text.dialogTitle #ffcc88
+; @config color.text.dialogText #e6edf2
+; @config color.text.binaryZero #6b8095
+; @config color.text.binaryOne #55ffff
+; @config color.text.basePrefix #ff8800
+; @config color.text.pianoKeyWhitePressedOverlay rgba(5,7,11,0.42)
+; @config color.text.pianoKeyBlackPressedOverlay rgba(85,255,255,0.72)
+; @config color.text.tooltipText #05070b
+; @config color.text.tooltipHighlight #0055aa
+; @config color.fill.menuItemBackground #002b57
+; @config color.fill.menuItemBackgroundHighlighted #ff8800
+; @config color.fill.background #05070b
+; @config color.fill.backgroundDots #0b1b30
+; @config color.fill.backgroundDots2 #18314f
+; @config color.fill.moduleBackground #0b1b30
+; @config color.fill.debugInfoBackground #07111f
+; @config color.fill.moduleBackgroundDragged #123861
+; @config color.fill.moduleBackgroundDisabled #09111c
+; @config color.fill.wire rgba(85,255,255,0.28)
+; @config color.fill.wireHighlighted #55ffff
+; @config color.fill.errorMessageBackground #aa2233
+; @config color.fill.assertionPassed #33cc66
+; @config color.fill.assertionFailed #ee4444
+; @config color.fill.dialogBackground #002b57
+; @config color.fill.dialogDimmer rgba(0,0,0,0.72)
+; @config color.fill.highlightedCodeLine #163a5c
+; @config color.fill.trace #55ffff
+; @config color.fill.plotterBackground #03050a
+; @config color.fill.bars #0055aa
+; @config color.fill.waveform #ffcc88
+; @config color.fill.meterGreen #33cc66
+; @config color.fill.meterYellow #ffcc33
+; @config color.fill.meterRed #ee4444
+; @config color.fill.scanLine #ff8800
+; @config color.fill.track #19324d
+; @config color.fill.fill #0055aa
+; @config color.fill.handle #e6edf2
+; @config color.fill.codeBlockHighlightLevel1 #0d2944
+; @config color.fill.codeBlockHighlightLevel2 #123755
+; @config color.fill.codeBlockHighlightLevel3 #174669
+; @config color.fill.pianoKeyWhite #e6edf2
+; @config color.fill.pianoKeyBlack #05070b
+; @config color.fill.tooltipBackground #ffcc88
+; @config color.fill.tooltipAddedHighlight #66dd88
+; @config color.fill.tooltipConsumedHighlight #ff8888
+; @config color.icons.inputConnector #55ffff
+; @config color.icons.outputConnector #ffcc88
+; @config color.icons.inputConnectorBackground #002b57
+; @config color.icons.outputConnectorBackground #002b57
+; @config color.icons.switchBackground #0055aa
+; @config color.icons.feedbackScale0 #194d2f
+; @config color.icons.feedbackScale1 #267342
+; @config color.icons.feedbackScale2 #33a657
+; @config color.icons.feedbackScale3 #33cc66
+; @config color.icons.feedbackScale4 #ffcc33
+; @config color.icons.feedbackScale5 #ee4444
+noteEnd
+
+entry main
+module modTickClock
+; @pos -175 -28
+use mod
+
+int tempo 125 ; @w
+int out
+int counter ; @w
+
+; @watch counter
+
+push &out
+push 0
+store
+
+push counter
+push 1
+add
+
+push SAMPLE_RATE
+push 5
+mul
+
+push tempo
+ensureNonZero
+push 2
+mul
+ensureNonZero
+div
+
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd
+module patternOrder
+; @pos -141 -28
+; @tab 6
+int	0x02
+int	0x03
+int	0x04
+int	0x05
+int	0x01
+int	0x06
+int	0x07
+int	0x08
+int	0x09
+int	0x0a
+int	0x0b
+int	0x0c
+int	0x09
+int	0x0a
+int	0x0b
+int	0x10
+int	0x11
+int	0x12
+int	0x14
+int	0x15
+int	0x13
+int	0x16
+int	0x17
+int	0x18
+int	0x0d
+int	0x0e
+int	0x00
+int	0x1b
+int	0x0d
+int	0x0d
+int	0x0d
+int	0x19
+int	0x1a
+int	0x1a
+int	0x1a
+int	0x1c
+int	0x1d
+int	0x1e
+int	0x1d
+int	0x1e
+int	0x1f
+int	0x20
+int	0x21
+int	0x22
+int	0x21
+int	0x23
+int	0x24
+int	0x25
+int	0x26
+
+moduleEnd
+module modRowClock
+; @pos -107 -28
+use env
+int* tick &modTickClock:out
+int previousTick
+int ticks 6 ; @w
+int out
+int counter
+
+push &out
+push 0
+store
+
+push *tick
+call risingEdge &previousTick
+if
+push counter
+push 1
+add
+push ticks
+ensureNonZero
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+else
+push &counter
+push counter
+push 1
+add
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module modRowCounter
+; @pos -71 -28
+use env
+int* trigger &modRowClock:out
+int previousTrigger
+int rowCounter -1
+int* patternPointer &patternOrder:0
+int out ; @w
+
+; @watch rowCounter
+; @watch out
+; @watch patternCounter
+
+; Advance the playhead
+push *trigger
+call risingEdge &previousTrigger
+if
+push &rowCounter
+push rowCounter
+push 1
+add
+store
+ifEnd
+
+push rowCounter
+push 64
+equal
+if
+push &rowCounter
+push 0
+store
+
+push &patternPointer
+push patternPointer
+push sizeof(*patternPointer)
+add
+store
+ifEnd
+
+push patternPointer
+push patternOrder:&
+greaterThan
+if
+push &patternPointer
+push &patternOrder:
+store
+ifEnd
+
+push &out
+push rowCounter
+push *patternPointer
+push 64
+mul
+add
+store
+
+moduleEnd
+module rowCount1
+; @pos -2 19
+int* in &modRowCounter:out
+int out
+; We can afford some reading
+; and writing to memory
+; for better aesthethics.
+push &out
+push *in
+store
+moduleEnd
+module scope1
+; @pos 28 -17
+float* in &amp1:out
+float[] buffer 64
+; @plot &buffer 64
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+module rowBuffer1
+; @pos 28 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH1_SIZE/4
+; @config bin.ch1.memory _dat
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+module scope2
+; @pos 65 -17
+float* in &amp2:out
+float[] buffer 64
+; @plot &buffer 64
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+module rowBuffer2
+; @pos 65 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH2_SIZE/4
+; @config bin.ch2.memory _dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+module scope3
+; @pos 102 -17
+float* in &amp3:out
+float[] buffer 64
+; @plot &buffer 64
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+module rowBuffer3
+; @pos 102 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH3_SIZE/4
+; @config bin.ch3.memory _dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+module scope4
+; @pos 139 -17
+float* in &amp4:out
+float[] buffer 64
+; @plot &buffer 64
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+module rowBuffer4
+; @pos 139 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH4_SIZE/4
+; @config bin.ch4.memory _dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+module rowCount2
+; @pos 152 -33
+int* in &modRowCounter:out
+int out
+
+push &out
+push *in
+store
+
+moduleEnd
+module sampleOffset1
+; @pos 200 -73
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int out ;@w
+int memory ;@w
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module sampleOffset2
+; @pos 200 -25
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module sampleOffset3
+; @pos 200 23
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module sampleOffset4
+; @pos 200 71
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo1
+; @pos 234 -73
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo2
+; @pos 234 -25
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo3
+; @pos 234 23
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo4
+; @pos 234 71
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+module sampleNumber1
+; @pos 274 -73
+; @group ch1
+int* row &rowBuffer1:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+module sampleNumber2
+; @pos 274 -25
+; @group ch2
+int* row &rowBuffer2:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+module sampleNumber3
+; @pos 274 23
+; @group ch3
+int* row &rowBuffer3:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+module sampleNumber4
+; @pos 274 71
+; @group ch4
+int* row &rowBuffer4:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+module period1
+; @pos 308 -73
+; @group ch1
+int* row &rowBuffer1:
+int* sampleNumber &sampleNumber1:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
+module period2
+; @pos 308 -25
+; @group ch2
+int* row &rowBuffer2:
+int* sampleNumber &sampleNumber2:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
+module period3
+; @pos 308 23
+; @group ch3
+int* row &rowBuffer3:
+int* sampleNumber &sampleNumber3:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
+module period4
+; @pos 308 71
+; @group ch4
+int* row &rowBuffer4:
+int* sampleNumber &sampleNumber4:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
+module trigger1
+; @pos 353 -73
+; @group ch1
+int* row &rowBuffer1:
+int* rowCounter &rowCount2:out
+int* period &period1:out
+int out
+
+; @watch out
+
+int prevRowCounter
+push &out
+push 0
+store
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd
+
+moduleEnd
+module trigger2
+; @pos 353 -25
+; @group ch2
+int* row &rowBuffer2:
+int* rowCounter &rowCount2:out
+int* period &period2:out
+int out
+
+; @watch out
+
+int prevRowCounter
+push &out
+push 0
+store
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd
+
+moduleEnd
+module trigger3
+; @pos 353 23
+; @group ch3
+int* row &rowBuffer3:
+int* rowCounter &rowCount2:out
+int* period &period3:out
+int out
+
+; @watch out
+
+int prevRowCounter
+push &out
+push 0
+store
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd
+
+moduleEnd
+module trigger4
+; @pos 353 71
+; @group ch4
+int* row &rowBuffer4:
+int* rowCounter &rowCount2:out
+int* period &period4:out
+int out
+
+int prevRowCounter
+push &out
+push 0
+store
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd
+
+moduleEnd
+module volume1
+; @pos 393 -73
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int* tick &modTickClock:out
+int previousTick
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+call risingEdge &previousTick
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module volume2
+; @pos 393 -25
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int* tick &modTickClock:out
+int previousTick
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+call risingEdge &previousTick
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module volume3
+; @pos 393 23
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int* tick &modTickClock:out
+int previousTick
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+call risingEdge &previousTick
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module volume4
+; @pos 393 71
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* tick &modTickClock:out
+int previousTick
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+call risingEdge &previousTick
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module samplePack1
+; @pos 445 -16
+use env
+int8[] sample0 1
+int8[] sample1 ASSET_SAMPLE1_SIZE
+; @config bin.sample1.memory sample1
+; @wave &sample1 count(sample1)
+int8[] sample2 ASSET_SAMPLE2_SIZE
+; @config bin.sample2.memory sample2
+; @wave &sample2 count(sample2)
+int8[] sample3 ASSET_SAMPLE3_SIZE
+; @config bin.sample3.memory sample3
+; @wave &sample3 count(sample3)
+int8[] sample4 ASSET_SAMPLE4_SIZE
+; @config bin.sample4.memory sample4
+; @wave &sample4 count(sample4)
+int8[] sample5 ASSET_SAMPLE5_SIZE
+; @config bin.sample5.memory sample5
+; @wave &sample5 count(sample5)
+int8[] sample6 ASSET_SAMPLE6_SIZE
+; @config bin.sample6.memory sample6
+; @wave &sample6 count(sample6)
+int8[] sample7 ASSET_SAMPLE7_SIZE
+; @config bin.sample7.memory sample7
+; @wave &sample7 count(sample7)
+int8[] sample8 ASSET_SAMPLE8_SIZE
+; @config bin.sample8.memory sample8
+; @wave &sample8 count(sample8)
+int8[] sample10 ASSET_SAMPLE10_SIZE
+; @config bin.sample10.memory sample10
+; @wave &sample10 count(sample10)
+int8[] sample11 ASSET_SAMPLE11_SIZE
+; @config bin.sample11.memory sample11
+; @wave &sample11 count(sample11)
+int8[] sample12 ASSET_SAMPLE12_SIZE
+; @config bin.sample12.memory sample12
+; @wave &sample12 count(sample12)
+int8[] sample13 ASSET_SAMPLE13_SIZE
+; @config bin.sample13.memory sample13
+; @wave &sample13 count(sample13)
+int8[] sample14 ASSET_SAMPLE14_SIZE
+; @config bin.sample14.memory sample14
+; @wave &sample14 count(sample14)
+int8[] sample15 ASSET_SAMPLE15_SIZE
+; @config bin.sample15.memory sample15
+; @wave &sample15 count(sample15)
+moduleEnd
+module samplePack2
+; @pos 492 -16
+use env
+int8[] sample16 ASSET_SAMPLE16_SIZE
+; @config bin.sample16.memory sample16
+; @wave &sample16 count(sample16)
+int8[] sample17 ASSET_SAMPLE17_SIZE
+; @config bin.sample17.memory sample17
+; @wave &sample17 count(sample17)
+int8[] sample18 ASSET_SAMPLE18_SIZE
+; @config bin.sample18.memory sample18
+; @wave &sample18 count(sample18)
+int8[] sample19 ASSET_SAMPLE19_SIZE
+; @config bin.sample19.memory sample19
+; @wave &sample19 count(sample19)
+int8[] sample20 ASSET_SAMPLE20_SIZE
+; @config bin.sample20.memory sample20
+; @wave &sample20 count(sample20)
+int8[] sample21 ASSET_SAMPLE21_SIZE
+; @config bin.sample21.memory sample21
+; @wave &sample21 count(sample21)
+int8[] sample22 ASSET_SAMPLE22_SIZE
+; @config bin.sample22.memory sample22
+; @wave &sample22 count(sample22)
+int8[] sample23 ASSET_SAMPLE23_SIZE
+; @config bin.sample23.memory sample23
+; @wave &sample23 count(sample23)
+int8[] sample24 ASSET_SAMPLE24_SIZE
+; @config bin.sample24.memory sample24
+; @wave &sample24 count(sample24)
+int8[] sample25 ASSET_SAMPLE25_SIZE
+; @config bin.sample25.memory sample25
+; @wave &sample25 count(sample25)
+int8[] sample26 ASSET_SAMPLE26_SIZE
+; @config bin.sample26.memory sample26
+; @wave &sample26 count(sample26)
+int8[] sample27 ASSET_SAMPLE27_SIZE
+; @config bin.sample27.memory sample27
+; @wave &sample27 count(sample27)
+int8[] sample28 ASSET_SAMPLE28_SIZE
+; @config bin.sample28.memory sample28
+; @wave &sample28 count(sample28)
+int8[] sample29 ASSET_SAMPLE29_SIZE
+; @config bin.sample29.memory sample29
+; @wave &sample29 count(sample29)
+int8[] sample30 ASSET_SAMPLE30_SIZE
+; @config bin.sample30.memory sample30
+; @wave &sample30 count(sample30)
+int8[] sample31 ASSET_SAMPLE31_SIZE
+; @config bin.sample31.memory sample31
+; @wave &sample31 count(sample31)
+moduleEnd
+module modSamplePlayer1
+; @pos 549 -7
+; @home
+use env
+; @tab 6 20
+int*	period	&period1:out
+int*	offset	&sampleOffset1:out
+int*	trigger	&trigger1:out
+int	previousTrigger
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
+; @wave2 sampleAddress sampleSize playhead
+float out; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+call risingEdge &previousTrigger
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module modSamplePlayer2
+; @pos 549 15
+use env
+int*  period &period2:out
+int* offset &sampleOffset2:out ; @w *
+int*  trigger &trigger2:out
+int previousTrigger
+int*  sampleNumber &sampleNumber2:out
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+call risingEdge &previousTrigger
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module modSamplePlayer3
+; @pos 601 -7
+use env
+
+int* period &period3:out
+int* offset &sampleOffset3:out ; @w *
+int* trigger &trigger3:out
+int previousTrigger
+int* sampleNumber &sampleNumber3:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+call risingEdge &previousTrigger
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module modSamplePlayer4
+; @pos 601 15
+use env
+
+int* period &period4:out
+int* offset &sampleOffset4:out ; @w *
+int* trigger &trigger4:out
+int previousTrigger
+int* sampleNumber &sampleNumber4:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+call risingEdge &previousTrigger
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module amp1
+; @pos 661 -22
+
+float* in &modSamplePlayer1:out
+int* volume &volume1:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul
+store
+
+moduleEnd
+module amp2
+; @pos 661 -4
+float* in &modSamplePlayer2:out
+int* volume &volume2:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul
+store
+
+moduleEnd
+module amp3
+; @pos 662 13
+float* in &modSamplePlayer3:out
+int* volume &volume3:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul
+store
+
+moduleEnd
+module amp4
+; @pos 662 30
+float* in &modSamplePlayer4:out
+int* volume &volume4:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul
+store
+
+moduleEnd
+module mixer
+; @pos 708 2
+float* in1 &amp1:out
+float* in2 &amp2:out
+float* in3 &amp3:out
+float* in4 &amp4:out
+
+float outL ; @meter
+float outR ; @meter
+
+push &outL
+push *in1
+push *in3
+add
+push 2.0
+div
+push *in2
+push *in4
+add
+push 5.0
+div
+add
+store
+
+push &outR
+push *in2
+push *in4
+add
+push 2.0
+div
+
+push *in1
+push *in3
+add
+push 5.0
+div
+add
+store
+
+moduleEnd
+module lowpassL
+; @pos 744 -15
+float* in &mixer:outL
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+module lowpassR
+; @pos 744 16
+float* in &mixer:outR
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+module audiooutL
+; @pos 797 -10
+use env
+
+float* in &lowpassL:out
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+module audiooutR
+; @pos 839 -10
+use env
+
+float* in &lowpassR:out
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+entryEnd

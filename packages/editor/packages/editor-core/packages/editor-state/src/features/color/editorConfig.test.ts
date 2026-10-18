@@ -17,6 +17,7 @@ describe('color editor config', () => {
 	it('validates known color paths', () => {
 		expect(colorEditorConfigValidator.validate(entry('color.text.code', '#112233'))).toBeUndefined();
 		expect(colorEditorConfigValidator.validate(entry('color.text.entryName', '#abcdef'))).toBeUndefined();
+		expect(colorEditorConfigValidator.validate(entry('color.fill.waveformBackground', 'transparent'))).toBeUndefined();
 	});
 
 	it('reports unknown color paths with suggestions', () => {

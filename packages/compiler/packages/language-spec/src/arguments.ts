@@ -146,11 +146,38 @@ export type ArgumentStringLiteral = {
  */
 export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 
-export type ArgumentCompileTimeExpression = {
+export type CompileTimeOperator = '+' | '-' | '*' | '/' | '^';
+
+export const CompileTimeRounding = {
+	ROUND: 'round',
+	FLOOR: 'floor',
+	CEIL: 'ceil',
+} as const;
+
+export type CompileTimeRoundingValue = (typeof CompileTimeRounding)[keyof typeof CompileTimeRounding];
+
+export type ArgumentCompileTimeBinaryExpression = {
 	type: typeof ArgumentType.COMPILE_TIME_EXPRESSION;
 	left: CompileTimeOperand;
-	operator: '+' | '-' | '*' | '/' | '^';
+	operator: CompileTimeOperator;
 	right: CompileTimeOperand;
+	rounding?: CompileTimeRoundingValue;
 };
+
+export type ArgumentCompileTimeRoundedOperand = {
+	type: typeof ArgumentType.COMPILE_TIME_EXPRESSION;
+	left: CompileTimeOperand;
+	operator?: never;
+	right?: never;
+	rounding: CompileTimeRoundingValue;
+};
+
+export type ArgumentCompileTimeExpression = ArgumentCompileTimeBinaryExpression | ArgumentCompileTimeRoundedOperand;
+
+export function isBinaryCompileTimeExpression(
+	expression: ArgumentCompileTimeExpression
+): expression is ArgumentCompileTimeBinaryExpression {
+	return expression.operator !== undefined;
+}
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;

@@ -1888,5 +1888,50 @@
 			"gzip": 44023,
 			"brotli": 37301
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-17T20:37:20.752Z",
+		"commit": "0997f37f3010bf0c0126eafb0e0c66a2402c10db",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-state@2.3.4",
+		"packageName": "@8f4e/editor-state",
+		"projectName": "@8f4e/editor-state",
+		"version": "2.3.4",
+		"bytes": {
+			"raw": 177025,
+			"gzip": 44023,
+			"brotli": 37301
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-17T22:02:04.979Z",
+		"commit": "4edbfc414d0ed479d5734811a93f3f71fe8a6e19",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-state@2.3.5",
+		"packageName": "@8f4e/editor-state",
+		"projectName": "@8f4e/editor-state",
+		"version": "2.3.5",
+		"bytes": {
+			"raw": 177047,
+			"gzip": 44028,
+			"brotli": 37269
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-18T08:49:50.695Z",
+		"commit": "0007042042e73b19a34e4d32cddddb563a79c2ef",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-state@2.3.6",
+		"packageName": "@8f4e/editor-state",
+		"projectName": "@8f4e/editor-state",
+		"version": "2.3.6",
+		"bytes": {
+			"raw": 177047,
+			"gzip": 44028,
+			"brotli": 37269
+		}
 	}
 ]

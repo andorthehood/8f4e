@@ -1,5 +1,5 @@
 import type { Argument, ArgumentIdentifier, CompilerASTLine, ValidatedAST } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, isBinaryCompileTimeExpression } from '@8f4e/language-spec';
 
 function qualifySymbol(prefix: string, symbol: string): string {
 	return `${prefix}${symbol}`;
@@ -22,12 +22,16 @@ function qualifyArgument(argument: Argument, prefix: string): Argument {
 		return qualifyIntermoduleIdentifier(argument, prefix);
 	}
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		const left =
+			argument.left.type === ArgumentType.IDENTIFIER
+				? qualifyIntermoduleIdentifier(argument.left, prefix)
+				: argument.left;
+		if (!isBinaryCompileTimeExpression(argument)) {
+			return { ...argument, left };
+		}
 		return {
 			...argument,
-			left:
-				argument.left.type === ArgumentType.IDENTIFIER
-					? qualifyIntermoduleIdentifier(argument.left, prefix)
-					: argument.left,
+			left,
 			right:
 				argument.right.type === ArgumentType.IDENTIFIER
 					? qualifyIntermoduleIdentifier(argument.right, prefix)

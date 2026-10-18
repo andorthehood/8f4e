@@ -62,11 +62,11 @@ function createClampLine(
 }
 
 describe('resolveLineReferences', () => {
-	it('folds push value expressions into literals', () => {
+	it('keeps pre-resolved push literals unchanged', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
-			arguments: [parseArgument('2*4')],
+			arguments: [{ type: ArgumentType.LITERAL, value: 8, isInteger: true }],
 		};
 		const context = {
 			namespace: {
@@ -75,10 +75,7 @@ describe('resolveLineReferences', () => {
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 
-		expect(resolveLineReferences(line, context)).toEqual({
-			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 8, isInteger: true }],
-		});
+		expect(resolveLineReferences(line, context)).toEqual(line);
 	});
 
 	it('leaves identifier-definition positions unchanged when not resolvable', () => {
@@ -97,11 +94,14 @@ describe('resolveLineReferences', () => {
 		expect(resolveLineReferences(line, context)).toEqual(line);
 	});
 
-	it('folds map value arguments into literals', () => {
+	it('keeps pre-resolved map value arguments unchanged', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'map',
-			arguments: [parseArgument('4/2'), parseArgument('2*4')],
+			arguments: [
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+			],
 		};
 		const context = {
 			namespace: {
@@ -110,13 +110,7 @@ describe('resolveLineReferences', () => {
 			locals: {},
 		} as unknown as ReferenceResolutionContext;
 
-		expect(resolveLineReferences(line, context)).toEqual({
-			...line,
-			arguments: [
-				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
-				{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
-			],
-		});
+		expect(resolveLineReferences(line, context)).toEqual(line);
 	});
 
 	it('throws when a targeted value expression cannot be resolved', () => {
@@ -472,7 +466,7 @@ describe('resolveLineReferences', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
-			arguments: [classifyIdentifier('knownFn'), parseArgument('2*4')],
+			arguments: [classifyIdentifier('knownFn'), { type: ArgumentType.LITERAL, value: 8, isInteger: true }],
 		};
 
 		expect(resolveLineReferences(line, context)).toEqual({

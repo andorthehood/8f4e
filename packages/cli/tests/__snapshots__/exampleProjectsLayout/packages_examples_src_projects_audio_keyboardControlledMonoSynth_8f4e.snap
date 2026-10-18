@@ -1,6 +1,5 @@
 {
   "sourceModuleOrder": [
-    "projectConfig",
     "keyboard",
     "janko",
     "midiLUT",
@@ -15,16 +14,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "projectConfig",
-      "index": 0,
-      "byteAddress": 1108,
-      "wordAlignedAddress": 277,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false
-    },
-    {
       "id": "keyboard",
-      "index": 1,
+      "index": 0,
       "byteAddress": 560,
       "wordAlignedAddress": 140,
       "wordAlignedSize": 2,
@@ -32,7 +23,7 @@
     },
     {
       "id": "janko",
-      "index": 2,
+      "index": 1,
       "byteAddress": 552,
       "wordAlignedAddress": 138,
       "wordAlignedSize": 2,
@@ -40,7 +31,7 @@
     },
     {
       "id": "midiLUT",
-      "index": 3,
+      "index": 2,
       "byteAddress": 568,
       "wordAlignedAddress": 142,
       "wordAlignedSize": 128,
@@ -48,7 +39,7 @@
     },
     {
       "id": "midiNote2Freq",
-      "index": 4,
+      "index": 3,
       "byteAddress": 1080,
       "wordAlignedAddress": 270,
       "wordAlignedSize": 3,
@@ -56,7 +47,7 @@
     },
     {
       "id": "arEnv",
-      "index": 5,
+      "index": 4,
       "byteAddress": 0,
       "wordAlignedAddress": 0,
       "wordAlignedSize": 8,
@@ -64,7 +55,7 @@
     },
     {
       "id": "phaseAccumulator",
-      "index": 6,
+      "index": 5,
       "byteAddress": 1092,
       "wordAlignedAddress": 273,
       "wordAlignedSize": 4,
@@ -72,7 +63,7 @@
     },
     {
       "id": "vca",
-      "index": 7,
+      "index": 6,
       "byteAddress": 1108,
       "wordAlignedAddress": 277,
       "wordAlignedSize": 3,
@@ -80,7 +71,7 @@
     },
     {
       "id": "audioout",
-      "index": 8,
+      "index": 7,
       "byteAddress": 32,
       "wordAlignedAddress": 8,
       "wordAlignedSize": 130,

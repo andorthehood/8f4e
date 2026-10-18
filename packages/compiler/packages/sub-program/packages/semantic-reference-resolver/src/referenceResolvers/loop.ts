@@ -1,7 +1,7 @@
 import type { LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
-import { resolveAndValidateValueArguments } from './helpers';
+import { validateValueArguments } from './helpers';
 
 /**
  * Resolves the optional loop cap into a literal, including directive and default caps.
@@ -16,7 +16,7 @@ export default function resolveLoopReferences(line: LoopLine, context: Reference
 		return { ...line, arguments: [{ type: ArgumentType.LITERAL, value: context.loopCap ?? 1000, isInteger: true }] };
 	}
 
-	const resolved = resolveAndValidateValueArguments(line, context, [0]) as ResolvedLoopLine;
+	const resolved = validateValueArguments(line, context, [0]) as ResolvedLoopLine;
 	const argument = resolved.arguments[0];
 
 	if (!argument.isInteger) {

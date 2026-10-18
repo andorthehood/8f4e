@@ -80,7 +80,7 @@ export function compileToAST(code: string[], cache?: ASTCache<ValidatedAST>, cac
 		const entry: ASTCacheEntry<ValidatedAST> = {
 			ast: group,
 			hashInput: {
-				code,
+				code: [...code],
 			},
 			lineCount: code.length,
 		};

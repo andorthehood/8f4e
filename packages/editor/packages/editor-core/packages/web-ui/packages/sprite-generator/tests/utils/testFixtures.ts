@@ -50,6 +50,7 @@ export const minimalColorScheme: ColorScheme = {
 		trace: '#ffffff',
 		plotterBackground: 'rgba(0,0,0,0)',
 		bars: 'rgba(255,255,255,0.45)',
+		waveformBackground: 'rgba(0,0,0,0)',
 		waveform: 'rgba(255,255,255,0.45)',
 		meterGreen: '#33cc66',
 		meterYellow: '#ffcc33',

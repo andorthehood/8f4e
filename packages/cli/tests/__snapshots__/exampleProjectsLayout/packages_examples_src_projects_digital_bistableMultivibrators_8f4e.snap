@@ -1,7 +1,5 @@
 {
   "sourceModuleOrder": [
-    "projectConfig",
-    "notes",
     "setButton",
     "resetButton",
     "norGate2",
@@ -16,24 +14,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "projectConfig",
-      "index": 0,
-      "byteAddress": 64,
-      "wordAlignedAddress": 16,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false
-    },
-    {
-      "id": "notes",
-      "index": 1,
-      "byteAddress": 52,
-      "wordAlignedAddress": 13,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false
-    },
-    {
       "id": "setButton",
-      "index": 2,
+      "index": 0,
       "byteAddress": 596,
       "wordAlignedAddress": 149,
       "wordAlignedSize": 1,
@@ -41,7 +23,7 @@
     },
     {
       "id": "resetButton",
-      "index": 3,
+      "index": 1,
       "byteAddress": 64,
       "wordAlignedAddress": 16,
       "wordAlignedSize": 1,
@@ -49,7 +31,7 @@
     },
     {
       "id": "norGate2",
-      "index": 4,
+      "index": 2,
       "byteAddress": 40,
       "wordAlignedAddress": 10,
       "wordAlignedSize": 3,
@@ -57,7 +39,7 @@
     },
     {
       "id": "norGate",
-      "index": 5,
+      "index": 3,
       "byteAddress": 28,
       "wordAlignedAddress": 7,
       "wordAlignedSize": 3,
@@ -65,7 +47,7 @@
     },
     {
       "id": "scope",
-      "index": 6,
+      "index": 4,
       "byteAddress": 68,
       "wordAlignedAddress": 17,
       "wordAlignedSize": 66,
@@ -73,7 +55,7 @@
     },
     {
       "id": "buttons",
-      "index": 7,
+      "index": 5,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 2,
@@ -81,7 +63,7 @@
     },
     {
       "id": "negate",
-      "index": 8,
+      "index": 6,
       "byteAddress": 20,
       "wordAlignedAddress": 5,
       "wordAlignedSize": 2,
@@ -89,7 +71,7 @@
     },
     {
       "id": "orGate",
-      "index": 9,
+      "index": 7,
       "byteAddress": 52,
       "wordAlignedAddress": 13,
       "wordAlignedSize": 3,
@@ -97,7 +79,7 @@
     },
     {
       "id": "andGate",
-      "index": 10,
+      "index": 8,
       "byteAddress": 0,
       "wordAlignedAddress": 0,
       "wordAlignedSize": 3,
@@ -105,7 +87,7 @@
     },
     {
       "id": "scope2",
-      "index": 11,
+      "index": 9,
       "byteAddress": 332,
       "wordAlignedAddress": 83,
       "wordAlignedSize": 66,

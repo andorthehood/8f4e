@@ -1993,5 +1993,50 @@
 			"gzip": 84727,
 			"brotli": 71236
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-17T20:37:20.474Z",
+		"commit": "0997f37f3010bf0c0126eafb0e0c66a2402c10db",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-website@4.2.20",
+		"packageName": "@8f4e/editor-website",
+		"projectName": "@8f4e/editor-website",
+		"version": "4.2.20",
+		"bytes": {
+			"raw": 300069,
+			"gzip": 84754,
+			"brotli": 71180
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-17T22:02:04.688Z",
+		"commit": "4edbfc414d0ed479d5734811a93f3f71fe8a6e19",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-website@4.2.21",
+		"packageName": "@8f4e/editor-website",
+		"projectName": "@8f4e/editor-website",
+		"version": "4.2.21",
+		"bytes": {
+			"raw": 301026,
+			"gzip": 84995,
+			"brotli": 71511
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-18T08:49:50.417Z",
+		"commit": "0007042042e73b19a34e4d32cddddb563a79c2ef",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-website@4.2.22",
+		"packageName": "@8f4e/editor-website",
+		"projectName": "@8f4e/editor-website",
+		"version": "4.2.22",
+		"bytes": {
+			"raw": 301255,
+			"gzip": 84991,
+			"brotli": 71437
+		}
 	}
 ]

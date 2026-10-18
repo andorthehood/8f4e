@@ -1,0 +1,37 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Compile-time rounding is explicit and works
+for constants, pushes, and array sizes.
+noteEnd
+
+entry test
+module explicitRoundingAssertions
+const SCALE 1.5
+const NEAREST round(3*SCALE)
+const NEGATIVE round(-3*SCALE)
+const LOWER floor(3*SCALE)
+const UPPER ceil(SCALE)
+
+push NEAREST
+assertEqual 5
+
+push NEGATIVE
+assertEqual -5
+
+float[] nearestBuffer NEAREST
+float[] lowerBuffer LOWER
+float[] upperBuffer UPPER
+
+push count(nearestBuffer)
+assertEqual 5
+
+push count(lowerBuffer)
+assertEqual 4
+
+push count(upperBuffer)
+assertEqual 2
+moduleEnd
+entryEnd

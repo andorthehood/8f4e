@@ -50,6 +50,7 @@ const defaultColorScheme: ColorScheme = {
 		trace: '#ffffff',
 		plotterBackground: 'rgba(0,0,0,0)',
 		bars: '#ffffff',
+		waveformBackground: 'rgba(0,0,0,0)',
 		waveform: 'rgba(255,255,255,0.45)',
 		meterGreen: '#00ff00',
 		meterYellow: '#ffff00',

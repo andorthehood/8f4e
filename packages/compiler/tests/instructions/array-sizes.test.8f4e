@@ -1,0 +1,213 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Array sizes accept zero and whole values.
+The count stays the same for every array type.
+noteEnd
+
+constants validSizes
+const ZERO 0
+const ONE 1.0
+const SIZE 3
+constantsEnd
+
+prototype arraySizeBoundaries
+use validSizes
+int[] empty ZERO
+int[] single ONE
+int[] multiple SIZE/1
+prototypeEnd
+
+entry test
+module zeroLengthArrays
+float[] floats 0
+int[] integers 0
+int8[] signedBytes 0
+int8u[] bytes 0
+int16[] shorts 0
+int16u[] unsignedShorts 0
+int32[] words 0
+float*[] floatPointers 0
+float**[] floatPointerPointers 0
+int*[] intPointers 0
+int**[] intPointerPointers 0
+float64[] doubles 0
+float64*[] doublePointers 0
+float64**[] doublePointerPointers 0
+
+push count(floats)
+assertEqual 0
+
+push count(integers)
+assertEqual 0
+
+push count(signedBytes)
+assertEqual 0
+
+push count(bytes)
+assertEqual 0
+
+push count(shorts)
+assertEqual 0
+
+push count(unsignedShorts)
+assertEqual 0
+
+push count(words)
+assertEqual 0
+
+push count(floatPointers)
+assertEqual 0
+
+push count(floatPointerPointers)
+assertEqual 0
+
+push count(intPointers)
+assertEqual 0
+
+push count(intPointerPointers)
+assertEqual 0
+
+push count(doubles)
+assertEqual 0
+
+push count(doublePointers)
+assertEqual 0
+
+push count(doublePointerPointers)
+assertEqual 0
+moduleEnd
+
+module wholeFloatSizes
+float[] floats 1.0
+int[] integers 1.0
+int8[] signedBytes 1.0
+int8u[] bytes 1.0
+int16[] shorts 1.0
+int16u[] unsignedShorts 1.0
+int32[] words 1.0
+float*[] floatPointers 1.0
+float**[] floatPointerPointers 1.0
+int*[] intPointers 1.0
+int**[] intPointerPointers 1.0
+float64[] doubles 1.0
+float64*[] doublePointers 1.0
+float64**[] doublePointerPointers 1.0
+
+push count(floats)
+assertEqual 1
+
+push count(integers)
+assertEqual 1
+
+push count(signedBytes)
+assertEqual 1
+
+push count(bytes)
+assertEqual 1
+
+push count(shorts)
+assertEqual 1
+
+push count(unsignedShorts)
+assertEqual 1
+
+push count(words)
+assertEqual 1
+
+push count(floatPointers)
+assertEqual 1
+
+push count(floatPointerPointers)
+assertEqual 1
+
+push count(intPointers)
+assertEqual 1
+
+push count(intPointerPointers)
+assertEqual 1
+
+push count(doubles)
+assertEqual 1
+
+push count(doublePointers)
+assertEqual 1
+
+push count(doublePointerPointers)
+assertEqual 1
+moduleEnd
+
+module integerSizes
+float[] floats 3
+int[] integers 3
+int8[] signedBytes 3
+int8u[] bytes 3
+int16[] shorts 3
+int16u[] unsignedShorts 3
+int32[] words 3
+float*[] floatPointers 3
+float**[] floatPointerPointers 3
+int*[] intPointers 3
+int**[] intPointerPointers 3
+float64[] doubles 3
+float64*[] doublePointers 3
+float64**[] doublePointerPointers 3
+
+push count(floats)
+assertEqual 3
+
+push count(integers)
+assertEqual 3
+
+push count(signedBytes)
+assertEqual 3
+
+push count(bytes)
+assertEqual 3
+
+push count(shorts)
+assertEqual 3
+
+push count(unsignedShorts)
+assertEqual 3
+
+push count(words)
+assertEqual 3
+
+push count(floatPointers)
+assertEqual 3
+
+push count(floatPointerPointers)
+assertEqual 3
+
+push count(intPointers)
+assertEqual 3
+
+push count(intPointerPointers)
+assertEqual 3
+
+push count(doubles)
+assertEqual 3
+
+push count(doublePointers)
+assertEqual 3
+
+push count(doublePointerPointers)
+assertEqual 3
+moduleEnd
+
+module prototypeArraySizes
+shape arraySizeBoundaries
+
+push count(empty)
+assertEqual 0
+
+push count(single)
+assertEqual 1
+
+push count(multiple)
+assertEqual 3
+moduleEnd
+entryEnd

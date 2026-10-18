@@ -98,6 +98,7 @@ export default function drawer(
 		const waveformColumnWidth = Math.max(1, Math.floor(state.viewport.vGrid / 2));
 		const columnCount = Math.max(1, Math.floor(width / waveformColumnWidth));
 		const columnWidth = Math.max(1, Math.floor(width / columnCount));
+		engine.drawSprite(0, 0, fillSprites.waveformBackground, width, height);
 		drawWaveform(
 			engine,
 			values,

@@ -30,6 +30,7 @@ include std/random/lcg
 include std/random/xorshift
 include std/memory/advancePointer
 include std/memory/loadAt
+include std/memory/nearestValue
 include std/memory/readInterpolated
 include std/memory/storeAt
 include std/memory/wrapPointer
@@ -304,6 +305,65 @@ call loadAt
 moduleEnd
 entryEnd
 ```
+
+## `std/memory/nearestValue`
+
+Provides `nearestValue`, which scans a buffer and returns the element whose value is closest to the supplied value. It returns the value itself, not its index or address. The buffer is read without being modified, and it does not need to be sorted.
+
+Available overloads:
+
+- `nearestValue(int value, int* buffer, int itemCount) -> int`
+- `nearestValue(float value, float* buffer, int itemCount) -> float`
+
+Pass the buffer address (for example, `&values`) and its element count (for example, `count(values)`). `itemCount` is measured in elements, not bytes. When two elements are equally close, the first matching value in buffer order is returned. If `itemCount` is zero or negative, the function returns a typed zero (`0` for the integer overload or `0.0` for the float overload); no buffer element is read in that case.
+
+Examples:
+
+```8f4e
+includes
+include std/memory/nearestValue
+includesEnd
+
+entry test
+module nearestValueExamples
+int[] intValues 5 -10 -2 4 11 20
+float[] floatValues 4 -1.0 0.25 0.75 2.0
+int[] ties 2 0 10
+
+push 5
+push &intValues
+push count(intValues)
+call nearestValue
+assertEqual 4
+
+push 0.6
+push &floatValues
+push count(floatValues)
+call nearestValue
+assertEqual 0.75
+
+push 5
+push &ties
+push count(ties)
+call nearestValue
+assertEqual 0
+
+push 5
+push &intValues
+push 0
+call nearestValue
+assertEqual 0
+
+push 5
+push &intValues
+push -1
+call nearestValue
+assertEqual 0
+moduleEnd
+entryEnd
+```
+
+The integer example returns `4` for input `5` and buffer `[-10, -2, 4, 11, 20]`. The float example returns `0.75` for input `0.6` and buffer `[-1.0, 0.25, 0.75, 2.0]`. The tie example returns `0` because `0` appears before `10` in the buffer.
 
 ## `std/memory/readInterpolated`
 

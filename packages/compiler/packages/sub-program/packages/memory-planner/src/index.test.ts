@@ -1,12 +1,14 @@
 import type {
 	ArgumentCompileTimeExpression,
 	CompilerASTLine,
+	CompileTimeOperator,
+	CompileTimeRoundingValue,
 	MemoryDeclarationLine,
 	ShapeLine,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, arrayMemoryDeclarationInstructions, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from './index';
 
@@ -23,20 +25,22 @@ function literal(value: number) {
 	return {
 		type: ArgumentType.LITERAL,
 		value,
-		isInteger: true,
+		isInteger: Number.isInteger(value),
 	} as const;
 }
 
 function expression(
 	left: ReturnType<typeof literal>,
-	operator: ArgumentCompileTimeExpression['operator'],
-	right: ReturnType<typeof literal>
+	operator: CompileTimeOperator,
+	right: ReturnType<typeof literal>,
+	rounding?: CompileTimeRoundingValue
 ): ArgumentCompileTimeExpression {
 	return {
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,
 		left,
 		operator,
 		right,
+		...(rounding ? { rounding } : {}),
 	};
 }
 
@@ -241,6 +245,51 @@ describe('planSubProgramMemoryLayout', () => {
 });
 
 describe('planner input building', () => {
+	it.each([
+		['round', 2],
+		['floor', 1],
+		['ceil', 2],
+	] as const)('plans a pre-resolved explicitly %s array element count', (rounding, expectedElementCount) => {
+		const line = {
+			lineNumber: 4,
+			instruction: 'float[]',
+			arguments: [identifier('values'), expression(literal(3), '/', literal(2), rounding)],
+		} satisfies MemoryDeclarationLine;
+
+		const plan = planSubProgramMemoryLayout({
+			prototypes: [],
+			modules: [validatedModuleAst('main', 1, [line])],
+			constantReferences: {
+				prototypes: [],
+				modules: [{ lineFacts: [undefined, { arguments: [identifier('values'), literal(expectedElementCount)] }] }],
+			},
+		});
+
+		expect(plan.modules.main.memory.values.numberOfElements).toBe(expectedElementCount);
+	});
+
+	it.each(
+		arrayMemoryDeclarationInstructions.flatMap(instruction =>
+			[0.5, -1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY].map(
+				size => [instruction, size] as const
+			)
+		)
+	)('rejects %s with invalid element count %s', (instruction, size) => {
+		const line = {
+			lineNumber: 4,
+			instruction,
+			arguments: [identifier('values'), literal(size)],
+		} satisfies MemoryDeclarationLine;
+
+		expect(() =>
+			planSubProgramMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [line])],
+				constantReferences: noConstantReferences(),
+			})
+		).toThrow(expect.objectContaining({ compilerErrorCode: ErrorCode.INVALID_ARRAY_SIZE, line }));
+	});
+
 	it('builds planner-ready source from validated module and prototype ASTs', () => {
 		const inherited = {
 			lineNumber: 20,
@@ -256,7 +305,14 @@ describe('planner input building', () => {
 		const plan = planSubProgramMemoryLayout({
 			prototypes: [prototypeAst('state', 19, [inherited])],
 			modules: [validatedModuleAst('main', 1, [shapeLine('state', 3), local])],
-			constantReferences: noConstantReferences(),
+			constantReferences: {
+				prototypes: [{ lineFacts: [] }],
+				modules: [
+					{
+						lineFacts: [undefined, undefined, { arguments: [identifier('values'), literal(6)] }],
+					},
+				],
+			},
 			startingByteAddress: 4,
 		});
 
@@ -272,6 +328,22 @@ describe('planner input building', () => {
 				isInherited: false,
 			},
 		]);
+	});
+
+	it('rejects compile-time expressions that were not resolved by the constant pass', () => {
+		const line = {
+			lineNumber: 4,
+			instruction: 'int[]',
+			arguments: [identifier('values'), expression(literal(2), '*', literal(3))],
+		} satisfies MemoryDeclarationLine;
+
+		expect(() =>
+			planSubProgramMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [line])],
+				constantReferences: noConstantReferences(),
+			})
+		).toThrow(MemoryPlannerError);
 	});
 
 	it('rejects unresolved array declaration sizes while building planner input', () => {

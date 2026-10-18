@@ -46,6 +46,25 @@ describe('compileToAST cache', () => {
 		expect(cache.stats).toEqual({ hits: 0, misses: 2 });
 	});
 
+	it('reparses an in-place source edit before hashing and reuses the updated AST', () => {
+		const cache = createASTCache<ValidatedAST>();
+		const code = ['function example', 'push 1', 'functionEnd int'];
+		const first = compileToAST(code, cache, 'example');
+
+		code[1] = 'push 2';
+		const second = compileToAST(code, cache, 'example');
+
+		expect(second).not.toBe(first);
+		expect(first.lines[1].arguments[0]).toMatchObject({ value: 1 });
+		expect(second.lines[1].arguments[0]).toMatchObject({ value: 2 });
+		expect(cache.stats).toEqual({ hits: 0, misses: 2 });
+
+		const third = compileToAST(code, cache, 'example');
+
+		expect(third).toBe(second);
+		expect(cache.stats).toEqual({ hits: 1, misses: 2 });
+	});
+
 	it('reparses when source line count changes for the same cache key', () => {
 		const cache = createASTCache<ValidatedAST>();
 		const first = compileToAST(['module test', 'push 10', 'moduleEnd'], cache, 'module:0');

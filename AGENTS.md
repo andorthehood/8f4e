@@ -44,8 +44,9 @@
 - `npx nx graph`: Open Nx project dependency graph.
 - `npx nx run @8f4e/editor-website:kill-dev`: Kill any dev server on port 3000.
 - Production deployments run only in the manually dispatched `Release` GitHub Actions workflow on `main`, after
-  release checks, builds, and the atomic release push succeed. It deploys 8f4e.com, including bundled example
-  modules, to Cloudflare Pages; pushes and merges do not deploy. See `docs/releasing.md`.
+  release checks, builds, and the atomic release push succeed. It deploys 8f4e.com (`8f4e-website`) and
+  editor.8f4e.com (`8f4e`), including bundled example modules, to Cloudflare Pages. Disable automatic production
+  and preview deployments in Cloudflare's Git integration so pushes and merges do not deploy. See `docs/releasing.md`.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
@@ -84,18 +85,12 @@
 - Nested `AGENTS.md` files in packages should stay in sync with root guidance; update them when workflows or conventions change.
 
 ## Compiler Error Domains
-The compiler has two separate error systems in `packages/compiler/src/`. Choose the correct one based on **detection phase**:
 
-- **Syntax errors** (`packages/compiler/src/syntax/syntaxError.ts` — `SyntaxRulesError` / `SyntaxErrorCode`):
-  Use when the error can be detected from token or argument shape alone, **before** any semantic context is built.
-  Examples: malformed literals, missing required argument shape, invalid pointer-depth syntax, invalid string encoding.
+Choose errors by detection phase:
 
-- **Compiler (semantic) errors** (`packages/compiler/src/compilerError.ts` — `ErrorCode` / `getError`):
-  Use when detecting the error requires symbol resolution, scope, stack state, type checking, or other compiler state.
-  Examples: undeclared identifier, type mismatch, stack mismatch, illegal memory access, duplicate declarations.
-
-**Decision rule**: if the error can be detected before building semantic context → syntax error; otherwise → compiler error.
-Each error code owns its default message in its central registry; throw sites should omit the message argument unless they need to add dynamic context.
+- Use `SyntaxRulesError` and `SyntaxErrorCode` from `@8f4e/tokenizer` for token or argument-shape errors.
+- Use `getError` and `ErrorCode` from `@8f4e/language-spec` when detection needs semantic context.
+- Keep default messages in the central registries; add throw-site messages only for useful dynamic context.
 
 
 <!-- nx configuration start-->

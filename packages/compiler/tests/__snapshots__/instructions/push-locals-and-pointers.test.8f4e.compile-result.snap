@@ -225,6 +225,69 @@
       "name": "readIntLocal",
       "type": "function",
     },
+    "readUnsignedByte__int8u_p": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readUnsignedByte",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int8u*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bytes",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "*bytes",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "readUnsignedByte",
+      "type": "function",
+    },
     "shadowValue__int": {
       "lines": [
         {
@@ -307,6 +370,17 @@
       "id": "readIntLocal__void",
       "signature": {
         "parameters": [],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "readUnsignedByte__int8u_p": {
+      "id": "readUnsignedByte__int8u_p",
+      "signature": {
+        "parameters": [
+          "int8u*",
+        ],
         "returns": [
           "int",
         ],
@@ -613,6 +687,124 @@
       ],
       "type": "module",
     },
+    "unsignedNarrowPointerAssertions": {
+      "id": "unsignedNarrowPointerAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "unsignedNarrowPointerAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bytes",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "instruction": "int8u[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "cursor",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "&bytes",
+            },
+          ],
+          "instruction": "int8u*",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "bytes",
+              "type": "identifier",
+              "value": "&bytes",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readUnsignedByte",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "cursor",
+              "type": "identifier",
+              "value": "*cursor",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
   },
   "moduleMemory": {
     "localShadowMemoryAssertions": {
@@ -684,20 +876,58 @@
     "pushLocalAssertions": {
       "memory": {},
     },
+    "unsignedNarrowPointerAssertions": {
+      "memory": {
+        "bytes": {
+          "byteAddress": 20,
+          "default": {
+            "0": 255,
+          },
+          "elementWordSize": 1,
+          "hasExplicitDefault": true,
+          "id": "bytes",
+          "isInteger": true,
+          "isUnsigned": true,
+          "numberOfElements": 2,
+          "pointerDepth": 0,
+          "type": "int8u",
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+        },
+        "cursor": {
+          "byteAddress": 24,
+          "default": 20,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "cursor",
+          "isInteger": true,
+          "isUnsigned": false,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int8u",
+          "pointeeElementCount": 2,
+          "pointerDepth": 1,
+          "type": "int8u*",
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
   },
   "overview": {
     "compiledFunctions": [
       "doubleFloat64__float64",
       "readFloatLocal__void",
       "readIntLocal__void",
+      "readUnsignedByte__int8u_p",
       "shadowValue__int",
     ],
     "compiledModules": [
       "localShadowMemoryAssertions",
       "pointerDereferenceDepthAssertions",
       "pushLocalAssertions",
+      "unsignedNarrowPointerAssertions",
     ],
-    "requiredMemoryBytes": 20,
+    "requiredMemoryBytes": 28,
     "wasmExports": [
       "initDefaults",
       "main",

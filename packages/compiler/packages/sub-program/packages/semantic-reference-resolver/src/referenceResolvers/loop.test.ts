@@ -10,15 +10,18 @@ describe('resolved loop caps', () => {
 	it.each([
 		{ cap: undefined, directive: undefined, expected: 1000 },
 		{ cap: undefined, directive: 25, expected: 25 },
-		{ cap: '8', directive: 25, expected: 8 },
-		{ cap: '0', directive: 25, expected: 0 },
-		{ cap: '4*4', directive: undefined, expected: 16 },
+		{ cap: 8, directive: 25, expected: 8 },
+		{ cap: 0, directive: 25, expected: 0 },
+		{ cap: 16, directive: undefined, expected: 16 },
 	])('resolves $cap with directive $directive to $expected', ({ cap, directive, expected }) => {
 		const context = createCompilationContext<ReferenceResolutionContext>({ loopCap: directive });
 		const line: LoopLine = {
 			instruction: 'loop',
 			lineNumber: 7,
-			arguments: cap === undefined ? [] : [parseArgument(cap) as CompileTimeValueArgument],
+			arguments:
+				cap === undefined
+					? []
+					: [{ type: ArgumentType.LITERAL, value: cap, isInteger: true } as CompileTimeValueArgument],
 		};
 		const resolved: ResolvedLoopLine = resolveLineReferences(line, context);
 
