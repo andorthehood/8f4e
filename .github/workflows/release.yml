@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release
@@ -15,9 +15,10 @@ env:
   NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD || 'true' }}
 
 jobs:
-  release:
+  prepare_release:
+    name: Prepare release
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
 
     steps:
       - name: Validate branch
@@ -29,11 +30,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: main
+          ref: ${{ github.sha }}
+          fetch-depth: 0
           submodules: recursive
-
-      - name: Fetch release history
-        run: git fetch --prune --tags --unshallow origin main
 
       - name: Setup Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -49,7 +48,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Release
+      - name: Prepare release commit and tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -60,44 +59,274 @@ jobs:
             echo "No existing release tags were found. Refusing to run first-release mode from CI."
             exit 1
           fi
+
           npx nx release --skip-publish
 
+          if [[ "$(git rev-parse HEAD)" == "$GITHUB_SHA" ]]; then
+            echo "Nx did not create a release commit."
+            exit 1
+          fi
+
+          git branch prepared-release HEAD
+
+          prepared_tags=()
+          while IFS= read -r prepared_tag; do
+            prepared_tags+=("$prepared_tag")
+          done < <(git tag --points-at HEAD --format='%(refname)')
+
+          if (( ${#prepared_tags[@]} == 0 )); then
+            echo "Nx did not create any release tags."
+            exit 1
+          fi
+
+          git bundle create prepared-release.bundle \
+            refs/heads/prepared-release \
+            "${prepared_tags[@]}" \
+            "^$GITHUB_SHA"
+          git bundle verify prepared-release.bundle
+
+      - name: Upload prepared release
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: prepared-release
+          path: prepared-release.bundle
+          if-no-files-found: error
+          retention-days: 1
+
+  test_and_coverage:
+    name: Test and collect coverage
+    needs: prepare_release
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download prepared release
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: prepared-release
+
+      - name: Restore prepared release
+        run: |
+          git fetch prepared-release.bundle \
+            'refs/heads/prepared-release:refs/heads/prepared-release' \
+            'refs/tags/*:refs/tags/*'
+          git switch --detach refs/heads/prepared-release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run tests with coverage
+        run: |
+          set -euo pipefail
+          npx nx run-many --target=test --all --exclude=@8f4e/editor-website,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
+          node scripts/log-test-coverage.mjs
+
+      - name: Upload test coverage log
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-test-coverage
+          path: logs/test-coverage
+          if-no-files-found: error
+          retention-days: 1
+
+  build_and_metrics:
+    name: Build sites and collect metrics
+    needs: prepare_release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download prepared release
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: prepared-release
+
+      - name: Restore prepared release
+        run: |
+          git fetch prepared-release.bundle \
+            'refs/heads/prepared-release:refs/heads/prepared-release' \
+            'refs/tags/*:refs/tags/*'
+          git switch --detach refs/heads/prepared-release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build editor.8f4e.com and collect metrics
+        run: |
+          set -euo pipefail
           npx nx run @8f4e/editor-website:build
           node scripts/log-bundle-sizes.mjs
           npx nx run @8f4e/examples:log-bytecode-size
           npx nx run @8f4e/examples:log-compiler-coverage-counts
           npx nx run @8f4e/compiler:docs-coverage
-          npx nx run-many --target=test --all --exclude=@8f4e/editor-website,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
-          node scripts/log-test-coverage.mjs
-
-          if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
-            git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
-            git commit -m "chore(release): record release metrics" --no-verify
-          fi
 
       - name: Build 8f4e.com
         run: npx nx run @8f4e/8f4e-website:build
+
+      - name: Upload release metrics
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-metrics
+          path: |
+            logs/bundle-sizes
+            logs/bytecode-size
+            logs/compiler-coverage-counts
+            logs/tsdoc-coverage
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload 8f4e.com
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: 8f4e-website
+          path: packages/8f4e-website/dist
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+      - name: Upload editor.8f4e.com
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: editor-website
+          path: packages/editor/packages/editor-website/dist
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+  publish:
+    name: Publish release
+    needs: [test_and_coverage, build_and_metrics]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download prepared release
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: prepared-release
+
+      - name: Restore prepared release
+        run: |
+          git fetch prepared-release.bundle \
+            'refs/heads/prepared-release:refs/heads/prepared-release' \
+            'refs/tags/*:refs/tags/*'
+          git switch --detach refs/heads/prepared-release
+
+      - name: Download release metrics
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-metrics
+          path: logs
+
+      - name: Download test coverage log
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-test-coverage
+          path: logs/test-coverage
+
+      - name: Download 8f4e.com
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: 8f4e-website
+          path: packages/8f4e-website/dist
+
+      - name: Download editor.8f4e.com
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: editor-website
+          path: packages/editor/packages/editor-website/dist
 
       - name: Verify generated sites
         run: |
           test -f packages/8f4e-website/dist/index.html
           test -f packages/editor/packages/editor-website/dist/index.html
 
-      - name: Publish release
+      - name: Commit release metrics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
+            git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
+            git commit -m "chore(release): record release metrics" --no-verify
+          fi
+
+      - name: Push release
         run: git push origin HEAD:main --follow-tags --no-verify --atomic
 
-      - name: Deploy 8f4e.com to Cloudflare Pages
-        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: '4.114.0'
-          command: pages deploy packages/8f4e-website/dist --project-name=8f4e-website --branch=main
+  deploy_product_website:
+    name: Deploy 8f4e.com
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
-      - name: Deploy editor.8f4e.com to Cloudflare Pages
+    steps:
+      - name: Download 8f4e.com
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: 8f4e-website
+          path: dist
+
+      - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4.114.0'
-          command: pages deploy packages/editor/packages/editor-website/dist --project-name=8f4e --branch=main
+          command: pages deploy dist --project-name=8f4e-website --branch=main
+
+  deploy_editor_website:
+    name: Deploy editor.8f4e.com
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Download editor.8f4e.com
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: editor-website
+          path: dist
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.114.0'
+          command: pages deploy dist --project-name=8f4e --branch=main
