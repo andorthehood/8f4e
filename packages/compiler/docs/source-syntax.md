@@ -1,5 +1,11 @@
 # Source syntax
 
+## Entity names
+
+Entity names and references must contain only ASCII characters. This includes module, function, export, parameter, local, memory, prototype, constant, and constant namespace names. Non-ASCII names are rejected during tokenization with `INVALID_IDENTIFIER` and the source line.
+
+Each entity kind retains its naming rules: module names match `[A-Za-z_][A-Za-z0-9_-]*`, while constants start with an uppercase ASCII letter and contain no lowercase letters. Other valid ASCII punctuation remains accepted. This restriction does not apply to quoted string literals.
+
 ## Argument Continuation Lines
 
 Use `- <argument>` to append one argument to the previous instruction. This is parser sugar; the compiler sees the same instruction it would have seen if the arguments had been written on one line.
