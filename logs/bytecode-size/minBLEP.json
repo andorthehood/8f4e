@@ -724,5 +724,11 @@
 		"version": "6.5.0",
 		"benchmark": "minBLEP.8f4e",
 		"emittedBytes": 2704
+	},
+	{
+		"commit": "0007042042e73b19a34e4d32cddddb563a79c2ef",
+		"version": "6.5.1",
+		"benchmark": "minBLEP.8f4e",
+		"emittedBytes": 2704
 	}
 ]
