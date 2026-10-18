@@ -68,6 +68,11 @@ function createArrayDataSegmentCandidates(
 			value,
 		}))
 		.sort((left, right) => left.elementIndex - right.elementIndex)) {
+		if (Object.is(value, 0)) {
+			flushRun();
+			continue;
+		}
+
 		const bytes = createDefaultValueBytes(memory, value);
 		if (bytes.every(byte => byte === 0)) {
 			flushRun();
