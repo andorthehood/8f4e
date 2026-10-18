@@ -51,6 +51,21 @@ assertEqual &value
 push **pptr
 assertEqual 1.5
 moduleEnd
+
+module unsignedNarrowPointerAssertions
+; Unsigned narrow pointers should
+; preserve their pointee type
+; through parameters and memory.
+int8u[] bytes 2 255
+int8u* cursor &bytes
+
+push &bytes
+call readUnsignedByte
+assertEqual 255
+
+push *cursor
+assertEqual 255
+moduleEnd
 entryEnd
 
 function readIntLocal
@@ -77,4 +92,10 @@ functionEnd float64
 function shadowValue
 param int value
 push value
+functionEnd int
+
+function readUnsignedByte
+#impure
+param int8u* bytes
+push *bytes
 functionEnd int

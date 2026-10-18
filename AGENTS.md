@@ -85,18 +85,12 @@
 - Nested `AGENTS.md` files in packages should stay in sync with root guidance; update them when workflows or conventions change.
 
 ## Compiler Error Domains
-The compiler has two separate error systems in `packages/compiler/src/`. Choose the correct one based on **detection phase**:
 
-- **Syntax errors** (`packages/compiler/src/syntax/syntaxError.ts` — `SyntaxRulesError` / `SyntaxErrorCode`):
-  Use when the error can be detected from token or argument shape alone, **before** any semantic context is built.
-  Examples: malformed literals, missing required argument shape, invalid pointer-depth syntax, invalid string encoding.
+Choose errors by detection phase:
 
-- **Compiler (semantic) errors** (`packages/compiler/src/compilerError.ts` — `ErrorCode` / `getError`):
-  Use when detecting the error requires symbol resolution, scope, stack state, type checking, or other compiler state.
-  Examples: undeclared identifier, type mismatch, stack mismatch, illegal memory access, duplicate declarations.
-
-**Decision rule**: if the error can be detected before building semantic context → syntax error; otherwise → compiler error.
-Each error code owns its default message in its central registry; throw sites should omit the message argument unless they need to add dynamic context.
+- Use `SyntaxRulesError` and `SyntaxErrorCode` from `@8f4e/tokenizer` for token or argument-shape errors.
+- Use `getError` and `ErrorCode` from `@8f4e/language-spec` when detection needs semantic context.
+- Keep default messages in the central registries; add throw-site messages only for useful dynamic context.
 
 
 <!-- nx configuration start-->
