@@ -23,6 +23,16 @@ export { parseCompileTimeOperand } from './parseCompileTimeOperand';
  * @returns Parsed argument with type information.
  */
 export function parseArgument(argument: string): Argument {
+	// Quoted strings must be recognized before arithmetic parsing, because operators
+	// inside a string are content rather than numeric-expression syntax.
+	if (argument.startsWith('"') && argument.endsWith('"') && argument.length >= 2) {
+		const raw = argument.slice(1, -1);
+		return {
+			type: ArgumentType.STRING_LITERAL,
+			value: decodeStringLiteral(raw),
+		};
+	}
+
 	// Try to fold literal-only mul/div expressions (handles *, /, and integer/integer fractions)
 	const mulDivResult = parseLiteralMulDivExpression(argument);
 	if (mulDivResult !== null) {
@@ -35,14 +45,6 @@ export function parseArgument(argument: string): Argument {
 	}
 
 	switch (true) {
-		// Check for quoted string literals
-		case argument.startsWith('"') && argument.endsWith('"') && argument.length >= 2: {
-			const raw = argument.slice(1, -1);
-			return {
-				type: ArgumentType.STRING_LITERAL,
-				value: decodeStringLiteral(raw),
-			};
-		}
 		default: {
 			const numericLiteral = parseNumericLiteralToken(argument);
 			if (numericLiteral) {
