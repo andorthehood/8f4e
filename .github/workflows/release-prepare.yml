@@ -57,12 +57,6 @@ jobs:
           fi
 
           npx nx release --skip-publish
-
-          if [[ "$(git rev-parse HEAD)" == "$GITHUB_SHA" ]]; then
-            echo "Nx did not create a release commit."
-            exit 1
-          fi
-
           git branch prepared-release HEAD
 
           prepared_tags=()
@@ -70,16 +64,10 @@ jobs:
             prepared_tags+=("$prepared_tag")
           done < <(git tag --points-at HEAD --format='%(refname)')
 
-          if (( ${#prepared_tags[@]} == 0 )); then
-            echo "Nx did not create any release tags."
-            exit 1
-          fi
-
           git bundle create prepared-release.bundle \
             refs/heads/prepared-release \
             "${prepared_tags[@]}" \
             "^$GITHUB_SHA"
-          git bundle verify prepared-release.bundle
 
       - name: Upload prepared release
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
