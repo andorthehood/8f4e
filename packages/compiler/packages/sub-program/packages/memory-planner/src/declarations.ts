@@ -151,6 +151,7 @@ export function planArrayDeclarationLayout(input: {
 			endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
 			endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 			isInteger: input.instruction.startsWith('int') || input.instruction.includes('*'),
+			...(input.instruction === 'float64[]' ? { isFloat64: true } : {}),
 			pointerDepth,
 			...(pointeeBaseType ? { pointeeBaseType } : {}),
 			type: input.instruction.slice(0, -2) as MemoryType,
