@@ -95,6 +95,8 @@ export function parseArgument(argument: string): Argument {
 			type: ArgumentType.STRING_LITERAL,
 			value: decodeStringLiteral(raw),
 		};
+	}
+
 	const roundingExpression = parseCompileTimeRoundingExpression(argument);
 	if (roundingExpression !== null) {
 		return roundingExpression;
