@@ -15,7 +15,7 @@ export default function createMemoryDataSegmentCandidate(
 	memory: PlannedMemoryDeclaration,
 	memoryDefault: MemoryDefault
 ): InitialMemoryDataSegmentCandidate[] {
-	const isArray = memory.numberOfElements > 1;
+	const isArray = typeof memoryDefault.value === 'object';
 	if (isArray && memoryDefault.hasExplicitDefault !== true) {
 		return [];
 	}

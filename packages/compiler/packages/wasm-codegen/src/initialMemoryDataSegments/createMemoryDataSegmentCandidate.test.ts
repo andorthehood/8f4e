@@ -4,6 +4,39 @@ import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate
 import { createMemory, createMemoryDefault } from './testUtils';
 
 describe('createMemoryDataSegmentCandidate', () => {
+	test.each([
+		['int32', {}, 7, [7, 0, 0, 0]],
+		['int8', { elementWordSize: 1 }, -7, [249]],
+		['int8u', { elementWordSize: 1, isUnsigned: true }, 249, [249]],
+		['int16', { elementWordSize: 2 }, -12345, [199, 207]],
+		['int16u', { elementWordSize: 2, isUnsigned: true }, 54321, [49, 212]],
+		['float32', { type: 'float', isInteger: false }, 1.25, [0, 0, 160, 63]],
+		['float64', { type: 'float64', isInteger: false, elementWordSize: 8 }, 1.25, [0, 0, 0, 0, 0, 0, 244, 63]],
+		['float32 negative zero', { type: 'float', isInteger: false }, -0, [0, 0, 0, 128]],
+		[
+			'float64 negative zero',
+			{ type: 'float64', isInteger: false, elementWordSize: 8 },
+			-0,
+			[0, 0, 0, 0, 0, 0, 0, 128],
+		],
+	] as const)('encodes a one-element %s array initializer', (_name, overrides, value, bytes) => {
+		const candidates = createMemoryDataSegmentCandidate(
+			createMemory({ id: 'array', byteAddress: 16, ...overrides }),
+			createMemoryDefault({ 0: value }, { hasExplicitDefault: true })
+		);
+
+		expect(candidates).toEqual([{ byteAddress: 16, bytes: new Uint8Array(bytes), sourceKind: 'array' }]);
+	});
+
+	test('skips omitted and explicit zero initializers for one-element arrays', () => {
+		const memory = createMemory({ id: 'array', byteAddress: 16 });
+
+		expect(createMemoryDataSegmentCandidate(memory, createMemoryDefault({}))).toEqual([]);
+		expect(
+			createMemoryDataSegmentCandidate(memory, createMemoryDefault({ 0: 0 }, { hasExplicitDefault: true }))
+		).toEqual([]);
+	});
+
 	test('creates scalar candidates with encoded default bytes', () => {
 		const candidates = createMemoryDataSegmentCandidate(
 			createMemory({
