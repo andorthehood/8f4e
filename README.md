@@ -122,5 +122,3 @@ Thanks to everyone who has contributed to 8f4e.
 </tr>
 </table>
 <!-- CONTRIBUTORS-GRID:END -->
-
-Counts are based on merged pull requests with the [`contributor`](https://github.com/andorthehood/8f4e/labels/contributor) label.
