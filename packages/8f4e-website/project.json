@@ -33,6 +33,14 @@
 				"cwd": "{workspaceRoot}"
 			}
 		},
+		"generate-previews": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["@8f4e/project-preview:build"],
+			"options": {
+				"command": "node scripts/generate-project-previews.mjs",
+				"cwd": "{projectRoot}"
+			}
+		},
 		"build": {
 			"executor": "nx:run-commands",
 			"outputs": ["{projectRoot}/dist"],

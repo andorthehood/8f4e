@@ -6,6 +6,11 @@ const fixtureUrls = import.meta.glob<string>('../../../compiler/tests/**/*.test.
 	import: 'default',
 	eager: true,
 });
+const previewUrls = import.meta.glob<string>('../project-previews/tests/**/*.test.gif', {
+	query: '?url&no-inline',
+	import: 'default',
+	eager: true,
+});
 
 function humanize(name: string): string {
 	const words = name.replaceAll('-', ' ');
@@ -21,6 +26,11 @@ const categoryTitles: Record<string, string> = {
 const categories = new Map<string, GalleryCategory>();
 for (const [file, projectUrl] of Object.entries(fixtureUrls).sort(([left], [right]) => left.localeCompare(right))) {
 	const path = file.slice(fixtureRoot.length);
+	const previewPath = path.replace(/\.8f4e$/, '.gif');
+	const previewUrl = previewUrls[`../project-previews/tests/${previewPath}`];
+	if (!previewUrl) {
+		throw new Error(`Compiler test preview not found: ${path}`);
+	}
 	const directory = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
 	let category = categories.get(directory);
 	if (!category) {
@@ -32,6 +42,7 @@ for (const [file, projectUrl] of Object.entries(fixtureUrls).sort(([left], [righ
 		title: humanize(path.slice(path.lastIndexOf('/') + 1).replace(/\.test\.8f4e$/, '')),
 		description: path,
 		projectUrl,
+		previewUrl,
 		githubUrl: `https://github.com/andorthehood/8f4e/blob/main/packages/compiler/tests/${path}`,
 	});
 }
