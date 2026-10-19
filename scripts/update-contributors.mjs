@@ -105,7 +105,7 @@ function renderContributorGrid(repository, contributors) {
 			const profileUrl = `https://github.com/${encodeURIComponent(contributor.login)}`;
 			const avatarUrl = `${profileUrl}.png?size=96`;
 			const pullRequestSearchUrl = getContributorPullRequestSearchUrl(repository, contributor.login);
-			const pullRequestLabel = `${contributor.pullRequestCount} merged ${contributor.pullRequestCount === 1 ? 'PR' : 'PRs'}`;
+			const pullRequestLabel = `🔀 ${contributor.pullRequestCount}`;
 
 			return [
 				'<td align="center" valign="top" width="25%">',

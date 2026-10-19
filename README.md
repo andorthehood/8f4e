@@ -91,33 +91,33 @@ Every merged community contribution helps make 8f4e better. Thank you! ❤️
 <tr>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/jinchuntan"><img src="https://github.com/jinchuntan.png?size=96" width="72" alt="@jinchuntan"><br><sub><b>Nigel Tan</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Ajinchuntan">7 merged PRs</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Ajinchuntan">🔀 7</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Erfouni"><img src="https://github.com/Erfouni.png?size=96" width="72" alt="@Erfouni"><br><sub><b>erfouni</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AErfouni">3 merged PRs</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AErfouni">🔀 3</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Aaqibhafeezkhan"><img src="https://github.com/Aaqibhafeezkhan.png?size=96" width="72" alt="@Aaqibhafeezkhan"><br><sub><b>Aaqibhafeez Khan</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AAaqibhafeezkhan">2 merged PRs</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AAaqibhafeezkhan">🔀 2</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/aazminu"><img src="https://github.com/aazminu.png?size=96" width="72" alt="@aazminu"><br><sub><b>Abdullah Azmi</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Aaazminu">2 merged PRs</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Aaazminu">🔀 2</a></sub>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/875612255-beep"><img src="https://github.com/875612255-beep.png?size=96" width="72" alt="@875612255-beep"><br><sub><b>875612255-beep</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3A875612255-beep">1 merged PR</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3A875612255-beep">🔀 1</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Anikesh348"><img src="https://github.com/Anikesh348.png?size=96" width="72" alt="@Anikesh348"><br><sub><b>Anikesh Thakur</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AAnikesh348">1 merged PR</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AAnikesh348">🔀 1</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Prisha38"><img src="https://github.com/Prisha38.png?size=96" width="72" alt="@Prisha38"><br><sub><b>Prisha</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3APrisha38">1 merged PR</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3APrisha38">🔀 1</a></sub>
 </td>
 </tr>
 </table>
