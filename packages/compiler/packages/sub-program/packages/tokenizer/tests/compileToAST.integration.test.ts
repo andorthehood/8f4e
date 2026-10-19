@@ -6,7 +6,7 @@ describe('compileToAST integration', () => {
 		const ast = compileToAST([
 			'function demo',
 			'push "2*3.0"',
-			'functionEnd string',
+			'functionEnd int',
 		]);
 
 		expect(ast.lines).toContainEqual(
