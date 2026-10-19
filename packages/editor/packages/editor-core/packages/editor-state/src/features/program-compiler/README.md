@@ -19,7 +19,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ```typescript
 {
-  startingMemoryWordAddress: 0,
+  startingMemoryAllocationUnitAddress: 0,
   includeStackAnalysis: true,
   enableAssertions: hasTestEntry(project),
 }

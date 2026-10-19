@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
 describe('compileAndUpdateMemory execution entries', () => {
-	const compilerOptions = { startingMemoryWordAddress: 1 };
+	const compilerOptions = { startingMemoryAllocationUnitAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
 	const createModules = (baseDefault: number): Array<{ code: string[] }> => [
@@ -136,7 +136,7 @@ moduleEnd`.split('\n'),
 });
 
 describe('compileAndUpdateMemory float64 incremental patching', () => {
-	const compilerOptions = { startingMemoryWordAddress: 1 };
+	const compilerOptions = { startingMemoryAllocationUnitAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 	const createInput = (modules: Array<{ code: string[] }>): ProjectObjectModel => ({
 		code: [],

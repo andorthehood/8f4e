@@ -5,9 +5,9 @@
 ## Memory reference
 
 - `&name` pushes the start address (byte address) of the memory item.
-- `name&` pushes the start address (byte address) of the last word-aligned chunk covering the memory item (i.e., the base address of the final 4-byte word of the allocation).
+- `name&` pushes the start address (byte address) of the final 4-byte allocation unit covering the memory item.
 - `&this` pushes the start byte address of the current module.
-- `this&` pushes the end-word base byte address of the current module.
+- `this&` pushes the byte address of the current module's final allocation unit.
 
 These work in both `push` instructions and declaration initializers (e.g., `int* ptr &buffer` or `int* endPtr buffer&`) with the same address semantics.
 
@@ -249,7 +249,7 @@ All of the address and metadata forms above have intermodular counterparts that 
 ### Module base address
 
 - `&module:` — start byte address of the module's memory allocation.
-- `module:&` — end-word base byte address of the module's memory allocation (base address of the last 4-byte word in the allocation).
+- `module:&` — byte address of the final allocation unit in the module's memory allocation.
 
 ```
 module targetModule
@@ -261,7 +261,7 @@ moduleEnd
 ### Named memory item address
 
 - `&module:name` — start byte address of a named memory item in another module.
-- `module:name&` — end-word base byte address of a named memory item in another module.
+- `module:name&` — byte address of the final allocation unit of a named memory item in another module.
 
 ```
 module targetModule

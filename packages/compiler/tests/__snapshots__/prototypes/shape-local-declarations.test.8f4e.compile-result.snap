@@ -316,6 +316,8 @@
     "boson": {
       "memory": {
         "test1": {
+          "allocationUnitAddress": 2,
+          "allocationUnitCount": 1,
           "byteAddress": 8,
           "default": 40,
           "elementWordSize": 4,
@@ -327,10 +329,10 @@
           "pointeeBaseType": "int",
           "pointerDepth": 1,
           "type": "int*",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
         },
         "test2": {
+          "allocationUnitAddress": 1,
+          "allocationUnitCount": 1,
           "byteAddress": 4,
           "default": 16,
           "elementWordSize": 4,
@@ -342,10 +344,10 @@
           "pointeeBaseType": "int",
           "pointerDepth": 1,
           "type": "int*",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 1,
         },
         "test3": {
+          "allocationUnitAddress": 3,
+          "allocationUnitCount": 1,
           "byteAddress": 12,
           "default": 28,
           "elementWordSize": 4,
@@ -357,14 +359,14 @@
           "pointeeBaseType": "int",
           "pointerDepth": 1,
           "type": "int*",
-          "wordAlignedAddress": 3,
-          "wordAlignedSize": 1,
         },
       },
     },
     "tau": {
       "memory": {
         "bar": {
+          "allocationUnitAddress": 10,
+          "allocationUnitCount": 1,
           "byteAddress": 40,
           "default": 16,
           "elementWordSize": 4,
@@ -375,10 +377,10 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 10,
-          "wordAlignedSize": 1,
         },
         "foo": {
+          "allocationUnitAddress": 4,
+          "allocationUnitCount": 1,
           "byteAddress": 16,
           "default": 1,
           "elementWordSize": 4,
@@ -390,10 +392,10 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 1,
         },
         "he": {
+          "allocationUnitAddress": 7,
+          "allocationUnitCount": 1,
           "byteAddress": 28,
           "default": 10,
           "elementWordSize": 4,
@@ -404,8 +406,6 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 7,
-          "wordAlignedSize": 1,
         },
       },
     },

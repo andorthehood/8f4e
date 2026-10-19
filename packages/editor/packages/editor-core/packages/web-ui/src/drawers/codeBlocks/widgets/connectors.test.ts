@@ -29,8 +29,8 @@ describe('drawConnectors', () => {
 			calibratedMin: -1,
 			memory: {
 				byteAddress: 0,
-				wordAlignedAddress: 0,
-				wordAlignedSize: 1,
+				allocationUnitAddress: 0,
+				allocationUnitCount: 1,
 				isInteger: false,
 				isFloat64: false,
 			},

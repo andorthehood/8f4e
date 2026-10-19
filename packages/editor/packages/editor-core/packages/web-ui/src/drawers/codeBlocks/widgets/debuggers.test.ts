@@ -105,7 +105,7 @@ describe('drawDebuggers', () => {
 						y: 7,
 						memory: {
 							byteAddress: 0,
-							wordAlignedAddress: 0,
+							allocationUnitAddress: 0,
 							elementWordSize: 4,
 							isInteger: true,
 							isUnsigned: false,

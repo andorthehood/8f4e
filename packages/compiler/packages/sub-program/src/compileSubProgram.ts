@@ -18,9 +18,9 @@ import type {
 	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 import {
+	ALLOCATION_UNIT_BYTE_SIZE,
 	createFunctionId,
 	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
 	getError,
 	getProjectMemoryExposureTargetError,
 } from '@8f4e/language-spec';
@@ -48,7 +48,7 @@ interface CompiledSubProgram {
 	cache: CompilerCache;
 }
 
-const DEFAULT_STARTING_MEMORY_WORD_ADDRESS = 1;
+const DEFAULT_STARTING_MEMORY_ALLOCATION_UNIT_ADDRESS = 1;
 
 /** Built-in WebAssembly export names that user functions are not allowed to reuse. */
 const RESERVED_EXPORT_NAMES = ['initDefaults'];
@@ -217,7 +217,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 			modules: subProgramAst.modules,
 			constantReferences: constantResolution.references,
 			startingByteAddress:
-				(options.startingMemoryWordAddress ?? DEFAULT_STARTING_MEMORY_WORD_ADDRESS) * GLOBAL_ALIGNMENT_BOUNDARY,
+				(options.startingMemoryAllocationUnitAddress ?? DEFAULT_STARTING_MEMORY_ALLOCATION_UNIT_ADDRESS) *
+				ALLOCATION_UNIT_BYTE_SIZE,
 		});
 	} catch (error) {
 		throw wrapMemoryPlannerError(error, subProgramAst);

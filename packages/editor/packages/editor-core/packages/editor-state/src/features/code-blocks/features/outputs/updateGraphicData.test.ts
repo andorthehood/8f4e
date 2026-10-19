@@ -12,8 +12,8 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		elementWordSize: 4,
 		type: MemoryTypes.int,
 		byteAddress: 20,
-		wordAlignedAddress: 5,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 5,
+		allocationUnitCount: 1,
 		lineNumber: 1,
 		isInteger: true,
 		pointerDepth: 0,
@@ -31,8 +31,8 @@ function setModuleMemory(
 		id: 'test-block',
 		lineNumber: 0,
 		byteAddress: 0,
-		wordAlignedSize: 1,
-		wordAlignedByteLength: 4,
+		allocationUnitCount: 1,
+		allocatedByteLength: 4,
 		endByteAddress: 4,
 		endAddressSafeByteLength: 0,
 		memory,
@@ -75,7 +75,7 @@ describe('updateOutputsGraphicData', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'] = createMemory({
 			type: MemoryTypes.int,
 			numberOfElements: 4,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -116,7 +116,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('renders a group exposure at the backing memory address', () => {
-		const targetMemory = createMemory({ id: 'value', byteAddress: 44, wordAlignedAddress: 11 });
+		const targetMemory = createMemory({ id: 'value', byteAddress: 44, allocationUnitAddress: 11 });
 		mockGraphicData = createMockCodeBlock({
 			name: 'audio',
 			code: ['group audio', 'expose publicValue &source:value', 'groupEnd'],
@@ -154,7 +154,7 @@ describe('updateOutputsGraphicData', () => {
 	it('does not render outputs for private entities', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['_privateOutput'] = createMemory({
 			id: '_privateOutput',
-			wordAlignedAddress: 7,
+			allocationUnitAddress: 7,
 			byteAddress: 28,
 		});
 		mockState.compiler.memoryDefaultsByModuleId['test-block']!._privateOutput = { value: 0, isInherited: false };
@@ -169,7 +169,7 @@ describe('updateOutputsGraphicData', () => {
 	it('renders anonymous scalar allocations from metadata', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['__anonymous__1'] = createMemory({
 			id: '__anonymous__1',
-			wordAlignedAddress: 8,
+			allocationUnitAddress: 8,
 			byteAddress: 32,
 		});
 		mockState.compiler.memoryDefaultsByModuleId['test-block']!.__anonymous__1 = { value: 0, isInherited: false };
@@ -206,7 +206,7 @@ describe('updateOutputsGraphicData', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['output2'] = createMemory({
 			id: 'output2',
 			type: MemoryTypes.float,
-			wordAlignedAddress: 6,
+			allocationUnitAddress: 6,
 			byteAddress: 24,
 			lineNumber: 2,
 			isInteger: false,

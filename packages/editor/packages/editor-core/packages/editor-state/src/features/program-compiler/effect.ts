@@ -43,7 +43,7 @@ export default function compiler(store: StateManager<State>): () => void {
 		try {
 			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const compilerOptions = {
-				startingMemoryWordAddress: 0,
+				startingMemoryAllocationUnitAddress: 0,
 				includeStackAnalysis: true,
 				enableAssertions: hasTestEntry(project),
 			};

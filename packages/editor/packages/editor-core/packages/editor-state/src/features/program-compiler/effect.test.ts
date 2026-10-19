@@ -213,7 +213,7 @@ describe('program compiler effect', () => {
 				prototypes: expect.any(Array),
 			}),
 			{
-				startingMemoryWordAddress: 0,
+				startingMemoryAllocationUnitAddress: 0,
 				includeStackAnalysis: true,
 				enableAssertions: false,
 			}
@@ -257,7 +257,7 @@ describe('program compiler effect', () => {
 				prototypes: expect.any(Array),
 			}),
 			{
-				startingMemoryWordAddress: 0,
+				startingMemoryAllocationUnitAddress: 0,
 				includeStackAnalysis: true,
 				enableAssertions: false,
 			}

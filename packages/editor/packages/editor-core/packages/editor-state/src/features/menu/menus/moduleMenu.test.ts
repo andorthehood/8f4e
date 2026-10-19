@@ -67,7 +67,7 @@ describe('module menu', () => {
 			{
 				moduleId: 'test-block',
 				id: 'gain',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,
@@ -106,7 +106,7 @@ describe('module menu', () => {
 			{
 				moduleId: 'test-block',
 				id: 'gain',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,

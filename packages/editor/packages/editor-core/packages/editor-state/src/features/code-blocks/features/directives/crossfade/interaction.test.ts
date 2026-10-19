@@ -9,13 +9,13 @@ describe('crossfade interaction', () => {
 	let mockEvents: EventDispatcher;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
+	let setWordInMemory: (allocationUnitAddress: number, value: number, isInteger: boolean) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
-			memoryStore.set(wordAlignedAddress, value);
+		setWordInMemory = vi.fn((allocationUnitAddress: number, value: number) => {
+			memoryStore.set(allocationUnitAddress, value);
 		});
 
 		mockState = createMockState({
@@ -32,16 +32,16 @@ describe('crossfade interaction', () => {
 							id: 'test-block',
 							lineNumber: 0,
 							byteAddress: 0,
-							wordAlignedSize: 0,
-							wordAlignedByteLength: 0,
+							allocationUnitCount: 0,
+							allocatedByteLength: 0,
 							endByteAddress: 0,
 							endAddressSafeByteLength: 0,
 							memory: {
 								dry: {
-									wordAlignedAddress: 5,
+									allocationUnitAddress: 5,
 								},
 								wet: {
-									wordAlignedAddress: 6,
+									allocationUnitAddress: 6,
 								},
 							},
 							declarations: [],

@@ -321,7 +321,7 @@ export function resolveMemoryExpressionOperand(
 					safeRange: {
 						source: 'module-nth-memory-start',
 						byteAddress: item.byteAddress,
-						safeByteLength: item.wordAlignedByteLength,
+						safeByteLength: item.allocatedByteLength,
 						moduleId: resolvedModuleId,
 						...(item.id ? { memoryId: item.id } : {}),
 					},

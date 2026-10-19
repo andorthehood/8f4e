@@ -48,7 +48,7 @@ function formatHexBytes(memoryViews: MemoryViews, byteAddress: number, elementWo
 export function formatDebuggerValueAtAddress(
 	memoryViews: MemoryViews,
 	byteAddress: number,
-	wordAlignedAddress: number,
+	allocationUnitAddress: number,
 	format: DebuggerValueFormat,
 	displayFormat: 'decimal' | 'binary' | 'hex'
 ): string {
@@ -77,7 +77,7 @@ export function formatDebuggerValueAtAddress(
 	}
 
 	const view = format.isInteger ? memoryViews.int32 : memoryViews.float32;
-	const value = readMemoryValue(view, wordAlignedAddress);
+	const value = readMemoryValue(view, allocationUnitAddress);
 	if (value === undefined) {
 		return INVALID_VALUE;
 	}
@@ -94,7 +94,7 @@ export default function formatDebuggerValue(
 	return formatDebuggerValueAtAddress(
 		memoryViews,
 		memory.byteAddress + bufferPointer * memory.elementWordSize,
-		memory.wordAlignedAddress + bufferPointer,
+		memory.allocationUnitAddress + bufferPointer,
 		memory,
 		displayFormat
 	);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from './constants';
+import { ALLOCATION_UNIT_BYTE_SIZE } from './constants';
 import { MemoryTypes, type PlannedMemoryDeclaration, type PointeeBaseType } from './memory';
 import {
 	getDereferencedValueKindFromMetadata,
@@ -26,8 +26,8 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 		numberOfElements: 10,
 		elementWordSize: 4,
 		byteAddress,
-		wordAlignedAddress: byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		wordAlignedSize: 5,
+		allocationUnitAddress: byteAddress / ALLOCATION_UNIT_BYTE_SIZE,
+		allocationUnitCount: 5,
 		lineNumber: 1,
 		isInteger: true,
 		pointerDepth: 0,
@@ -38,12 +38,12 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 	return {
 		...declaration,
 		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
-		wordAlignedByteLength: Math.max(0, declaration.wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY,
+		allocatedByteLength: Math.max(0, declaration.allocationUnitCount) * ALLOCATION_UNIT_BYTE_SIZE,
 		endByteAddress:
-			declaration.wordAlignedSize <= 0
+			declaration.allocationUnitCount <= 0
 				? declaration.byteAddress
-				: declaration.byteAddress + (declaration.wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY,
-		endAddressSafeByteLength: declaration.wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0,
+				: declaration.byteAddress + (declaration.allocationUnitCount - 1) * ALLOCATION_UNIT_BYTE_SIZE,
+		endAddressSafeByteLength: declaration.allocationUnitCount > 0 ? ALLOCATION_UNIT_BYTE_SIZE : 0,
 	};
 }
 
@@ -63,8 +63,8 @@ describe('memoryData utilities', () => {
 		});
 
 		it('calculates the last byte address from aligned storage', () => {
-			expect(getMemoryStringLastByteAddress(memory({ byteAddress: 100, wordAlignedSize: 5 }))).toBe(
-				100 + (5 - 1) * GLOBAL_ALIGNMENT_BOUNDARY
+			expect(getMemoryStringLastByteAddress(memory({ byteAddress: 100, allocationUnitCount: 5 }))).toBe(
+				100 + (5 - 1) * ALLOCATION_UNIT_BYTE_SIZE
 			);
 		});
 
