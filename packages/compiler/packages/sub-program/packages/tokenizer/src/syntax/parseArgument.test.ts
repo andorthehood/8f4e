@@ -667,6 +667,38 @@ describe('parseArgument', () => {
 		expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
 	});
 
+	describe('arithmetic-looking string literals', () => {
+		it.each([
+			['"2*3.0"', '2*3.0'],
+			['"gain/1e3"', 'gain/1e3'],
+			['"a^0.5"', 'a^0.5'],
+		])('preserves %s as a string literal', (source, value) => {
+			expect(parseArgument(source)).toEqual({
+				type: ArgumentType.STRING_LITERAL,
+				value,
+			});
+		});
+
+		it('decodes escaped quotes and backslashes in arithmetic-looking strings', () => {
+			expect(parseArgument('"say \\"2*3.0\\""')).toEqual({
+				type: ArgumentType.STRING_LITERAL,
+				value: 'say "2*3.0"',
+			});
+			expect(parseArgument('"path\\\\name/1e3"')).toEqual({
+				type: ArgumentType.STRING_LITERAL,
+				value: 'path\\name/1e3',
+			});
+		});
+
+		it('continues folding unquoted arithmetic', () => {
+			expect(parseArgument('2*3.0')).toEqual({
+				type: ArgumentType.LITERAL,
+				value: 6,
+				isInteger: false,
+			});
+		});
+	});
+
 	describe('string literals', () => {
 		it('parses a simple quoted string', () => {
 			expect(parseArgument('"hello"')).toEqual({
