@@ -28,7 +28,7 @@ function createRawMemoryReader(values: Record<number, { type: 'int32' | 'float32
 		}
 	}
 
-	return (wordAlignedAddress: number) => int32[wordAlignedAddress] ?? 0;
+	return (allocationUnitAddress: number) => int32[allocationUnitAddress] ?? 0;
 }
 
 describe('save slider default values to code', () => {
@@ -41,7 +41,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'foo',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,
@@ -54,7 +54,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'bar',
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				x: 0,
@@ -93,7 +93,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'gain',
-				wordAlignedAddress: 8,
+				allocationUnitAddress: 8,
 				byteAddress: 32,
 				isInteger: false,
 				x: 0,
@@ -127,7 +127,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'gain',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,
@@ -161,7 +161,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'phase',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				isFloat64: true,
@@ -196,7 +196,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'foo',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,
@@ -221,7 +221,7 @@ describe('save slider default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'foo',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				byteAddress: 16,
 				isInteger: false,
 				x: 0,
@@ -249,12 +249,12 @@ function createPianoCodeBlock(
 			lineNumber: 3,
 			pressedKeysListMemory: {
 				id: 'notes',
-				wordAlignedAddress: 4,
+				allocationUnitAddress: 4,
 				numberOfElements: 4,
 				elementWordSize: 4,
 				isInteger: true,
 			},
-			pressedNumberOfKeysMemory: { id: 'count', wordAlignedAddress: 8, isInteger: true },
+			pressedNumberOfKeysMemory: { id: 'count', allocationUnitAddress: 8, isInteger: true },
 		} as PianoKeyboard,
 	];
 	return codeBlock;
@@ -270,7 +270,7 @@ describe('save piano default values to code', () => {
 			'moduleEnd',
 		]);
 		codeBlock.widgets.pianoKeyboards[0].pressedKeysListMemory.numberOfElements = 2;
-		codeBlock.widgets.pianoKeyboards[0].pressedNumberOfKeysMemory.wordAlignedAddress = 6;
+		codeBlock.widgets.pianoKeyboards[0].pressedNumberOfKeysMemory.allocationUnitAddress = 6;
 		const memory = new Map([
 			[4, 2],
 			[5, 3],
@@ -469,7 +469,7 @@ describe('save piano default values to code', () => {
 			{
 				moduleId: 'synth',
 				id: 'gain',
-				wordAlignedAddress: 9,
+				allocationUnitAddress: 9,
 				byteAddress: 36,
 				isInteger: false,
 				x: 0,

@@ -119,6 +119,9 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
             "resolvedTarget": {
               "kind": "memory",
               "memoryItem": {
+                "allocatedByteLength": 4,
+                "allocationUnitAddress": 1,
+                "allocationUnitCount": 1,
                 "byteAddress": 4,
                 "elementByteLength": 4,
                 "elementWordSize": 4,
@@ -131,9 +134,6 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                 "numberOfElements": 1,
                 "pointerDepth": 0,
                 "type": "int",
-                "wordAlignedAddress": 1,
-                "wordAlignedByteLength": 4,
-                "wordAlignedSize": 1,
               },
             },
           },
@@ -193,6 +193,9 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                 "resolvedTarget": {
                   "kind": "memory",
                   "memoryItem": {
+                    "allocatedByteLength": 4,
+                    "allocationUnitAddress": 1,
+                    "allocationUnitCount": 1,
                     "byteAddress": 4,
                     "elementByteLength": 4,
                     "elementWordSize": 4,
@@ -205,9 +208,6 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                     "numberOfElements": 1,
                     "pointerDepth": 0,
                     "type": "int",
-                    "wordAlignedAddress": 1,
-                    "wordAlignedByteLength": 4,
-                    "wordAlignedSize": 1,
                   },
                 },
               },

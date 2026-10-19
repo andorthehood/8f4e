@@ -40,7 +40,9 @@ function createKeyboardEventLike(code: string, key: string, keyCode: number): Ke
 	return { code, key, keyCode } as KeyboardEvent;
 }
 
-function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number }>): State['compiler']['memoryPlan'] {
+function createMemoryPlan(
+	memories: Record<string, { allocationUnitAddress: number }>
+): State['compiler']['memoryPlan'] {
 	const memory = Object.fromEntries(
 		Object.entries(memories).map(([memoryId, memoryData]) => [
 			memoryId,
@@ -49,12 +51,12 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 				numberOfElements: 1,
 				elementWordSize: 4,
 				type: 'int',
-				byteAddress: memoryData.wordAlignedAddress * 4,
+				byteAddress: memoryData.allocationUnitAddress * 4,
 				elementByteLength: 4,
-				wordAlignedSize: 1,
-				wordAlignedByteLength: 4,
-				wordAlignedAddress: memoryData.wordAlignedAddress,
-				endByteAddress: memoryData.wordAlignedAddress * 4,
+				allocationUnitCount: 1,
+				allocatedByteLength: 4,
+				allocationUnitAddress: memoryData.allocationUnitAddress,
+				endByteAddress: memoryData.allocationUnitAddress * 4,
 				endAddressSafeByteLength: 4,
 				lineNumber: 1,
 				isInteger: true,
@@ -67,8 +69,8 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 		id: 'keys',
 		lineNumber: 1,
 		byteAddress: 0,
-		wordAlignedSize: Object.keys(memory).length,
-		wordAlignedByteLength: Object.keys(memory).length * 4,
+		allocationUnitCount: Object.keys(memory).length,
+		allocatedByteLength: Object.keys(memory).length * 4,
 		endByteAddress: 0,
 		endAddressSafeByteLength: 4,
 		memory,
@@ -101,8 +103,8 @@ describe('keyboardMemoryPlugin', () => {
 			compiler: {
 				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
-					code: { wordAlignedAddress: 4 },
-					pressed: { wordAlignedAddress: 5 },
+					code: { allocationUnitAddress: 4 },
+					pressed: { allocationUnitAddress: 5 },
 				}),
 			},
 			callbacks: {
@@ -163,7 +165,7 @@ describe('keyboardMemoryPlugin', () => {
 			compiler: {
 				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
-					pressed: { wordAlignedAddress: 8 },
+					pressed: { allocationUnitAddress: 8 },
 				}),
 			},
 			callbacks: {

@@ -64,7 +64,7 @@ describe('slider default saver', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: false,
 				min: 0,
@@ -97,12 +97,12 @@ describe('slider default saver', () => {
 				lineNumber: 3,
 				pressedKeysListMemory: {
 					id: 'notes',
-					wordAlignedAddress: 4,
+					allocationUnitAddress: 4,
 					numberOfElements: 4,
 					elementWordSize: 4,
 					isInteger: true,
 				},
-				pressedNumberOfKeysMemory: { id: 'count', wordAlignedAddress: 8, isInteger: true },
+				pressedNumberOfKeysMemory: { id: 'count', allocationUnitAddress: 8, isInteger: true },
 			} as PianoKeyboard,
 		];
 		const memory = new Map([

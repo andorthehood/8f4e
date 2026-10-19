@@ -2,12 +2,12 @@
 
 exports[`updateInputsGraphicData > calculates dimensions and position from metadata 1`] = `
 {
+  "allocationUnitAddress": 5,
   "height": 16,
   "id": "input1",
   "width": 24,
   "wireX": 12,
   "wireY": 24,
-  "wordAlignedAddress": 5,
   "x": 0,
   "y": 16,
 }
@@ -18,12 +18,12 @@ exports[`updateInputsGraphicData > handles multiple inputs in line-number order 
   [
     "0",
     {
+      "allocationUnitAddress": 5,
       "height": 16,
       "id": "input1",
       "width": 24,
       "wireX": 12,
       "wireY": 24,
-      "wordAlignedAddress": 5,
       "x": 0,
       "y": 16,
     },
@@ -31,12 +31,12 @@ exports[`updateInputsGraphicData > handles multiple inputs in line-number order 
   [
     "1",
     {
+      "allocationUnitAddress": 6,
       "height": 16,
       "id": "input2",
       "width": 24,
       "wireX": 12,
       "wireY": 40,
-      "wordAlignedAddress": 6,
       "x": 0,
       "y": 32,
     },
@@ -46,12 +46,12 @@ exports[`updateInputsGraphicData > handles multiple inputs in line-number order 
 
 exports[`updateInputsGraphicData > positions inputs at the metadata line number 1`] = `
 {
+  "allocationUnitAddress": 5,
   "height": 16,
   "id": "input1",
   "width": 24,
   "wireX": 12,
   "wireY": 40,
-  "wordAlignedAddress": 5,
   "x": 0,
   "y": 32,
 }

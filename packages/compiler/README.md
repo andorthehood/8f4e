@@ -73,3 +73,7 @@ consumes resolved bodies and stack reports without replaying source declarations
 Compiled programs import one WebAssembly linear memory as `host.memory`. All module declarations share this address
 space. The memory planner lays modules out alphabetically by id, while module execution follows the composer-provided
 order. `CompileResult.requiredMemoryBytes` reports the allocation size, and `initDefaults()` initializes that memory.
+
+Layout addresses and counts use fixed 4-byte allocation units. Typed element widths remain independent of that grid:
+one `float64` occupies two units, while four `int8[]` elements fit in one unit. See
+[allocation units and API migration](docs/allocation-units.md) for the layout fields and renamed public APIs.

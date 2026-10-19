@@ -5,14 +5,14 @@ import { getKeyboardMemoryConfig } from './config';
 import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
-	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory.wordAlignedAddress;
+	return resolveMemoryTarget(state, { kind: 'project', groupPath: '' }, memoryId)?.memory.allocationUnitAddress;
 }
 
-function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {
-	if (wordAlignedAddress === undefined) {
+function writeIntegerToMemory(state: State, allocationUnitAddress: number | undefined, value: number): void {
+	if (allocationUnitAddress === undefined) {
 		return;
 	}
-	state.callbacks.setWordInMemory?.(wordAlignedAddress, value, true);
+	state.callbacks.setWordInMemory?.(allocationUnitAddress, value, true);
 }
 
 export default function keyboardMemoryPlugin({ store, inputTarget }: EditorEnvironmentPluginContext): () => void {

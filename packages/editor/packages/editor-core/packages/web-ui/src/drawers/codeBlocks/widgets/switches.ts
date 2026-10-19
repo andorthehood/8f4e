@@ -15,8 +15,8 @@ export default function drawSwitches(
 		return;
 	}
 
-	for (const { x, y, wordAlignedAddress, onValue, offValue } of codeBlock.widgets.switches) {
-		const value = memoryViews.int32[wordAlignedAddress] || 0;
+	for (const { x, y, allocationUnitAddress, onValue, offValue } of codeBlock.widgets.switches) {
+		const value = memoryViews.int32[allocationUnitAddress] || 0;
 
 		if (value === onValue) {
 			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_ON]);

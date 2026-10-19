@@ -2084,6 +2084,8 @@
     "readInterpolatedFloatAssertions": {
       "memory": {
         "buffer": {
+          "allocationUnitAddress": 1,
+          "allocationUnitCount": 3,
           "byteAddress": 4,
           "default": {
             "0": 10,
@@ -2098,10 +2100,10 @@
           "numberOfElements": 3,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 3,
         },
         "pointer": {
+          "allocationUnitAddress": 4,
+          "allocationUnitCount": 1,
           "byteAddress": 16,
           "default": 4,
           "elementWordSize": 4,
@@ -2112,8 +2114,6 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 1,
         },
       },
     },

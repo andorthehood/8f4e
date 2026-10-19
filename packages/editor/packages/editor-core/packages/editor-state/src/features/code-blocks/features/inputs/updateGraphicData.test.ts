@@ -12,8 +12,8 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		elementWordSize: 4,
 		type: MemoryTypes['int*'],
 		byteAddress: 20,
-		wordAlignedAddress: 5,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 5,
+		allocationUnitCount: 1,
 		lineNumber: 1,
 		isInteger: true,
 		pointerDepth: 1,
@@ -31,8 +31,8 @@ function setModuleMemory(
 		id: 'test-block',
 		lineNumber: 0,
 		byteAddress: 0,
-		wordAlignedSize: 1,
-		wordAlignedByteLength: 4,
+		allocationUnitCount: 1,
+		allocatedByteLength: 4,
 		endByteAddress: 4,
 		endAddressSafeByteLength: 0,
 		memory,
@@ -67,7 +67,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('renders a pointer exposure as a group input backed by the target pointer slot', () => {
-		const targetMemory = createMemory({ id: 'input', byteAddress: 36, wordAlignedAddress: 9 });
+		const targetMemory = createMemory({ id: 'input', byteAddress: 36, allocationUnitAddress: 9 });
 		mockGraphicData = createMockCodeBlock({
 			name: 'audio',
 			code: ['group audio', 'expose publicInput &consumer:input', 'groupEnd'],
@@ -91,7 +91,7 @@ describe('updateInputsGraphicData', () => {
 		expect(mockGraphicData.widgets.inputs[0]).toMatchObject({
 			id: 'publicInput',
 			y: 16,
-			wordAlignedAddress: 9,
+			allocationUnitAddress: 9,
 		});
 	});
 
@@ -145,7 +145,7 @@ describe('updateInputsGraphicData', () => {
 			wireX: 0,
 			wireY: 0,
 			id: 'oldInput',
-			wordAlignedAddress: 0,
+			allocationUnitAddress: 0,
 		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
@@ -157,7 +157,7 @@ describe('updateInputsGraphicData', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['input2'] = createMemory({
 			id: 'input2',
 			type: MemoryTypes['float*'],
-			wordAlignedAddress: 6,
+			allocationUnitAddress: 6,
 			byteAddress: 24,
 			lineNumber: 2,
 			isInteger: false,

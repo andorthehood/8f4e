@@ -128,9 +128,9 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		type: MemoryTypes.int,
 		byteAddress: 0,
 		elementByteLength: 4,
-		wordAlignedSize: 1,
-		wordAlignedByteLength: 4,
-		wordAlignedAddress: 0,
+		allocationUnitCount: 1,
+		allocatedByteLength: 4,
+		allocationUnitAddress: 0,
 		endByteAddress: 0,
 		endAddressSafeByteLength: 4,
 		lineNumber: 1,
@@ -420,7 +420,7 @@ describe('web-ui init', () => {
 		const state = createMockState();
 		const rgba = createMemory({
 			byteAddress: 4,
-			wordAlignedAddress: 1,
+			allocationUnitAddress: 1,
 			endByteAddress: 4,
 		});
 		state.compiler.memoryPlan = {
@@ -429,8 +429,8 @@ describe('web-ui init', () => {
 					id: 'screen',
 					lineNumber: 1,
 					byteAddress: 4,
-					wordAlignedSize: 1,
-					wordAlignedByteLength: 4,
+					allocationUnitCount: 1,
+					allocatedByteLength: 4,
 					endByteAddress: 4,
 					endAddressSafeByteLength: 4,
 					memory: {

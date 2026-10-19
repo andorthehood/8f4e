@@ -82,7 +82,7 @@ function resolveMemoryAddressConfigValue(state: State, value: unknown): number |
 		return numericAddress;
 	}
 
-	return resolveMemoryIdentifier(state, { kind: 'project', groupPath: '' }, trimmedValue)?.memory.wordAlignedAddress;
+	return resolveMemoryIdentifier(state, { kind: 'project', groupPath: '' }, trimmedValue)?.memory.allocationUnitAddress;
 }
 
 function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, state: State | undefined): unknown {

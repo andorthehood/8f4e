@@ -70,19 +70,19 @@ function getDecimalPlaces(value: number): number {
 	return text.includes('.') ? text.split('.')[1].length : 0;
 }
 
-function readRuntimeSliderValue(slider: Slider, getWordFromMemory: (wordAlignedAddress: number) => number): number {
+function readRuntimeSliderValue(slider: Slider, getWordFromMemory: (allocationUnitAddress: number) => number): number {
 	if (slider.isInteger) {
-		return getWordFromMemory(slider.wordAlignedAddress);
+		return getWordFromMemory(slider.allocationUnitAddress);
 	}
 
 	if (slider.isFloat64) {
 		return decodeFloat64Words(
-			getWordFromMemory(slider.wordAlignedAddress),
-			getWordFromMemory(slider.wordAlignedAddress + 1)
+			getWordFromMemory(slider.allocationUnitAddress),
+			getWordFromMemory(slider.allocationUnitAddress + 1)
 		);
 	}
 
-	return decodeFloat32Word(getWordFromMemory(slider.wordAlignedAddress));
+	return decodeFloat32Word(getWordFromMemory(slider.allocationUnitAddress));
 }
 
 function formatRuntimeSliderValue(value: number, slider: Slider): string | undefined {
@@ -142,12 +142,12 @@ function getPianoDefaults(keyboards: PianoKeyboard[], read: (address: number) =>
 	return keyboards.flatMap(keyboard => {
 		const notes = keyboard.pressedKeysListMemory;
 		const countMemory = keyboard.pressedNumberOfKeysMemory;
-		const runtimeCount = read(countMemory.wordAlignedAddress);
+		const runtimeCount = read(countMemory.allocationUnitAddress);
 		if (!Number.isFinite(runtimeCount)) return [];
 		const count = Math.min(Math.max(0, Math.trunc(runtimeCount)), notes.numberOfElements);
 		const values: string[] = [];
 		for (let index = 0; index < count; index++) {
-			const address = notes.wordAlignedAddress + (index * notes.elementWordSize) / Int32Array.BYTES_PER_ELEMENT;
+			const address = notes.allocationUnitAddress + (index * notes.elementWordSize) / Int32Array.BYTES_PER_ELEMENT;
 			const word = read(address);
 			const value = notes.isInteger
 				? word

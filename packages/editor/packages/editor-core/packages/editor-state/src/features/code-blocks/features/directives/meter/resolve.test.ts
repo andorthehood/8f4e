@@ -39,18 +39,18 @@ describe('meter directive widget resolution', () => {
 							id: 'test-block',
 							lineNumber: 0,
 							byteAddress: 0,
-							wordAlignedSize: 0,
-							wordAlignedByteLength: 0,
+							allocationUnitCount: 0,
+							allocatedByteLength: 0,
 							endByteAddress: 0,
 							endAddressSafeByteLength: 0,
 							memory: {
 								level: {
-									wordAlignedAddress: 0,
+									allocationUnitAddress: 0,
 									byteAddress: 0,
 									numberOfElements: 1,
 									elementWordSize: 4,
 									type: MemoryTypes.float,
-									wordAlignedSize: 1,
+									allocationUnitCount: 1,
 									default: 0,
 									isInteger: false,
 									id: 'level',
@@ -112,7 +112,7 @@ describe('meter directive widget resolution', () => {
 			overloadMarkerWidth: 0,
 			staticValueIndex: 0,
 			memory: {
-				memory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
+				memory: { allocationUnitAddress: 0 } as PlannedMemoryDeclaration,
 				showAddress: false,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -138,12 +138,12 @@ describe('meter directive widget resolution', () => {
 	it('infers the memory id from a trailing memory declaration comment', () => {
 		setMockCodeBlockCode(mockGraphicData, ['float out ; @meter']);
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['out'] = {
-			wordAlignedAddress: 4,
+			allocationUnitAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 1,
 			elementWordSize: 4,
 			type: MemoryTypes.float,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: false,
 			id: 'out',
