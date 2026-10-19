@@ -127,7 +127,7 @@ describe('planSubProgramMemoryLayout', () => {
 		});
 
 		expect(plan.modules.first.byteAddress).toBe(4);
-		expect(plan.modules.first.wordAlignedSize).toBe(3);
+		expect(plan.modules.first.allocationUnitCount).toBe(3);
 		expect(plan.modules.first.memory.counter.byteAddress).toBe(4);
 		expect(plan.modules.first.memory.bytes.byteAddress).toBe(8);
 		expect(plan.modules.second.byteAddress).toBe(16);
@@ -180,7 +180,7 @@ describe('planSubProgramMemoryLayout', () => {
 		});
 
 		expect(plan.modules.main.memory.values.numberOfElements).toBe(4);
-		expect(plan.modules.main.wordAlignedSize).toBe(4);
+		expect(plan.modules.main.allocationUnitCount).toBe(4);
 	});
 
 	it('plans anonymous scalar declarations with generated ids', () => {

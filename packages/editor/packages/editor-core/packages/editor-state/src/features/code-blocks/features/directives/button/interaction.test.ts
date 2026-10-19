@@ -9,15 +9,15 @@ describe('button interaction', () => {
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let offCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
+	let setWordInMemory: (allocationUnitAddress: number, value: number, isInteger: boolean) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		offCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+		setWordInMemory = vi.fn((allocationUnitAddress: number, value: number, isInteger: boolean) => {
 			void isInteger;
-			memoryStore.set(wordAlignedAddress, value);
+			memoryStore.set(allocationUnitAddress, value);
 		});
 
 		mockState = createMockState({
@@ -34,13 +34,13 @@ describe('button interaction', () => {
 							id: 'test-block',
 							lineNumber: 0,
 							byteAddress: 0,
-							wordAlignedSize: 0,
-							wordAlignedByteLength: 0,
+							allocationUnitCount: 0,
+							allocatedByteLength: 0,
 							endByteAddress: 0,
 							endAddressSafeByteLength: 0,
 							memory: {
 								testButton: {
-									wordAlignedAddress: 5,
+									allocationUnitAddress: 5,
 								},
 							},
 							declarations: [],
@@ -94,7 +94,7 @@ describe('button interaction', () => {
 				y: 50,
 				width: 40,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				isInteger: true,
 				offValue: 0,
 				onValue: 1,
@@ -122,7 +122,7 @@ describe('button interaction', () => {
 				y: 50,
 				width: 40,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				isInteger: true,
 				offValue: 0,
 				onValue: 1,

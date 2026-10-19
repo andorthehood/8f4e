@@ -2096,6 +2096,8 @@
     "readInterpolatedInt16Assertions": {
       "memory": {
         "buffer": {
+          "allocationUnitAddress": 1,
+          "allocationUnitCount": 2,
           "byteAddress": 4,
           "default": {
             "0": 10,
@@ -2110,10 +2112,10 @@
           "numberOfElements": 3,
           "pointerDepth": 0,
           "type": "int16",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 2,
         },
         "pointer": {
+          "allocationUnitAddress": 3,
+          "allocationUnitCount": 1,
           "byteAddress": 12,
           "default": 4,
           "elementWordSize": 4,
@@ -2124,8 +2126,6 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 3,
-          "wordAlignedSize": 1,
         },
       },
     },

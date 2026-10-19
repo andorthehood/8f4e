@@ -1586,6 +1586,8 @@
     "callImpureFunctionWithExplicitLoadAndStore": {
       "memory": {
         "gain": {
+          "allocationUnitAddress": 3,
+          "allocationUnitCount": 1,
           "byteAddress": 12,
           "default": 0.5,
           "elementWordSize": 4,
@@ -1596,10 +1598,10 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 3,
-          "wordAlignedSize": 1,
         },
         "input": {
+          "allocationUnitAddress": 1,
+          "allocationUnitCount": 1,
           "byteAddress": 4,
           "default": 3.5,
           "elementWordSize": 4,
@@ -1610,10 +1612,10 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 1,
         },
         "output": {
+          "allocationUnitAddress": 2,
+          "allocationUnitCount": 1,
           "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
@@ -1623,8 +1625,6 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
         },
       },
     },
@@ -1637,6 +1637,8 @@
     "callPointerParamsWithLocalDereference": {
       "memory": {
         "delta": {
+          "allocationUnitAddress": 36,
+          "allocationUnitCount": 1,
           "byteAddress": 144,
           "default": 0.5,
           "elementWordSize": 4,
@@ -1647,10 +1649,10 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 36,
-          "wordAlignedSize": 1,
         },
         "lut": {
+          "allocationUnitAddress": 4,
+          "allocationUnitCount": 32,
           "byteAddress": 16,
           "default": {},
           "elementWordSize": 4,
@@ -1660,8 +1662,6 @@
           "numberOfElements": 32,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 32,
         },
       },
     },

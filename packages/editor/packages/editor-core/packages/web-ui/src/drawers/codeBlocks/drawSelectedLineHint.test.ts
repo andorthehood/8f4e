@@ -39,7 +39,7 @@ describe('selected line tooltip animation', () => {
 						test: {
 							memory: {
 								pointer: {
-									wordAlignedAddress: 0,
+									allocationUnitAddress: 0,
 								},
 							},
 						},

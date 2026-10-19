@@ -5,18 +5,18 @@ import type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 } from '@8f4e/language-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes } from '@8f4e/language-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE, MemoryTypes } from '@8f4e/language-spec';
 
-function getWordAlignedByteLength(wordAlignedSize: number): number {
-	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+function getAllocatedByteLength(allocationUnitCount: number): number {
+	return Math.max(0, allocationUnitCount) * ALLOCATION_UNIT_BYTE_SIZE;
 }
 
-function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
-	return wordAlignedSize <= 0 ? byteAddress : byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
+function getEndByteAddress(byteAddress: number, allocationUnitCount: number): number {
+	return allocationUnitCount <= 0 ? byteAddress : byteAddress + (allocationUnitCount - 1) * ALLOCATION_UNIT_BYTE_SIZE;
 }
 
-function getEndAddressSafeByteLength(wordAlignedSize: number): number {
-	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+function getEndAddressSafeByteLength(allocationUnitCount: number): number {
+	return allocationUnitCount > 0 ? ALLOCATION_UNIT_BYTE_SIZE : 0;
 }
 
 /**
@@ -32,8 +32,8 @@ export function createMemory(
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
-		wordAlignedSize: 1,
-		wordAlignedAddress: overrides.byteAddress / 4,
+		allocationUnitCount: 1,
+		allocationUnitAddress: overrides.byteAddress / 4,
 		lineNumber: 0,
 		isInteger: true,
 		pointerDepth: 0,
@@ -44,9 +44,9 @@ export function createMemory(
 	return {
 		...declaration,
 		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
-		wordAlignedByteLength: getWordAlignedByteLength(declaration.wordAlignedSize),
-		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.wordAlignedSize),
-		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.wordAlignedSize),
+		allocatedByteLength: getAllocatedByteLength(declaration.allocationUnitCount),
+		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.allocationUnitCount),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.allocationUnitCount),
 	};
 }
 
@@ -68,20 +68,20 @@ export function createMemoryPlan(
 ): MemoryLayoutPlan {
 	const declarations = Object.values(memory);
 	const byteAddress = overrides.byteAddress ?? 0;
-	const wordAlignedSize =
-		overrides.wordAlignedSize ??
+	const allocationUnitCount =
+		overrides.allocationUnitCount ??
 		declarations.reduce(
-			(max, declaration) => Math.max(max, declaration.wordAlignedAddress + declaration.wordAlignedSize),
+			(max, declaration) => Math.max(max, declaration.allocationUnitAddress + declaration.allocationUnitCount),
 			0
 		);
 	const module: PlannedMemoryModule = {
 		id: overrides.id ?? 'test',
 		lineNumber: overrides.lineNumber ?? 0,
 		byteAddress,
-		wordAlignedSize,
-		wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
-		endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
-		endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
+		allocationUnitCount,
+		allocatedByteLength: getAllocatedByteLength(allocationUnitCount),
+		endByteAddress: getEndByteAddress(byteAddress, allocationUnitCount),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(allocationUnitCount),
 		memory,
 		declarations,
 		declarationSources: overrides.declarationSources ?? [],

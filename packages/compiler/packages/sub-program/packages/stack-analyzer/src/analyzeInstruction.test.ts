@@ -1,5 +1,5 @@
 import type { CompilerASTLine, MapBlockStackFrame, MemoryAddressRange } from '@8f4e/language-spec';
-import { ArgumentType, BlockType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE, ArgumentType, BlockType, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import { analyzeInstruction } from './analyzeInstruction';
@@ -203,13 +203,13 @@ describe('analyzeInstruction', () => {
 		const line = {
 			lineNumber: 1,
 			instruction: 'clampAddress',
-			arguments: [{ type: ArgumentType.LITERAL, value: GLOBAL_ALIGNMENT_BOUNDARY * 2, isInteger: true }],
+			arguments: [{ type: ArgumentType.LITERAL, value: ALLOCATION_UNIT_BYTE_SIZE * 2, isInteger: true }],
 		} as CompilerASTLine;
 
 		const facts = analyzeInstruction(line, context);
 
 		expect(facts.clamp).toEqual({
-			accessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY * 2,
+			accessByteWidth: ALLOCATION_UNIT_BYTE_SIZE * 2,
 			range,
 		});
 	});

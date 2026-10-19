@@ -9,7 +9,7 @@ describe('memory declaration layout planner', () => {
 			instruction: 'float64[]',
 			numberOfElements,
 			startingByteAddress: 8,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
 		expect(declaration).toMatchObject({
@@ -32,7 +32,7 @@ describe('memory declaration layout planner', () => {
 			instruction,
 			numberOfElements: 2,
 			startingByteAddress: 8,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
 		expect(declaration).toMatchObject({ isInteger, pointerDepth, elementWordSize: 4 });
@@ -46,16 +46,16 @@ describe('memory declaration layout planner', () => {
 			lineNumber: 1,
 			instruction: 'int',
 			startingByteAddress: 4,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
 		expect(result).toEqual({
 			declaration: {
 				numberOfElements: 1,
 				elementWordSize: 4,
-				wordAlignedAddress: 1,
-				wordAlignedSize: 1,
-				wordAlignedByteLength: 4,
+				allocationUnitAddress: 1,
+				allocationUnitCount: 1,
+				allocatedByteLength: 4,
 				byteAddress: 4,
 				elementByteLength: 4,
 				endByteAddress: 4,
@@ -67,40 +67,40 @@ describe('memory declaration layout planner', () => {
 				isInteger: true,
 				isUnsigned: false,
 			},
-			nextLocalWordOffset: 1,
+			nextLocalAllocationUnitOffset: 1,
 		});
 	});
 
-	it('adds alignment padding before scalar float64 declarations at odd word offsets', () => {
+	it('adds alignment padding before scalar float64 declarations at odd allocation-unit offsets', () => {
 		const result = planScalarDeclarationLayout({
 			id: 'phase',
 			lineNumber: 2,
 			instruction: 'float64',
 			startingByteAddress: 4,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
-		expect(result.declaration.wordAlignedAddress).toBe(2);
+		expect(result.declaration.allocationUnitAddress).toBe(2);
 		expect(result.declaration.byteAddress).toBe(8);
-		expect(result.declaration.wordAlignedSize).toBe(3);
-		expect(result.nextLocalWordOffset).toBe(3);
+		expect(result.declaration.allocationUnitCount).toBe(3);
+		expect(result.nextLocalAllocationUnitOffset).toBe(3);
 	});
 
-	it('plans narrow arrays using byte width rounded to the word grid', () => {
+	it('plans narrow arrays using byte width rounded to the allocation grid', () => {
 		const result = planArrayDeclarationLayout({
 			id: 'bytes',
 			lineNumber: 3,
 			instruction: 'int8[]',
 			numberOfElements: 5,
 			startingByteAddress: 4,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
 		expect(result.declaration).toMatchObject({
 			numberOfElements: 5,
 			elementWordSize: 1,
-			wordAlignedAddress: 1,
-			wordAlignedSize: 2,
+			allocationUnitAddress: 1,
+			allocationUnitCount: 2,
 			byteAddress: 4,
 			id: 'bytes',
 			lineNumber: 3,
@@ -109,8 +109,37 @@ describe('memory declaration layout planner', () => {
 			isInteger: true,
 			isUnsigned: false,
 		});
-		expect(result.nextLocalWordOffset).toBe(2);
+		expect(result.nextLocalAllocationUnitOffset).toBe(2);
 	});
+
+	it.each([
+		['int8[]', 4, 1, 1],
+		['int16[]', 3, 2, 2],
+		['float[]', 1, 4, 1],
+		['float64[]', 1, 8, 2],
+	] as const)(
+		'keeps %s element widths separate from allocation-unit counts',
+		(instruction, numberOfElements, elementWordSize, allocationUnitCount) => {
+			const result = planArrayDeclarationLayout({
+				id: 'values',
+				lineNumber: 1,
+				instruction,
+				numberOfElements,
+				startingByteAddress: 8,
+				localAllocationUnitOffset: 0,
+			});
+
+			expect(result.declaration).toMatchObject({
+				allocationUnitAddress: 2,
+				allocationUnitCount,
+				allocatedByteLength: allocationUnitCount * 4,
+				byteAddress: 8,
+				elementWordSize,
+				elementByteLength: numberOfElements * elementWordSize,
+			});
+			expect(result.nextLocalAllocationUnitOffset).toBe(allocationUnitCount);
+		}
+	);
 
 	it('aligns float64 arrays to 8-byte boundaries', () => {
 		const result = planArrayDeclarationLayout({
@@ -119,12 +148,12 @@ describe('memory declaration layout planner', () => {
 			instruction: 'float64[]',
 			numberOfElements: 2,
 			startingByteAddress: 4,
-			localWordOffset: 0,
+			localAllocationUnitOffset: 0,
 		});
 
-		expect(result.declaration.wordAlignedAddress).toBe(2);
+		expect(result.declaration.allocationUnitAddress).toBe(2);
 		expect(result.declaration.byteAddress).toBe(8);
-		expect(result.declaration.wordAlignedSize).toBe(5);
-		expect(result.nextLocalWordOffset).toBe(5);
+		expect(result.declaration.allocationUnitCount).toBe(5);
+		expect(result.nextLocalAllocationUnitOffset).toBe(5);
 	});
 });

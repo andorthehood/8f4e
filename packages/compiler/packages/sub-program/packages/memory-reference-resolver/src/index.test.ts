@@ -10,16 +10,16 @@ import { tryResolveValueArgument } from './tryResolveValueArgument';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
-function getWordAlignedByteLength(wordAlignedSize: number): number {
-	return Math.max(0, wordAlignedSize) * 4;
+function getAllocatedByteLength(allocationUnitCount: number): number {
+	return Math.max(0, allocationUnitCount) * 4;
 }
 
-function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
-	return wordAlignedSize <= 0 ? byteAddress : byteAddress + (wordAlignedSize - 1) * 4;
+function getEndByteAddress(byteAddress: number, allocationUnitCount: number): number {
+	return allocationUnitCount <= 0 ? byteAddress : byteAddress + (allocationUnitCount - 1) * 4;
 }
 
-function getEndAddressSafeByteLength(wordAlignedSize: number): number {
-	return wordAlignedSize > 0 ? 4 : 0;
+function getEndAddressSafeByteLength(allocationUnitCount: number): number {
+	return allocationUnitCount > 0 ? 4 : 0;
 }
 
 function createMemoryDeclaration(
@@ -32,8 +32,8 @@ function createMemoryDeclaration(
 		type: 'int',
 		numberOfElements: 1,
 		elementWordSize: 4,
-		wordAlignedAddress: 0,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 0,
+		allocationUnitCount: 1,
 		byteAddress: 0,
 		isInteger: true,
 		pointerDepth: 0,
@@ -44,9 +44,9 @@ function createMemoryDeclaration(
 	return {
 		...declaration,
 		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
-		wordAlignedByteLength: getWordAlignedByteLength(declaration.wordAlignedSize),
-		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.wordAlignedSize),
-		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.wordAlignedSize),
+		allocatedByteLength: getAllocatedByteLength(declaration.allocationUnitCount),
+		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.allocationUnitCount),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.allocationUnitCount),
 	} as PlannedMemoryDeclaration;
 }
 
@@ -59,7 +59,7 @@ function createPlannedModule(
 		id,
 		lineNumber: 0,
 		byteAddress: 24,
-		wordAlignedSize: 5,
+		allocationUnitCount: 5,
 		memory,
 		declarations: Object.values(memory),
 		declarationSources: [],
@@ -68,9 +68,9 @@ function createPlannedModule(
 
 	return {
 		...module,
-		wordAlignedByteLength: getWordAlignedByteLength(module.wordAlignedSize),
-		endByteAddress: getEndByteAddress(module.byteAddress, module.wordAlignedSize),
-		endAddressSafeByteLength: getEndAddressSafeByteLength(module.wordAlignedSize),
+		allocatedByteLength: getAllocatedByteLength(module.allocationUnitCount),
+		endByteAddress: getEndByteAddress(module.byteAddress, module.allocationUnitCount),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(module.allocationUnitCount),
 	} as PlannedMemoryModule;
 }
 
@@ -138,12 +138,12 @@ describe('resolveMemoryReferences', () => {
 			type: 'int',
 			numberOfElements: 4,
 			elementWordSize: 4,
-			wordAlignedAddress: 4,
-			wordAlignedSize: 4,
+			allocationUnitAddress: 4,
+			allocationUnitCount: 4,
 			byteAddress: 16,
 		});
 		const memoryPlan = createMemoryPlan([
-			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
+			createPlannedModule('main', { buffer }, { byteAddress: 16, allocationUnitCount: 4 }),
 		]);
 
 		const result = resolveMemoryReferences({
@@ -208,21 +208,21 @@ describe('resolveMemoryReferences', () => {
 			type: 'float',
 			numberOfElements: 4,
 			elementWordSize: 4,
-			wordAlignedAddress: 4,
-			wordAlignedSize: 4,
+			allocationUnitAddress: 4,
+			allocationUnitCount: 4,
 			byteAddress: 16,
 			isInteger: false,
 		});
 		const ptr = createMemoryDeclaration('ptr', {
 			lineNumber: 3,
 			type: 'float*',
-			wordAlignedAddress: 8,
+			allocationUnitAddress: 8,
 			byteAddress: 32,
 			pointeeBaseType: 'float',
 			pointerDepth: 1,
 		});
 		const memoryPlan = createMemoryPlan([
-			createPlannedModule('main', { samples, ptr }, { byteAddress: 16, wordAlignedSize: 5 }),
+			createPlannedModule('main', { samples, ptr }, { byteAddress: 16, allocationUnitCount: 5 }),
 		]);
 
 		const result = resolveMemoryReferences({
@@ -267,12 +267,12 @@ describe('resolveMemoryReferences', () => {
 			type: 'int',
 			numberOfElements: 4,
 			elementWordSize: 4,
-			wordAlignedAddress: 4,
-			wordAlignedSize: 4,
+			allocationUnitAddress: 4,
+			allocationUnitCount: 4,
 			byteAddress: 16,
 		});
 		const memoryPlan = createMemoryPlan([
-			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
+			createPlannedModule('main', { buffer }, { byteAddress: 16, allocationUnitCount: 4 }),
 		]);
 
 		const result = resolveMemoryReferences({
@@ -351,11 +351,11 @@ describe('resolveMemoryReferences', () => {
 			byteAddress: 64,
 			numberOfElements: 8,
 			elementWordSize: 4,
-			wordAlignedSize: 8,
+			allocationUnitCount: 8,
 		});
 		const memoryPlan = createMemoryPlan([
-			createPlannedModule('consumer', { pointer }, { byteAddress: 16, wordAlignedSize: 1 }),
-			createPlannedModule('audio/source', { value }, { byteAddress: 64, wordAlignedSize: 8 }),
+			createPlannedModule('consumer', { pointer }, { byteAddress: 16, allocationUnitCount: 1 }),
+			createPlannedModule('audio/source', { value }, { byteAddress: 64, allocationUnitCount: 8 }),
 		]);
 		const memoryAliases = new Map([
 			['audio', new Map([['level', { targetModuleId: 'audio/source', targetMemoryId: 'value' }]])],
@@ -403,7 +403,7 @@ describe('tryResolveValueArgument', () => {
 		byteAddress: 32,
 		numberOfElements: 8,
 		elementWordSize: 2,
-		wordAlignedSize: 4,
+		allocationUnitCount: 4,
 	});
 	const floatBuf = createMemoryDeclaration('floatBuf', {
 		numberOfElements: 4,
@@ -689,12 +689,12 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
 		const buffer = createMemoryDeclaration('buffer', {
 			byteAddress: 8,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 			numberOfElements: 4,
 			elementWordSize: 4,
 		});
 		const laidOutNamespace = withRemoteModules(mockContext, [
-			createPlannedModule('source', { buffer }, { byteAddress: 8, wordAlignedSize: 4 }),
+			createPlannedModule('source', { buffer }, { byteAddress: 8, allocationUnitCount: 4 }),
 		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
@@ -715,15 +715,15 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule end-address reference (module:memory&) once module is laid out', () => {
 		const buffer = createMemoryDeclaration('buffer', {
 			byteAddress: 8,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 			numberOfElements: 4,
 			elementWordSize: 4,
 		});
 		const laidOutNamespace = withRemoteModules(mockContext, [
-			createPlannedModule('source', { buffer }, { byteAddress: 8, wordAlignedSize: 4 }),
+			createPlannedModule('source', { buffer }, { byteAddress: 8, allocationUnitCount: 4 }),
 		]);
 
-		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
+		// End address = byteAddress + (allocationUnitCount - 1) * 4 = 8 + 3 * 4 = 20
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
 			value: 20,
 			isInteger: true,
@@ -741,7 +741,7 @@ describe('tryResolveValueArgument', () => {
 
 	it('resolves intermodule module-base start-address (&module:) once module is laid out', () => {
 		const laidOutNamespace = withRemoteModules(mockContext, [
-			createPlannedModule('source', {}, { byteAddress: 12, wordAlignedSize: 3 }),
+			createPlannedModule('source', {}, { byteAddress: 12, allocationUnitCount: 3 }),
 		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
@@ -760,7 +760,7 @@ describe('tryResolveValueArgument', () => {
 
 	it('resolves intermodule module-base end-address (module:&) once module is laid out', () => {
 		const laidOutNamespace = withRemoteModules(mockContext, [
-			createPlannedModule('source', {}, { byteAddress: 12, wordAlignedSize: 3 }),
+			createPlannedModule('source', {}, { byteAddress: 12, allocationUnitCount: 3 }),
 		]);
 
 		// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
@@ -785,7 +785,7 @@ describe('tryResolveValueArgument', () => {
 
 	it('returns undefined for unresolved intermodule nth references', () => {
 		const laidOutNamespace = withRemoteModules(mockContext, [
-			createPlannedModule('source', {}, { byteAddress: 8, wordAlignedSize: 4 }),
+			createPlannedModule('source', {}, { byteAddress: 8, allocationUnitCount: 4 }),
 		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
@@ -832,7 +832,7 @@ describe('tryResolveValueArgument', () => {
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
 		const arr = createMemoryDeclaration('arr', {
 			byteAddress: 16,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 			numberOfElements: 4,
 			elementWordSize: 4,
 		});
@@ -855,7 +855,7 @@ describe('tryResolveValueArgument', () => {
 	it('keeps address metadata when adding an address expression to an integer offset', () => {
 		const arr = createMemoryDeclaration('arr', {
 			byteAddress: 16,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 			numberOfElements: 4,
 			elementWordSize: 4,
 		});
@@ -878,7 +878,7 @@ describe('tryResolveValueArgument', () => {
 	it('drops address metadata when address expression arithmetic leaves the known safe range', () => {
 		const arr = createMemoryDeclaration('arr', {
 			byteAddress: 16,
-			wordAlignedSize: 4,
+			allocationUnitCount: 4,
 			numberOfElements: 4,
 			elementWordSize: 4,
 		});

@@ -30,8 +30,8 @@ function createMemoryItem(
 	return {
 		numberOfElements: 1,
 		elementWordSize: 4,
-		wordAlignedAddress: 0,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 0,
+		allocationUnitCount: 1,
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,

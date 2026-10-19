@@ -157,12 +157,12 @@ describe('editor state lifecycle', () => {
 					keys: Array.from({ length: 24 }, (_, offset) => ({ offset })),
 					pressedKeysListMemory: {
 						id: 'notes',
-						wordAlignedAddress: 4,
+						allocationUnitAddress: 4,
 						numberOfElements: 2,
 						elementWordSize: 4,
 						isInteger: true,
 					},
-					pressedNumberOfKeysMemory: { id: 'count', wordAlignedAddress: 6, isInteger: true },
+					pressedNumberOfKeysMemory: { id: 'count', allocationUnitAddress: 6, isInteger: true },
 				} as PianoKeyboard,
 			];
 			state.viewport.x = 0;

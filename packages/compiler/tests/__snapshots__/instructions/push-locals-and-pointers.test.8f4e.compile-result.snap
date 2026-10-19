@@ -810,6 +810,8 @@
     "localShadowMemoryAssertions": {
       "memory": {
         "value": {
+          "allocationUnitAddress": 1,
+          "allocationUnitCount": 1,
           "byteAddress": 4,
           "default": 42,
           "elementWordSize": 4,
@@ -820,14 +822,14 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 1,
         },
       },
     },
     "pointerDereferenceDepthAssertions": {
       "memory": {
         "pptr": {
+          "allocationUnitAddress": 4,
+          "allocationUnitCount": 1,
           "byteAddress": 16,
           "default": 12,
           "elementWordSize": 4,
@@ -839,10 +841,10 @@
           "pointeeBaseType": "float",
           "pointerDepth": 2,
           "type": "float**",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 1,
         },
         "ptr": {
+          "allocationUnitAddress": 3,
+          "allocationUnitCount": 1,
           "byteAddress": 12,
           "default": 8,
           "elementWordSize": 4,
@@ -854,10 +856,10 @@
           "pointeeBaseType": "float",
           "pointerDepth": 1,
           "type": "float*",
-          "wordAlignedAddress": 3,
-          "wordAlignedSize": 1,
         },
         "value": {
+          "allocationUnitAddress": 2,
+          "allocationUnitCount": 1,
           "byteAddress": 8,
           "default": 1.5,
           "elementWordSize": 4,
@@ -868,8 +870,6 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
         },
       },
     },
@@ -879,6 +879,8 @@
     "unsignedNarrowPointerAssertions": {
       "memory": {
         "bytes": {
+          "allocationUnitAddress": 5,
+          "allocationUnitCount": 1,
           "byteAddress": 20,
           "default": {
             "0": 255,
@@ -891,10 +893,10 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int8u",
-          "wordAlignedAddress": 5,
-          "wordAlignedSize": 1,
         },
         "cursor": {
+          "allocationUnitAddress": 6,
+          "allocationUnitCount": 1,
           "byteAddress": 24,
           "default": 20,
           "elementWordSize": 4,
@@ -907,8 +909,6 @@
           "pointeeElementCount": 2,
           "pointerDepth": 1,
           "type": "int8u*",
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 1,
         },
       },
     },
