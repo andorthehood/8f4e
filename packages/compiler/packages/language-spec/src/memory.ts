@@ -163,7 +163,7 @@ export interface PlannedMemoryDeclaration {
 	elementByteLength: number;
 	/** Reserved 4-byte allocation units, including any leading alignment padding. */
 	allocationUnitCount: number;
-	/** Reserved byte length, equal to `allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE`. */
+	/** Storage byte length from `byteAddress`, excluding leading alignment padding. */
 	allocatedByteLength: number;
 	/** Absolute address of the first element in 4-byte allocation units. */
 	allocationUnitAddress: number;

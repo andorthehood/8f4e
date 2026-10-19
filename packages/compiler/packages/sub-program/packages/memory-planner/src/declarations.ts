@@ -102,7 +102,8 @@ export function planScalarDeclarationLayout(input: {
 		nonPointerElementWordSize
 	);
 	const alignmentPaddingUnitCount = alignedAbsoluteAllocationUnitOffset - absoluteAllocationUnitOffset;
-	const allocationUnitCount = alignmentPaddingUnitCount + 2;
+	const occupiedAllocationUnitCount = nonPointerElementWordSize / ALLOCATION_UNIT_BYTE_SIZE;
+	const allocationUnitCount = alignmentPaddingUnitCount + occupiedAllocationUnitCount;
 	const byteAddress = getByteAddressFromAllocationUnitOffset(0, alignedAbsoluteAllocationUnitOffset);
 
 	return {
@@ -111,11 +112,11 @@ export function planScalarDeclarationLayout(input: {
 			elementWordSize: nonPointerElementWordSize,
 			allocationUnitAddress: alignedAbsoluteAllocationUnitOffset,
 			allocationUnitCount,
-			allocatedByteLength: getAllocatedByteLength(allocationUnitCount),
+			allocatedByteLength: getAllocatedByteLength(occupiedAllocationUnitCount),
 			byteAddress,
 			elementByteLength: numberOfElements * nonPointerElementWordSize,
-			endByteAddress: getEndByteAddress(byteAddress, allocationUnitCount),
-			endAddressSafeByteLength: getEndAddressSafeByteLength(allocationUnitCount),
+			endByteAddress: getEndByteAddress(byteAddress, occupiedAllocationUnitCount),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(occupiedAllocationUnitCount),
 			id: input.id,
 			lineNumber: input.lineNumber,
 			type: input.instruction,
@@ -150,8 +151,8 @@ export function planArrayDeclarationLayout(input: {
 		elementWordSize
 	);
 	const alignmentPaddingUnitCount = alignedAbsoluteAllocationUnitOffset - absoluteAllocationUnitOffset;
-	const allocationUnitCount =
-		alignmentPaddingUnitCount + Math.ceil((input.numberOfElements * elementWordSize) / ALLOCATION_UNIT_BYTE_SIZE);
+	const occupiedAllocationUnitCount = Math.ceil((input.numberOfElements * elementWordSize) / ALLOCATION_UNIT_BYTE_SIZE);
+	const allocationUnitCount = alignmentPaddingUnitCount + occupiedAllocationUnitCount;
 	const pointeeBaseType = getArrayPointeeBaseType(input.instruction);
 	const byteAddress = getByteAddressFromAllocationUnitOffset(0, alignedAbsoluteAllocationUnitOffset);
 
@@ -160,14 +161,14 @@ export function planArrayDeclarationLayout(input: {
 			numberOfElements: input.numberOfElements,
 			elementWordSize,
 			allocationUnitCount,
-			allocatedByteLength: getAllocatedByteLength(allocationUnitCount),
+			allocatedByteLength: getAllocatedByteLength(occupiedAllocationUnitCount),
 			allocationUnitAddress: alignedAbsoluteAllocationUnitOffset,
 			id: input.id,
 			lineNumber: input.lineNumber,
 			byteAddress,
 			elementByteLength: input.numberOfElements * elementWordSize,
-			endByteAddress: getEndByteAddress(byteAddress, allocationUnitCount),
-			endAddressSafeByteLength: getEndAddressSafeByteLength(allocationUnitCount),
+			endByteAddress: getEndByteAddress(byteAddress, occupiedAllocationUnitCount),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(occupiedAllocationUnitCount),
 			isInteger: input.instruction.startsWith('int') || input.instruction.includes('*'),
 			...(input.instruction === 'float64[]' ? { isFloat64: true } : {}),
 			pointerDepth,
