@@ -30,12 +30,12 @@
   "dependencies": {
     "@8f4e/editor-website": "*",
     "playwright": "1.63.0",
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "vite": "7.3.7"
   },
   "devDependencies": {
     "@8f4e/config": "*",
     "@types/node": "24.13.2",
-    "vite": "7.3.7",
     "vitest": "4.1.7"
   }
 }

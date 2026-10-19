@@ -19,7 +19,7 @@ export default defineConfig({
 			fileName: (_format, name) => `${name}.js`,
 		},
 		rollupOptions: {
-			external: [...nodeBuiltins, 'playwright', 'sharp'],
+			external: [...nodeBuiltins, 'playwright', 'sharp', 'vite'],
 		},
 	},
 });
