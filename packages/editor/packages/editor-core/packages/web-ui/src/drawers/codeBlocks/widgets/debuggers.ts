@@ -3,17 +3,54 @@ import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import formatDebuggerValue from './formatDebuggerValue';
 
-function drawBracketedValue(engine: DrawContext, state: State, x: number, y: number, value: string): void {
-	engine.drawText(x, y, '[', state.spriteLookups!.fontCode);
-	engine.drawText(x + state.viewport.vGrid, y, value, state.spriteLookups!.fontNumbers);
-	engine.drawText(x + state.viewport.vGrid * (value.length + 1), y, ']', state.spriteLookups!.fontCode);
+const BRACKET_ANIMATION_DURATION_MS = 2200;
+const MAX_BRACKET_OFFSET_IN_CELLS = 0.375;
+const MAX_BRACKET_SCALE = 1.08;
+const reducedMotionMediaQuery =
+	typeof window === 'undefined' ? undefined : window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function getAnimationProgress(now: number, reducedMotion: boolean): number {
+	if (reducedMotion) {
+		return 0;
+	}
+
+	const cycleProgress = (now % BRACKET_ANIMATION_DURATION_MS) / BRACKET_ANIMATION_DURATION_MS;
+	return cycleProgress <= 0.5 ? cycleProgress * 2 : (1 - cycleProgress) * 2;
 }
 
-export default function drawConnectors(
+function drawBracketedValue(
+	engine: DrawContext,
+	state: State,
+	x: number,
+	y: number,
+	value: string,
+	now: number,
+	reducedMotion: boolean
+): void {
+	const { vGrid, hGrid } = state.viewport;
+	const animationProgress = getAnimationProgress(now, reducedMotion);
+	const bracketOffset = vGrid * MAX_BRACKET_OFFSET_IN_CELLS * animationProgress;
+	const bracketScale = 1 + (MAX_BRACKET_SCALE - 1) * animationProgress;
+	const bracketWidth = vGrid * bracketScale;
+	const bracketHeight = hGrid * bracketScale;
+	const bracketY = y + (hGrid - bracketHeight) / 2;
+	const leftBracketX = x - bracketOffset + (vGrid - bracketWidth) / 2;
+	const rightBracketBaseX = x + vGrid * (value.length + 1);
+	const rightBracketX = rightBracketBaseX + bracketOffset + (vGrid - bracketWidth) / 2;
+	const fontCode = state.spriteLookups!.fontCode;
+
+	engine.drawSprite(leftBracketX, bracketY, fontCode['['.charCodeAt(0)] ?? fontCode[63], bracketWidth, bracketHeight);
+	engine.drawText(x + state.viewport.vGrid, y, value, state.spriteLookups!.fontNumbers);
+	engine.drawSprite(rightBracketX, bracketY, fontCode[']'.charCodeAt(0)] ?? fontCode[63], bracketWidth, bracketHeight);
+}
+
+export default function drawDebuggers(
 	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
-	memoryViews: MemoryViews
+	memoryViews: MemoryViews,
+	now = performance.now(),
+	reducedMotion = reducedMotionMediaQuery?.matches ?? false
 ): void {
 	if (!state.spriteLookups) {
 		return;
@@ -26,7 +63,7 @@ export default function drawConnectors(
 	for (const { x, y, memory, showAddress, showEndAddress, displayFormat, bufferPointer, text } of codeBlock.widgets
 		.debuggers) {
 		if (text !== undefined) {
-			drawBracketedValue(engine, state, x, y, text);
+			drawBracketedValue(engine, state, x, y, text, now, reducedMotion);
 			continue;
 		}
 
@@ -35,12 +72,20 @@ export default function drawConnectors(
 		}
 
 		if (showAddress) {
-			drawBracketedValue(engine, state, x, y, String(memory.byteAddress + bufferPointer * 4));
+			drawBracketedValue(engine, state, x, y, String(memory.byteAddress + bufferPointer * 4), now, reducedMotion);
 		} else if (showEndAddress) {
-			drawBracketedValue(engine, state, x, y, String((memory.wordAlignedSize - 1) * 4 + memory.byteAddress));
+			drawBracketedValue(
+				engine,
+				state,
+				x,
+				y,
+				String((memory.wordAlignedSize - 1) * 4 + memory.byteAddress),
+				now,
+				reducedMotion
+			);
 		} else {
 			const value = formatDebuggerValue(memoryViews, memory, bufferPointer, displayFormat);
-			drawBracketedValue(engine, state, x, y, value);
+			drawBracketedValue(engine, state, x, y, value, now, reducedMotion);
 		}
 	}
 }

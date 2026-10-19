@@ -144,14 +144,14 @@ export function loadInstruction<
  * active block type and optionally restore or validate the block result value.
  *
  * @param blockType - Block type closed by the instruction.
- * @param options - Result restoration and float validation behavior.
+ * @param options - Result restoration behavior.
  * @returns Block-close effect metadata for an instruction spec.
  */
 export function blockClose(
 	blockType: BlockTypeValue,
-	{ restoreResult = false, validateFloatResult = false } = {}
+	{ restoreResult = false } = {}
 ): { blockClose: BlockCloseEffectSpec } {
-	return { blockClose: { blockType, restoreResult, validateFloatResult } };
+	return { blockClose: { blockType, restoreResult } };
 }
 
 /**

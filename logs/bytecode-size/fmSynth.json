@@ -730,5 +730,23 @@
 		"version": "6.5.1",
 		"benchmark": "fmSynth.8f4e",
 		"emittedBytes": 5254
+	},
+	{
+		"commit": "d441f55ae557ea764cafea72b91fce4380fe5c0e",
+		"version": "6.5.2",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 5254
+	},
+	{
+		"commit": "dac7e7f967ca09373375c7bc4c6e0d0d300b18d8",
+		"version": "6.5.3",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 5254
+	},
+	{
+		"commit": "e845989f9a33ab2e7e61facd4ec0a9ddef22f704",
+		"version": "6.5.4",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 5254
 	}
 ]

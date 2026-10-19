@@ -1828,5 +1828,50 @@
 			"gzip": 2217,
 			"brotli": 1849
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-18T15:58:05.269Z",
+		"commit": "d441f55ae557ea764cafea72b91fce4380fe5c0e",
+		"branch": "",
+		"releaseTag": "@8f4e/compiler@6.5.2",
+		"packageName": "@8f4e/compiler",
+		"projectName": "@8f4e/compiler",
+		"version": "6.5.2",
+		"bytes": {
+			"raw": 5778,
+			"gzip": 2217,
+			"brotli": 1849
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-18T17:21:09.328Z",
+		"commit": "dac7e7f967ca09373375c7bc4c6e0d0d300b18d8",
+		"branch": "",
+		"releaseTag": "@8f4e/compiler@6.5.3",
+		"packageName": "@8f4e/compiler",
+		"projectName": "@8f4e/compiler",
+		"version": "6.5.3",
+		"bytes": {
+			"raw": 5778,
+			"gzip": 2217,
+			"brotli": 1849
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-19T07:41:13.089Z",
+		"commit": "e845989f9a33ab2e7e61facd4ec0a9ddef22f704",
+		"branch": "",
+		"releaseTag": "@8f4e/compiler@6.5.4",
+		"packageName": "@8f4e/compiler",
+		"projectName": "@8f4e/compiler",
+		"version": "6.5.4",
+		"bytes": {
+			"raw": 5778,
+			"gzip": 2217,
+			"brotli": 1849
+		}
 	}
 ]

@@ -70,6 +70,44 @@ describe('memory declaration layout planner', () => {
 		}
 	);
 
+	it.each([0, 1, 2])('marks a float64 array of length %i as a float64 value', numberOfElements => {
+		const { declaration } = planArrayDeclarationLayout({
+			id: 'doubles',
+			lineNumber: 1,
+			instruction: 'float64[]',
+			numberOfElements,
+			startingByteAddress: 8,
+			localWordOffset: 0,
+		});
+
+		expect(declaration).toMatchObject({
+			isFloat64: true,
+			isInteger: false,
+			pointerDepth: 0,
+			elementWordSize: 8,
+		});
+	});
+
+	it.each([
+		['float[]', false, 0, undefined],
+		['int[]', true, 0, undefined],
+		['float64*[]', true, 1, 'float64'],
+		['float64**[]', true, 2, 'float64'],
+	] as const)('keeps the existing value metadata for %s', (instruction, isInteger, pointerDepth, pointeeBaseType) => {
+		const { declaration } = planArrayDeclarationLayout({
+			id: 'values',
+			lineNumber: 1,
+			instruction,
+			numberOfElements: 2,
+			startingByteAddress: 8,
+			localWordOffset: 0,
+		});
+
+		expect(declaration).toMatchObject({ isInteger, pointerDepth, elementWordSize: 4 });
+		expect(declaration.pointeeBaseType).toBe(pointeeBaseType);
+		expect(declaration).not.toHaveProperty('isFloat64', true);
+	});
+
 	it('plans scalar declaration addresses on the 4-byte grid', () => {
 		const result = planScalarDeclarationLayout({
 			id: 'counter',
