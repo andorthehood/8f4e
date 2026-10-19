@@ -91,11 +91,11 @@ Thanks to everyone who has contributed to 8f4e.
 <tr>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/jinchuntan"><img src="https://github.com/jinchuntan.png?size=96" width="72" alt="@jinchuntan"><br><sub><b>Nigel Tan</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Ajinchuntan">🔀 7</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3Ajinchuntan">🔀 8</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Erfouni"><img src="https://github.com/Erfouni.png?size=96" width="72" alt="@Erfouni"><br><sub><b>erfouni</b></sub></a><br>
-<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AErfouni">🔀 3</a></sub>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AErfouni">🔀 4</a></sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Aaqibhafeezkhan"><img src="https://github.com/Aaqibhafeezkhan.png?size=96" width="72" alt="@Aaqibhafeezkhan"><br><sub><b>Aaqibhafeez Khan</b></sub></a><br>
@@ -118,6 +118,10 @@ Thanks to everyone who has contributed to 8f4e.
 <td align="center" valign="top" width="25%">
 <a href="https://github.com/Prisha38"><img src="https://github.com/Prisha38.png?size=96" width="72" alt="@Prisha38"><br><sub><b>Prisha</b></sub></a><br>
 <sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3APrisha38">🔀 1</a></sub>
+</td>
+<td align="center" valign="top" width="25%">
+<a href="https://github.com/MarioZhang420"><img src="https://github.com/MarioZhang420.png?size=96" width="72" alt="@MarioZhang420"><br><sub><b>Wenzhuo Zhang</b></sub></a><br>
+<sub><a href="https://github.com/andorthehood/8f4e/pulls?q=is%3Apr%20is%3Amerged%20label%3Acontributor%20author%3AMarioZhang420">🔀 1</a></sub>
 </td>
 </tr>
 </table>
