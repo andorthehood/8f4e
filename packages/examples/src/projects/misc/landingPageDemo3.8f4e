@@ -37,7 +37,7 @@ note
 ; @config color.text.pianoKeyWhitePressedOverlay rgba(43,18,59,0.34)
 ; @config color.text.pianoKeyBlackPressedOverlay rgba(224,178,255,0.68)
 ; @config color.text.tooltipText #2b123b
-; @config color.text.tooltipHighlight #9f5fc6
+; @config color.text.tooltipHighlight #542666
 ; @config color.fill.menuItemBackground #401653
 ; @config color.fill.menuItemBackgroundHighlighted #e4b6ff
 ; @config color.fill.background #609
