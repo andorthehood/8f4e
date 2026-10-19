@@ -368,4 +368,188 @@ describe('binary assets plugin', () => {
 			})
 		);
 	});
+
+	it('deduplicates repeated URLs in first-seen order while populating each memory target and preserving first-match metadata', async () => {
+		fetchBinaryAssetsMock.mockResolvedValue([
+			{
+				url: 'https://example.com/kick.pcm',
+				fileName: 'kick-first.pcm',
+				assetByteLength: 8,
+				loadedIntoMemory: false,
+			},
+			{
+				url: 'https://example.com/kick.pcm',
+				fileName: 'kick-duplicate.pcm',
+				assetByteLength: 16,
+				loadedIntoMemory: false,
+			},
+			{
+				url: 'https://example.com/snare.pcm',
+				fileName: 'snare.pcm',
+				assetByteLength: 12,
+				loadedIntoMemory: false,
+			},
+		]);
+		loadBinaryAssetIntoMemoryMock.mockResolvedValue();
+
+		const baseState = createState();
+		const previewBuffer = {
+			...baseState.compiler.memoryPlan.modules.samples.memory.buffer,
+			id: 'previewBuffer',
+			byteAddress: 32,
+			wordAlignedAddress: 8,
+			endByteAddress: 32,
+		};
+		baseState.compiler.memoryPlan.modules.samples.memory.previewBuffer = previewBuffer;
+		baseState.compiler.memoryPlan.modules.samples.declarations.push(previewBuffer);
+		baseState.editorConfig.bin = {
+			kick: {
+				url: 'https://example.com/kick.pcm',
+				memory: 'samples:buffer',
+				memories: {
+					preview: 'samples:previewBuffer',
+				},
+			},
+			snare: {
+				url: 'https://example.com/snare.pcm',
+				memory: 'samples:buffer',
+			},
+			kickCopy: {
+				url: 'https://example.com/kick.pcm',
+				memory: 'samples:previewBuffer',
+			},
+		} as State['editorConfig']['bin'];
+
+		const store = createStateManager(baseState);
+		binaryAssetsPlugin({
+			store,
+			events,
+			memoryViews,
+			window: {} as Window,
+			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
+			setErrors: vi.fn(),
+			services,
+		});
+		await flushPromises();
+		await flushPromises();
+		await flushPromises();
+
+		expect(fetchBinaryAssetsMock).toHaveBeenCalledTimes(1);
+		expect(fetchBinaryAssetsMock).toHaveBeenCalledWith(
+			['https://example.com/kick.pcm', 'https://example.com/snare.pcm'],
+			expect.any(Map)
+		);
+		expect(store.getState().binaryAssets).toEqual([
+			expect.objectContaining({
+				id: 'kick',
+				url: 'https://example.com/kick.pcm',
+				fileName: 'kick-first.pcm',
+				assetByteLength: 8,
+				memoryId: 'samples:buffer',
+				byteAddress: 16,
+				loadedIntoMemory: true,
+			}),
+			expect.objectContaining({
+				id: 'kick',
+				url: 'https://example.com/kick.pcm',
+				fileName: 'kick-first.pcm',
+				assetByteLength: 8,
+				memoryId: 'samples:previewBuffer',
+				byteAddress: 32,
+				loadedIntoMemory: true,
+			}),
+			expect.objectContaining({
+				id: 'snare',
+				url: 'https://example.com/snare.pcm',
+				fileName: 'snare.pcm',
+				assetByteLength: 12,
+				memoryId: 'samples:buffer',
+				byteAddress: 16,
+				loadedIntoMemory: true,
+			}),
+			expect.objectContaining({
+				id: 'kickCopy',
+				url: 'https://example.com/kick.pcm',
+				fileName: 'kick-first.pcm',
+				assetByteLength: 8,
+				memoryId: 'samples:previewBuffer',
+				byteAddress: 32,
+				loadedIntoMemory: true,
+			}),
+		]);
+	});
+
+	it('skips missing fetched metadata with a warning and ignores stale or disposed fetch completions', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		let resolveFirstFetch: (assets: BinaryAsset[]) => void = () => {};
+		fetchBinaryAssetsMock
+			.mockReturnValueOnce(
+				new Promise(resolve => {
+					resolveFirstFetch = resolve;
+				})
+			)
+			.mockResolvedValueOnce([
+				{
+					url: 'https://example.com/present.pcm',
+					fileName: 'present.pcm',
+					assetByteLength: 8,
+					loadedIntoMemory: false,
+				},
+			]);
+		loadBinaryAssetIntoMemoryMock.mockResolvedValue();
+
+		const store = createStateManager(createState({ url: 'https://example.com/stale.pcm' }));
+		binaryAssetsPlugin({
+			store,
+			events,
+			memoryViews,
+			window: {} as Window,
+			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
+			setErrors: vi.fn(),
+			services,
+		});
+
+		store.set('editorConfig.bin', {
+			missing: {
+				url: 'https://example.com/missing.pcm',
+				memory: 'samples:buffer',
+			},
+			present: {
+				url: 'https://example.com/present.pcm',
+				memory: 'samples:buffer',
+			},
+		} as State['editorConfig']['bin']);
+		await flushPromises();
+
+		expect(warnSpy).toHaveBeenCalledWith('Binary asset metadata missing for url:', 'https://example.com/missing.pcm');
+		expect(store.getState().binaryAssets).toEqual([
+			expect.objectContaining({
+				id: 'present',
+				url: 'https://example.com/present.pcm',
+				fileName: 'present.pcm',
+				memoryId: 'samples:buffer',
+				loadedIntoMemory: true,
+			}),
+		]);
+
+		resolveFirstFetch([
+			{
+				url: 'https://example.com/stale.pcm',
+				fileName: 'stale.pcm',
+				assetByteLength: 8,
+				loadedIntoMemory: false,
+			},
+		]);
+		await flushPromises();
+
+		expect(store.getState().binaryAssets).toEqual([
+			expect.objectContaining({
+				id: 'present',
+				url: 'https://example.com/present.pcm',
+			}),
+		]);
+		warnSpy.mockRestore();
+	});
 });
