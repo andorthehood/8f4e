@@ -1,118 +1,126 @@
 ---
-title: 'TODO: Rename layout word fields to allocation-unit terminology'
+title: 'TODO: Rename compiler allocation-grid metadata to allocation-unit terminology'
 priority: Medium
-effort: 4-8h
+effort: 8-16h
 created: 2026-05-26
 issue: https://github.com/andorthehood/8f4e/issues/712
 status: Open
 completed: null
 ---
 
-# TODO: Rename layout word fields to allocation-unit terminology
+# TODO: Rename compiler allocation-grid metadata to allocation-unit terminology
 
-## Problem Description
+## Problem
 
-The compiler uses a 4-byte allocation grid for memory layout, currently exposed as `GLOBAL_ALIGNMENT_BOUNDARY`. Several layout fields are named with "word", but those fields do not mean the same thing as `BASE_TYPE_METADATA.wordSize`.
+The compiler lays out memory on a fixed four-byte allocation grid, currently represented by
+`GLOBAL_ALIGNMENT_BOUNDARY`. Several names describe positions or counts on that grid as “word aligned,” while
+`BASE_TYPE_METADATA.wordSize` and `elementWordSize` describe the byte width of an actual typed value.
 
-`BASE_TYPE_METADATA.wordSize` is defensible as "the size of one typed word". For example, `float64.wordSize === 8` reads as "one float64 word is 8 bytes".
+Those are different concepts. For example, `wordAlignedSize` is not a typed word size: it is the number of four-byte
+allocation units reserved for a declaration or module. A scalar `float64` normally consumes two allocation units,
+while four `int8` elements consume one.
 
-The confusing names are the layout fields that count or index into the compiler's 4-byte allocation grid:
+The ambiguous allocation-grid names are exposed through compiler options and `CompileResult.memoryPlan`, then consumed
+throughout the compiler, compiler worker, editor, CLI, runtimes, tests, and snapshots.
 
-- `wordAlignedAddress`
-- `wordAlignedSize`
-- `currentModuleNextWordOffset`
-- `currentModuleWordAlignedSize`
+## Goal
 
-For example, `wordAlignedSize` is not the byte size of a word and is not the storage size of a typed value. It is the number of 4-byte allocation units reserved after rounding and alignment. For an `int8[]` with four elements, it is `1`; for a scalar `float64`, it is usually `2`.
+Use explicit allocation-unit terminology for values tied to the compiler's four-byte layout grid, while retaining
+word-size terminology where it genuinely describes a typed value or memory-access width.
 
-The overall goal is to use strict, descriptive interfaces where applicable instead of forcing readers and agents to infer units from runtime calculations.
+Suggested renames:
 
-## Proposed Solution
+| Current name | Suggested name |
+| --- | --- |
+| `GLOBAL_ALIGNMENT_BOUNDARY` | `ALLOCATION_UNIT_BYTE_SIZE` |
+| `wordAlignedAddress` | `allocationUnitAddress` |
+| `wordAlignedSize` | `allocationUnitCount` |
+| `wordAlignedByteLength` | `allocatedByteLength` |
+| `startingMemoryWordAddress` | `startingMemoryAllocationUnitAddress` |
+| `localWordOffset` | `localAllocationUnitOffset` |
+| `nextLocalWordOffset` | `nextLocalAllocationUnitOffset` |
+| `getByteAddressFromWordOffset` | `getByteAddressFromAllocationUnitOffset` |
+| `getAbsoluteWordOffset` | `getAbsoluteAllocationUnitOffset` |
+| `alignAbsoluteWordOffset` | `alignAbsoluteAllocationUnitOffset` |
+| `getWordAlignedByteLength` | `getAllocatedByteLength` |
 
-Rename the compiler's 4-byte layout grid to "allocation unit" terminology.
+The final names may be adjusted during implementation if a clearer consistent vocabulary emerges, but a value ending
+in `Count` must be a count and a value ending in `ByteLength` must be measured in bytes.
 
-Suggested names:
+## Breaking-change boundary
 
-- `GLOBAL_ALIGNMENT_BOUNDARY` -> `ALLOCATION_UNIT_BYTE_SIZE`
-- `wordAlignedAddress` -> `allocationUnitAddress`
-- `wordAlignedSize` -> `allocationUnitCount`
-- `currentModuleNextWordOffset` -> `currentModuleNextAllocationUnitOffset`
-- `currentModuleWordAlignedSize` -> `currentModuleAllocationUnitCount`
+`startingMemoryWordAddress` is part of `CompileOptions`, and the layout fields are present in
+`CompileResult.memoryPlan`. Renaming them is therefore a breaking compiler API change.
 
-Keep `BASE_TYPE_METADATA.wordSize` unless there is a separate explicit decision to rename type word-size metadata. This todo is about separating typed word size from compiler allocation-unit layout.
+Implement this as an intentional breaking change using the repository's Conventional Commit policy (`!` and/or a
+`BREAKING CHANGE` footer), so release tooling produces the appropriate major versions. Update all in-repository
+callers atomically; do not keep duplicate old/new fields, compatibility aliases, getters, or migration shims.
 
-Because the project is not released yet, update callers directly and do not keep compatibility aliases, duplicate fields, or migration shims.
+## Non-goals
 
-## Anti-Patterns
+Do not rename concepts where “word size” means the storage width of a typed value rather than an allocation-grid
+coordinate. In particular, keep these unless a separate issue explicitly changes them:
 
-- Do not keep old and new field names side by side.
-- Do not add getters, aliases, re-exports, or wrapper types to preserve the old names.
-- Do not rename `BASE_TYPE_METADATA.wordSize` as part of this task unless the team explicitly changes that decision.
-- Do not use a name ending in `Size` for a value that is actually a count.
-- Do not replace spec-derived size calculations with local hardcoded branches such as `type === 'float64' ? 8 : 4`.
+- `BASE_TYPE_METADATA.wordSize`
+- `elementWordSize`
+- pointee/dereferenced element word-size helpers and metadata
+- byte/half-word/word/double-word memory-access-width constants
+- APIs that genuinely index a typed 32-bit memory view rather than expose compiler layout metadata
 
-## Implementation Plan
+Do not change allocation behavior, alignment, emitted Wasm, memory addresses, sizes, defaults, or runtime semantics.
 
-### Step 1: Rename the allocation-unit constant
+## Implementation outline
 
-- Rename `GLOBAL_ALIGNMENT_BOUNDARY` to `ALLOCATION_UNIT_BYTE_SIZE` in `packages/compiler/packages/language-spec/src/constants.ts`.
-- Update all imports and calculations that divide or multiply by the 4-byte allocation unit.
-- Keep the numeric value unchanged.
+1. Rename the allocation-unit constant and public layout contracts in
+   `packages/compiler/packages/language-spec/src/`.
+2. Rename allocation-grid locals and helpers in
+   `packages/compiler/packages/sub-program/packages/memory-planner/src/`.
+3. Update every compiler-stage consumer, including memory defaults/references, stack analysis, code generation, and
+   initial-memory segments.
+4. Update compiler-worker, editor, CLI, and runtime consumers of the renamed options and memory-plan fields.
+5. Update tests, fixtures, snapshots, documentation, and examples. Avoid mechanical changes to the typed-word concepts
+   listed under non-goals.
+6. Confirm that before/after compilation produces identical byte addresses, allocation lengths, required memory,
+   initialized bytes, and executable behavior.
 
-### Step 2: Rename layout fields
+The obsolete `currentModuleNextWordOffset` and `currentModuleWordAlignedSize` fields are no longer part of this task;
+they have already been removed from active source.
 
-- Rename `wordAlignedAddress` to `allocationUnitAddress`.
-- Rename `wordAlignedSize` to `allocationUnitCount`.
-- Update `DataStructure`, `MemoryValueChange`, compiled module metadata, and semantic context types.
-- Update compiler consumers, tests, and snapshots directly.
+## Acceptance criteria
 
-### Step 3: Rename layout context counters
+- [ ] The four-byte allocation-grid constant uses allocation-unit terminology.
+- [ ] Public memory-plan addresses, counts, and allocated byte lengths use explicit units.
+- [ ] The starting-memory compiler option uses allocation-unit terminology.
+- [ ] Memory-planner locals and helper names consistently distinguish allocation units from bytes and typed element
+      widths.
+- [ ] All repository consumers use the new names; no compatibility aliases or duplicate fields remain.
+- [ ] Genuine typed-word metadata remains unchanged.
+- [ ] Memory layout and generated-program behavior are unchanged.
+- [ ] The change is documented and released as breaking.
 
-- Rename `currentModuleNextWordOffset` to `currentModuleNextAllocationUnitOffset`.
-- Rename `currentModuleWordAlignedSize` to `currentModuleAllocationUnitCount`.
-- Review helpers in `packages/compiler/src/semantic/layoutAddresses.ts` and rename function parameters where they use the old word-offset vocabulary.
+## Validation
 
-### Step 4: Keep type word-size metadata separate
+Run at minimum:
 
-- Keep `BASE_TYPE_METADATA.wordSize` reads for typed storage size.
-- Ensure allocation-unit counts are derived from type word sizes and `ALLOCATION_UNIT_BYTE_SIZE`, not from local type branches.
+```sh
+npx nx run @8f4e/language-spec:typecheck
+npx nx run @8f4e/memory-planner:test
+npx nx run @8f4e/memory-planner:typecheck
+npx nx run @8f4e/compiler:test
+npx nx run @8f4e/compiler:typecheck
+npx nx run-many --target=typecheck --all
+```
 
-## Validation Checkpoints
+Also run focused tests for any affected editor, compiler-worker, CLI, or runtime packages and use an active-source
+search to confirm that obsolete allocation-grid names remain only in intentional historical or migration
+documentation.
 
-- `rg -n "GLOBAL_ALIGNMENT_BOUNDARY|wordAlignedAddress|wordAlignedSize|currentModuleNextWordOffset|currentModuleWordAlignedSize" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/sub-program/packages/tokenizer/src -g '*.ts'`
-- `npx nx run @8f4e/language-spec:typecheck`
-- `npx nx run compiler:typecheck`
-- `npx nx run compiler:test`
+## Risk and scope
 
-## Success Criteria
+This is a broad, mechanical but API-breaking rename. It should be reviewed for unit correctness rather than bundled
+with behavioral refactors. Snapshot churn is expected; semantic output changes are not.
 
-- [ ] The 4-byte layout constant is named `ALLOCATION_UNIT_BYTE_SIZE`.
-- [ ] Layout addresses/counts use allocation-unit terminology.
-- [ ] Type storage metadata such as `BASE_TYPE_METADATA.wordSize` remains distinct from allocation-unit layout metadata.
-- [ ] No compatibility aliases, duplicate fields, wrappers, or migration shims are introduced.
-- [ ] Relevant typechecks and compiler tests pass.
+## Related items
 
-## Affected Components
-
-- `packages/compiler/packages/language-spec/src/constants.ts` - allocation unit byte-size constant.
-- `packages/compiler/packages/language-spec/src/memory.ts` - memory layout metadata.
-- `packages/compiler/packages/language-spec/src/semantic.ts` - compilation context layout counters.
-- `packages/compiler/packages/language-spec/src/compiled.ts` - compiled module layout metadata.
-- `packages/compiler/src/semantic/` - declaration layout and namespace construction.
-- `packages/compiler/src/initialMemoryDataSegments/` - segment sizing from allocation-unit counts.
-- `packages/compiler/src/**/__tests__` and `packages/compiler/tests/**` - tests that construct or assert layout metadata.
-
-## Risks & Considerations
-
-- **Broad rename**: These fields are widely used, so this will touch many tests and snapshots.
-- **No compatibility preservation**: This project is not released yet. Delete old names instead of keeping aliases.
-- **Terminology boundary**: This todo should not blur typed word size and allocation-unit layout again. `wordSize` can remain type metadata; `allocationUnit*` should describe layout-grid values.
-
-## Related Items
-
-- **Related**: `docs/todos/423-narrow-ast-line-metadata-interfaces.md`
-- **Related**: `docs/todos/392-move-shared-compiler-constants-to-language-spec.md`
-
-## Notes
-
-- This todo came from reviewing memory layout naming after removing local one-line helper wrappers. The cleanup exposed two separate concepts that need distinct names: type word size and compiler allocation-unit layout.
+- `docs/todos/423-narrow-ast-line-metadata-interfaces.md`
+- `docs/todos/392-move-shared-compiler-constants-to-language-spec.md`
