@@ -38,12 +38,54 @@ describe('drawDebuggers', () => {
 			} as never,
 		});
 
-		drawDebuggers(engine, state, codeBlock, createMemoryViews());
+		drawDebuggers(engine, state, codeBlock, createMemoryViews(), 0);
 
+		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
-		expect(drawText).toHaveBeenNthCalledWith(1, 5, 7, '[', state.spriteLookups?.fontCode);
-		expect(drawText).toHaveBeenNthCalledWith(2, 13, 7, '2, 3', state.spriteLookups?.fontNumbers);
-		expect(drawText).toHaveBeenNthCalledWith(3, 45, 7, ']', state.spriteLookups?.fontCode);
+		expect(drawSprite).toHaveBeenNthCalledWith(1, 5, 7, 91, 8, 16);
+		expect(drawText).toHaveBeenCalledOnce();
+		expect(drawText).toHaveBeenCalledWith(13, 7, '2, 3', state.spriteLookups?.fontNumbers);
+		expect(drawSprite).toHaveBeenNthCalledWith(2, 45, 7, 93, 8, 16);
+	});
+
+	it('moves the brackets linearly outward around a stationary live value', () => {
+		const engine = createDrawContextMock();
+		const state = createMockState({
+			viewport: { vGrid: 8, hGrid: 16 },
+			spriteLookups: {
+				fontCode: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+			} as never,
+		});
+		const codeBlock = createMockCodeBlock({
+			widgets: {
+				debuggers: [
+					{
+						x: 5,
+						y: 7,
+						text: '2, 3',
+					},
+				],
+			} as never,
+		});
+
+		drawDebuggers(engine, state, codeBlock, createMemoryViews(), 275);
+
+		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
+		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
+		const [leftX, bracketY, leftSprite, bracketWidth, bracketHeight] = drawSprite.mock.calls[0];
+		const [rightX, rightY, rightSprite, rightWidth, rightHeight] = drawSprite.mock.calls[1];
+		expect(leftX).toBeCloseTo(4.17);
+		expect(bracketY).toBeCloseTo(6.84);
+		expect(leftSprite).toBe(91);
+		expect(bracketWidth).toBeCloseTo(8.16);
+		expect(bracketHeight).toBeCloseTo(16.32);
+		expect(drawText).toHaveBeenCalledWith(13, 7, '2, 3', state.spriteLookups?.fontNumbers);
+		expect(rightX).toBeCloseTo(45.67);
+		expect(rightY).toBeCloseTo(6.84);
+		expect(rightSprite).toBe(93);
+		expect(rightWidth).toBeCloseTo(8.16);
+		expect(rightHeight).toBeCloseTo(16.32);
 	});
 
 	it('renders an invalid marker when a watch points outside memory', () => {
@@ -77,11 +119,13 @@ describe('drawDebuggers', () => {
 			} as never,
 		});
 
-		drawDebuggers(engine, state, codeBlock, createMemoryViews());
+		drawDebuggers(engine, state, codeBlock, createMemoryViews(), 1100, true);
 
+		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
-		expect(drawText).toHaveBeenNthCalledWith(1, 5, 7, '[', state.spriteLookups?.fontCode);
-		expect(drawText).toHaveBeenNthCalledWith(2, 13, 7, '?', state.spriteLookups?.fontNumbers);
-		expect(drawText).toHaveBeenNthCalledWith(3, 21, 7, ']', state.spriteLookups?.fontCode);
+		expect(drawSprite).toHaveBeenNthCalledWith(1, 5, 7, 91, 8, 16);
+		expect(drawText).toHaveBeenCalledOnce();
+		expect(drawText).toHaveBeenCalledWith(13, 7, '?', state.spriteLookups?.fontNumbers);
+		expect(drawSprite).toHaveBeenNthCalledWith(2, 21, 7, 93, 8, 16);
 	});
 });
