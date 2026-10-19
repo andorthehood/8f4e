@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
-import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { chromium } from 'playwright';
 import sharp from 'sharp';
@@ -57,9 +57,8 @@ interface PreviewWindow {
 }
 
 function resolveEditorAssetsPath(): string {
-	const require = createRequire(import.meta.url);
-	const editorPackagePath = require.resolve('@8f4e/editor-website/package.json');
-	return path.join(path.dirname(editorPackagePath), 'dist');
+	const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+	return path.resolve(packageRoot, '../../packages/editor/packages/editor-website/dist');
 }
 
 async function validatePaths(inputPath: string, outputPath: string, editorAssetsPath: string): Promise<void> {

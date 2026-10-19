@@ -2,7 +2,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { generateProjectPreview } from '@8f4e/project-preview';
+import { generateProjectPreview } from '../../../tools/project-preview/dist/index.js';
 
 import { projects as exampleProjects } from '../src/examples/projects.ts';
 

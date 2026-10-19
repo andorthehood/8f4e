@@ -9,7 +9,7 @@ From the workspace root:
 ```bash
 npx nx run @8f4e/8f4e-website:dev
 npx nx run @8f4e/8f4e-website:build
-npx nx run @8f4e/8f4e-website:generate-previews
+npm --prefix tools/project-preview run generate-gallery-previews
 npx nx run @8f4e/8f4e-website:serve
 ```
 
@@ -18,7 +18,7 @@ The development server runs at `http://localhost:3001` so it can run alongside `
 Set the canvas's `data-project-path` attribute in `src/index.html` to a path relative to
 `packages/examples/src/projects/` to choose the project loaded when the editor mounts. `src/example-projects.ts`
 uses a Vite glob to emit the original `.8f4e` sources as downloadable assets shared by the homepage and examples gallery.
-The generation target refreshes the committed 64×64 GIF previews in `src/project-previews/` after gallery projects or
+The npm command refreshes the committed 64×64 GIF previews in `src/project-previews/` after gallery projects or
 their `@home` blocks change. The compiler gallery reuses one shared preview generated from a representative fixture.
 
 ## Examples gallery

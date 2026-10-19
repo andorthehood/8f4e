@@ -57,5 +57,5 @@ jobs:
         run: npx nx affected --target=typecheck
 
       - name: Run affected tests
-        run: npx nx affected --target=test --exclude=@8f4e/project-preview
+        run: npx nx affected --target=test
         timeout-minutes: 10
