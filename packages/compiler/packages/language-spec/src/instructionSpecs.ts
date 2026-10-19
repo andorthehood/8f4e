@@ -195,7 +195,6 @@ export interface StackEffectSpec<TLine = unknown> extends ResolvedStackEffect {
 export interface BlockCloseEffectSpec {
 	blockType: BlockTypeValue;
 	restoreResult?: boolean;
-	validateFloatResult?: boolean;
 }
 
 /** WebAssembly load opcode families represented by compiler memory effects. */
@@ -497,7 +496,7 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Starts the alternate branch of the current if block.' },
 		stack: stack({ inputs: [], outputs: [] }),
-		effects: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
+		effects: blockClose(BlockType.CONDITION),
 	},
 	ensureNonZero: withDocsAndStack(
 		{ ...unaryModuleOrFunctionSpec, sourceArguments: { maxArguments: 1, argumentTypes: 'literal' } },
@@ -598,7 +597,7 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
-		effects: blockClose(BlockType.CONDITION, { restoreResult: true, validateFloatResult: true }),
+		effects: blockClose(BlockType.CONDITION, { restoreResult: true }),
 	},
 	lessOrEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes 1 when the first value is less than or equal to the second value.',
