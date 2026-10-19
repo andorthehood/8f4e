@@ -79,7 +79,7 @@ function resolveProjectMemoryExposures(
 /** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(entryNames: readonly string[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const arityByName: FunctionRegistry['arityByName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = Object.create(null);
 
 	entryNames.forEach(entryName => {
 		const parameters: FunctionMetadata['signature']['parameters'] = [];
@@ -98,7 +98,7 @@ function createEntryFunctionMetadata(entryNames: readonly string[]): FunctionReg
 /** Merges function registries while preserving source-name arity metadata. */
 function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const arityByName: FunctionRegistry['arityByName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = Object.create(null);
 
 	for (const registry of registries) {
 		Object.assign(byId, registry.byId);
