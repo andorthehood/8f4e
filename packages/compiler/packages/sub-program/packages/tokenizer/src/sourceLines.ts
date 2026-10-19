@@ -24,7 +24,8 @@ export function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	const sourceLines: SourceLine[] = [];
 	let previousSourceLine: SourceLine | undefined;
 
-	for (const [lineNumber, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
+	for (let lineNumber = 0; lineNumber < code.length; lineNumber++) {
+		const line = code[lineNumber];
 		if (isComment(line) || !isInstructionLikeLine(line)) {
 			continue;
 		}
