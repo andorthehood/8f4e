@@ -29,6 +29,7 @@ import outputs from './features/outputs/updateGraphicData';
 import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import paramShape, { updateParamShapeDeclarations } from './paramShape/updateGraphicData';
+import { partitionCodeBlocksByAlwaysOnTop } from './partitionCodeBlocksByAlwaysOnTop';
 import shape, { updateShapeDeclarations } from './shape/updateGraphicData';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from './utils/getCodeBlockNameFromSource';
@@ -340,10 +341,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			const projectCodeBlocks = [...projectScopeBlocks, ...codeBlocks, ...groupBlocks];
 
 			// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
-			return [
-				...projectCodeBlocks.filter(block => !block.alwaysOnTop),
-				...projectCodeBlocks.filter(block => block.alwaysOnTop),
-			];
+			return partitionCodeBlocksByAlwaysOnTop(projectCodeBlocks);
 		};
 		const rootCodeBlocks = createProjectCodeBlockSlice(project, ROOT_PROJECT_GROUP_PATH);
 		state.codeBlockRendering.nextCodeBlockCreationIndex = nextCodeBlockCreationIndex;
