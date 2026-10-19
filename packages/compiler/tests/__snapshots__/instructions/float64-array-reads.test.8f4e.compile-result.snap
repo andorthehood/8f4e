@@ -362,6 +362,8 @@
     "arrayValueTypeAssertions": {
       "memory": {
         "doubles": {
+          "allocationUnitAddress": 2,
+          "allocationUnitCount": 5,
           "byteAddress": 8,
           "default": {
             "0": 1.25,
@@ -375,10 +377,10 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "float64",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 5,
         },
         "expectedPointer": {
+          "allocationUnitAddress": 18,
+          "allocationUnitCount": 1,
           "byteAddress": 72,
           "default": 12345678,
           "elementWordSize": 4,
@@ -390,10 +392,10 @@
           "pointeeBaseType": "float64",
           "pointerDepth": 1,
           "type": "float64*",
-          "wordAlignedAddress": 18,
-          "wordAlignedSize": 1,
         },
         "expectedPointerPointer": {
+          "allocationUnitAddress": 19,
+          "allocationUnitCount": 1,
           "byteAddress": 76,
           "default": 87654321,
           "elementWordSize": 4,
@@ -405,10 +407,10 @@
           "pointeeBaseType": "float64",
           "pointerDepth": 2,
           "type": "float64**",
-          "wordAlignedAddress": 19,
-          "wordAlignedSize": 1,
         },
         "floats": {
+          "allocationUnitAddress": 10,
+          "allocationUnitCount": 2,
           "byteAddress": 40,
           "default": {
             "0": 1.25,
@@ -421,10 +423,10 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 10,
-          "wordAlignedSize": 2,
         },
         "integers": {
+          "allocationUnitAddress": 12,
+          "allocationUnitCount": 2,
           "byteAddress": 48,
           "default": {
             "0": 7,
@@ -437,10 +439,10 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 12,
-          "wordAlignedSize": 2,
         },
         "pointerPointers": {
+          "allocationUnitAddress": 16,
+          "allocationUnitCount": 2,
           "byteAddress": 64,
           "default": {
             "0": 87654321,
@@ -454,10 +456,10 @@
           "pointeeBaseType": "float64",
           "pointerDepth": 2,
           "type": "float64**",
-          "wordAlignedAddress": 16,
-          "wordAlignedSize": 2,
         },
         "pointers": {
+          "allocationUnitAddress": 14,
+          "allocationUnitCount": 2,
           "byteAddress": 56,
           "default": {
             "0": 12345678,
@@ -471,10 +473,10 @@
           "pointeeBaseType": "float64",
           "pointerDepth": 1,
           "type": "float64*",
-          "wordAlignedAddress": 14,
-          "wordAlignedSize": 2,
         },
         "precise": {
+          "allocationUnitAddress": 6,
+          "allocationUnitCount": 4,
           "byteAddress": 24,
           "default": {
             "0": 1.0000000000000002,
@@ -488,8 +490,6 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "float64",
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 4,
         },
       },
     },

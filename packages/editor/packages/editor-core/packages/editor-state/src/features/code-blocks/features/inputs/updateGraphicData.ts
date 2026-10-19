@@ -31,7 +31,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 				wireX: Math.round(x + width / 2),
 				wireY: Math.round(y + height / 2),
 				id: exposure.name,
-				wordAlignedAddress: exposure.targetMemory.wordAlignedAddress,
+				allocationUnitAddress: exposure.targetMemory.allocationUnitAddress,
 				codeBlock: graphicData,
 			});
 		});
@@ -58,7 +58,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			wireX: Math.round(x + width / 2),
 			wireY: Math.round(y + height / 2),
 			id: memory.id,
-			wordAlignedAddress: memory.wordAlignedAddress,
+			allocationUnitAddress: memory.allocationUnitAddress,
 			codeBlock: graphicData,
 		});
 	});

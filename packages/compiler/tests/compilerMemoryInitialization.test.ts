@@ -96,16 +96,16 @@ entryEnd
 		const main = getExportedFunction(fixture.instance.exports, 'main');
 
 		initDefaults();
-		expect(memory[scratch.wordAlignedAddress]).toBe(0);
-		expect(memory[marker.wordAlignedAddress]).toBe(123);
+		expect(memory[scratch.allocationUnitAddress]).toBe(0);
+		expect(memory[marker.allocationUnitAddress]).toBe(123);
 
 		main();
-		expect(memory[scratch.wordAlignedAddress]).toBe(99);
-		expect(memory[marker.wordAlignedAddress]).toBe(456);
+		expect(memory[scratch.allocationUnitAddress]).toBe(99);
+		expect(memory[marker.allocationUnitAddress]).toBe(456);
 
 		initDefaults();
-		expect(memory[scratch.wordAlignedAddress]).toBe(0);
-		expect(memory[marker.wordAlignedAddress]).toBe(123);
+		expect(memory[scratch.allocationUnitAddress]).toBe(0);
+		expect(memory[marker.allocationUnitAddress]).toBe(123);
 	});
 
 	test('keeps sparse array initializers compact in the emitted wasm', async () => {

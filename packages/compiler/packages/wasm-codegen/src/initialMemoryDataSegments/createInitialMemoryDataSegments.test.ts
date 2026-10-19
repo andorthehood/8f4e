@@ -18,13 +18,13 @@ describe('createInitialMemoryDataSegments', () => {
 				id: 'implicitArray',
 				byteAddress: 8,
 				numberOfElements: 4,
-				wordAlignedSize: 4,
+				allocationUnitCount: 4,
 			}),
 			explicitArray: createMemory({
 				id: 'explicitArray',
 				byteAddress: 24,
 				numberOfElements: 3,
-				wordAlignedSize: 3,
+				allocationUnitCount: 3,
 			}),
 			explicitScalarZero: createMemory({
 				id: 'explicitScalarZero',
@@ -53,7 +53,7 @@ describe('createInitialMemoryDataSegments', () => {
 				id: 'zeroArray',
 				byteAddress: 0,
 				numberOfElements: 2,
-				wordAlignedSize: 2,
+				allocationUnitCount: 2,
 			}),
 		});
 		const memoryDefaultsByModuleId = createMemoryDefaults({

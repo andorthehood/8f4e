@@ -278,7 +278,7 @@ describe('AudioWorklet context lifetime', () => {
 
 describe('AudioWorklet runtime config', () => {
 	function createMemoryPlan(
-		memories: Record<string, Record<string, { wordAlignedAddress: number }>>
+		memories: Record<string, Record<string, { allocationUnitAddress: number }>>
 	): State['compiler']['memoryPlan'] {
 		const modules = Object.fromEntries(
 			Object.entries(memories).map(([moduleId, moduleMemory], moduleIndex) => {
@@ -290,12 +290,12 @@ describe('AudioWorklet runtime config', () => {
 							numberOfElements: 1,
 							elementWordSize: 4,
 							type: 'int',
-							byteAddress: memoryData.wordAlignedAddress * 4,
+							byteAddress: memoryData.allocationUnitAddress * 4,
 							elementByteLength: 4,
-							wordAlignedSize: 1,
-							wordAlignedByteLength: 4,
-							wordAlignedAddress: memoryData.wordAlignedAddress,
-							endByteAddress: memoryData.wordAlignedAddress * 4,
+							allocationUnitCount: 1,
+							allocatedByteLength: 4,
+							allocationUnitAddress: memoryData.allocationUnitAddress,
+							endByteAddress: memoryData.allocationUnitAddress * 4,
 							endAddressSafeByteLength: 4,
 							lineNumber: 1,
 							isInteger: true,
@@ -310,8 +310,8 @@ describe('AudioWorklet runtime config', () => {
 						id: moduleId,
 						lineNumber: 1,
 						byteAddress: moduleIndex * 4,
-						wordAlignedSize: Object.keys(memory).length,
-						wordAlignedByteLength: Object.keys(memory).length * 4,
+						allocationUnitCount: Object.keys(memory).length,
+						allocatedByteLength: Object.keys(memory).length * 4,
 						endByteAddress: moduleIndex * 4,
 						endAddressSafeByteLength: 4,
 						memory,
@@ -340,8 +340,8 @@ describe('AudioWorklet runtime config', () => {
 			compiler: {
 				projectMemoryExposuresByGroupPath: {},
 				memoryPlan: createMemoryPlan({
-					audiooutL: { buffer: { wordAlignedAddress: 8 } },
-					audiooutR: { buffer: { wordAlignedAddress: 24 } },
+					audiooutL: { buffer: { allocationUnitAddress: 8 } },
+					audiooutR: { buffer: { allocationUnitAddress: 24 } },
 				}),
 			},
 		} as State;

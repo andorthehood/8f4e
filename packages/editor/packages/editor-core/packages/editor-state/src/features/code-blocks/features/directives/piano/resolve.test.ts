@@ -34,17 +34,17 @@ describe('piano directive widget resolution', () => {
 							id: 'test-block',
 							lineNumber: 0,
 							byteAddress: 0,
-							wordAlignedSize: 0,
-							wordAlignedByteLength: 0,
+							allocationUnitCount: 0,
+							allocatedByteLength: 0,
 							endByteAddress: 0,
 							endAddressSafeByteLength: 0,
 							memory: {
 								keys1: {
 									id: 'keys1',
-									wordAlignedAddress: 5,
+									allocationUnitAddress: 5,
 									byteAddress: 20,
 									isInteger: true,
-									wordAlignedSize: 10,
+									allocationUnitCount: 10,
 									numberOfElements: 10,
 									elementWordSize: 1,
 									type: MemoryTypes.int,
@@ -53,10 +53,10 @@ describe('piano directive widget resolution', () => {
 								},
 								numKeys: {
 									id: 'numKeys',
-									wordAlignedAddress: 6,
+									allocationUnitAddress: 6,
 									byteAddress: 24,
 									isInteger: true,
-									wordAlignedSize: 1,
+									allocationUnitCount: 1,
 									numberOfElements: 1,
 									elementWordSize: 1,
 									type: MemoryTypes.int,
@@ -150,8 +150,8 @@ describe('piano directive widget resolution', () => {
 			lineNumber: 0,
 			keys: [],
 			startingNumber: 60,
-			pressedKeysListMemory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
-			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
+			pressedKeysListMemory: { allocationUnitAddress: 0 } as PlannedMemoryDeclaration,
+			pressedNumberOfKeysMemory: { allocationUnitAddress: 0 } as PlannedMemoryDeclaration,
 		};
 
 		runDirectiveResolution();

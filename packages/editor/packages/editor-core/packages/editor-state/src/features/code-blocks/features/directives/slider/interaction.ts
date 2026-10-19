@@ -43,7 +43,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 			(slider.step !== undefined && !Number.isInteger(slider.step));
 		const shouldWriteInteger = slider.isInteger && !hasFloatRange;
 
-		state.callbacks?.setWordInMemory?.(slider.wordAlignedAddress, value, shouldWriteInteger);
+		state.callbacks?.setWordInMemory?.(slider.allocationUnitAddress, value, shouldWriteInteger);
 	};
 
 	const onCodeBlockClick = ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) => {

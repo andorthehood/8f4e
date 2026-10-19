@@ -18,12 +18,12 @@ function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<numb
 
 	const numberOfKeys = Math.max(
 		0,
-		Math.trunc(getWordFromMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress)) || 0
+		Math.trunc(getWordFromMemory(keyboard.pressedNumberOfKeysMemory.allocationUnitAddress)) || 0
 	);
 	const readableKeys = Math.min(numberOfKeys, keyboard.pressedKeysListMemory.numberOfElements);
 
 	for (let i = 0; i < readableKeys; i++) {
-		const word = getWordFromMemory(keyboard.pressedKeysListMemory.wordAlignedAddress + i);
+		const word = getWordFromMemory(keyboard.pressedKeysListMemory.allocationUnitAddress + i);
 		float32DecodeInt32[0] = word;
 		const keyValue = keyboard.pressedKeysListMemory.isInteger ? word : float32DecodeFloat32[0];
 		pressedKeys.add(keyValue);
@@ -76,13 +76,13 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 		let index = 0;
 		for (const note of pressedKeys) {
 			setWordInMemory(
-				keyboard.pressedKeysListMemory.wordAlignedAddress + index,
+				keyboard.pressedKeysListMemory.allocationUnitAddress + index,
 				note,
 				keyboard.pressedKeysListMemory.isInteger
 			);
 			index += 1;
 		}
-		setWordInMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress, pressedKeys.size, true);
+		setWordInMemory(keyboard.pressedNumberOfKeysMemory.allocationUnitAddress, pressedKeys.size, true);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);

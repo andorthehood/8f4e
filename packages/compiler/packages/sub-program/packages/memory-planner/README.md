@@ -50,4 +50,7 @@ The planner reads constant-resolution facts before normalizing declaration sizes
 
 All modules share one linear address space, with a single allocation cursor starting at `startingByteAddress`.
 
-For a declaration, `wordAlignedSize` counts the allocation words consumed, including any leading float64 alignment padding. The declaration's `wordAlignedByteLength` and `endByteAddress` describe its storage from the aligned `byteAddress`, excluding that leading padding. Cursor advancement and module sizes still include the padding, so later declarations and modules keep their positions.
+For a declaration, `allocationUnitCount` counts the 4-byte allocation units consumed, including any leading
+float64 alignment padding. The declaration's `allocatedByteLength` and `endByteAddress` describe its storage from
+the aligned `byteAddress`, excluding that leading padding. Cursor advancement and module sizes still include the
+padding, so later declarations and modules keep their positions.

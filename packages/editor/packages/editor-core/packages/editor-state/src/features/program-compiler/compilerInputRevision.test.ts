@@ -280,7 +280,7 @@ describe('compiler input revision', () => {
 	it('advances when saving runtime defaults, but not when defaults already match', () => {
 		sliderDefaultSaver(store, events);
 		block.code = ['module main', 'int value 1', 'moduleEnd'];
-		block.widgets.sliders = [{ moduleId: 'main', id: 'value', isInteger: true, wordAlignedAddress: 0 } as never];
+		block.widgets.sliders = [{ moduleId: 'main', id: 'value', isInteger: true, allocationUnitAddress: 0 } as never];
 		state.callbacks.getWordFromMemory = () => 2;
 		dispatch('saveSliderValuesToCode', { codeBlock: block });
 		expect(block.code[1]).toBe('int value 2');

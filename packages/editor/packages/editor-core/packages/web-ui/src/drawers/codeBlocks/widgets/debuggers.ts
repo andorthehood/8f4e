@@ -79,7 +79,7 @@ export default function drawDebuggers(
 				state,
 				x,
 				y,
-				String((memory.wordAlignedSize - 1) * 4 + memory.byteAddress),
+				String((memory.allocationUnitCount - 1) * 4 + memory.byteAddress),
 				now,
 				reducedMotion
 			);

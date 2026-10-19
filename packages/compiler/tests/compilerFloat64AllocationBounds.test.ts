@@ -37,13 +37,13 @@ entryEnd`,
 			const source = compileResult.memoryPlan.modules.aSource;
 			expect(source.memory.value).toMatchObject({
 				byteAddress: 8,
-				wordAlignedByteLength: byteLength,
+				allocatedByteLength: byteLength,
 				endByteAddress: 8 + byteLength - 4,
 				endAddressSafeByteLength: 4,
 			});
 			expect(source.memory.next.byteAddress).toBe(8 + byteLength);
-			expect(source.wordAlignedSize).toBe((byteLength + 8) / 4);
-			expect(source.wordAlignedByteLength).toBe(byteLength + 8);
+			expect(source.allocationUnitCount).toBe((byteLength + 8) / 4);
+			expect(source.allocatedByteLength).toBe(byteLength + 8);
 			expect(compileResult.memoryPlan.modules.zTail.byteAddress).toBe(byteLength + 12);
 			for (const moduleId of ['aSource', 'mReader']) {
 				const items = compileResult.compiledModules[moduleId].stackAnalysis

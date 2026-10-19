@@ -134,17 +134,17 @@ describe('shared exposed memory resolution', () => {
 		updateOutputs(audio, state);
 		const gain = audio.widgets.sliders[0];
 		expect(gain).toMatchObject({ moduleId: 'audio/voice', id: 'level', isInteger: false });
-		expect(audio.widgets.debuggers[0].memory?.wordAlignedAddress).toBe(gain.wordAlignedAddress);
-		expect(audio.widgets.outputs.find(output => output.id === 'gain')?.memory.wordAlignedAddress).toBe(
-			gain.wordAlignedAddress
+		expect(audio.widgets.debuggers[0].memory?.allocationUnitAddress).toBe(gain.allocationUnitAddress);
+		expect(audio.widgets.outputs.find(output => output.id === 'gain')?.memory.allocationUnitAddress).toBe(
+			gain.allocationUnitAddress
 		);
 		expect(audio.widgets.inputs.map(input => input.id)).toEqual(['input']);
 		expect(audio.widgets.outputs.map(output => output.id)).toContain('gateAlias');
 		expect(audio.widgets.arrayPlotters[0].length).toBe(4);
 		expect(audio.widgets.arrayBars[0].length).toBe(4);
 		expect(audio.widgets.arrayWaves[0].length).toBe(4);
-		expect(audio.widgets.arrayMeters[0].memory.memory.wordAlignedAddress).toBe(gain.wordAlignedAddress);
-		expect(audio.widgets.switches[0].wordAlignedAddress).toBe(audio.widgets.buttons[0].wordAlignedAddress);
+		expect(audio.widgets.arrayMeters[0].memory.memory.allocationUnitAddress).toBe(gain.allocationUnitAddress);
+		expect(audio.widgets.switches[0].allocationUnitAddress).toBe(audio.widgets.buttons[0].allocationUnitAddress);
 		expect(audio.widgets.pianoKeyboards[0]).toMatchObject({
 			pressedKeysListModuleId: 'audio/notesData',
 			pressedNumberOfKeysModuleId: 'audio/countData',
@@ -160,7 +160,7 @@ describe('shared exposed memory resolution', () => {
 			x: audio.x + sliderWidget.x + sliderWidget.width / 2,
 			y: audio.y + sliderWidget.y + 1,
 		});
-		expect(float32[sliderWidget.wordAlignedAddress]).toBeCloseTo(0.5);
+		expect(float32[sliderWidget.allocationUnitAddress]).toBeCloseTo(0.5);
 		cleanupSlider();
 		const cleanupButton = button(state, events);
 		const buttonWidget = audio.widgets.buttons[0];
@@ -169,9 +169,9 @@ describe('shared exposed memory resolution', () => {
 			x: audio.x + buttonWidget.x + 1,
 			y: audio.y + buttonWidget.y + 1,
 		});
-		expect(int32[buttonWidget.wordAlignedAddress]).toBe(1);
+		expect(int32[buttonWidget.allocationUnitAddress]).toBe(1);
 		events.dispatch('mouseup');
-		expect(int32[buttonWidget.wordAlignedAddress]).toBe(0);
+		expect(int32[buttonWidget.allocationUnitAddress]).toBe(0);
 		cleanupButton();
 		const cleanupCrossfade = crossfade(store, events);
 		const widget = audio.widgets.crossfades[0];
@@ -197,11 +197,11 @@ describe('shared exposed memory resolution', () => {
 		);
 		const originalGroup = [...audio.code];
 		const originalControls = [...controls.code];
-		float32[audio.widgets.sliders[0].wordAlignedAddress] = 0.8;
+		float32[audio.widgets.sliders[0].allocationUnitAddress] = 0.8;
 		const piano = audio.widgets.pianoKeyboards[0];
-		int32[piano.pressedKeysListMemory.wordAlignedAddress] = 50;
-		int32[piano.pressedKeysListMemory.wordAlignedAddress + 1] = 52;
-		int32[piano.pressedNumberOfKeysMemory.wordAlignedAddress] = 2;
+		int32[piano.pressedKeysListMemory.allocationUnitAddress] = 50;
+		int32[piano.pressedKeysListMemory.allocationUnitAddress + 1] = 52;
+		int32[piano.pressedNumberOfKeysMemory.allocationUnitAddress] = 2;
 		saveDefaults(store, events);
 		events.dispatch('saveSliderValuesToCode', { codeBlock: audio });
 		expect(voice.code).toContain('float level 0.8');
@@ -214,7 +214,7 @@ describe('shared exposed memory resolution', () => {
 		expect(state.compilerInputRevision).toBe(1);
 		events.dispatch('saveSliderValuesToCode', { codeBlock: controls });
 		expect(state.compilerInputRevision).toBe(1);
-		float32[audio.widgets.sliders[0].wordAlignedAddress] = 0.6;
+		float32[audio.widgets.sliders[0].allocationUnitAddress] = 0.6;
 		events.dispatch('saveSliderValuesToCode', { codeBlock: controls });
 		expect(voice.code).toContain('float level 0.6');
 		expect(controls.code).toEqual(originalControls);
@@ -233,7 +233,7 @@ describe('shared exposed memory resolution', () => {
 		state.compiler.projectMemoryExposuresByGroupPath = { audio: [replacement] };
 		derive(audio);
 		expect(audio.widgets.sliders[0].moduleId).toBe('other/voice');
-		expect(audio.widgets.sliders[0].wordAlignedAddress).toBe(replacement.targetMemory.wordAlignedAddress);
+		expect(audio.widgets.sliders[0].allocationUnitAddress).toBe(replacement.targetMemory.allocationUnitAddress);
 		state.compiler.projectMemoryExposuresByGroupPath = {};
 		derive(audio);
 		expect(audio.widgets.sliders).toEqual([]);

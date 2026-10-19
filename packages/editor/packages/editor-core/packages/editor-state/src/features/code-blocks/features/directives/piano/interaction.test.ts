@@ -25,9 +25,12 @@ describe('pianoKeyboard interaction', () => {
 				},
 			},
 			callbacks: {
-				getWordFromMemory: vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0),
-				setWordInMemory: vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
-					memoryStore.set(wordAlignedAddress, isInteger ? value : new Int32Array(new Float32Array([value]).buffer)[0]);
+				getWordFromMemory: vi.fn((allocationUnitAddress: number) => memoryStore.get(allocationUnitAddress) ?? 0),
+				setWordInMemory: vi.fn((allocationUnitAddress: number, value: number, isInteger: boolean) => {
+					memoryStore.set(
+						allocationUnitAddress,
+						isInteger ? value : new Int32Array(new Float32Array([value]).buffer)[0]
+					);
 				}),
 			},
 		});
@@ -84,15 +87,15 @@ describe('pianoKeyboard interaction', () => {
 				})),
 				pressedKeysListMemory: {
 					id: 'notes',
-					wordAlignedAddress: 5,
-					wordAlignedSize: 10,
+					allocationUnitAddress: 5,
+					allocationUnitCount: 10,
 					numberOfElements: 10,
 					isInteger: true,
 				},
 				pressedNumberOfKeysMemory: {
 					id: 'noteCount',
-					wordAlignedAddress: 20,
-					wordAlignedSize: 1,
+					allocationUnitAddress: 20,
+					allocationUnitCount: 1,
 					numberOfElements: 1,
 					isInteger: true,
 				},

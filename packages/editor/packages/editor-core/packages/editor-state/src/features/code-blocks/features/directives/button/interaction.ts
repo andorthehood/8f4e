@@ -12,7 +12,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 		}
 
 		state.callbacks?.setWordInMemory?.(
-			lastPushedButton.wordAlignedAddress,
+			lastPushedButton.allocationUnitAddress,
 			lastPushedButton.onValue,
 			lastPushedButton.isInteger
 		);
@@ -23,7 +23,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 			return;
 		}
 		state.callbacks?.setWordInMemory?.(
-			lastPushedButton.wordAlignedAddress,
+			lastPushedButton.allocationUnitAddress,
 			lastPushedButton.offValue,
 			lastPushedButton.isInteger
 		);
