@@ -1,3 +1,7 @@
-module tooManySplitBytes
+8f4e/v1
 
+entry main
+module tooManySplitBytes
 int foo 1 2 3 4 5
+moduleEnd
+entryEnd
