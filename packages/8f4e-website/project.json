@@ -2,7 +2,7 @@
 	"name": "@8f4e/8f4e-website",
 	"sourceRoot": "src",
 	"projectType": "application",
-	"implicitDependencies": ["@8f4e/examples", "!@8f4e/project-preview"],
+	"implicitDependencies": ["@8f4e/examples"],
 	"targets": {
 		"dev": {
 			"continuous": true,
@@ -31,14 +31,6 @@
 			"options": {
 				"command": "biome check --write packages/8f4e-website/src",
 				"cwd": "{workspaceRoot}"
-			}
-		},
-		"generate-previews": {
-			"executor": "nx:run-commands",
-			"dependsOn": ["@8f4e/project-preview:build"],
-			"options": {
-				"command": "node scripts/generate-project-previews.mjs",
-				"cwd": "{projectRoot}"
 			}
 		},
 		"build": {
