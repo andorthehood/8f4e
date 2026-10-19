@@ -550,6 +550,97 @@ describe('binary assets plugin', () => {
 				url: 'https://example.com/present.pcm',
 			}),
 		]);
+
+		let resolveDisposedFetch: (assets: BinaryAsset[]) => void = () => {};
+		fetchBinaryAssetsMock.mockReturnValueOnce(
+			new Promise(resolve => {
+				resolveDisposedFetch = resolve;
+			})
+		);
+		const disposedStore = createStateManager(createState({ url: 'https://example.com/disposed.pcm' }));
+		const cleanup = binaryAssetsPlugin({
+			store: disposedStore,
+			events,
+			memoryViews,
+			window: {} as Window,
+			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
+			setErrors: vi.fn(),
+			services,
+		});
+		cleanup();
+		resolveDisposedFetch([
+			{
+				url: 'https://example.com/disposed.pcm',
+				fileName: 'disposed.pcm',
+				assetByteLength: 8,
+				loadedIntoMemory: false,
+			},
+		]);
+		await flushPromises();
+
+		expect(disposedStore.getState().binaryAssets).toEqual([]);
 		warnSpy.mockRestore();
+	});
+
+	it('logs failed fetches for the active generation and ignores stale or disposed fetch rejections', async () => {
+		const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		const activeError = new Error('network failure');
+		let rejectStaleFetch: (reason?: unknown) => void = () => {};
+		let rejectDisposedFetch: (reason?: unknown) => void = () => {};
+
+		fetchBinaryAssetsMock
+			.mockReturnValueOnce(
+				new Promise((_, reject) => {
+					rejectStaleFetch = reject;
+				})
+			)
+			.mockRejectedValueOnce(activeError)
+			.mockReturnValueOnce(
+				new Promise((_, reject) => {
+					rejectDisposedFetch = reject;
+				})
+			);
+		loadBinaryAssetIntoMemoryMock.mockResolvedValue();
+
+		const store = createStateManager(createState({ url: 'https://example.com/stale-fail.pcm' }));
+		const cleanup = binaryAssetsPlugin({
+			store,
+			events,
+			memoryViews,
+			window: {} as Window,
+			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
+			setErrors: vi.fn(),
+			services,
+		});
+
+		store.set('editorConfig.bin', {
+			amen: {
+				url: 'https://example.com/active-fail.pcm',
+				memory: 'samples:buffer',
+			},
+		} as State['editorConfig']['bin']);
+		await flushPromises();
+
+		expect(errorSpy).toHaveBeenCalledTimes(1);
+		expect(errorSpy).toHaveBeenCalledWith('Failed to fetch binary assets:', activeError);
+
+		rejectStaleFetch(new Error('stale failure'));
+		await flushPromises();
+		expect(errorSpy).toHaveBeenCalledTimes(1);
+
+		store.set('editorConfig.bin', {
+			amen: {
+				url: 'https://example.com/disposed-fail.pcm',
+				memory: 'samples:buffer',
+			},
+		} as State['editorConfig']['bin']);
+		cleanup();
+		rejectDisposedFetch(new Error('disposed failure'));
+		await flushPromises();
+
+		expect(errorSpy).toHaveBeenCalledTimes(1);
+		errorSpy.mockRestore();
 	});
 });
