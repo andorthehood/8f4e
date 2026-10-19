@@ -1,0 +1,8 @@
+{
+  "code": -1,
+  "context": {},
+  "line": {
+    "lineNumber": 0,
+  },
+  "message": "Invalid .8f4e file: expected header "8f4e/v1", got "module tooManySplitBytes"",
+}
