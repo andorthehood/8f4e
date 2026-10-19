@@ -7,8 +7,6 @@ import { promisify } from 'node:util';
 import sharp from 'sharp';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { generateProjectPreview } from '../src/index';
-
 const execFileAsync = promisify(execFile);
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDirectory, '..');
@@ -57,19 +55,8 @@ describe('8f4e-preview', () => {
 		});
 	});
 
-	it('rejects projects without a valid home code block', async () => {
-		await expect(runCli(['icon', noHomeFixturePath, '--out', gifOutputPath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('Project does not contain a valid @home code block.'),
-		});
-	}, 30_000);
-
-	it('can explicitly fall back to the first code block', async () => {
-		await generateProjectPreview({
-			format: 'icon',
-			inputPath: noHomeFixturePath,
-			outputPath: gifOutputPath,
-			fallbackToFirstBlock: true,
-		});
+	it('falls back to the first root block when no home block exists', async () => {
+		await runCli(['icon', noHomeFixturePath, '--out', gifOutputPath]);
 
 		const gif = await fs.readFile(gifOutputPath);
 		expect(gif.subarray(0, 6).toString('ascii')).toBe('GIF89a');

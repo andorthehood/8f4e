@@ -19,7 +19,7 @@ Set the canvas's `data-project-path` attribute in `src/index.html` to a path rel
 `packages/examples/src/projects/` to choose the project loaded when the editor mounts. `src/example-projects.ts`
 uses a Vite glob to emit the original `.8f4e` sources as downloadable assets shared by the homepage and examples gallery.
 The generation target refreshes the committed 64×64 GIF previews in `src/project-previews/` after gallery projects or
-their `@home` blocks change. Compiler fixtures without `@home` are framed from their first code block.
+their `@home` blocks change. The compiler gallery reuses one shared preview generated from a representative fixture.
 
 ## Examples gallery
 

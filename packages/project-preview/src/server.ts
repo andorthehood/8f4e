@@ -42,6 +42,11 @@ async function sendFile(response: ServerResponse, filePath: string): Promise<voi
 	createReadStream(filePath).pipe(response);
 }
 
+/**
+ * Serves the production editor and project from one cross-origin-isolated HTTP origin.
+ * A file URL cannot provide the project fetch or COOP/COEP headers the editor needs,
+ * and keeping this server focused avoids pulling Vite into the CLI runtime.
+ */
 export async function startPreviewServer({
 	editorAssetsPath,
 	projectPath,

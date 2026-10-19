@@ -4,8 +4,8 @@ Generates GIF preview images from 8f4e project files with the production editor 
 
 ## Icon previews
 
-The `icon` format finds the first valid `@home` code block, places its top-left corner at the image origin, hides
-editor-only overlays, and captures a 64 by 64 pixel image.
+The `icon` format finds the first valid `@home` code block, or falls back to the first root code block, places its
+top-left corner at the image origin, hides editor-only overlays, and captures a 64 by 64 pixel image.
 
 ```sh
 npx nx run @8f4e/project-preview:build

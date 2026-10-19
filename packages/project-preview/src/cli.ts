@@ -6,7 +6,7 @@ import { generateProjectPreview, type ProjectPreviewFormat } from './index';
 const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>]
 
 Formats:
-  icon    Capture a 64x64 GIF from the first @home code block's top-left corner
+  icon    Capture a 64x64 GIF from the @home block, or the first root block
 
 GIF output uses an optimized palette with dithering disabled.`;
 

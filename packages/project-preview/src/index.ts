@@ -19,8 +19,6 @@ export interface GenerateProjectPreviewOptions {
 	inputPath: string;
 	/** Destination path for the generated GIF. */
 	outputPath: string;
-	/** Use the first root code block when the project does not declare an `@home` block. */
-	fallbackToFirstBlock?: boolean;
 	/** Maximum time to wait for the editor to load and render the project. */
 	timeoutMs?: number;
 }
@@ -101,14 +99,13 @@ async function writePreviewImage(png: Buffer, outputPath: string): Promise<void>
 /**
  * Generates a deterministic project preview with the production editor renderer.
  *
- * The icon format places the first valid `@home` code block's top-left corner at
- * the canvas origin and captures the first 64 by 64 pixels.
+ * The icon format places the first valid `@home` code block, or the first root
+ * code block, at the canvas origin and captures the first 64 by 64 pixels.
  */
 export async function generateProjectPreview({
 	format,
 	inputPath,
 	outputPath,
-	fallbackToFirstBlock = false,
 	timeoutMs = 15_000,
 }: GenerateProjectPreviewOptions): Promise<void> {
 	if (format !== 'icon') {
@@ -165,20 +162,12 @@ export async function generateProjectPreview({
 			throw new Error(`Project failed to load in the editor.${suffix}`);
 		}
 
-		const hasHomeBlock = await page.evaluate(() => {
-			const state = (globalThis as unknown as PreviewWindow).state;
-			return Boolean(state?.codeBlockRendering.rootCodeBlocks.some(block => block.isHome));
-		});
-		if (!hasHomeBlock && !fallbackToFirstBlock) {
-			throw new Error('Project does not contain a valid @home code block.');
-		}
-
-		await page.evaluate(async useFirstBlockFallback => {
+		await page.evaluate(async () => {
 			const previewWindow = globalThis as unknown as PreviewWindow;
 			const state = previewWindow.state;
 			const targetBlock =
 				state?.codeBlockRendering.rootCodeBlocks.find(block => block.isHome) ??
-				(useFirstBlockFallback ? state?.codeBlockRendering.rootCodeBlocks[0] : undefined);
+				state?.codeBlockRendering.rootCodeBlocks[0];
 			if (!state || !targetBlock) {
 				throw new Error('Preview code block disappeared before capture');
 			}
@@ -193,7 +182,7 @@ export async function generateProjectPreview({
 
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
-		}, fallbackToFirstBlock);
+		});
 
 		const canvas = page.locator('#glcanvas');
 		const renderDeadline = Date.now() + timeoutMs;
