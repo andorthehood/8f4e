@@ -2,7 +2,7 @@
 	"name": "@8f4e/8f4e-website",
 	"sourceRoot": "src",
 	"projectType": "application",
-	"implicitDependencies": ["@8f4e/examples"],
+	"implicitDependencies": ["@8f4e/examples", "!@8f4e/project-preview"],
 	"targets": {
 		"dev": {
 			"continuous": true,
