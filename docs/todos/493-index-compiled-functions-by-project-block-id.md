@@ -3,7 +3,7 @@ title: 'TODO: Index compiled functions by project block ID'
 priority: Medium
 effort: 2-4h
 created: 2026-10-14
-issue: https://github.com/andorthehood/8f4e/issues/1010
+issue: https://github.com/8f4e/8f4e/issues/1010
 status: Open
 completed: null
 ---

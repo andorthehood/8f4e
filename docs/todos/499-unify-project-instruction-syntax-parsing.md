@@ -3,7 +3,7 @@ title: 'TODO: Unify project instruction syntax parsing'
 priority: Medium
 effort: 4-8h
 created: 2026-10-14
-issue: https://github.com/andorthehood/8f4e/issues/1026
+issue: https://github.com/8f4e/8f4e/issues/1026
 status: Open
 completed: null
 ---
@@ -75,7 +75,7 @@ and diagnostic-context code where useful without introducing another project obj
 
 ## Related Items
 
-- [PR #1019](https://github.com/andorthehood/8f4e/pull/1019) introduced `init` and simplified `expose`, revealing the
+- [PR #1019](https://github.com/8f4e/8f4e/pull/1019) introduced `init` and simplified `expose`, revealing the
   inconsistent parsing paths.
 - [TODO 378](378-make-parser-stateful-for-block-pairing-and-owning-block-context.md) covers broader parser context and
   diagnostic ownership.

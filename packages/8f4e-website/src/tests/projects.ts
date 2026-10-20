@@ -42,7 +42,7 @@ for (const [file, projectUrl] of Object.entries(fixtureUrls).sort(([left], [righ
 		description: path,
 		projectUrl,
 		previewUrl: compilerTestPreviewUrl,
-		githubUrl: `https://github.com/andorthehood/8f4e/blob/main/packages/compiler/tests/${path}`,
+		githubUrl: `https://github.com/8f4e/8f4e/blob/main/packages/compiler/tests/${path}`,
 	});
 }
 
