@@ -194,27 +194,3 @@ export const characterDimensions6x10 = {
 	width: 6,
 	height: 10,
 };
-
-/**
- * Standard character dimensions for terminus10x18 font
- */
-export const characterDimensionsTerminus10x18 = {
-	width: 10,
-	height: 18,
-};
-
-/**
- * Standard character dimensions for kana12x13 font
- */
-export const characterDimensionsKana12x13 = {
-	width: 12,
-	height: 13,
-};
-
-/**
- * Standard character dimensions for terminus12x24 font
- */
-export const characterDimensionsTerminus12x24 = {
-	width: 12,
-	height: 24,
-};

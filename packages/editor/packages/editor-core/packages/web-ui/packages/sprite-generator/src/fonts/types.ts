@@ -16,6 +16,4 @@ const Glyph = {
 	SLASH: 18,
 } as const;
 
-export type GlyphValue = (typeof Glyph)[keyof typeof Glyph];
-
 export default Glyph;
