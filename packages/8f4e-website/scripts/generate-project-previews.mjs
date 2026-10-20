@@ -44,7 +44,12 @@ const featuredAnimationOptions = {
 	framesPerSecond: 2,
 	startAtMs: 5000,
 };
-const featuredProjectPositions = new Map([['lower-intentions', { x: 3790, y: 16 }]]);
+const featuredProjectPositions = new Map([
+	['lower-intentions', { x: 3790, y: 16 }],
+	['digit-classifier', { x: 16, y: 16 }],
+	['risen', { x: 16, y: 16 }],
+	['aftertouch', { x: 16, y: 16 }],
+]);
 
 const jobs = [
 	...exampleProjects.map(project => ({
@@ -54,7 +59,7 @@ const jobs = [
 	...featuredProjects.map(project => ({
 		inputPath: path.join(exampleProjectRoot, project.path),
 		outputPath: path.join(previewRoot, 'featured', `${project.id}.gif`),
-		position: featuredProjectPositions.get(project.id) ?? { x: 16, y: 16 },
+		position: featuredProjectPositions.get(project.id),
 		...(project.path.startsWith('audio/') ? { startAtMs: 1500 } : {}),
 		...(animatedFeaturedProjectIds.has(project.id) ? featuredAnimationOptions : {}),
 		size: 256,
