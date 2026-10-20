@@ -12,11 +12,24 @@ const previewRoot = path.join(packageRoot, 'src', 'project-previews');
 const compilerTestRoot = path.join(workspaceRoot, 'packages', 'compiler', 'tests');
 const exampleProjectRoot = path.join(workspaceRoot, 'packages', 'examples', 'src', 'projects');
 const compilerTestPreviewSource = path.join(compilerTestRoot, 'argument-continuation.test.8f4e');
+const featuredProjectIds = ['fm-synth', 'hymn-to-aurora', 'lower-intentions', 'digit-classifier'];
+const featuredProjects = featuredProjectIds.map(id => {
+	const project = exampleProjects.find(candidate => candidate.id === id);
+	if (!project) {
+		throw new Error(`Featured project not found: ${id}`);
+	}
+	return project;
+});
 
 const jobs = [
 	...exampleProjects.map(project => ({
 		inputPath: path.join(exampleProjectRoot, project.path),
 		outputPath: path.join(previewRoot, 'examples', project.path.replace(/\.8f4e$/, '.gif')),
+	})),
+	...featuredProjects.map(project => ({
+		inputPath: path.join(exampleProjectRoot, project.path),
+		outputPath: path.join(previewRoot, 'featured', `${project.id}.gif`),
+		size: 256,
 	})),
 	{
 		inputPath: compilerTestPreviewSource,

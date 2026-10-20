@@ -146,6 +146,55 @@ main > img {
 	color: #111;
 }
 
+footer h2 {
+	margin: 0 0 1rem;
+	font-size: inherit;
+	font-weight: normal;
+}
+
+.featured-examples {
+	width: min(1200px, calc(100% - 2rem));
+	margin: 4rem auto 0;
+}
+
+.featured-examples > h2 {
+	margin: 0 0 1rem;
+	font-size: inherit;
+	font-weight: normal;
+}
+
+.featured-examples-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.featured-example {
+	display: flex;
+	width: 256px;
+	flex-direction: column;
+	flex: 0 0 256px;
+	gap: 0.5rem;
+}
+
+.featured-example-preview {
+	display: block;
+	width: 100%;
+	height: auto;
+	background: #000;
+	image-rendering: pixelated;
+}
+
+.featured-example:hover .featured-example-preview,
+.featured-example:focus-visible .featured-example-preview {
+	outline: 2px solid #fff;
+	outline-offset: -2px;
+}
+
+.featured-example:focus-visible {
+	outline: none;
+}
+
 footer {
 	display: grid;
 	box-sizing: border-box;
@@ -155,12 +204,6 @@ footer {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 2rem;
 	padding: 2rem;
-}
-
-footer h2 {
-	margin: 0 0 1rem;
-	font-size: inherit;
-	font-weight: normal;
 }
 
 footer ul {
