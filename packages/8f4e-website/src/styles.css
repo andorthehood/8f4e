@@ -185,7 +185,6 @@ footer h2 {
 	image-rendering: pixelated;
 }
 
-.featured-example:hover .featured-example-preview,
 .featured-example:focus-visible .featured-example-preview {
 	outline: 2px solid #fff;
 	outline-offset: -2px;
