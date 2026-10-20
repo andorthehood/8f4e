@@ -10,15 +10,28 @@ import { startPreviewServer } from './server';
 export const PROJECT_PREVIEW_FORMATS = ['icon'] as const;
 export type ProjectPreviewFormat = (typeof PROJECT_PREVIEW_FORMATS)[number];
 
-export const ICON_PREVIEW_SIZE = 64;
+export const DEFAULT_PREVIEW_SIZE = 64;
+export const ICON_PREVIEW_SIZE = DEFAULT_PREVIEW_SIZE;
+export const DEFAULT_PREVIEW_POSITION = { x: 0, y: 0 } as const;
+
+export interface ProjectPreviewPosition {
+	/** Horizontal distance between the image's left edge and the code block's left edge. */
+	x: number;
+	/** Vertical distance between the image's top edge and the code block's top edge. */
+	y: number;
+}
 
 export interface GenerateProjectPreviewOptions {
-	/** Preview layout to render. The initial icon format is a 64x64 GIF. */
+	/** Preview layout to render. */
 	format: ProjectPreviewFormat;
 	/** Path to an 8f4e project source file. */
 	inputPath: string;
 	/** Destination path for the generated GIF. */
 	outputPath: string;
+	/** Distance between the preview edges and the target code block. */
+	position?: ProjectPreviewPosition;
+	/** Width and height of the square output image in pixels. */
+	size?: number;
 	/** Maximum time to wait for the editor to load and render the project. */
 	timeoutMs?: number;
 }
@@ -84,6 +97,15 @@ async function validatePaths(inputPath: string, outputPath: string, editorAssets
 	}
 }
 
+function validateRenderOptions(size: number, position: ProjectPreviewPosition): void {
+	if (!Number.isSafeInteger(size) || size <= 0) {
+		throw new Error(`Preview size must be a positive integer: ${size}`);
+	}
+	if (!Number.isSafeInteger(position.x) || !Number.isSafeInteger(position.y)) {
+		throw new Error(`Preview position offsets must be integers: ${position.x}, ${position.y}`);
+	}
+}
+
 async function writePreviewImage(png: Buffer, outputPath: string): Promise<void> {
 	await sharp(png)
 		.gif({
@@ -99,12 +121,14 @@ async function writePreviewImage(png: Buffer, outputPath: string): Promise<void>
  * Generates a deterministic project preview with the production editor renderer.
  *
  * The icon format places the first valid `@home` code block, or the first root
- * code block, at the canvas origin and captures the first 64 by 64 pixels.
+ * code block, at the configured position and captures a square image.
  */
 export async function generateProjectPreview({
 	format,
 	inputPath,
 	outputPath,
+	position = DEFAULT_PREVIEW_POSITION,
+	size = DEFAULT_PREVIEW_SIZE,
 	timeoutMs = 15_000,
 }: GenerateProjectPreviewOptions): Promise<void> {
 	if (format !== 'icon') {
@@ -114,6 +138,7 @@ export async function generateProjectPreview({
 	const resolvedInputPath = path.resolve(inputPath);
 	const resolvedOutputPath = path.resolve(outputPath);
 	const editorAssetsPath = resolveEditorAssetsPath();
+	validateRenderOptions(size, position);
 	await validatePaths(resolvedInputPath, resolvedOutputPath, editorAssetsPath);
 	await fs.mkdir(path.dirname(resolvedOutputPath), { recursive: true });
 
@@ -127,7 +152,7 @@ export async function generateProjectPreview({
 		browser = await chromium.launch({ headless: true });
 		const page = await browser.newPage({
 			deviceScaleFactor: 1,
-			viewport: { width: ICON_PREVIEW_SIZE, height: ICON_PREVIEW_SIZE },
+			viewport: { width: size, height: size },
 		});
 		const pageErrors: string[] = [];
 		page.on('pageerror', error => pageErrors.push(error.message));
@@ -161,7 +186,7 @@ export async function generateProjectPreview({
 			throw new Error(`Project failed to load in the editor.${suffix}`);
 		}
 
-		await page.evaluate(async () => {
+		await page.evaluate(async previewPosition => {
 			const previewWindow = globalThis as unknown as PreviewWindow;
 			const state = previewWindow.state;
 			const targetBlock =
@@ -172,8 +197,8 @@ export async function generateProjectPreview({
 			}
 
 			state.viewportAnimation.active = false;
-			state.viewport.x = targetBlock.x;
-			state.viewport.y = targetBlock.y;
+			state.viewport.x = targetBlock.x - previewPosition.x;
+			state.viewport.y = targetBlock.y - previewPosition.y;
 			state.featureFlags.modeOverlay = false;
 			state.featureFlags.offscreenBlockArrows = false;
 			state.codeBlockRendering.selectedCodeBlock = undefined;
@@ -181,7 +206,7 @@ export async function generateProjectPreview({
 
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
-		});
+		}, position);
 
 		const canvas = page.locator('#glcanvas');
 		const renderDeadline = Date.now() + timeoutMs;

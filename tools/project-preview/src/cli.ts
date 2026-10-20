@@ -1,12 +1,22 @@
 #!/usr/bin/env node
 import path from 'node:path';
 
-import { generateProjectPreview, type ProjectPreviewFormat } from './index';
+import {
+	DEFAULT_PREVIEW_POSITION,
+	DEFAULT_PREVIEW_SIZE,
+	generateProjectPreview,
+	type ProjectPreviewFormat,
+} from './index';
 
-const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>]
+const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>] [--size <pixels>] [--offset-x <pixels>] [--offset-y <pixels>]
 
 Formats:
-  icon    Capture a 64x64 GIF from the @home block, or the first root block
+  icon    Capture a square GIF from the @home block, or the first root block
+
+Options:
+  --size       Output width and height in pixels (default: 64)
+  --offset-x   Horizontal distance from the image's left edge (default: 0)
+  --offset-y   Vertical distance from the image's top edge (default: 0)
 
 GIF output uses an optimized palette with dithering disabled.`;
 
@@ -14,11 +24,29 @@ interface ParsedArguments {
 	format: ProjectPreviewFormat;
 	inputPath: string;
 	outputPath: string;
+	position: {
+		x: number;
+		y: number;
+	};
+	size: number;
 }
 
 function getDefaultOutputPath(inputPath: string): string {
 	const extension = path.extname(inputPath);
 	return path.join(path.dirname(inputPath), `${path.basename(inputPath, extension)}.icon.gif`);
+}
+
+function parseIntegerOption(option: string, value: string | undefined, allowNegative: boolean): number {
+	const pattern = allowNegative ? /^-?\d+$/ : /^[1-9]\d*$/;
+	if (!value || !pattern.test(value)) {
+		throw new Error(`Invalid value for ${option}: ${value ?? '(missing)'}\n${USAGE}`);
+	}
+
+	const parsed = Number(value);
+	if (!Number.isSafeInteger(parsed)) {
+		throw new Error(`Invalid value for ${option}: ${value}\n${USAGE}`);
+	}
+	return parsed;
 }
 
 export function parseArguments(args: string[]): ParsedArguments | undefined {
@@ -35,6 +63,8 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 	}
 
 	let outputPath = getDefaultOutputPath(inputPath);
+	let size = DEFAULT_PREVIEW_SIZE;
+	const position: { x: number; y: number } = { ...DEFAULT_PREVIEW_POSITION };
 	for (let index = 0; index < options.length; index++) {
 		const option = options[index];
 		if (option === '--out') {
@@ -45,11 +75,23 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 			outputPath = value;
 			continue;
 		}
+		if (option === '--size') {
+			size = parseIntegerOption(option, options[++index], false);
+			continue;
+		}
+		if (option === '--offset-x') {
+			position.x = parseIntegerOption(option, options[++index], true);
+			continue;
+		}
+		if (option === '--offset-y') {
+			position.y = parseIntegerOption(option, options[++index], true);
+			continue;
+		}
 
 		throw new Error(`Unknown option: ${option}\n${USAGE}`);
 	}
 
-	return { format, inputPath, outputPath };
+	return { format, inputPath, outputPath, position, size };
 }
 
 async function run(): Promise<void> {
