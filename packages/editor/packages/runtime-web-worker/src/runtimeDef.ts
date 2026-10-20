@@ -32,6 +32,34 @@ interface WebWorkerRuntimeConfig {
 	sampleRate: number;
 }
 
+export interface WebWorkerStatsPayload {
+	timerPrecisionPercentage?: number;
+	timeToExecuteLoopMs?: number;
+	timerDriftMs?: number;
+	timerExpectedIntervalTimeMs?: number;
+}
+
+export interface WebWorkerInitializedMessage {
+	type: 'initialized';
+}
+
+export interface WebWorkerStatsMessage {
+	type: 'stats';
+	payload: WebWorkerStatsPayload;
+}
+
+export type WebWorkerIncomingMessage = WebWorkerInitializedMessage | WebWorkerStatsMessage;
+
+export interface WebWorkerInitMessage {
+	type: 'init';
+	payload: {
+		memoryRef: WebAssembly.Memory;
+		entry: string;
+		sampleRate: number;
+		codeBuffer: Uint8Array;
+	};
+}
+
 function getWebWorkerRuntimeConfig(editorConfig: EditorConfig): WebWorkerRuntimeConfig {
 	const config = resolveSchemaConfigRoot(WEB_WORKER_EDITOR_CONFIG, editorConfig);
 
@@ -52,7 +80,12 @@ export function webWorkerRuntimeFactory(
 	const state = store.getState();
 	let worker: Worker | undefined;
 
-	async function onWorkerMessage({ data }: MessageEvent) {
+	async function onWorkerMessage(event: Event) {
+		const data = (event as MessageEvent<WebWorkerIncomingMessage>).data;
+		if (!data || typeof data !== 'object') {
+			return;
+		}
+
 		switch (data.type) {
 			case 'initialized':
 				events.dispatch('runtimeInitialized');
@@ -79,7 +112,7 @@ export function webWorkerRuntimeFactory(
 			return;
 		}
 		const config = getWebWorkerRuntimeConfig(state.editorConfig);
-		worker.postMessage({
+		const initMessage: WebWorkerInitMessage = {
 			type: 'init',
 			payload: {
 				memoryRef: memory,
@@ -87,7 +120,8 @@ export function webWorkerRuntimeFactory(
 				sampleRate: config.sampleRate,
 				codeBuffer: getCodeBuffer(),
 			},
-		});
+		};
+		worker.postMessage(initMessage);
 	}
 
 	worker = new WorkerConstructor();
