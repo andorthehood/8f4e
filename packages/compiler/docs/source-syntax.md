@@ -23,3 +23,10 @@ float* readHead &source:samples
 ```
 
 Each continuation line accepts exactly one argument. A bare `-`, a continuation with multiple arguments, or a continuation without a previous instruction is a syntax error.
+
+The instruction and its continuation lines can each have an inline comment. Semicolons inside quoted strings remain part of the argument:
+
+```8f4e
+push; instruction comment
+- "hello; world" ; argument comment
+```

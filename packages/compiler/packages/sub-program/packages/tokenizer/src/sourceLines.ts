@@ -23,6 +23,7 @@ function isArgumentContinuationCandidate(line: string): boolean {
 export function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	const sourceLines: SourceLine[] = [];
 	let previousSourceLine: SourceLine | undefined;
+	let previousLineHasContinuations = false;
 
 	for (const [lineNumber, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
 		if (isComment(line) || !isInstructionLikeLine(line)) {
@@ -36,6 +37,7 @@ export function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 			};
 			sourceLines.push(sourceLine);
 			previousSourceLine = sourceLine;
+			previousLineHasContinuations = false;
 			continue;
 		}
 
@@ -67,6 +69,13 @@ export function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 			);
 		}
 
+		if (!previousLineHasContinuations) {
+			// Remove the original comment once so appended arguments cannot become comment text.
+			previousSourceLine.line = parseInstructionTokens(previousSourceLine.line, previousSourceLine.lineNumber).join(
+				' '
+			);
+			previousLineHasContinuations = true;
+		}
 		previousSourceLine.line = `${previousSourceLine.line} ${tokens[1]}`;
 	}
 
