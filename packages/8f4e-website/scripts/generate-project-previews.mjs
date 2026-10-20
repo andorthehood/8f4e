@@ -31,13 +31,12 @@ const featuredProjects = featuredProjectIds.map(id => {
 	}
 	return project;
 });
-const featuredProjectPreviewOptions = {
-	'hymn-to-aurora': {
-		captureIntervalMs: 1000,
-		frameCount: 4,
-		framesPerSecond: 2,
-		startAtMs: 5000,
-	},
+const animatedFeaturedProjectIds = new Set(['hymn-to-aurora', 'risen', 'audio-buffer', 'aftertouch']);
+const featuredAnimationOptions = {
+	captureIntervalMs: 1000,
+	frameCount: 4,
+	framesPerSecond: 2,
+	startAtMs: 5000,
 };
 
 const jobs = [
@@ -50,7 +49,7 @@ const jobs = [
 		outputPath: path.join(previewRoot, 'featured', `${project.id}.gif`),
 		position: { x: 16, y: 16 },
 		...(project.path.startsWith('audio/') ? { startAtMs: 1500 } : {}),
-		...(featuredProjectPreviewOptions[project.id] ?? {}),
+		...(animatedFeaturedProjectIds.has(project.id) ? featuredAnimationOptions : {}),
 		size: 256,
 	})),
 	{
