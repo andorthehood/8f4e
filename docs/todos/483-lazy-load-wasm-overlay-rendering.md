@@ -3,7 +3,7 @@ title: 'TODO: Lazy-load WASM overlay rendering'
 priority: Medium
 effort: 1-2d
 created: 2026-09-06
-issue: https://github.com/andorthehood/8f4e/issues/958
+issue: https://github.com/8f4e/8f4e/issues/958
 status: Open
 completed: null
 ---

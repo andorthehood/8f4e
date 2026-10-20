@@ -3,7 +3,7 @@ title: 'TODO: Index editor pointer targets by address'
 priority: Medium
 effort: 3-6h
 created: 2026-10-14
-issue: https://github.com/andorthehood/8f4e/issues/1012
+issue: https://github.com/8f4e/8f4e/issues/1012
 status: Open
 completed: null
 ---

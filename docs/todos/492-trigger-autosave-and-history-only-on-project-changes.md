@@ -3,7 +3,7 @@ title: 'TODO: Trigger autosave and history only on project changes'
 priority: High
 effort: 3-6h
 created: 2026-10-10
-issue: https://github.com/andorthehood/8f4e/issues/1024
+issue: https://github.com/8f4e/8f4e/issues/1024
 status: Open
 completed: null
 ---

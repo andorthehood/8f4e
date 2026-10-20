@@ -11,7 +11,7 @@ const dispose = mountGallery({
 			...project,
 			projectUrl: getExampleProjectUrl(project.path),
 			previewUrl: getExampleProjectPreviewUrl(project.path),
-			githubUrl: `https://github.com/andorthehood/8f4e/blob/main/packages/examples/src/projects/${project.path}`,
+			githubUrl: `https://github.com/8f4e/8f4e/blob/main/packages/examples/src/projects/${project.path}`,
 		})),
 	})),
 });
