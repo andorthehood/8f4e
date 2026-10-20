@@ -1,6 +1,45 @@
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
-import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/language-spec';
 import resolveMemoryTarget, { type MemoryScope, type ResolvedMemoryTarget } from './resolveMemoryTarget';
+
+type MemoryPlanLookup = State['compiler']['memoryPlan'];
+
+interface CachedDeclarationsByByteAddress {
+	moduleList: readonly PlannedMemoryModule[];
+	declarationsByByteAddress: Map<number, PlannedMemoryDeclaration>;
+}
+
+const declarationsByByteAddressCache = new WeakMap<MemoryPlanLookup, CachedDeclarationsByByteAddress>();
+
+export function getDeclarationsByByteAddress(
+	memoryPlan: MemoryPlanLookup | undefined
+): Map<number, PlannedMemoryDeclaration> | undefined {
+	if (!memoryPlan) {
+		return undefined;
+	}
+
+	const { moduleList } = memoryPlan;
+	const cached = declarationsByByteAddressCache.get(memoryPlan);
+	if (cached && cached.moduleList === moduleList) {
+		return cached.declarationsByByteAddress;
+	}
+
+	const declarationsByByteAddress = new Map<number, PlannedMemoryDeclaration>();
+	for (const module of moduleList) {
+		for (const declaration of module.declarations) {
+			if (!declarationsByByteAddress.has(declaration.byteAddress)) {
+				declarationsByByteAddress.set(declaration.byteAddress, declaration);
+			}
+		}
+	}
+
+	declarationsByByteAddressCache.set(memoryPlan, {
+		moduleList,
+		declarationsByByteAddress,
+	});
+
+	return declarationsByByteAddress;
+}
 
 export default function resolveMemoryIdentifier(
 	state: State,
@@ -53,9 +92,7 @@ export default function resolveMemoryIdentifier(
 	let memory: PlannedMemoryDeclaration | undefined = target.memory;
 	if (operator === '*' && memory.pointeeBaseType) {
 		const pointerAddress = state.callbacks?.getWordFromMemory?.(memory.allocationUnitAddress) || 0;
-		memory = state.compiler.memoryPlan.moduleList
-			.flatMap(module => module.declarations)
-			.find(declaration => declaration.byteAddress === pointerAddress);
+		memory = getDeclarationsByByteAddress(state.compiler.memoryPlan)?.get(pointerAddress);
 	}
 
 	if (!memory) {
