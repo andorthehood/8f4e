@@ -12,7 +12,18 @@ const previewRoot = path.join(packageRoot, 'src', 'project-previews');
 const compilerTestRoot = path.join(workspaceRoot, 'packages', 'compiler', 'tests');
 const exampleProjectRoot = path.join(workspaceRoot, 'packages', 'examples', 'src', 'projects');
 const compilerTestPreviewSource = path.join(compilerTestRoot, 'argument-continuation.test.8f4e');
-const featuredProjectIds = ['fm-synth', 'hymn-to-aurora', 'lower-intentions', 'digit-classifier'];
+const featuredProjectIds = [
+	'fm-synth',
+	'hymn-to-aurora',
+	'lower-intentions',
+	'digit-classifier',
+	'random-generators',
+	'audio-buffer',
+	'variable-speed-player',
+	'risen',
+	'overlay-texture',
+	'aftertouch',
+];
 const featuredProjects = featuredProjectIds.map(id => {
 	const project = exampleProjects.find(candidate => candidate.id === id);
 	if (!project) {
