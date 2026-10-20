@@ -197,27 +197,27 @@ function collectModuleMemoryLayoutSourceLines(
 	ast: ModuleAST,
 	constantReferences: ConstantResolutionBlockFacts | undefined
 ): MemoryLayoutSourceModule {
-	const sourceModule: MemoryLayoutSourceModule = {
-		id: ast.id,
-		moduleLine: ast.moduleLine,
-		lines: [],
-	};
+	const lines: MemoryLayoutSourceLine[] = [];
 
 	for (let lineIndex = 0; lineIndex < ast.lines.length; lineIndex++) {
 		const sourceLine = ast.lines[lineIndex];
 		const line = applyConstantFacts(sourceLine, constantReferences?.lineFacts[lineIndex]);
 
 		if (isMemoryDeclarationLine(line)) {
-			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line, sourceLine)];
+			lines.push(normalizeLayoutMemoryDeclarationLine(line, sourceLine));
 			continue;
 		}
 
 		if (isShapeLine(line)) {
-			sourceModule.lines = [...sourceModule.lines, line];
+			lines.push(line);
 		}
 	}
 
-	return sourceModule;
+	return {
+		id: ast.id,
+		moduleLine: ast.moduleLine,
+		lines,
+	};
 }
 
 function createMemoryLayoutSourceModules(
