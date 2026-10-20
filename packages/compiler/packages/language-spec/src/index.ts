@@ -22,4 +22,3 @@ export * from './paramShape';
 export * from './project';
 export * from './runtime';
 export * from './semantic';
-export * from './testModule';
