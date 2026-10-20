@@ -81,8 +81,10 @@
   - [const](instructions/declarations-and-locals.md#const)
   - [int](instructions/declarations-and-locals.md#int)
   - [float](instructions/declarations-and-locals.md#float)
+  - [float64](instructions/declarations-and-locals.md#float64)
   - [int[]](instructions/declarations-and-locals.md#int-1)
   - [float[]](instructions/declarations-and-locals.md#float-1)
+  - [float64[]](instructions/declarations-and-locals.md#float64-1)
   - [local](instructions/declarations-and-locals.md#local)
   - [localSet](instructions/declarations-and-locals.md#localset)
 
