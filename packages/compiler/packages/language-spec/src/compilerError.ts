@@ -420,9 +420,7 @@ export function getError(
 			return {
 				code,
 				message:
-					'Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (' +
-					code +
-					')',
+					'Mixed float widths: floating-point values must have the same width (float32 or float64). (' + code + ')',
 				line,
 				context,
 			};

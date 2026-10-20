@@ -242,6 +242,8 @@ local int16u* cursor
 
 The localSet instruction consumes a value from the stack and stores it in a local variable.
 
+Floating-point assignments must match the destination local or parameter's declared width: `float` accepts float32 values and `float64` accepts float64 values. Mixed-width assignments are compiler errors; no implicit widening or narrowing is performed. Use `castToFloat64` to explicitly promote a float32 value before assigning it to a float64 local.
+
 #### Examples
 
 ```

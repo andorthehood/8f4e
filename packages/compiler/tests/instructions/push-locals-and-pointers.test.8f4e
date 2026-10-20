@@ -11,6 +11,25 @@ noteEnd
 
 entry test
 module pushLocalAssertions
+local float narrow
+local float64 wide
+
+push 1.5
+localSet narrow
+push narrow
+assertEqual 1.5
+
+push 2.5f64
+localSet wide
+push wide
+assertEqual 2.5f64
+
+push narrow
+castToFloat64
+localSet wide
+push wide
+assertEqual 1.5f64
+
 ; Function locals should
 ; round-trip through localSet
 ; and push.
@@ -19,6 +38,15 @@ assertEqual 7
 
 call readFloatLocal
 assertEqual 1.5
+
+call readFloat64Local
+assertEqual 16777217.0f64
+
+call assignFloatParameter 1.5
+assertEqual 2.5
+
+call assignFloat64Parameter 1.5f64
+assertEqual 16777217.0f64
 
 push 2.0f64
 call doubleFloat64
@@ -81,6 +109,27 @@ push 1.5
 localSet temp
 push temp
 functionEnd float
+
+function readFloat64Local
+local float64 temp
+push 16777217.0f64
+localSet temp
+push temp
+functionEnd float64
+
+function assignFloatParameter
+param float value
+push 2.5
+localSet value
+push value
+functionEnd float
+
+function assignFloat64Parameter
+param float64 value
+push 16777217.0f64
+localSet value
+push value
+functionEnd float64
 
 function doubleFloat64
 param float64 value

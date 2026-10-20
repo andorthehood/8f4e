@@ -26,5 +26,9 @@ export function analyzeLocalSet(
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
+	if (!local.isInteger && (operand.valueType === 'float64') !== !!local.isFloat64) {
+		throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+	}
+
 	return { consumed, produced: [] };
 }
