@@ -13,6 +13,10 @@ export type ProjectPreviewFormat = (typeof PROJECT_PREVIEW_FORMATS)[number];
 export const DEFAULT_PREVIEW_SIZE = 64;
 export const ICON_PREVIEW_SIZE = DEFAULT_PREVIEW_SIZE;
 export const DEFAULT_PREVIEW_POSITION = { x: 0, y: 0 } as const;
+export const DEFAULT_PREVIEW_RUN_FOR_MS = 0;
+
+const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
+const AUDIO_PERMISSION_BUTTON_TITLE = 'Allow';
 
 export interface ProjectPreviewPosition {
 	/** Horizontal distance between the image's left edge and the code block's left edge. */
@@ -30,6 +34,8 @@ export interface GenerateProjectPreviewOptions {
 	outputPath: string;
 	/** Distance between the preview edges and the target code block. */
 	position?: ProjectPreviewPosition;
+	/** Start an audio runtime and wait this many milliseconds before capture. */
+	runForMs?: number;
 	/** Width and height of the square output image in pixels. */
 	size?: number;
 	/** Maximum time to wait for the editor to load and render the project. */
@@ -42,13 +48,27 @@ interface PreviewCodeBlock {
 	y: number;
 }
 
+interface PreviewDialogButton {
+	height: number;
+	title: string;
+	width: number;
+	x: number;
+	y: number;
+}
+
 interface PreviewState {
 	codeBlockRendering: {
 		codeBlocks: PreviewCodeBlock[];
 		rootCodeBlocks: PreviewCodeBlock[];
 		selectedCodeBlock?: PreviewCodeBlock;
 	};
-	dialogStack: unknown[];
+	dialog: {
+		buttons: PreviewDialogButton[];
+		id: string;
+		x: number;
+		y: number;
+	};
+	dialogStack: Array<{ id: string }>;
 	featureFlags: {
 		modeOverlay: boolean;
 		offscreenBlockArrows: boolean;
@@ -56,6 +76,8 @@ interface PreviewState {
 	initialProjectState?: unknown;
 	spriteLookups?: unknown;
 	viewport: {
+		height: number;
+		width: number;
 		x: number;
 		y: number;
 	};
@@ -97,12 +119,15 @@ async function validatePaths(inputPath: string, outputPath: string, editorAssets
 	}
 }
 
-function validateRenderOptions(size: number, position: ProjectPreviewPosition): void {
+function validateRenderOptions(size: number, position: ProjectPreviewPosition, runForMs: number): void {
 	if (!Number.isSafeInteger(size) || size <= 0) {
 		throw new Error(`Preview size must be a positive integer: ${size}`);
 	}
 	if (!Number.isSafeInteger(position.x) || !Number.isSafeInteger(position.y)) {
 		throw new Error(`Preview position offsets must be integers: ${position.x}, ${position.y}`);
+	}
+	if (!Number.isSafeInteger(runForMs) || runForMs < 0) {
+		throw new Error(`Preview run duration must be a non-negative integer: ${runForMs}`);
 	}
 }
 
@@ -128,6 +153,7 @@ export async function generateProjectPreview({
 	inputPath,
 	outputPath,
 	position = DEFAULT_PREVIEW_POSITION,
+	runForMs = DEFAULT_PREVIEW_RUN_FOR_MS,
 	size = DEFAULT_PREVIEW_SIZE,
 	timeoutMs = 15_000,
 }: GenerateProjectPreviewOptions): Promise<void> {
@@ -138,7 +164,7 @@ export async function generateProjectPreview({
 	const resolvedInputPath = path.resolve(inputPath);
 	const resolvedOutputPath = path.resolve(outputPath);
 	const editorAssetsPath = resolveEditorAssetsPath();
-	validateRenderOptions(size, position);
+	validateRenderOptions(size, position, runForMs);
 	await validatePaths(resolvedInputPath, resolvedOutputPath, editorAssetsPath);
 	await fs.mkdir(path.dirname(resolvedOutputPath), { recursive: true });
 
@@ -150,9 +176,11 @@ export async function generateProjectPreview({
 
 	try {
 		browser = await chromium.launch({ headless: true });
+		const initialViewport =
+			runForMs > 0 ? { width: Math.max(size, 640), height: Math.max(size, 480) } : { width: size, height: size };
 		const page = await browser.newPage({
 			deviceScaleFactor: 1,
-			viewport: { width: size, height: size },
+			viewport: initialViewport,
 		});
 		const pageErrors: string[] = [];
 		page.on('pageerror', error => pageErrors.push(error.message));
@@ -186,6 +214,60 @@ export async function generateProjectPreview({
 			throw new Error(`Project failed to load in the editor.${suffix}`);
 		}
 
+		const canvas = page.locator('#glcanvas');
+		if (runForMs > 0) {
+			try {
+				await page.waitForFunction(
+					([dialogId, buttonTitle]) => {
+						const state = (globalThis as unknown as PreviewWindow).state;
+						return state?.dialog.id === dialogId && state.dialog.buttons.some(button => button.title === buttonTitle);
+					},
+					[AUDIO_PERMISSION_DIALOG_ID, AUDIO_PERMISSION_BUTTON_TITLE],
+					{ timeout: timeoutMs }
+				);
+			} catch {
+				const suffix = pageErrors.length > 0 ? ` Browser error: ${pageErrors.at(-1)}` : '';
+				throw new Error(`Project did not request audio runtime permission before the timeout.${suffix}`);
+			}
+
+			const allowButtonPosition = await page.evaluate(
+				([dialogId, buttonTitle]) => {
+					const state = (globalThis as unknown as PreviewWindow).state;
+					const button = state?.dialog.buttons.find(candidate => candidate.title === buttonTitle);
+					if (!state || state.dialog.id !== dialogId || !button) {
+						throw new Error('Audio permission dialog disappeared before it could be accepted');
+					}
+					return {
+						x: state.dialog.x + button.x + button.width / 2,
+						y: state.dialog.y + button.y + button.height / 2,
+					};
+				},
+				[AUDIO_PERMISSION_DIALOG_ID, AUDIO_PERMISSION_BUTTON_TITLE]
+			);
+
+			await canvas.click({ position: allowButtonPosition });
+			await page.waitForTimeout(runForMs);
+
+			const permissionRequestedAgain = await page.evaluate(dialogId => {
+				const state = (globalThis as unknown as PreviewWindow).state;
+				return state?.dialogStack.some(dialog => dialog.id === dialogId) ?? false;
+			}, AUDIO_PERMISSION_DIALOG_ID);
+			if (permissionRequestedAgain) {
+				const suffix = pageErrors.length > 0 ? ` Browser error: ${pageErrors.at(-1)}` : '';
+				throw new Error(`Audio runtime failed to start.${suffix}`);
+			}
+
+			await page.setViewportSize({ width: size, height: size });
+			await page.waitForFunction(
+				([width, height]) => {
+					const state = (globalThis as unknown as PreviewWindow).state;
+					return state?.viewport.width === width && state.viewport.height === height;
+				},
+				[size, size],
+				{ timeout: timeoutMs }
+			);
+		}
+
 		await page.evaluate(async previewPosition => {
 			const previewWindow = globalThis as unknown as PreviewWindow;
 			const state = previewWindow.state;
@@ -208,7 +290,6 @@ export async function generateProjectPreview({
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
 		}, position);
 
-		const canvas = page.locator('#glcanvas');
 		const renderDeadline = Date.now() + timeoutMs;
 		let png: Buffer<ArrayBufferLike> = Buffer.alloc(0);
 		while (Date.now() < renderDeadline) {

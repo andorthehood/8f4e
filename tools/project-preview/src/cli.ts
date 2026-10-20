@@ -3,12 +3,13 @@ import path from 'node:path';
 
 import {
 	DEFAULT_PREVIEW_POSITION,
+	DEFAULT_PREVIEW_RUN_FOR_MS,
 	DEFAULT_PREVIEW_SIZE,
 	generateProjectPreview,
 	type ProjectPreviewFormat,
 } from './index';
 
-const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>] [--size <pixels>] [--offset-x <pixels>] [--offset-y <pixels>]
+const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>] [--size <pixels>] [--offset-x <pixels>] [--offset-y <pixels>] [--run-for <milliseconds>]
 
 Formats:
   icon    Capture a square GIF from the @home block, or the first root block
@@ -17,6 +18,7 @@ Options:
   --size       Output width and height in pixels (default: 64)
   --offset-x   Horizontal distance from the image's left edge (default: 0)
   --offset-y   Vertical distance from the image's top edge (default: 0)
+  --run-for    Start audio and wait before capture (disabled by default)
 
 GIF output uses an optimized palette with dithering disabled.`;
 
@@ -28,6 +30,7 @@ interface ParsedArguments {
 		x: number;
 		y: number;
 	};
+	runForMs: number;
 	size: number;
 }
 
@@ -63,6 +66,7 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 	}
 
 	let outputPath = getDefaultOutputPath(inputPath);
+	let runForMs = DEFAULT_PREVIEW_RUN_FOR_MS;
 	let size = DEFAULT_PREVIEW_SIZE;
 	const position: { x: number; y: number } = { ...DEFAULT_PREVIEW_POSITION };
 	for (let index = 0; index < options.length; index++) {
@@ -87,11 +91,15 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 			position.y = parseIntegerOption(option, options[++index], true);
 			continue;
 		}
+		if (option === '--run-for') {
+			runForMs = parseIntegerOption(option, options[++index], false);
+			continue;
+		}
 
 		throw new Error(`Unknown option: ${option}\n${USAGE}`);
 	}
 
-	return { format, inputPath, outputPath, position, size };
+	return { format, inputPath, outputPath, position, runForMs, size };
 }
 
 async function run(): Promise<void> {

@@ -41,6 +41,7 @@ const jobs = [
 		inputPath: path.join(exampleProjectRoot, project.path),
 		outputPath: path.join(previewRoot, 'featured', `${project.id}.gif`),
 		position: { x: 16, y: 16 },
+		...(project.path.startsWith('audio/') ? { runForMs: 1500 } : {}),
 		size: 256,
 	})),
 	{

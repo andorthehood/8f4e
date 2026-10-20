@@ -12,10 +12,12 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDirectory, '..');
 const fixturePath = path.join(testDirectory, 'fixtures', 'home.8f4e');
 const noHomeFixturePath = path.join(testDirectory, 'fixtures', 'no-home.8f4e');
+const audioFixturePath = path.resolve(packageRoot, '../../packages/examples/src/projects/audio/audioBuffer.8f4e');
 const temporaryDirectory = path.join(testDirectory, '.tmp');
 const gifOutputPath = path.join(temporaryDirectory, 'home-icon.gif');
 const largeBaselineGifOutputPath = path.join(temporaryDirectory, 'home-large-baseline.gif');
 const largeGifOutputPath = path.join(temporaryDirectory, 'home-large.gif');
+const audioGifOutputPath = path.join(temporaryDirectory, 'audio-running.gif');
 
 afterEach(async () => {
 	await fs.rm(temporaryDirectory, { recursive: true, force: true });
@@ -36,6 +38,7 @@ describe('8f4e-preview', () => {
 		expect(stdout).toContain('--size <pixels>');
 		expect(stdout).toContain('--offset-x <pixels>');
 		expect(stdout).toContain('--offset-y <pixels>');
+		expect(stdout).toContain('--run-for <milliseconds>');
 		expect(stdout).toContain('optimized palette with dithering disabled');
 	});
 
@@ -106,7 +109,19 @@ describe('8f4e-preview', () => {
 		await expect(runCli(['icon', fixturePath, '--offset-x', '1.5'])).rejects.toMatchObject({
 			stderr: expect.stringContaining('Invalid value for --offset-x: 1.5'),
 		});
+		await expect(runCli(['icon', fixturePath, '--run-for', '0'])).rejects.toMatchObject({
+			stderr: expect.stringContaining('Invalid value for --run-for: 0'),
+		});
 	});
+
+	it('starts an audio project and waits before capture', async () => {
+		await runCli(['icon', audioFixturePath, '--out', audioGifOutputPath, '--size', '256', '--run-for', '250']);
+
+		const gif = await fs.readFile(audioGifOutputPath);
+		expect(gif.subarray(0, 6).toString('ascii')).toBe('GIF89a');
+		expect(gif.readUInt16LE(6)).toBe(256);
+		expect(gif.readUInt16LE(8)).toBe(256);
+	}, 30_000);
 
 	it('rejects PNG output paths', async () => {
 		const pngOutputPath = path.join(temporaryDirectory, 'home-icon.png');
