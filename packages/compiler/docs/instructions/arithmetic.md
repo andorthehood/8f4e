@@ -39,13 +39,13 @@ The "mul" instruction retrieves two numbers of the same type from the stack, mul
 #### Examples
 
 ```
-push 1    ; stack: [ 2 ]
-push 2    ; stack: [ 2, 2 ]
-mul       ; stack: [ 4 ]
+push 1    ; stack: [ 1 ]
+push 2    ; stack: [ 1, 2 ]
+mul       ; stack: [ 2 ]
 
-push 0.5    ; stack: [ 4, 0.5 ]
-push 0.7    ; stack: [ 4, 0.5, 0.7 ]
-add         ; stack: [ 4, 0.35 ]
+push 0.5    ; stack: [ 2, 0.5 ]
+push 0.7    ; stack: [ 2, 0.5, 0.7 ]
+mul         ; stack: [ 2, 0.35 ]
 ```
 
 ### min
@@ -99,11 +99,11 @@ The "sub" instruction operates on two numbers of the same type that are retrieve
 #### Examples
 
 ```
-push 1    ; stack: [ 2 ]
-push 2    ; stack: [ 2, 3 ]
+push 1    ; stack: [ 1 ]
+push 2    ; stack: [ 1, 2 ]
 sub       ; stack: [ -1 ]
 
 push 0.5    ; stack: [ -1, 0.5 ]
 push 0.7    ; stack: [ -1, 0.5, 0.7 ]
-add         ; stack: [ -1, -0.2 ]
+sub         ; stack: [ -1, -0.2 ]
 ```
