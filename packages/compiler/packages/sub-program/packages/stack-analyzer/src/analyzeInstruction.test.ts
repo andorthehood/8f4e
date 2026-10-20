@@ -159,15 +159,6 @@ describe('analyzeInstruction', () => {
 				mapBlock,
 			],
 			activeMapBlock: mapBlock,
-			activeBlockDepths: {
-				[BlockType.MODULE]: 1,
-				[BlockType.LOOP]: 0,
-				[BlockType.CONDITION]: 0,
-				[BlockType.FUNCTION]: 0,
-				[BlockType.BLOCK]: 0,
-				[BlockType.CONSTANTS]: 0,
-				[BlockType.MAP]: 1,
-			},
 		});
 		const line = {
 			lineNumber: 1,
