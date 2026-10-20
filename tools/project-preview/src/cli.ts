@@ -2,36 +2,45 @@
 import path from 'node:path';
 
 import {
+	DEFAULT_PREVIEW_CAPTURE_INTERVAL_MS,
+	DEFAULT_PREVIEW_FRAME_COUNT,
+	DEFAULT_PREVIEW_FRAMES_PER_SECOND,
 	DEFAULT_PREVIEW_POSITION,
-	DEFAULT_PREVIEW_RUN_FOR_MS,
 	DEFAULT_PREVIEW_SIZE,
 	generateProjectPreview,
 	type ProjectPreviewFormat,
 } from './index';
 
-const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>] [--size <pixels>] [--offset-x <pixels>] [--offset-y <pixels>] [--run-for <milliseconds>]
+const USAGE = `Usage: 8f4e-preview icon <project.8f4e> [--out <preview.gif>] [--size <pixels>] [--offset-x <pixels>] [--offset-y <pixels>] [--start-at <milliseconds>] [--capture-interval <milliseconds>] [--frames <count>] [--fps <rate>]
 
 Formats:
   icon    Capture a square GIF from the @home block, or the first root block
 
 Options:
-  --size       Output width and height in pixels (default: 64)
-  --offset-x   Horizontal distance from the image's left edge (default: 0)
-  --offset-y   Vertical distance from the image's top edge (default: 0)
-  --run-for    Start audio and wait before capture (disabled by default)
+  --size <pixels>                   Output width and height in pixels (default: 64)
+  --offset-x <pixels>               Horizontal distance from the image's left edge (default: 0)
+  --offset-y <pixels>               Vertical distance from the image's top edge (default: 0)
+  --start-at <milliseconds>         Start audio and wait before capturing the first frame (default: 0)
+  --capture-interval <milliseconds> Time between captured frames (default: 1000 ms)
+  --frames <count>                  Number of frames to capture (default: 1)
+  --fps <rate>                      Animated GIF playback rate, independent of capture timing (default: 1)
+  --run-for <milliseconds>          Deprecated alias for --start-at
 
 GIF output uses an optimized palette with dithering disabled.`;
 
 interface ParsedArguments {
+	captureIntervalMs: number;
 	format: ProjectPreviewFormat;
+	frameCount: number;
+	framesPerSecond: number;
 	inputPath: string;
 	outputPath: string;
 	position: {
 		x: number;
 		y: number;
 	};
-	runForMs: number;
 	size: number;
+	startAtMs?: number;
 }
 
 function getDefaultOutputPath(inputPath: string): string {
@@ -42,6 +51,30 @@ function getDefaultOutputPath(inputPath: string): string {
 function parseIntegerOption(option: string, value: string | undefined, allowNegative: boolean): number {
 	const pattern = allowNegative ? /^-?\d+$/ : /^[1-9]\d*$/;
 	if (!value || !pattern.test(value)) {
+		throw new Error(`Invalid value for ${option}: ${value ?? '(missing)'}\n${USAGE}`);
+	}
+
+	const parsed = Number(value);
+	if (!Number.isSafeInteger(parsed)) {
+		throw new Error(`Invalid value for ${option}: ${value}\n${USAGE}`);
+	}
+	return parsed;
+}
+
+function parsePositiveNumberOption(option: string, value: string | undefined): number {
+	if (!value || !/^(?:\d+(?:\.\d+)?|\.\d+)$/.test(value)) {
+		throw new Error(`Invalid value for ${option}: ${value ?? '(missing)'}\n${USAGE}`);
+	}
+
+	const parsed = Number(value);
+	if (!Number.isFinite(parsed) || parsed <= 0) {
+		throw new Error(`Invalid value for ${option}: ${value}\n${USAGE}`);
+	}
+	return parsed;
+}
+
+function parseNonNegativeIntegerOption(option: string, value: string | undefined): number {
+	if (!value || !/^\d+$/.test(value)) {
 		throw new Error(`Invalid value for ${option}: ${value ?? '(missing)'}\n${USAGE}`);
 	}
 
@@ -65,9 +98,13 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 		throw new Error(`Missing project input path\n${USAGE}`);
 	}
 
+	let captureIntervalMs = DEFAULT_PREVIEW_CAPTURE_INTERVAL_MS;
+	let frameCount = DEFAULT_PREVIEW_FRAME_COUNT;
+	let framesPerSecond = DEFAULT_PREVIEW_FRAMES_PER_SECOND;
 	let outputPath = getDefaultOutputPath(inputPath);
-	let runForMs = DEFAULT_PREVIEW_RUN_FOR_MS;
 	let size = DEFAULT_PREVIEW_SIZE;
+	let startAtMs: number | undefined;
+	let startAtOption: '--run-for' | '--start-at' | undefined;
 	const position: { x: number; y: number } = { ...DEFAULT_PREVIEW_POSITION };
 	for (let index = 0; index < options.length; index++) {
 		const option = options[index];
@@ -91,15 +128,31 @@ export function parseArguments(args: string[]): ParsedArguments | undefined {
 			position.y = parseIntegerOption(option, options[++index], true);
 			continue;
 		}
-		if (option === '--run-for') {
-			runForMs = parseIntegerOption(option, options[++index], false);
+		if (option === '--start-at' || option === '--run-for') {
+			if (startAtOption) {
+				throw new Error(`Use either ${startAtOption} or ${option}, not both\n${USAGE}`);
+			}
+			startAtOption = option;
+			startAtMs = parseNonNegativeIntegerOption(option, options[++index]);
+			continue;
+		}
+		if (option === '--capture-interval') {
+			captureIntervalMs = parseIntegerOption(option, options[++index], false);
+			continue;
+		}
+		if (option === '--frames') {
+			frameCount = parseIntegerOption(option, options[++index], false);
+			continue;
+		}
+		if (option === '--fps') {
+			framesPerSecond = parsePositiveNumberOption(option, options[++index]);
 			continue;
 		}
 
 		throw new Error(`Unknown option: ${option}\n${USAGE}`);
 	}
 
-	return { format, inputPath, outputPath, position, runForMs, size };
+	return { captureIntervalMs, format, frameCount, framesPerSecond, inputPath, outputPath, position, size, startAtMs };
 }
 
 async function run(): Promise<void> {

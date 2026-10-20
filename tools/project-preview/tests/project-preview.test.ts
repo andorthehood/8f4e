@@ -18,6 +18,7 @@ const gifOutputPath = path.join(temporaryDirectory, 'home-icon.gif');
 const largeBaselineGifOutputPath = path.join(temporaryDirectory, 'home-large-baseline.gif');
 const largeGifOutputPath = path.join(temporaryDirectory, 'home-large.gif');
 const audioGifOutputPath = path.join(temporaryDirectory, 'audio-running.gif');
+const animatedAudioGifOutputPath = path.join(temporaryDirectory, 'audio-animated.gif');
 
 afterEach(async () => {
 	await fs.rm(temporaryDirectory, { recursive: true, force: true });
@@ -38,6 +39,10 @@ describe('8f4e-preview', () => {
 		expect(stdout).toContain('--size <pixels>');
 		expect(stdout).toContain('--offset-x <pixels>');
 		expect(stdout).toContain('--offset-y <pixels>');
+		expect(stdout).toContain('--start-at <milliseconds>');
+		expect(stdout).toContain('--capture-interval <milliseconds>');
+		expect(stdout).toContain('--frames <count>');
+		expect(stdout).toContain('--fps <rate>');
 		expect(stdout).toContain('--run-for <milliseconds>');
 		expect(stdout).toContain('optimized palette with dithering disabled');
 	});
@@ -109,18 +114,53 @@ describe('8f4e-preview', () => {
 		await expect(runCli(['icon', fixturePath, '--offset-x', '1.5'])).rejects.toMatchObject({
 			stderr: expect.stringContaining('Invalid value for --offset-x: 1.5'),
 		});
-		await expect(runCli(['icon', fixturePath, '--run-for', '0'])).rejects.toMatchObject({
-			stderr: expect.stringContaining('Invalid value for --run-for: 0'),
+		await expect(runCli(['icon', fixturePath, '--run-for', '-1'])).rejects.toMatchObject({
+			stderr: expect.stringContaining('Invalid value for --run-for: -1'),
+		});
+		await expect(runCli(['icon', fixturePath, '--capture-interval', '0'])).rejects.toMatchObject({
+			stderr: expect.stringContaining('Invalid value for --capture-interval: 0'),
+		});
+		await expect(runCli(['icon', fixturePath, '--frames', '0'])).rejects.toMatchObject({
+			stderr: expect.stringContaining('Invalid value for --frames: 0'),
+		});
+		await expect(runCli(['icon', fixturePath, '--fps', '0'])).rejects.toMatchObject({
+			stderr: expect.stringContaining('Invalid value for --fps: 0'),
 		});
 	});
 
 	it('starts an audio project and waits before capture', async () => {
-		await runCli(['icon', audioFixturePath, '--out', audioGifOutputPath, '--size', '256', '--run-for', '250']);
+		await runCli(['icon', audioFixturePath, '--out', audioGifOutputPath, '--size', '256', '--start-at', '250']);
 
 		const gif = await fs.readFile(audioGifOutputPath);
 		expect(gif.subarray(0, 6).toString('ascii')).toBe('GIF89a');
 		expect(gif.readUInt16LE(6)).toBe(256);
 		expect(gif.readUInt16LE(8)).toBe(256);
+	}, 30_000);
+
+	it('captures frames on one schedule and plays them at an independent rate', async () => {
+		await runCli([
+			'icon',
+			audioFixturePath,
+			'--out',
+			animatedAudioGifOutputPath,
+			'--size',
+			'256',
+			'--start-at',
+			'250',
+			'--capture-interval',
+			'100',
+			'--frames',
+			'3',
+			'--fps',
+			'5',
+		]);
+
+		const metadata = await sharp(animatedAudioGifOutputPath, { animated: true }).metadata();
+		expect(metadata.width).toBe(256);
+		expect(metadata.pageHeight).toBe(256);
+		expect(metadata.pages).toBe(3);
+		expect(metadata.loop).toBe(0);
+		expect(metadata.delay).toEqual([200, 200, 200]);
 	}, 30_000);
 
 	it('rejects PNG output paths', async () => {

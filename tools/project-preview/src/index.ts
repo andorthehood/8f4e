@@ -13,7 +13,12 @@ export type ProjectPreviewFormat = (typeof PROJECT_PREVIEW_FORMATS)[number];
 export const DEFAULT_PREVIEW_SIZE = 64;
 export const ICON_PREVIEW_SIZE = DEFAULT_PREVIEW_SIZE;
 export const DEFAULT_PREVIEW_POSITION = { x: 0, y: 0 } as const;
-export const DEFAULT_PREVIEW_RUN_FOR_MS = 0;
+export const DEFAULT_PREVIEW_START_AT_MS = 0;
+export const DEFAULT_PREVIEW_CAPTURE_INTERVAL_MS = 1_000;
+export const DEFAULT_PREVIEW_FRAME_COUNT = 1;
+export const DEFAULT_PREVIEW_FRAMES_PER_SECOND = 1;
+/** @deprecated Use `DEFAULT_PREVIEW_START_AT_MS`. */
+export const DEFAULT_PREVIEW_RUN_FOR_MS = DEFAULT_PREVIEW_START_AT_MS;
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
 const AUDIO_PERMISSION_BUTTON_TITLE = 'Allow';
@@ -26,18 +31,26 @@ export interface ProjectPreviewPosition {
 }
 
 export interface GenerateProjectPreviewOptions {
+	/** Milliseconds to wait between screenshots used as animation frames. */
+	captureIntervalMs?: number;
 	/** Preview layout to render. */
 	format: ProjectPreviewFormat;
+	/** Number of screenshots to encode as GIF frames. */
+	frameCount?: number;
+	/** Playback rate for animated GIF frames, independent of capture timing. */
+	framesPerSecond?: number;
 	/** Path to an 8f4e project source file. */
 	inputPath: string;
 	/** Destination path for the generated GIF. */
 	outputPath: string;
 	/** Distance between the preview edges and the target code block. */
 	position?: ProjectPreviewPosition;
-	/** Start an audio runtime and wait this many milliseconds before capture. */
+	/** @deprecated Use `startAtMs`. */
 	runForMs?: number;
 	/** Width and height of the square output image in pixels. */
 	size?: number;
+	/** Start an audio runtime and wait this many milliseconds before capturing the first frame. */
+	startAtMs?: number;
 	/** Maximum time to wait for the editor to load and render the project. */
 	timeoutMs?: number;
 }
@@ -119,25 +132,58 @@ async function validatePaths(inputPath: string, outputPath: string, editorAssets
 	}
 }
 
-function validateRenderOptions(size: number, position: ProjectPreviewPosition, runForMs: number): void {
+function getGifFrameDelayMs(framesPerSecond: number): number {
+	return Math.round(1_000 / framesPerSecond);
+}
+
+function validateRenderOptions(
+	size: number,
+	position: ProjectPreviewPosition,
+	startAtMs: number,
+	captureIntervalMs: number,
+	frameCount: number,
+	framesPerSecond: number
+): void {
 	if (!Number.isSafeInteger(size) || size <= 0) {
 		throw new Error(`Preview size must be a positive integer: ${size}`);
 	}
 	if (!Number.isSafeInteger(position.x) || !Number.isSafeInteger(position.y)) {
 		throw new Error(`Preview position offsets must be integers: ${position.x}, ${position.y}`);
 	}
-	if (!Number.isSafeInteger(runForMs) || runForMs < 0) {
-		throw new Error(`Preview run duration must be a non-negative integer: ${runForMs}`);
+	if (!Number.isSafeInteger(startAtMs) || startAtMs < 0) {
+		throw new Error(`Preview start time must be a non-negative integer: ${startAtMs}`);
+	}
+	if (!Number.isSafeInteger(captureIntervalMs) || captureIntervalMs <= 0) {
+		throw new Error(`Preview capture interval must be a positive integer: ${captureIntervalMs}`);
+	}
+	if (!Number.isSafeInteger(frameCount) || frameCount <= 0) {
+		throw new Error(`Preview frame count must be a positive integer: ${frameCount}`);
+	}
+	if (!Number.isFinite(framesPerSecond) || framesPerSecond <= 0) {
+		throw new Error(`Preview playback rate must be a positive number: ${framesPerSecond}`);
+	}
+	const gifFrameDelayMs = getGifFrameDelayMs(framesPerSecond);
+	if (gifFrameDelayMs < 10 || gifFrameDelayMs > 65_535) {
+		throw new Error(`Preview playback rate must produce a GIF frame delay between 10 and 65535 milliseconds`);
 	}
 }
 
-async function writePreviewImage(png: Buffer, outputPath: string): Promise<void> {
-	await sharp(png)
+async function writePreviewImage(pngFrames: Buffer[], outputPath: string, framesPerSecond: number): Promise<void> {
+	const image = pngFrames.length === 1 ? sharp(pngFrames[0]) : sharp(pngFrames, { join: { animated: true } });
+	const animationOptions =
+		pngFrames.length === 1
+			? {}
+			: {
+					delay: pngFrames.map(() => getGifFrameDelayMs(framesPerSecond)),
+					loop: 0,
+				};
+	await image
 		.gif({
 			colours: 256,
 			dither: 0,
 			effort: 10,
 			reuse: false,
+			...animationOptions,
 		})
 		.toFile(outputPath);
 }
@@ -149,12 +195,16 @@ async function writePreviewImage(png: Buffer, outputPath: string): Promise<void>
  * code block, at the configured position and captures a square image.
  */
 export async function generateProjectPreview({
+	captureIntervalMs = DEFAULT_PREVIEW_CAPTURE_INTERVAL_MS,
 	format,
+	frameCount = DEFAULT_PREVIEW_FRAME_COUNT,
+	framesPerSecond = DEFAULT_PREVIEW_FRAMES_PER_SECOND,
 	inputPath,
 	outputPath,
 	position = DEFAULT_PREVIEW_POSITION,
-	runForMs = DEFAULT_PREVIEW_RUN_FOR_MS,
+	runForMs,
 	size = DEFAULT_PREVIEW_SIZE,
+	startAtMs,
 	timeoutMs = 15_000,
 }: GenerateProjectPreviewOptions): Promise<void> {
 	if (format !== 'icon') {
@@ -164,7 +214,12 @@ export async function generateProjectPreview({
 	const resolvedInputPath = path.resolve(inputPath);
 	const resolvedOutputPath = path.resolve(outputPath);
 	const editorAssetsPath = resolveEditorAssetsPath();
-	validateRenderOptions(size, position, runForMs);
+	if (startAtMs !== undefined && runForMs !== undefined) {
+		throw new Error('Use either startAtMs or the deprecated runForMs option, not both');
+	}
+	const shouldStartAudio = startAtMs !== undefined || runForMs !== undefined;
+	const firstCaptureTimeMs = startAtMs ?? runForMs ?? DEFAULT_PREVIEW_START_AT_MS;
+	validateRenderOptions(size, position, firstCaptureTimeMs, captureIntervalMs, frameCount, framesPerSecond);
 	await validatePaths(resolvedInputPath, resolvedOutputPath, editorAssetsPath);
 	await fs.mkdir(path.dirname(resolvedOutputPath), { recursive: true });
 
@@ -176,8 +231,9 @@ export async function generateProjectPreview({
 
 	try {
 		browser = await chromium.launch({ headless: true });
-		const initialViewport =
-			runForMs > 0 ? { width: Math.max(size, 640), height: Math.max(size, 480) } : { width: size, height: size };
+		const initialViewport = shouldStartAudio
+			? { width: Math.max(size, 640), height: Math.max(size, 480) }
+			: { width: size, height: size };
 		const page = await browser.newPage({
 			deviceScaleFactor: 1,
 			viewport: initialViewport,
@@ -215,7 +271,7 @@ export async function generateProjectPreview({
 		}
 
 		const canvas = page.locator('#glcanvas');
-		if (runForMs > 0) {
+		if (shouldStartAudio) {
 			try {
 				await page.waitForFunction(
 					([dialogId, buttonTitle]) => {
@@ -246,7 +302,9 @@ export async function generateProjectPreview({
 			);
 
 			await canvas.click({ position: allowButtonPosition });
-			await page.waitForTimeout(runForMs);
+			if (firstCaptureTimeMs > 0) {
+				await page.waitForTimeout(firstCaptureTimeMs);
+			}
 
 			const permissionRequestedAgain = await page.evaluate(dialogId => {
 				const state = (globalThis as unknown as PreviewWindow).state;
@@ -290,20 +348,28 @@ export async function generateProjectPreview({
 			await new Promise<void>(resolve => previewWindow.requestAnimationFrame(() => resolve()));
 		}, position);
 
-		const renderDeadline = Date.now() + timeoutMs;
-		let png: Buffer<ArrayBufferLike> = Buffer.alloc(0);
-		while (Date.now() < renderDeadline) {
-			png = await canvas.screenshot({ type: 'png' });
-			const stats = await sharp(png).stats();
-			if (stats.channels.some(channel => channel.stdev > 0)) {
-				break;
+		const pngFrames: Buffer[] = [];
+		for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+			if (frameIndex > 0) {
+				await page.waitForTimeout(captureIntervalMs);
 			}
-			await page.waitForTimeout(50);
+
+			const renderDeadline = Date.now() + timeoutMs;
+			let png: Buffer<ArrayBufferLike> = Buffer.alloc(0);
+			while (Date.now() < renderDeadline) {
+				png = await canvas.screenshot({ type: 'png' });
+				const stats = await sharp(png).stats();
+				if (stats.channels.some(channel => channel.stdev > 0)) {
+					break;
+				}
+				await page.waitForTimeout(50);
+			}
+			if (png.length === 0 || !(await sharp(png).stats()).channels.some(channel => channel.stdev > 0)) {
+				throw new Error('Project preview did not render visible content before the timeout.');
+			}
+			pngFrames.push(png);
 		}
-		if (png.length === 0 || !(await sharp(png).stats()).channels.some(channel => channel.stdev > 0)) {
-			throw new Error('Project preview did not render visible content before the timeout.');
-		}
-		await writePreviewImage(png, resolvedOutputPath);
+		await writePreviewImage(pngFrames, resolvedOutputPath, framesPerSecond);
 	} finally {
 		try {
 			await browser?.close();
