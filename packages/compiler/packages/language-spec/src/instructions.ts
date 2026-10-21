@@ -138,10 +138,6 @@ export const compilerSourceBlockInstructionPairs = compilerBlockInstructionPairs
 
 type CompiledModuleSourceBlockPair = Extract<CompilerSourceBlockInstructionPair, { compilesToModule: true }>;
 
-export const compilerSourceBlockTypes = compilerSourceBlockInstructionPairs.map(
-	({ type }) => type
-) as CompilerSourceBlockType[];
-
 export type CompiledModuleBlockType = CompiledModuleSourceBlockPair['type'];
 export const compiledModuleBlockTypes = compilerSourceBlockInstructionPairs
 	.filter((pair): pair is CompiledModuleSourceBlockPair => pair.compilesToModule)
@@ -174,8 +170,6 @@ export const documentBlockInstructionPairs = [
 ] as const;
 
 export type DocumentBlockType = (typeof documentBlockInstructionPairs)[number]['type'];
-export type DocumentBlockStartInstruction = (typeof documentBlockInstructionPairs)[number]['start'];
-export type DocumentBlockEndInstruction = (typeof documentBlockInstructionPairs)[number]['end'];
 
 export const documentBlockInstructionByType = Object.fromEntries(
 	documentBlockInstructionPairs.map(pair => [pair.type, pair])
