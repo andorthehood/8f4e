@@ -42,8 +42,6 @@
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
 - `npx nx run @8f4e/examples:test`: Run CLI example-project snapshot tests, then embedded `#test` modules in
   example `.8f4em` files through the CLI test runner.
-- `npx nx run @8f4e/examples:generate-minblep-lut`: Manually regenerate the platform-sensitive minBLEP lookup
-  table. Normal build and development targets intentionally leave this checked-in table unchanged.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
 - `npx nx run-many --target=lint --projects=@8f4e/editor-default,@8f4e/editor-website`: Biome check/fix for the
   composition and website. Use `run-many --target=lint --all` to lint every project if needed.

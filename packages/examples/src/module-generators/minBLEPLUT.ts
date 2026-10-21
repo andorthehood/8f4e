@@ -231,7 +231,6 @@ module minBLEPLUT
 ; @tab 7
 ; PT2-style minBLEP correction table
 ; generated from the approximate JS minBLEP pipeline
-; regenerate only with: npx nx run @8f4e/examples:generate-minblep-lut
 ${minBLEPData.map(value => `float\t${value}`).join('\n')}
 
 moduleEnd

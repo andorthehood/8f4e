@@ -6,7 +6,6 @@ module minBLEPLUT
 ; @tab 7
 ; PT2-style minBLEP correction table
 ; generated from the approximate JS minBLEP pipeline
-; regenerate only with: npx nx run @8f4e/examples:generate-minblep-lut
 float	0.987529154014351818
 float	0.987528411926905436
 float	0.987525305835043943
