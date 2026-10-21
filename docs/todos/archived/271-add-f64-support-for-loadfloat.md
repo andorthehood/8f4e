@@ -4,8 +4,8 @@ priority: High
 effort: 1-3h
 created: 2026-02-20
 issue: https://github.com/8f4e/8f4e/issues/422
-status: Open
-completed: null
+status: Completed
+completed: 2026-10-21
 ---
 
 # TODO: Add float64 support for loadFloat instruction

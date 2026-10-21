@@ -4,8 +4,8 @@ priority: Medium
 effort: 3-6h
 created: 2026-10-14
 issue: https://github.com/8f4e/8f4e/issues/1012
-status: Open
-completed: null
+status: Completed
+completed: 2026-10-20
 ---
 
 # TODO: Index editor pointer targets by address

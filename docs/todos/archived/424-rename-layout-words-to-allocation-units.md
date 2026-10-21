@@ -4,8 +4,8 @@ priority: Medium
 effort: 8-16h
 created: 2026-05-26
 issue: https://github.com/8f4e/8f4e/issues/712
-status: Open
-completed: null
+status: Completed
+completed: 2026-10-19
 ---
 
 # TODO: Rename compiler allocation-grid metadata to allocation-unit terminology
