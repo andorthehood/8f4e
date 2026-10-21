@@ -18,6 +18,7 @@ describe('color editor config', () => {
 		expect(colorEditorConfigValidator.validate(entry('color.text.code', '#112233'))).toBeUndefined();
 		expect(colorEditorConfigValidator.validate(entry('color.text.entryName', '#abcdef'))).toBeUndefined();
 		expect(colorEditorConfigValidator.validate(entry('color.text.switch', '#fedcba'))).toBeUndefined();
+		expect(colorEditorConfigValidator.validate(entry('color.text.sliderHandle', '#ffe066'))).toBeUndefined();
 		expect(colorEditorConfigValidator.validate(entry('color.fill.waveformBackground', 'transparent'))).toBeUndefined();
 		expect(colorEditorConfigValidator.validate(entry('color.fill.switchKnob', '#334455'))).toBeUndefined();
 	});

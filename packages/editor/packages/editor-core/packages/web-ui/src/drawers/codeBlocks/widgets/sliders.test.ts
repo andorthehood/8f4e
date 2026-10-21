@@ -10,7 +10,7 @@ const slider: Slider = {
 	x: 10,
 	y: 20,
 	width: 32,
-	height: 16,
+	height: 32,
 	id: 'gain',
 	allocationUnitAddress: 0,
 	byteAddress: 0,
@@ -33,13 +33,13 @@ function createMemoryViews(value: number): MemoryViews {
 }
 
 describe('drawSliders', () => {
-	it('draws a colon over the slider handle', () => {
+	it('draws a vertical bar on each row of the slider handle', () => {
 		const engine = createDrawContextMock();
 		const state = createMockState({
 			viewport: { vGrid: 8, hGrid: 16 },
 			spriteLookups: {
 				fillColors: createSpriteIdLookupMock(),
-				fontNumbers: createSpriteIdLookupMock(),
+				fontSliderHandle: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -51,10 +51,13 @@ describe('drawSliders', () => {
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 		expect(drawSprite.mock.calls).toEqual([
-			[0, 0, 'track', 32, 16],
-			[0, 0, 'fill', 20, 16],
-			[12, 0, 'handle', 8, 16],
+			[0, 0, 'track', 32, 32],
+			[0, 0, 'fill', 20, 32],
+			[12, 0, 'handle', 8, 32],
 		]);
-		expect(drawText).toHaveBeenCalledWith(12, 0, ':', state.spriteLookups?.fontNumbers);
+		expect(drawText.mock.calls).toEqual([
+			[12, 0, '|', state.spriteLookups?.fontSliderHandle],
+			[12, 16, '|', state.spriteLookups?.fontSliderHandle],
+		]);
 	});
 });

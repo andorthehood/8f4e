@@ -116,6 +116,7 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('pianoKeyBlackPressedOverlay');
 			expect(textKeys).toContain('tooltipText');
 			expect(textKeys).toContain('tooltipHighlight');
+			expect(textKeys).toContain('sliderHandle');
 		});
 
 		it('should have all required fill color properties', () => {

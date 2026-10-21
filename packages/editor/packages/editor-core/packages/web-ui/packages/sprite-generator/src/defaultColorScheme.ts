@@ -29,6 +29,7 @@ const defaultColorScheme: ColorScheme = {
 		tooltipText: '#999999',
 		tooltipHighlight: '#000000',
 		switch: '#ffffff',
+		sliderHandle: '#ffffff',
 	},
 	fill: {
 		menuItemBackground: '#000000',

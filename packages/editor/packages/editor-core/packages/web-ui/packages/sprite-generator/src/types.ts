@@ -47,6 +47,7 @@ export interface ColorScheme {
 		tooltipText: string;
 		tooltipHighlight: string;
 		switch: string;
+		sliderHandle: string;
 	};
 	fill: {
 		menuItemBackground: string;

@@ -29,6 +29,7 @@ export const minimalColorScheme: ColorScheme = {
 		tooltipText: '#666666',
 		tooltipHighlight: '#000000',
 		switch: '#cc9933',
+		sliderHandle: '#ffcc00',
 	},
 	fill: {
 		menuItemBackground: '#000000',

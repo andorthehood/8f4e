@@ -33,6 +33,7 @@ Example:
 - `text.pianoKeyWhitePressedOverlay`
 - `text.pianoKeyBlackPressedOverlay`
 - `text.switch`
+- `text.sliderHandle`
 
 ## `fill.*`
 
@@ -78,6 +79,8 @@ Example:
 
 `text.switch`, `fill.switchBackground`, and `fill.switchKnob` style both `@button` and `@switch`. The knob color fills
 the character cell beneath the `#` marker.
+
+`text.sliderHandle` styles the two stacked `|` markers on `@slider` handles.
 
 ## Feedback Scale Entries
 

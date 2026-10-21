@@ -10,7 +10,18 @@ import { resolveCodeWithOneColor } from './utils/generateColorMapMock';
 
 test('sliders', async () => {
 	const canvas = createCanvas();
-	const mockState = createMockStateWithColors();
+	const mockState = createMockStateWithColors({
+		editorConfig: {
+			color: {
+				text: { sliderHandle: '#ffcc00' },
+				fill: {
+					track: '#111111',
+					fill: '#cccccc',
+					handle: '#336699',
+				},
+			},
+		},
+	});
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
 	const codeBlocks = new Map<number, CodeBlockRenderData>();
@@ -20,7 +31,7 @@ test('sliders', async () => {
 	memoryViews.float32.set([0, 0.5, 1]);
 
 	if (mockState.spriteLookups) {
-		const lines = ['slider handles', '', '', '', '', '', '', ''];
+		const lines = ['slider handles', '', '', '', '', '', '', '', '', ''];
 		const codeBlock = createMockCodeBlock({
 			creationIndex: 0,
 			x: 16,
@@ -31,9 +42,9 @@ test('sliders', async () => {
 		codeBlock.widgets.sliders = [0, 1, 2].map((allocationUnitAddress, index) => ({
 			moduleId: 'test',
 			x: 16,
-			y: 32 + index * 24,
+			y: 32 + index * 40,
 			width: 96,
-			height: 16,
+			height: 32,
 			id: `slider-${index}`,
 			allocationUnitAddress,
 			byteAddress: allocationUnitAddress * 4,
