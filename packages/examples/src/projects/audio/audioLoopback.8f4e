@@ -104,7 +104,7 @@ note
 noteEnd
 
 note
-; @pos 134 12
+; @pos 47 -10
 ; This is a stereo loopback example
 ; that reads input audio from a
 ; shared buffer and writes the same
