@@ -223,6 +223,24 @@ describe('AudioWorklet context lifetime', () => {
 		expect(shared.audioWorklet.addModule).toHaveBeenCalledOnce();
 	});
 
+	it('requests microphone input without voice processing', async () => {
+		const shared = new MockContext();
+		const stop = vi.fn();
+		const getUserMedia = vi.fn(async () => ({ getTracks: () => [{ stop }] }));
+		vi.stubGlobal('navigator', { mediaDevices: { getUserMedia } });
+		const editor = mount(shared, 48000, true);
+
+		await editor.allow();
+
+		expect(getUserMedia).toHaveBeenCalledWith({
+			audio: {
+				echoCancellation: false,
+				noiseSuppression: false,
+				autoGainControl: false,
+			},
+		});
+	});
+
 	it('stops a microphone obtained after disposal without reconnecting its worklet', async () => {
 		const shared = new MockContext();
 		const stop = vi.fn();

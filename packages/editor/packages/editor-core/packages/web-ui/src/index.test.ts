@@ -1,5 +1,5 @@
 import { createMockState } from '@8f4e/editor-state-testing';
-import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -125,7 +125,7 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		id: 'rgba',
 		numberOfElements: 1,
 		elementWordSize: 4,
-		type: MemoryTypes.int,
+		type: 'int' as const,
 		byteAddress: 0,
 		elementByteLength: 4,
 		allocationUnitCount: 1,

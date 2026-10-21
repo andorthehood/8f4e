@@ -3073,7 +3073,7 @@ module colors
 ; @config color.fill.scanLine #ff8c61
 ; @config color.fill.track #223044
 ; @config color.fill.fill #4fa6d8
-; @config color.fill.handle #f4f7f9
+; @config color.fill.controlKnob #f4f7f9
 ; @config color.fill.codeBlockHighlightLevel1 #172334
 ; @config color.fill.codeBlockHighlightLevel2 #1d2f45
 ; @config color.fill.codeBlockHighlightLevel3 #26405a
@@ -3086,7 +3086,7 @@ module colors
 ; @config color.icons.outputConnector #ffd166
 ; @config color.icons.inputConnectorBackground #1a2d40
 ; @config color.icons.outputConnectorBackground #1a2d40
-; @config color.icons.switchBackground #4fa6d8
+; @config color.fill.switchBackground #4fa6d8
 ; @config color.icons.feedbackScale0 #183139
 ; @config color.icons.feedbackScale1 #245463
 ; @config color.icons.feedbackScale2 #337f8f

@@ -60,7 +60,7 @@ describe('drawCrossfades', () => {
 
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'track', 10, 8);
-		expect(drawSprite).toHaveBeenCalledWith(4, 0, 'handle', 2, 8);
+		expect(drawSprite).toHaveBeenCalledWith(4, 0, 'crossfadeHandle', 2, 8);
 	});
 
 	it('draws a fill rectangle from the center to the left knob position', () => {
@@ -84,6 +84,6 @@ describe('drawCrossfades', () => {
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'track', 10, 8);
 		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'fill', 6, 8);
-		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'handle', 2, 8);
+		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'crossfadeHandle', 2, 8);
 	});
 });

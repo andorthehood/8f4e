@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
-import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	createMockCodeBlock,
@@ -45,7 +45,7 @@ describe('plot directive widget resolution', () => {
 									byteAddress: 0,
 									numberOfElements: 16,
 									elementWordSize: 1,
-									type: MemoryTypes.int,
+									type: 'int' as const,
 									allocationUnitCount: 16,
 									default: 0,
 									isInteger: true,
@@ -117,7 +117,7 @@ describe('plot directive widget resolution', () => {
 			byteAddress: 4,
 			numberOfElements: 100,
 			elementWordSize: 1,
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			allocationUnitCount: 100,
 			default: 0,
 			isInteger: true,
@@ -136,7 +136,7 @@ describe('plot directive widget resolution', () => {
 			byteAddress: 16,
 			numberOfElements: 16,
 			elementWordSize: 4,
-			type: MemoryTypes.float,
+			type: 'float' as const,
 			allocationUnitCount: 16,
 			default: 0,
 			isInteger: false,
@@ -185,7 +185,7 @@ describe('plot directive widget resolution', () => {
 			byteAddress: 32,
 			numberOfElements: 1,
 			elementWordSize: 4,
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,

@@ -50,6 +50,81 @@ Inside a group, `init &<exposed-memory> <number>` overrides a scalar declaration
 An address value, as in `init &input &source:output`, resolves against the immediate parent project. Initializers share
 ordinary default conversion and `initDefaults()` timing, including for inherited scalar declarations.
 
+## Public API quickstart
+
+The following example completes the whole lifecycle with only the public `@8f4e/compiler` entry point. It parses a
+self-contained `8f4e/v1` document, so no editor state, include resolver, or project file is required.
+
+```js
+import { compileProject, parseProjectSource } from '@8f4e/compiler';
+
+const source = `8f4e/v1
+
+function double
+#export
+param int value
+push value
+push value
+add
+functionEnd int
+
+entry main
+module counter
+int value 41
+push &value
+push value
+push 1
+add
+store
+moduleEnd
+entryEnd`;
+
+const project = parseProjectSource(source);
+const result = await compileProject(project, { disableSharedMemory: true });
+
+const pages = Math.max(1, Math.ceil(result.requiredMemoryBytes / 65536));
+const memory = new WebAssembly.Memory({ initial: pages, maximum: pages });
+const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
+
+instance.exports.initDefaults();
+instance.exports.main();
+
+const address = result.memoryPlan.modules.counter.memory.value.byteAddress;
+const counter = new DataView(memory.buffer).getInt32(address, true); // 42
+const doubled = instance.exports.double(21); // 42
+```
+
+Four details make the example work:
+
+- `initDefaults()` writes declaration defaults into linear memory. Call it before invoking any entry, otherwise
+  `counter` reads the allocation's initial zeroes instead of `41`.
+- `result.requiredMemoryBytes` is the exact byte count the program needs. WebAssembly memory is sized in pages of
+  `65536` bytes, so the page count is that value rounded up, with a floor of one page.
+- `result.memoryPlan.modules.counter.memory.value.byteAddress` is the byte address of a declaration. Hosts read it
+  from their own view of `memory.buffer`; 8f4e stores integers little-endian, so pass `true` to `getInt32`.
+- `#export` publishes the `double` function under its source name, which becomes `instance.exports.double`.
+
+`disableSharedMemory: true` matches the non-shared `WebAssembly.Memory` created above. The compiler enables shared
+memory by default, so hosts that want the default must supply shared memory instead of passing this option.
+
+Recompiling the same project reuses the returned cache. Pass it back through the `cache` option; there is no need to
+construct stage inputs or cache internals yourself.
+
+```js
+const recompiled = await compileProject(project, {
+	disableSharedMemory: true,
+	cache: result.cache,
+});
+
+recompiled.cache.ast.stats.hits; // 2: the module and the function ASTs were reused
+```
+
+From here, [`docs/source-syntax.md`](docs/source-syntax.md) covers the document format,
+[`docs/directives.md`](docs/directives.md) covers directives such as `#export`, and
+[`docs/instructions/testing.md`](docs/instructions/testing.md) covers native assertions. Projects that pull in shared
+code pass a `resolveInclude` callback to `compileProject`, and [`docs/standard-library.md`](docs/standard-library.md)
+lists the helpers those includes provide.
+
 ## Compiler Passes
 
 ```text

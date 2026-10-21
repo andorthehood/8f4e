@@ -1,8 +1,8 @@
 8f4e/v1
 
 entry main
-module clampAddressMissingRange
-push 42
+module missingAddressRange
+push 1
 clampAddress
 moduleEnd
 entryEnd

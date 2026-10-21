@@ -32,6 +32,7 @@ Example:
 - `text.basePrefix`
 - `text.pianoKeyWhitePressedOverlay`
 - `text.pianoKeyBlackPressedOverlay`
+- `text.controlKnob`
 
 ## `fill.*`
 
@@ -59,12 +60,14 @@ Example:
 - `fill.scanLine`
 - `fill.track`
 - `fill.fill`
-- `fill.handle`
+- `fill.controlKnob`
+- `fill.crossfadeHandle`
 - `fill.codeBlockHighlightLevel1`
 - `fill.codeBlockHighlightLevel2`
 - `fill.codeBlockHighlightLevel3`
 - `fill.pianoKeyWhite`
 - `fill.pianoKeyBlack`
+- `fill.switchBackground`
 
 ## `icons.*`
 
@@ -72,7 +75,11 @@ Example:
 - `icons.outputConnector`
 - `icons.inputConnectorBackground`
 - `icons.outputConnectorBackground`
-- `icons.switchBackground`
+
+`text.controlKnob` and `fill.controlKnob` style the knob shared by `@button`, `@switch`, and `@slider`. The text color
+styles the `|` marker inside the knob; sliders draw one marker on each row.
+
+`fill.crossfadeHandle` styles `@crossfade` handles independently.
 
 ## Feedback Scale Entries
 

@@ -38,6 +38,7 @@ note
 ; @config color.text.pianoKeyBlackPressedOverlay rgba(195,72,62,0.58)
 ; @config color.text.tooltipText #f5f2e9
 ; @config color.text.tooltipHighlight #e6c45d
+; @config color.text.controlKnob #30778e
 ; @config color.fill.menuItemBackground #dfe4e3
 ; @config color.fill.menuItemBackgroundHighlighted #2f7184
 ; @config color.fill.background #c8d0d1
@@ -66,7 +67,7 @@ note
 ; @config color.fill.scanLine #d55248
 ; @config color.fill.track #b0babc
 ; @config color.fill.fill #30778e
-; @config color.fill.handle #faf6ec
+; @config color.fill.controlKnob #faf6ec
 ; @config color.fill.codeBlockHighlightLevel1 #e8e5dc
 ; @config color.fill.codeBlockHighlightLevel2 #dedfda
 ; @config color.fill.codeBlockHighlightLevel3 #d4d8d4
@@ -79,7 +80,7 @@ note
 ; @config color.icons.outputConnector #c3483e
 ; @config color.icons.inputConnectorBackground #e6e8e2
 ; @config color.icons.outputConnectorBackground #e6e8e2
-; @config color.icons.switchBackground #30778e
+; @config color.fill.switchBackground #30778e
 ; @config color.icons.feedbackScale0 #28556d
 ; @config color.icons.feedbackScale1 #30778e
 ; @config color.icons.feedbackScale2 #3c999e
@@ -90,7 +91,7 @@ note
 noteEnd
 
 note
-; @pos 45 5
+; @pos 45 4
 ; Demonstrates a bistable SR latch
 ; (multivibrator) built from feedback
 ; logic gates, with set/reset button
@@ -100,23 +101,23 @@ note
 noteEnd
 
 entry main
+module resetButton
+; @pos 50 30
+
+int out
+               ; Push this button
+               ; to reset the state
+; @button &out
+
+moduleEnd
 module setButton
-; @pos 45 16
+; @pos 51 17
 ; @home left
 
 int out
                ; Push this button
                ; to set the state
-; @button &out 0 1 ; of the SR latch -->
-
-moduleEnd
-module resetButton
-; @pos 45 27
-
-int out
-               ; Push this button
-               ; to reset the state
-; @button &out 0 1 ; of the SR latch -->
+; @button &out  
 
 moduleEnd
 module norGate2
@@ -168,7 +169,7 @@ store
 
 moduleEnd
 module scope
-; @pos 150 21
+; @pos 147 18
 
 int* in &norGate:out
 int[] buffer 64
@@ -197,7 +198,7 @@ store
 
 moduleEnd
 module buttons
-; @pos 193 17
+; @pos 217 14
 
 ; Buttons for the SR AND-OR latch
 
@@ -205,14 +206,14 @@ int set
 int reset
                ; Push this button
                ; to set the state
-; @button &set 0 1 ; of the latch  -->
+; @button &set
 
                  ; Push this button
-; @button &reset 0 1 ; to reset   --->
+; @button &reset
 
 moduleEnd
 module negate
-; @pos 207 33
+; @pos 229 33
 
 int* in &buttons:reset
 int out
@@ -230,7 +231,7 @@ store
 
 moduleEnd
 module orGate
-; @pos 243 6
+; @pos 264 6
 
                       ;   .---.
 int* in1 &andGate:out ; --+    '
@@ -253,7 +254,7 @@ store
 
 moduleEnd
 module andGate
-; @pos 244 32
+; @pos 265 31
 
                      ;   .---.
 int* in1 &orGate:out ; --+    '
@@ -276,7 +277,7 @@ store
 
 moduleEnd
 module scope2
-; @pos 292 17
+; @pos 316 16
 
 int* in &andGate:out
 int[] buffer 64

@@ -376,7 +376,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -405,7 +404,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -449,7 +447,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -472,7 +469,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -495,7 +491,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -524,7 +519,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -551,7 +545,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -576,7 +569,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -688,7 +680,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -717,7 +708,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -753,7 +743,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -776,7 +765,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -799,7 +787,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -828,7 +815,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -857,7 +843,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",
@@ -882,7 +867,6 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
-                  "elementCount": 4,
                   "pointerDepth": 1,
                 },
                 "valueType": "int",

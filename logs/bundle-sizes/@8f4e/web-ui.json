@@ -1948,5 +1948,50 @@
 			"gzip": 11477,
 			"brotli": 10093
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-21T08:28:00.943Z",
+		"commit": "21241558aedc0e76c28681bb21240788f780f4f0",
+		"branch": "",
+		"releaseTag": "@8f4e/web-ui@3.0.4",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "3.0.4",
+		"bytes": {
+			"raw": 39351,
+			"gzip": 11452,
+			"brotli": 10053
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-21T13:07:37.540Z",
+		"commit": "68b3655966bbf2df15bf307effc0ef0b87cd5d2f",
+		"branch": "",
+		"releaseTag": "@8f4e/web-ui@3.0.5",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "3.0.5",
+		"bytes": {
+			"raw": 39351,
+			"gzip": 11452,
+			"brotli": 10053
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-21T17:49:13.463Z",
+		"commit": "ba419d699d9dfa2ae1aaa76485c26e27100ecb6e",
+		"branch": "",
+		"releaseTag": "@8f4e/web-ui@3.1.0",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "3.1.0",
+		"bytes": {
+			"raw": 39718,
+			"gzip": 11550,
+			"brotli": 10142
+		}
 	}
 ]

@@ -987,7 +987,7 @@ note
 ; @config color.fill.scanLine #ff8800
 ; @config color.fill.track #19324d
 ; @config color.fill.fill #0055aa
-; @config color.fill.handle #e6edf2
+; @config color.fill.controlKnob #e6edf2
 ; @config color.fill.codeBlockHighlightLevel1 #0d2944
 ; @config color.fill.codeBlockHighlightLevel2 #123755
 ; @config color.fill.codeBlockHighlightLevel3 #174669
@@ -1000,7 +1000,7 @@ note
 ; @config color.icons.outputConnector #ffcc88
 ; @config color.icons.inputConnectorBackground #002b57
 ; @config color.icons.outputConnectorBackground #002b57
-; @config color.icons.switchBackground #0055aa
+; @config color.fill.switchBackground #0055aa
 ; @config color.icons.feedbackScale0 #194d2f
 ; @config color.icons.feedbackScale1 #267342
 ; @config color.icons.feedbackScale2 #33a657

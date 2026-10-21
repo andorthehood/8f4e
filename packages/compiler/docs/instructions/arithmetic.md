@@ -4,6 +4,8 @@
 
 The "add" instruction operates on two numbers of the same type that are retrieved from the stack. It performs addition on these numbers and then stores the result back onto the stack.
 
+Adding an integer byte offset to an address, in either operand order, produces an address with the same pointee type. The compiler tracks whether the resulting address remains in a proven-safe memory range separately from its pointee type; memory access through an unproven address receives a runtime bounds check. Adding two addresses is invalid.
+
 #### Examples
 
 ```
@@ -14,6 +16,11 @@ add       ; stack: [ 3 ]
 push 0.5    ; stack: [ 3, 0.5 ]
 push 0.7    ; stack: [ 3, 0.5, 0.7 ]
 add         ; stack: [ 3, 1.2 ]
+
+float[] samples 4
+push &samples
+push sizeof(samples)
+add         ; typed float address for samples[1]
 ```
 
 ### div
@@ -95,6 +102,8 @@ remainder
 ### sub
 
 The "sub" instruction operates on two numbers of the same type that are retrieved from the stack. It subtracts the second operand from the first operand, and then stores the result back onto the stack.
+
+Subtracting an integer byte offset from an address preserves its pointee type, while safety-range facts are narrowed or discarded independently. Subtracting one address from another produces a plain integer byte difference. Subtracting an address from an integer is invalid.
 
 #### Examples
 

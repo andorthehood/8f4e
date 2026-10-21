@@ -2,6 +2,8 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 
+const HANDLE_LABEL = '|';
+
 export default function drawer(
 	engine: DrawContext,
 	state: State,
@@ -35,7 +37,9 @@ export default function drawer(
 
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.track, width, height);
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.fill, handleX + handleWidth, height);
-		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, handleWidth, height);
+		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.controlKnob, handleWidth, height);
+		engine.drawText(handleX, 0, HANDLE_LABEL, state.spriteLookups.fontControlKnob);
+		engine.drawText(handleX, state.viewport.hGrid, HANDLE_LABEL, state.spriteLookups.fontControlKnob);
 
 		engine.endGroup();
 	}

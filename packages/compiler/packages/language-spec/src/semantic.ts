@@ -73,16 +73,9 @@ export type Const = {
 	address?: AddressMetadata;
 };
 
-export type Consts = Record<string, Const>;
-
 export type ResolvedArgumentLiteral = ArgumentLiteral & {
 	/** Address metadata when semantic reference resolution resolves this literal from an address expression. */
 	address?: AddressMetadata;
-};
-
-export type ResolvedIntegerArgumentLiteral = ResolvedArgumentLiteral & {
-	isInteger: true;
-	isFloat64?: false;
 };
 
 /** Scalar local value facts, independent of WebAssembly storage. */
@@ -165,11 +158,10 @@ export interface FunctionCompilationContext extends CompilationContext {
 
 export type StackValueType = 'int' | 'float' | 'float64';
 
-/** Metadata describing values reachable from an address stack item. */
+/** Pointee type facts for an address. These facts do not include provenance or bounds guarantees. */
 export interface PointeeMetadata {
 	baseType: PointeeBaseType;
 	pointerDepth: number;
-	elementCount?: number;
 }
 
 /** Type and value facts known about one ordinary value on the compiler analysis stack. */
@@ -182,7 +174,11 @@ export interface StackValue {
 	knownValue?: number;
 }
 
-/** Type and value facts known about one value that is proven to be a memory address. */
+/**
+ * Type and value facts known about one address-like integer.
+ * `pointsTo` describes how to interpret the address; only `address.safeRange` or
+ * `address.safeAccessByteWidth` proves that a memory access is statically safe.
+ */
 export interface StackAddress {
 	kind: 'address';
 	valueType: 'int';
@@ -340,13 +336,6 @@ export type ResolvedPushLine =
 
 export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
 export type SemanticPushLine = CodegenPushLine | DeferredPushLine;
-
-export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
-	arguments: [ArgumentIdentifier];
-};
-export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [MemoryPointerIdentifier];
-};
 
 export type ResolvedLocalSetLine = LocalSetLine & { binding: SourceLocalBinding };
 

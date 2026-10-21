@@ -655,7 +655,7 @@ export const instructionSpecs = {
 		loadVariant: 'f32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'float',
-		shortDescription: 'Loads a float value from memory.',
+		shortDescription: 'Loads a float32 value, or a float64 value through a typed float64 pointer.',
 		output: 'float',
 		effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
 	}),
@@ -1007,7 +1007,7 @@ export const instructionSpecs = {
 		effects: { memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH } },
 	},
 	sub: withDocsAndStack(binaryMatchingSpec, {
-		shortDescription: 'Subtracts the second value from the first value and pushes the result.',
+		shortDescription: 'Subtracts matching numbers, an integer byte offset, or two addresses and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),

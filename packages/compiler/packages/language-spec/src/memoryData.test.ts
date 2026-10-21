@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ALLOCATION_UNIT_BYTE_SIZE } from './constants';
-import { MemoryTypes, type PlannedMemoryDeclaration, type PointeeBaseType } from './memory';
+import type { PlannedMemoryDeclaration, PointeeBaseType } from './memory';
 import {
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
@@ -22,7 +22,7 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 	const byteAddress = overrides.byteAddress ?? 100;
 	const declaration = {
 		id: 'memory',
-		type: MemoryTypes.int,
+		type: 'int' as const,
 		numberOfElements: 10,
 		elementWordSize: 4,
 		byteAddress,
