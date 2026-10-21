@@ -15,7 +15,6 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
     │   └── packages/
     │       ├── <a href="./packages/compiler/packages/language-spec/README.md">language-spec</a> (Shared language contracts and target-independent compiler facts)
-    │       ├── <a href="./packages/compiler/packages/include-resolver/README.md">include-resolver</a> (Loads declared includes into a raw source tree)
     │       ├── <a href="./packages/compiler/packages/project-preparser/README.md">project-preparser</a> (Parses .8f4e project documents into sub-program source)
     │       ├── <a href="./packages/compiler/packages/program-composer/README.md">program-composer</a> (Composes recursive project groups into an ordered AST program)
     │       ├── <a href="./packages/compiler/packages/sub-program/README.md">sub-program</a> (Compiles one closed, independently identifiable program unit)
