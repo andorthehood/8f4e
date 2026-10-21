@@ -25,7 +25,7 @@ note
 ; @pos -126 6
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioInBufferLAddress aeudioin:buffer
+; @config audioRuntime.audioInBufferLAddress audioin:buffer
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 ; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName audioLoopback
@@ -104,7 +104,7 @@ note
 noteEnd
 
 note
-; @pos 134 12
+; @pos 47 -10
 ; This is a stereo loopback example
 ; that reads input audio from a
 ; shared buffer and writes the same
