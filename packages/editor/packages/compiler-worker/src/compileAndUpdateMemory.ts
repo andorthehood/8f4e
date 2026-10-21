@@ -6,9 +6,11 @@ import type {
 	GetOrCreateWasmInstanceResult,
 	MemoryDefaults,
 	MemoryLayoutPlan,
+	MemoryValueChange,
 	ProjectIncludeResolver,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/language-spec';
 import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
@@ -23,6 +25,19 @@ let previousCompileState: PreviousCompileState | undefined;
 let compilerCache: CompilerCache | undefined;
 
 let wasmInstanceRef: WebAssembly.Instance | null = null;
+
+type MemoryBufferView = Int8Array | Int16Array | Int32Array | Float32Array | Float64Array;
+
+function patchElements(view: MemoryBufferView, firstElementIndex: number, value: MemoryValueChange['value']): void {
+	if (typeof value === 'object') {
+		Object.entries(value).forEach(([index, item]) => {
+			view[firstElementIndex + parseInt(index, 10)] = item;
+		});
+		return;
+	}
+
+	view[firstElementIndex] = value;
+}
 
 async function getOrCreateWasmInstanceRef(
 	codeBuffer: Uint8Array,
@@ -101,37 +116,30 @@ export default async function compileAndUpdateMemory(
 		initDefaults();
 		initOnlyReran = false;
 	} else {
+		// Narrow integer arrays are packed by element width, so a declaration must be patched through a view
+		// matching its element size instead of always assuming 4-byte allocation units.
+		const memoryBufferInt8 = new Int8Array(memoryRef.buffer);
+		const memoryBufferInt16 = new Int16Array(memoryRef.buffer);
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		const memoryBufferFloat64 = new Float64Array(memoryRef.buffer);
 		const memoryValueChanges = getMemoryValueChanges(currentCompileState, previousCompileState);
 
 		memoryValueChanges.forEach(change => {
-			if (change.isInteger) {
-				if (typeof change.value === 'object') {
-					Object.entries(change.value).forEach(([index, item]) => {
-						memoryBufferInt[change.allocationUnitAddress + parseInt(index, 10)] = item;
-					});
-				} else {
-					memoryBufferInt[change.allocationUnitAddress] = change.value;
-				}
-			} else if (change.elementWordSize === 8 && !change.isInteger) {
-				const float64Index = change.allocationUnitAddress / 2;
-				if (typeof change.value === 'object') {
-					Object.entries(change.value).forEach(([index, item]) => {
-						memoryBufferFloat64[float64Index + parseInt(index, 10)] = item;
-					});
-				} else {
-					memoryBufferFloat64[float64Index] = change.value;
-				}
+			// Allocation-unit addresses are 4-byte based; converting to a byte address and dividing by the
+			// element width yields the first element index inside the matching typed view.
+			const firstElementIndex = (change.allocationUnitAddress * ALLOCATION_UNIT_BYTE_SIZE) / change.elementWordSize;
+
+			if (change.isInteger && change.elementWordSize === 1) {
+				patchElements(memoryBufferInt8, firstElementIndex, change.value);
+			} else if (change.isInteger && change.elementWordSize === 2) {
+				patchElements(memoryBufferInt16, firstElementIndex, change.value);
+			} else if (change.isInteger) {
+				patchElements(memoryBufferInt, firstElementIndex, change.value);
+			} else if (change.elementWordSize === 8) {
+				patchElements(memoryBufferFloat64, firstElementIndex, change.value);
 			} else {
-				if (typeof change.value === 'object') {
-					Object.entries(change.value).forEach(([index, item]) => {
-						memoryBufferFloat[change.allocationUnitAddress + parseInt(index, 10)] = item;
-					});
-				} else {
-					memoryBufferFloat[change.allocationUnitAddress] = change.value;
-				}
+				patchElements(memoryBufferFloat, firstElementIndex, change.value);
 			}
 		});
 
