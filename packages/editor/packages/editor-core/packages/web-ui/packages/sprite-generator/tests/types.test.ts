@@ -146,13 +146,16 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('switchKnob');
 		});
 
+		it('should have the switch text color property', () => {
+			expect(Object.keys(minimalColorScheme.text)).toContain('switch');
+		});
+
 		it('should have all required icon color properties', () => {
 			const iconKeys = Object.keys(minimalColorScheme.icons);
 			expect(iconKeys).toContain('inputConnector');
 			expect(iconKeys).toContain('outputConnector');
 			expect(iconKeys).toContain('inputConnectorBackground');
 			expect(iconKeys).toContain('outputConnectorBackground');
-			expect(iconKeys).toContain('switchBackground');
 			expect(iconKeys).toContain('feedbackScale0');
 			expect(iconKeys).toContain('feedbackScale1');
 			expect(iconKeys).toContain('feedbackScale2');

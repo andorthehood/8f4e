@@ -884,7 +884,7 @@ note
 ; @config color.icons.outputConnector #fff
 ; @config color.icons.inputConnectorBackground rgba(225,225,255,0.38)
 ; @config color.icons.outputConnectorBackground rgba(255,213,179,0.46)
-; @config color.icons.switchBackground rgba(255,216,184,0.42)
+; @config color.fill.switchBackground rgba(255,216,184,0.42)
 ; @config color.icons.feedbackScale0 rgba(224,220,255,0.14)
 ; @config color.icons.feedbackScale1 rgba(228,224,255,0.26)
 ; @config color.icons.feedbackScale2 rgba(234,232,255,0.4)

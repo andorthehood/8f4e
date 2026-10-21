@@ -28,6 +28,7 @@ export const minimalColorScheme: ColorScheme = {
 		pianoKeyBlackPressedOverlay: '#ffffff',
 		tooltipText: '#666666',
 		tooltipHighlight: '#000000',
+		switch: '#cc9933',
 	},
 	fill: {
 		menuItemBackground: '#000000',
@@ -75,7 +76,6 @@ export const minimalColorScheme: ColorScheme = {
 		outputConnector: '#ffffff',
 		inputConnectorBackground: '#111111',
 		outputConnectorBackground: '#111111',
-		switchBackground: '#336699',
 		feedbackScale0: '#ff0000',
 		feedbackScale1: '#cc0033',
 		feedbackScale2: '#990066',

@@ -178,7 +178,7 @@ note
 ; @config color.icons.outputConnector #e7aa51
 ; @config color.icons.inputConnectorBackground #2b3f4c
 ; @config color.icons.outputConnectorBackground #2b3f4c
-; @config color.icons.switchBackground #2eaac0
+; @config color.fill.switchBackground #2eaac0
 ; @config color.icons.feedbackScale0 #173747
 ; @config color.icons.feedbackScale1 #20546a
 ; @config color.icons.feedbackScale2 #2d7b94

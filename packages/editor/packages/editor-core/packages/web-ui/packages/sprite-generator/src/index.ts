@@ -337,16 +337,9 @@ export type SpriteIdLookups = Omit<SpriteIds<NonFontAtlasCoordinates>, 'feedback
 
 export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
 	const colorSchemeOverrides = overrides as ColorSchemeOverrides;
-	const fill = { ...defaultColorScheme.fill, ...colorSchemeOverrides.fill };
-	if (
-		colorSchemeOverrides.fill?.switchBackground === undefined &&
-		colorSchemeOverrides.icons?.switchBackground !== undefined
-	) {
-		fill.switchBackground = colorSchemeOverrides.icons.switchBackground;
-	}
 	return {
 		text: { ...defaultColorScheme.text, ...colorSchemeOverrides.text },
-		fill,
+		fill: { ...defaultColorScheme.fill, ...colorSchemeOverrides.fill },
 		icons: { ...defaultColorScheme.icons, ...colorSchemeOverrides.icons },
 	};
 }

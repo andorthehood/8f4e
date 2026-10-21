@@ -13,6 +13,9 @@ test('switches', async () => {
 	const mockState = await createMockStateWithColors({
 		editorConfig: {
 			color: {
+				text: {
+					switch: '#ffcc00',
+				},
 				fill: {
 					switchBackground: '#111111',
 					switchKnob: '#336699',

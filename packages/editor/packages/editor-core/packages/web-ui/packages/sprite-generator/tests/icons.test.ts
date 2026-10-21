@@ -47,7 +47,7 @@ describe('icons module', () => {
 			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [layout8x16.icons.x, layout8x16.icons.y]);
 		});
 
-		it('uses input connector colors without switch colors', () => {
+		it('uses the input connector colors', () => {
 			const commands = generateIcons(
 				mockFont,
 				characterDimensions8x16.width,
@@ -58,7 +58,6 @@ describe('icons module', () => {
 
 			expect(colorValues).toContain(minimalColorScheme.icons.inputConnectorBackground);
 			expect(colorValues).toContain(minimalColorScheme.icons.inputConnector);
-			expect(colorValues).not.toContain(minimalColorScheme.icons.switchBackground);
 		});
 
 		it('draws the input brackets from the ascii font', () => {

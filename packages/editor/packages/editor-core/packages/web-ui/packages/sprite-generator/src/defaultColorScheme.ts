@@ -28,6 +28,7 @@ const defaultColorScheme: ColorScheme = {
 		pianoKeyBlackPressedOverlay: '#ffffff',
 		tooltipText: '#999999',
 		tooltipHighlight: '#000000',
+		switch: '#ffffff',
 	},
 	fill: {
 		menuItemBackground: '#000000',
@@ -73,7 +74,6 @@ const defaultColorScheme: ColorScheme = {
 	icons: {
 		outputConnectorBackground: '#000000',
 		inputConnectorBackground: '#000000',
-		switchBackground: '#000000',
 		inputConnector: '#ffffff',
 		outputConnector: '#ffffff',
 		feedbackScale0: '#ff0000',

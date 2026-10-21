@@ -46,6 +46,7 @@ export interface ColorScheme {
 		pianoKeyBlackPressedOverlay: string;
 		tooltipText: string;
 		tooltipHighlight: string;
+		switch: string;
 	};
 	fill: {
 		menuItemBackground: string;
@@ -93,7 +94,6 @@ export interface ColorScheme {
 		outputConnector: string;
 		inputConnectorBackground: string;
 		outputConnectorBackground: string;
-		switchBackground: string;
 		feedbackScale0: string;
 		feedbackScale1: string;
 		feedbackScale2: string;

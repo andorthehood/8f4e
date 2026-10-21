@@ -18,5 +18,5 @@ export default function drawBinaryControl(
 	const knobX = control.x + state.viewport.vGrid * (isOn ? 2 : 1);
 	engine.drawSprite(control.x, control.y, spriteLookups.fillColors.switchBackground, control.width, control.height);
 	engine.drawSprite(knobX, control.y, spriteLookups.fillColors.switchKnob, state.viewport.vGrid, control.height);
-	engine.drawText(control.x, control.y, isOn ? ON_LABEL : OFF_LABEL, spriteLookups.fontNumbers);
+	engine.drawText(control.x, control.y, isOn ? ON_LABEL : OFF_LABEL, spriteLookups.fontSwitch);
 }

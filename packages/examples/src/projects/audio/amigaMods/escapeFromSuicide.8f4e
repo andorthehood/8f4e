@@ -3086,7 +3086,7 @@ module colors
 ; @config color.icons.outputConnector #ffd166
 ; @config color.icons.inputConnectorBackground #1a2d40
 ; @config color.icons.outputConnectorBackground #1a2d40
-; @config color.icons.switchBackground #4fa6d8
+; @config color.fill.switchBackground #4fa6d8
 ; @config color.icons.feedbackScale0 #183139
 ; @config color.icons.feedbackScale1 #245463
 ; @config color.icons.feedbackScale2 #337f8f

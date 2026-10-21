@@ -21,7 +21,7 @@ function createTestState() {
 		viewport: { vGrid: 8, hGrid: 16 },
 		spriteLookups: {
 			fillColors: createSpriteIdLookupMock(),
-			fontNumbers: createSpriteIdLookupMock(),
+			fontSwitch: createSpriteIdLookupMock(),
 		} as never,
 	});
 }
@@ -39,7 +39,7 @@ describe('drawBinaryControl', () => {
 			[10, 20, 'switchBackground', 32, 16],
 			[18, 20, 'switchKnob', 8, 16],
 		]);
-		expect(drawText).toHaveBeenCalledWith(10, 20, '[# ]', state.spriteLookups?.fontNumbers);
+		expect(drawText).toHaveBeenCalledWith(10, 20, '[# ]', state.spriteLookups?.fontSwitch);
 	});
 
 	it('moves the knob fill and hashmark to the on position', () => {
@@ -54,6 +54,6 @@ describe('drawBinaryControl', () => {
 			[10, 20, 'switchBackground', 32, 16],
 			[26, 20, 'switchKnob', 8, 16],
 		]);
-		expect(drawText).toHaveBeenCalledWith(10, 20, '[ #]', state.spriteLookups?.fontNumbers);
+		expect(drawText).toHaveBeenCalledWith(10, 20, '[ #]', state.spriteLookups?.fontSwitch);
 	});
 });

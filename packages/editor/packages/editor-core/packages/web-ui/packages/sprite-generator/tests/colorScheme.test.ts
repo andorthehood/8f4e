@@ -27,19 +27,4 @@ describe('color scheme resolution', () => {
 		expect(colorScheme.fill.background).toBe(defaultColorScheme.fill.background);
 		expect(colorScheme.icons.inputConnector).toBe(defaultColorScheme.icons.inputConnector);
 	});
-
-	it('maps the legacy icon switch background to the runtime fill color', () => {
-		const colorScheme = resolveColorScheme({ icons: { switchBackground: '#123456' } });
-
-		expect(colorScheme.fill.switchBackground).toBe('#123456');
-	});
-
-	it('prefers the runtime fill path over the legacy switch background alias', () => {
-		const colorScheme = resolveColorScheme({
-			fill: { switchBackground: '#abcdef' },
-			icons: { switchBackground: '#123456' },
-		});
-
-		expect(colorScheme.fill.switchBackground).toBe('#abcdef');
-	});
 });

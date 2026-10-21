@@ -32,6 +32,7 @@ Example:
 - `text.basePrefix`
 - `text.pianoKeyWhitePressedOverlay`
 - `text.pianoKeyBlackPressedOverlay`
+- `text.switch`
 
 ## `fill.*`
 
@@ -74,13 +75,9 @@ Example:
 - `icons.outputConnector`
 - `icons.inputConnectorBackground`
 - `icons.outputConnectorBackground`
-- `icons.switchBackground`
 
-`fill.switchBackground` and `fill.switchKnob` style both `@button` and `@switch`. The knob color fills the character
-cell beneath the `#` marker.
-
-`icons.switchBackground` is retained as a compatibility alias for `fill.switchBackground`. New projects should use
-the fill path.
+`text.switch`, `fill.switchBackground`, and `fill.switchKnob` style both `@button` and `@switch`. The knob color fills
+the character cell beneath the `#` marker.
 
 ## Feedback Scale Entries
 
