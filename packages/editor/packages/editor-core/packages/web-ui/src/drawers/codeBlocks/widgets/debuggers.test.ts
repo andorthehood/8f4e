@@ -128,4 +128,63 @@ describe('drawDebuggers', () => {
 		expect(drawText).toHaveBeenCalledWith(13, 7, '?', state.spriteLookups?.fontNumbers);
 		expect(drawSprite).toHaveBeenNthCalledWith(2, 21, 7, 93, 8, 16);
 	});
+
+	describe('address watches', () => {
+		function renderAddress(memory: Record<string, unknown>, bufferPointer: number, showEndAddress = false): string {
+			const engine = createDrawContextMock();
+			const state = createMockState({
+				viewport: { vGrid: 8, hGrid: 16 },
+				spriteLookups: {
+					fontCode: createSpriteIdLookupMock(),
+					fontNumbers: createSpriteIdLookupMock(),
+				} as never,
+			});
+			const codeBlock = createMockCodeBlock({
+				widgets: {
+					debuggers: [
+						{
+							x: 5,
+							y: 7,
+							memory,
+							bufferPointer,
+							displayFormat: 'decimal',
+							showAddress: !showEndAddress,
+							showEndAddress,
+						},
+					],
+				} as never,
+			});
+
+			drawDebuggers(engine, state, codeBlock, createMemoryViews(), 0, true);
+
+			const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
+			expect(drawText).toHaveBeenCalledOnce();
+			return drawText.mock.calls[0][2];
+		}
+
+		it('keeps ordinary 32-bit indexed addresses unchanged', () => {
+			const memory = { byteAddress: 16, elementWordSize: 4, allocationUnitCount: 4, endByteAddress: 28 };
+
+			expect(renderAddress(memory, 0)).toBe('16');
+			expect(renderAddress(memory, 3)).toBe('28');
+			expect(renderAddress(memory, 0, true)).toBe('28');
+		});
+
+		it.each([
+			['int8[]', 1, '23'],
+			['int16[]', 2, '30'],
+			['float64[]', 8, '72'],
+		])('steps indexed %s addresses by the element width', (_type, elementWordSize, expected) => {
+			const memory = { byteAddress: 16, elementWordSize, allocationUnitCount: 16, endByteAddress: 76 };
+
+			expect(renderAddress(memory, 7)).toBe(expected);
+		});
+
+		it('uses the planned end address for a float64 declaration with leading alignment padding', () => {
+			// float64 planned at byte 4 is aligned to 8: one padding unit plus two occupied units.
+			const memory = { byteAddress: 8, elementWordSize: 8, allocationUnitCount: 3, endByteAddress: 12 };
+
+			expect(renderAddress(memory, 0, true)).toBe('12');
+		});
+	});
 });
