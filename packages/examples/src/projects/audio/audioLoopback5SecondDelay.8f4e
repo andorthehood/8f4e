@@ -104,7 +104,7 @@ note
 noteEnd
 
 note
-; @pos 175 12
+; @pos 51 0
 ; This is a stereo loopback example
 ; that delays the input audio before
 ; writing the signal into a shared
@@ -145,7 +145,7 @@ ifEnd
 
 moduleEnd
 module delay
-; @pos 49 1
+; @pos 50 8
 ; @home
 use env
 
