@@ -73,16 +73,9 @@ export type Const = {
 	address?: AddressMetadata;
 };
 
-export type Consts = Record<string, Const>;
-
 export type ResolvedArgumentLiteral = ArgumentLiteral & {
 	/** Address metadata when semantic reference resolution resolves this literal from an address expression. */
 	address?: AddressMetadata;
-};
-
-export type ResolvedIntegerArgumentLiteral = ResolvedArgumentLiteral & {
-	isInteger: true;
-	isFloat64?: false;
 };
 
 /** Scalar local value facts, independent of WebAssembly storage. */
@@ -340,13 +333,6 @@ export type ResolvedPushLine =
 
 export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
 export type SemanticPushLine = CodegenPushLine | DeferredPushLine;
-
-export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
-	arguments: [ArgumentIdentifier];
-};
-export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [MemoryPointerIdentifier];
-};
 
 export type ResolvedLocalSetLine = LocalSetLine & { binding: SourceLocalBinding };
 
