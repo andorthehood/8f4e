@@ -321,7 +321,7 @@ export const instructionSpecs = {
 		}
 	),
 	add: withDocsAndStack(binaryMatchingSpec, {
-		shortDescription: 'Adds matching numbers or an integer byte offset to an address and pushes the result.',
+		shortDescription: 'Adds two numbers of the same type and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),

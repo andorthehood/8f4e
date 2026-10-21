@@ -55,26 +55,25 @@ describe('selected line tooltip content', () => {
 
 		expect(content.text).toEqual([
 			'add (T T -- T)',
-			'Adds matching numbers or an',
-			'integer byte offset to an',
-			'address and pushes the result.',
+			'Adds two numbers of the same',
+			'type and pushes the result.',
 			'before [-int=1, -int=2]',
 			'after: [+int]',
 		]);
 		expect(content.characters[0]).toEqual(toCharacters('add (T T -- T)'));
-		expect(content.lineCount).toBe(6);
-		expect(content.widthChars).toBe('address and pushes the result.'.length);
+		expect(content.lineCount).toBe(5);
+		expect(content.widthChars).toBe('Adds two numbers of the same'.length);
 		expect(content.colors[0][0]).toBe(fontTooltipHighlight);
 		expect(content.colors[0][3]).toBeUndefined();
+		expect(content.colors[3][0]).toBe(fontTooltipText);
+		expect(content.colors[3][7]).toBe(fontTooltipHighlight);
+		expect(content.colors[3][12]).toBeUndefined();
 		expect(content.colors[4][0]).toBe(fontTooltipText);
 		expect(content.colors[4][7]).toBe(fontTooltipHighlight);
-		expect(content.colors[4][12]).toBeUndefined();
-		expect(content.colors[5][0]).toBe(fontTooltipText);
-		expect(content.colors[5][7]).toBe(fontTooltipHighlight);
 		expect(content.highlightTargets).toEqual([
-			{ lineIndex: 4, column: 8, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
-			{ lineIndex: 4, column: 16, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
-			{ lineIndex: 5, column: 8, widthChars: 4, fillColor: 'tooltipAddedHighlight' },
+			{ lineIndex: 3, column: 8, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 3, column: 16, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 4, column: 8, widthChars: 4, fillColor: 'tooltipAddedHighlight' },
 		]);
 	});
 });

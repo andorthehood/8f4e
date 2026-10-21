@@ -25,7 +25,7 @@ describe('tooltip source line helpers', () => {
 
 	it('resolves language spec documentation from a source line', () => {
 		expect(getInstructionSpecFromSourceLine('add')?.docs?.shortDescription).toBe(
-			'Adds matching numbers or an integer byte offset to an address and pushes the result.'
+			'Adds two numbers of the same type and pushes the result.'
 		);
 		expect(getInstructionSpecFromSourceLine('int value')?.docs?.shortDescription).toBe(
 			'Declares memory storage for values used by the module.'
