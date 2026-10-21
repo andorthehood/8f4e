@@ -158,11 +158,10 @@ export interface FunctionCompilationContext extends CompilationContext {
 
 export type StackValueType = 'int' | 'float' | 'float64';
 
-/** Pointee type facts for an address. These facts do not prove that a memory access is in bounds. */
+/** Pointee type facts for an address. These facts do not include provenance or bounds guarantees. */
 export interface PointeeMetadata {
 	baseType: PointeeBaseType;
 	pointerDepth: number;
-	elementCount?: number;
 }
 
 /** Type and value facts known about one ordinary value on the compiler analysis stack. */

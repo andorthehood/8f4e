@@ -281,6 +281,7 @@ functionEnd int int
 
 ### Notes
 
-- The stack must match the declared return signature when reaching `functionEnd`
+- The stack must exactly match the declared return signature when reaching `functionEnd`; raw integers and pointer
+  types are not interchangeable, and pointer base types and depths must match
 - Return types are specified as space-separated type names after `functionEnd`
 - Signature types include `int`, `float`, `float64`, and pointer types over `int`, `int8`, `int8u`, `int16`, `int16u`, `float`, and `float64`, with one or two `*` suffixes.

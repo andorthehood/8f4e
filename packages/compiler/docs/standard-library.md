@@ -148,10 +148,12 @@ Provides `wrapPointer`, which bidirectionally wraps a byte address into a circul
 
 Available overloads:
 
-- `wrapPointer(int pointer, int* buffer, int itemCount) -> int*`
-- `wrapPointer(int pointer, float* buffer, int itemCount) -> float*`
+- `wrapPointer(int* pointer, int* buffer, int itemCount) -> int*`
+- `wrapPointer(float* pointer, float* buffer, int itemCount) -> float*`
 
-`itemCount` is the circular buffer length in elements. The first argument is an untrusted computed byte address. The buffer argument supplies the typed circular range, and the return value is a valid pointer into that buffer.
+`itemCount` is the circular buffer length in elements. The first argument is a typed but potentially out-of-range
+computed byte address. Its pointer type must match the buffer element type; the buffer and item count supply the
+circular range. The returned pointer is wrapped into that range.
 
 Examples:
 
@@ -163,7 +165,7 @@ includesEnd
 entry test
 module wrapPointerExamples
 float[] buffer 4
-int pointer &buffer
+float* pointer &buffer
 
 push pointer
 push count(buffer)
@@ -371,11 +373,13 @@ Provides `readInterpolated`, which reads two adjacent circular-buffer samples an
 
 Available overloads:
 
-- `readInterpolated(int pointer, int* buffer, int itemCount, float fraction) -> float`
-- `readInterpolated(int pointer, int16* buffer, int itemCount, float fraction) -> float`
-- `readInterpolated(int pointer, float* buffer, int itemCount, float fraction) -> float`
+- `readInterpolated(int* pointer, int* buffer, int itemCount, float fraction) -> float`
+- `readInterpolated(int16* pointer, int16* buffer, int itemCount, float fraction) -> float`
+- `readInterpolated(float* pointer, float* buffer, int itemCount, float fraction) -> float`
 
-`pointer` is an untrusted computed byte address. `itemCount` is the circular buffer length in elements. `fraction` is the interpolation amount between the wrapped sample at `pointer` and the next wrapped sample.
+`pointer` is a typed but potentially out-of-range computed byte address. Its pointer type must match the buffer element
+type; the buffer and `itemCount` supply the circular range. `fraction` is the interpolation amount between the wrapped
+sample at `pointer` and the next wrapped sample.
 
 Examples:
 
@@ -387,7 +391,7 @@ includesEnd
 entry test
 module readInterpolatedExamples
 float[] buffer 3 10.0 20.0 40.0
-int pointer &buffer
+float* pointer &buffer
 
 push pointer
 push &buffer
