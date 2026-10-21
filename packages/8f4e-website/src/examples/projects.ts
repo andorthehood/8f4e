@@ -54,6 +54,12 @@ export const projects = [
 		path: 'audio/audioLoopback.8f4e',
 	},
 	{
+		id: 'audio-loopback-5-second-delay',
+		title: 'Audio loopback with five-second delay',
+		description: 'Delay incoming audio by five seconds before routing it to the left and right outputs.',
+		path: 'audio/audioLoopback5SecondDelay.8f4e',
+	},
+	{
 		id: 'sample-player',
 		title: 'Sample player',
 		description: 'Loop an external 8-bit PCM sample and follow the playhead through memory.',
