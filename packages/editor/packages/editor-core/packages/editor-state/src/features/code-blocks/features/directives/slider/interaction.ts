@@ -34,8 +34,11 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 			value = slider.min + Math.round((value - slider.min) / slider.step) * slider.step;
 		}
 
-		// Clamp to min/max
-		value = Math.max(slider.min, Math.min(slider.max, value));
+		// Clamp to min/max while preserving descending ranges.
+		value =
+			slider.min <= slider.max
+				? Math.max(slider.min, Math.min(slider.max, value))
+				: Math.min(slider.min, Math.max(slider.max, value));
 
 		const hasFloatRange =
 			!Number.isInteger(slider.min) ||
