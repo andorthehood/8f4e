@@ -72,17 +72,12 @@ export default function drawDebuggers(
 		}
 
 		if (showAddress) {
-			drawBracketedValue(engine, state, x, y, String(memory.byteAddress + bufferPointer * 4), now, reducedMotion);
+			// Elements are `elementWordSize` bytes wide, so narrow and float64 arrays do not step by 4.
+			const byteAddress = memory.byteAddress + bufferPointer * memory.elementWordSize;
+			drawBracketedValue(engine, state, x, y, String(byteAddress), now, reducedMotion);
 		} else if (showEndAddress) {
-			drawBracketedValue(
-				engine,
-				state,
-				x,
-				y,
-				String((memory.allocationUnitCount - 1) * 4 + memory.byteAddress),
-				now,
-				reducedMotion
-			);
+			// The planner's end address excludes leading alignment padding, which `allocationUnitCount` includes.
+			drawBracketedValue(engine, state, x, y, String(memory.endByteAddress), now, reducedMotion);
 		} else {
 			const value = formatDebuggerValue(memoryViews, memory, bufferPointer, displayFormat);
 			drawBracketedValue(engine, state, x, y, value, now, reducedMotion);
