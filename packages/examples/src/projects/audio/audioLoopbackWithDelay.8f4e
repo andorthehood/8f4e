@@ -145,21 +145,20 @@ ifEnd
 
 moduleEnd
 module delay
-; @pos 50 8
+; @pos 53 9
 ; @home
 use env
 
-const DELAY_BUFFER_SIZE SAMPLE_RATE*3
+const BUFFER_SIZE SAMPLE_RATE*3
 
 float* in &audioin:out
 float out
-float[] buffer DELAY_BUFFER_SIZE
-int pointer &buffer
+float[] buffer BUFFER_SIZE
+float* pointer &buffer
 
 ; Read sample
 push &out
-push pointer
-loadFloat
+push *pointer
 store
 
 ; Write current sample
