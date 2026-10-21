@@ -54,6 +54,67 @@ function createMemoryPlan(byteAddress: number): State['compiler']['memoryPlan'] 
 	};
 }
 
+function createAlignedFloat64MemoryPlan(): State['compiler']['memoryPlan'] {
+	const prefix = {
+		id: 'prefix',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: 'int',
+		byteAddress: 16,
+		elementByteLength: 4,
+		allocationUnitCount: 1,
+		allocatedByteLength: 4,
+		allocationUnitAddress: 4,
+		endByteAddress: 16,
+		endAddressSafeByteLength: 4,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+	};
+	const value = {
+		id: 'value',
+		numberOfElements: 1,
+		elementWordSize: 8,
+		type: 'float64',
+		byteAddress: 24,
+		elementByteLength: 8,
+		allocationUnitCount: 3,
+		allocatedByteLength: 8,
+		allocationUnitAddress: 6,
+		endByteAddress: 28,
+		endAddressSafeByteLength: 4,
+		lineNumber: 2,
+		isInteger: false,
+		pointerDepth: 0,
+		isUnsigned: false,
+	};
+	const next = {
+		...prefix,
+		id: 'next',
+		byteAddress: 32,
+		allocationUnitAddress: 8,
+		lineNumber: 3,
+	};
+	const samples = {
+		id: 'samples',
+		lineNumber: 1,
+		byteAddress: 16,
+		allocationUnitCount: 5,
+		allocatedByteLength: 20,
+		endByteAddress: 32,
+		endAddressSafeByteLength: 4,
+		memory: { prefix, value, next },
+		declarations: [prefix, value, next],
+		declarationSources: [],
+	};
+
+	return {
+		modules: { samples },
+		moduleList: [samples],
+	};
+}
+
 function createState({
 	url = 'https://example.com/amen.pcm',
 	byteAddress = 16,
@@ -157,6 +218,47 @@ describe('binary assets plugin', () => {
 			expect.any(Map),
 			memoryViews
 		);
+	});
+
+	it('limits an asset targeting an aligned float64 declaration to its allocated byte length', async () => {
+		const fetchedAsset: BinaryAsset = {
+			url: 'https://example.com/value.bin',
+			fileName: 'value.bin',
+			assetByteLength: 12,
+			loadedIntoMemory: false,
+		};
+		fetchBinaryAssetsMock.mockResolvedValue([fetchedAsset]);
+		loadBinaryAssetIntoMemoryMock.mockResolvedValue();
+		const state = createState({ url: fetchedAsset.url });
+		state.editorConfig.bin!.amen.memory = 'samples:value';
+		state.compiler.memoryPlan = createAlignedFloat64MemoryPlan();
+		const store = createStateManager(state);
+
+		binaryAssetsPlugin({
+			store,
+			events,
+			memoryViews,
+			window: {} as Window,
+			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
+			setErrors: vi.fn(),
+			services,
+		});
+		await flushPromises();
+
+		expect(loadBinaryAssetIntoMemoryMock).toHaveBeenCalledWith(
+			expect.objectContaining({
+				memoryId: 'samples:value',
+				byteAddress: 24,
+				memoryByteLength: 8,
+			}),
+			expect.any(Map),
+			memoryViews
+		);
+		expect(store.getState().binaryAssets[0]).toMatchObject({
+			byteAddress: 24,
+			memoryByteLength: 8,
+		});
 	});
 
 	it('clears binary asset state on cleanup', async () => {
