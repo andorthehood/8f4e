@@ -3,68 +3,6 @@
     "startingMemoryAllocationUnitAddress": 0
   },
   "compiledModules": {
-    "setButton": {
-      "id": "setButton",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "setButton",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "setButton",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 9,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "setButton",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 103,
-        "sourceIdentity": {
-          "projectGroupPath": "",
-          "codeBlockId": "setButton"
-        }
-      },
-      "index": 0,
-      "executionEntryName": "main"
-    },
     "resetButton": {
       "id": "resetButton",
       "cycleFunction": [
@@ -118,10 +56,72 @@
             }
           ]
         },
-        "projectBlockId": 113,
+        "projectBlockId": 104,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "resetButton"
+        }
+      },
+      "index": 0,
+      "executionEntryName": "main"
+    },
+    "setButton": {
+      "id": "setButton",
+      "cycleFunction": [
+        2,
+        0,
+        11
+      ],
+      "ast": {
+        "type": "module",
+        "id": "setButton",
+        "lines": [
+          {
+            "lineNumber": 0,
+            "instruction": "module",
+            "arguments": [
+              {
+                "type": "identifier",
+                "value": "setButton",
+                "referenceKind": "plain",
+                "scope": "local"
+              }
+            ]
+          },
+          {
+            "lineNumber": 4,
+            "instruction": "int",
+            "arguments": [
+              {
+                "type": "identifier",
+                "value": "out",
+                "referenceKind": "plain",
+                "scope": "local"
+              }
+            ]
+          },
+          {
+            "lineNumber": 9,
+            "instruction": "moduleEnd",
+            "arguments": []
+          }
+        ],
+        "moduleLine": {
+          "lineNumber": 0,
+          "instruction": "module",
+          "arguments": [
+            {
+              "type": "identifier",
+              "value": "setButton",
+              "referenceKind": "plain",
+              "scope": "local"
+            }
+          ]
+        },
+        "projectBlockId": 113,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "setButton"
         }
       },
       "index": 1,
@@ -380,7 +380,7 @@
             }
           ]
         },
-        "projectBlockId": 122,
+        "projectBlockId": 123,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate2"
@@ -642,7 +642,7 @@
             }
           ]
         },
-        "projectBlockId": 146,
+        "projectBlockId": 147,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "norGate"
@@ -1000,7 +1000,7 @@
             }
           ]
         },
-        "projectBlockId": 170,
+        "projectBlockId": 171,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope"
@@ -1074,7 +1074,7 @@
             }
           ]
         },
-        "projectBlockId": 199,
+        "projectBlockId": 200,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "buttons"
@@ -1287,7 +1287,7 @@
             }
           ]
         },
-        "projectBlockId": 214,
+        "projectBlockId": 215,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "negate"
@@ -1549,7 +1549,7 @@
             }
           ]
         },
-        "projectBlockId": 232,
+        "projectBlockId": 233,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "orGate"
@@ -1811,7 +1811,7 @@
             }
           ]
         },
-        "projectBlockId": 255,
+        "projectBlockId": 256,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "andGate"
@@ -2169,7 +2169,7 @@
             }
           ]
         },
-        "projectBlockId": 278,
+        "projectBlockId": 279,
         "sourceIdentity": {
           "projectGroupPath": "",
           "codeBlockId": "scope2"

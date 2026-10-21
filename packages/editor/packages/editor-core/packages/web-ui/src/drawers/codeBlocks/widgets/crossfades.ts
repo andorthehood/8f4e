@@ -31,7 +31,13 @@ export default function drawer(
 			engine.drawSprite(fillX, 0, state.spriteLookups.fillColors.fill, fillWidth, crossfade.height);
 		}
 
-		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, crossfade.handleWidth, crossfade.height);
+		engine.drawSprite(
+			handleX,
+			0,
+			state.spriteLookups.fillColors.crossfadeHandle,
+			crossfade.handleWidth,
+			crossfade.height
+		);
 		engine.endGroup();
 	}
 }

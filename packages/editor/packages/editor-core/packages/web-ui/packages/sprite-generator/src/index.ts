@@ -364,7 +364,7 @@ export default async function generateSprite(config: Config): Promise<{
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
-		...generateIcons(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
+		...generateIcons(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {

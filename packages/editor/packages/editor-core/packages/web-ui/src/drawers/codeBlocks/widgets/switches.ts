@@ -1,7 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import { Icon } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
+import drawBinaryControl from './drawBinaryControl';
 
 const UNRESOLVED_SWITCH_VALUE_LABEL = '[__]';
 
@@ -15,15 +15,15 @@ export default function drawSwitches(
 		return;
 	}
 
-	for (const { x, y, allocationUnitAddress, onValue, offValue } of codeBlock.widgets.switches) {
-		const value = memoryViews.int32[allocationUnitAddress] || 0;
+	for (const _switch of codeBlock.widgets.switches) {
+		const value = memoryViews.int32[_switch.allocationUnitAddress] || 0;
 
-		if (value === onValue) {
-			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_ON]);
-		} else if (value === offValue) {
-			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_OFF]);
+		if (value === _switch.onValue) {
+			drawBinaryControl(engine, state, _switch, true);
+		} else if (value === _switch.offValue) {
+			drawBinaryControl(engine, state, _switch, false);
 		} else {
-			engine.drawText(x, y, UNRESOLVED_SWITCH_VALUE_LABEL, state.spriteLookups.fontNumbers);
+			engine.drawText(_switch.x, _switch.y, UNRESOLVED_SWITCH_VALUE_LABEL, state.spriteLookups.fontNumbers);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 {
   "sourceModuleOrder": [
-    "setButton",
     "resetButton",
+    "setButton",
     "norGate2",
     "norGate",
     "scope",
@@ -14,18 +14,18 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "setButton",
+      "id": "resetButton",
       "index": 0,
-      "byteAddress": 596,
-      "allocationUnitAddress": 149,
+      "byteAddress": 64,
+      "allocationUnitAddress": 16,
       "allocationUnitCount": 1,
       "skipExecutionInCycle": false
     },
     {
-      "id": "resetButton",
+      "id": "setButton",
       "index": 1,
-      "byteAddress": 64,
-      "allocationUnitAddress": 16,
+      "byteAddress": 596,
+      "allocationUnitAddress": 149,
       "allocationUnitCount": 1,
       "skipExecutionInCycle": false
     },

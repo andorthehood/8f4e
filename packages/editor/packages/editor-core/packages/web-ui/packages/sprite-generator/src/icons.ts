@@ -2,17 +2,7 @@ import type { SpriteCoordinates } from 'glugglugglug';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';
-import Glyph from './fonts/types.ts';
 import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
-
-type IconCharacter = {
-	font: 'ascii' | 'glyphs';
-	char: number | string;
-};
-
-const ascii = (char: string): IconCharacter => ({ font: 'ascii', char });
-type GlyphCode = (typeof Glyph)[keyof typeof Glyph];
-const glyph = (char: GlyphCode): IconCharacter => ({ font: 'glyphs', char });
 
 const icons = (
 	characterWidth: number,
@@ -20,8 +10,7 @@ const icons = (
 	colors?: ColorScheme['icons']
 ): {
 	commandsBeforeRenderingGlyphs: DrawingCommand[];
-	chars: IconCharacter[];
-	colors: string[];
+	chars: string[];
 }[] => [
 	{
 		commandsBeforeRenderingGlyphs: [
@@ -29,40 +18,18 @@ const icons = (
 			[Command.RECTANGLE, 0, 0, characterWidth * 3, characterHeight],
 			[Command.FILL_COLOR, colors?.inputConnector || ''],
 		],
-		chars: [ascii('['), ascii(' '), ascii(']')],
-		colors: [],
-	},
-	{
-		commandsBeforeRenderingGlyphs: [
-			[Command.FILL_COLOR, colors?.switchBackground || ''],
-			[Command.RECTANGLE, 0, 0, characterWidth * 4, characterHeight],
-			[Command.FILL_COLOR, colors?.inputConnector || ''],
-		],
-		chars: [ascii('['), glyph(Glyph.SWITCH_KNOB), ascii(' '), ascii(']')],
-		colors: [],
-	},
-	{
-		commandsBeforeRenderingGlyphs: [
-			[Command.FILL_COLOR, colors?.switchBackground || ''],
-			[Command.RECTANGLE, 0, 0, characterWidth * 4, characterHeight],
-			[Command.FILL_COLOR, colors?.inputConnector || ''],
-		],
-		chars: [ascii('['), ascii(' '), glyph(Glyph.SWITCH_KNOB), ascii(']')],
-		colors: [],
+		chars: ['[', ' ', ']'],
 	},
 ];
 
 export const Icon = {
 	INPUT: 0,
-	SWITCH_OFF: 1,
-	SWITCH_ON: 2,
 } as const;
 
 export type IconValue = (typeof Icon)[keyof typeof Icon];
 
 export default function generate(
 	asciiFont: number[],
-	glyphsFont: number[],
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['icons']
@@ -76,9 +43,8 @@ export default function generate(
 			return [
 				...icon.commandsBeforeRenderingGlyphs,
 				...icon.chars.flatMap<DrawingCommand>(char => {
-					const font = char.font === 'ascii' ? asciiFont : glyphsFont;
 					return [
-						...drawCharacter(font, char.char, characterWidth, characterHeight),
+						...drawCharacter(asciiFont, char, characterWidth, characterHeight),
 						[Command.TRANSLATE, characterWidth, 0],
 					];
 				}),

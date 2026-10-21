@@ -51,6 +51,7 @@ note
 ; @config color.text.pianoKeyBlackPressedOverlay rgba(255,209,102,0.68)
 ; @config color.text.tooltipText #321d0d
 ; @config color.text.tooltipHighlight #56330f
+; @config color.text.controlKnob #56330f
 ; @config color.fill.menuItemBackground #4a2b13
 ; @config color.fill.menuItemBackgroundHighlighted #ffd166
 ; @config color.fill.background #960
@@ -79,7 +80,7 @@ note
 ; @config color.fill.scanLine #ffcf70
 ; @config color.fill.track #6b4c2e
 ; @config color.fill.fill #c78618
-; @config color.fill.handle #fff6df
+; @config color.fill.controlKnob #fff6df
 ; @config color.fill.codeBlockHighlightLevel1 #3b2615
 ; @config color.fill.codeBlockHighlightLevel2 #4c3219
 ; @config color.fill.codeBlockHighlightLevel3 #5f3f1d
@@ -92,7 +93,7 @@ note
 ; @config color.icons.outputConnector #ffd166
 ; @config color.icons.inputConnectorBackground #5a3618
 ; @config color.icons.outputConnectorBackground #5a3618
-; @config color.icons.switchBackground #c78618
+; @config color.fill.switchBackground #c78618
 ; @config color.icons.feedbackScale0 #3b2615
 ; @config color.icons.feedbackScale1 #62401e
 ; @config color.icons.feedbackScale2 #8a5b26
