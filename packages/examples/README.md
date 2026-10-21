@@ -16,5 +16,17 @@ Example modules and projects used by the editor and tooling. Exports example mod
 - The product website bundles project `.8f4e` sources as downloadable assets for its homepage and examples gallery.
   The website gallery owns the project catalog.
 
-The package build runs the module generators before consumers discover the source files. The editor compiles project
-sources when they are loaded.
+## Generated modules
+
+The package build regenerates the deterministic module sources before consumers discover them. The editor compiles
+project sources when they are loaded.
+
+The minBLEP lookup table is checked in but deliberately excluded from normal builds and development startup. Its
+JavaScript floating-point pipeline can produce different values across platforms, so automatic regeneration creates
+unrelated changes in contributor branches. Regenerate it only when intentionally updating the table:
+
+```sh
+npx nx run @8f4e/examples:generate-minblep-lut
+```
+
+Review the resulting table diff before committing it.
