@@ -10,7 +10,19 @@ import { resolveCodeWithOneColor } from './utils/generateColorMapMock';
 
 test('switches', async () => {
 	const canvas = createCanvas();
-	const mockState = await createMockStateWithColors();
+	const mockState = await createMockStateWithColors({
+		editorConfig: {
+			color: {
+				text: {
+					controlKnob: '#ffcc00',
+				},
+				fill: {
+					switchBackground: '#111111',
+					controlKnob: '#336699',
+				},
+			},
+		},
+	});
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
 	const codeBlocks = new Map<number, CodeBlockRenderData>();
@@ -18,17 +30,18 @@ test('switches', async () => {
 
 	const renderer = await init(mockState, renderData, canvas, memoryViews, spriteData);
 
-	const buttons = [
-		{
-			width: 32,
-			height: 16,
-			x: 100,
-			y: 100,
-			id: 'set',
-			offValue: 0,
-			onValue: 1,
-		},
-	];
+	const control = {
+		width: 32,
+		height: 16,
+		x: 100,
+		y: 100,
+		id: 'set',
+		allocationUnitAddress: 0,
+		isInteger: true,
+		offValue: 0,
+		onValue: 1,
+	};
+	memoryViews.int32[1] = 1;
 
 	if (mockState.spriteLookups) {
 		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
@@ -40,18 +53,8 @@ test('switches', async () => {
 			y: 16,
 			width: 256,
 			height: lines1.length * 16,
-			extras: {
-				inputs: [],
-				outputs: [],
-				debuggers: [],
-				switches: [],
-				buttons,
-				pianoKeyboards: [],
-				arrayPlotters: [],
-				errorMessages: [],
-				blockHighlights: [],
-			},
 		});
+		codeBlockMock.widgets.switches = [control];
 
 		mockState.codeBlockRendering.selectedCodeBlock = codeBlockMock;
 
@@ -67,18 +70,8 @@ test('switches', async () => {
 			y: 16,
 			width: 256,
 			height: lines2.length * 16,
-			extras: {
-				inputs: [],
-				outputs: [],
-				debuggers: [],
-				switches: [],
-				buttons,
-				pianoKeyboards: [],
-				arrayPlotters: [],
-				errorMessages: [],
-				blockHighlights: [],
-			},
 		});
+		otherCodeBlock.widgets.buttons = [{ ...control, allocationUnitAddress: 1 }];
 		mockState.codeBlockRendering.codeBlocks.push(otherCodeBlock);
 		codeBlocks.set(otherCodeBlock.creationIndex, { codeCells: codeToRender2 });
 	}

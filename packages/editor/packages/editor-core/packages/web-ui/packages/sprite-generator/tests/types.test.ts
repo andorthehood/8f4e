@@ -116,6 +116,7 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('pianoKeyBlackPressedOverlay');
 			expect(textKeys).toContain('tooltipText');
 			expect(textKeys).toContain('tooltipHighlight');
+			expect(textKeys).toContain('controlKnob');
 		});
 
 		it('should have all required fill color properties', () => {
@@ -142,6 +143,9 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('tooltipBackground');
 			expect(fillKeys).toContain('tooltipAddedHighlight');
 			expect(fillKeys).toContain('tooltipConsumedHighlight');
+			expect(fillKeys).toContain('switchBackground');
+			expect(fillKeys).toContain('controlKnob');
+			expect(fillKeys).toContain('crossfadeHandle');
 		});
 
 		it('should have all required icon color properties', () => {
@@ -150,7 +154,6 @@ describe('Types and Enums', () => {
 			expect(iconKeys).toContain('outputConnector');
 			expect(iconKeys).toContain('inputConnectorBackground');
 			expect(iconKeys).toContain('outputConnectorBackground');
-			expect(iconKeys).toContain('switchBackground');
 			expect(iconKeys).toContain('feedbackScale0');
 			expect(iconKeys).toContain('feedbackScale1');
 			expect(iconKeys).toContain('feedbackScale2');

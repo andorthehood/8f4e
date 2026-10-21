@@ -14,7 +14,7 @@ module wrapPointerIntAssertions
 ; addresses before and after a
 ; circular buffer.
 int[] buffer 4 7
-int pointer &buffer
+int* pointer &buffer
 
 push pointer
 push sizeof(buffer)*2

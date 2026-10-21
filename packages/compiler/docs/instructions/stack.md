@@ -51,7 +51,8 @@ push x           ; pushes x as float64, preserving full precision
 
 The `pushShape` instruction takes one prototype name and pushes the addresses of the current module's effective fields
 for that shape. The module must declare the shape with `shape <prototypeName>`. Addresses are pushed in prototype
-declaration order; field values are not copied. This is the module-side counterpart to [`paramShape`](program-structure-and-functions.md#paramshape).
+declaration order; field values are not copied. This is the module-side counterpart to
+[`paramShape`](blocks/function.md#paramshape).
 
 ```8f4e
 prototype mixerState

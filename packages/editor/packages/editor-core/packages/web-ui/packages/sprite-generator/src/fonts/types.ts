@@ -1,7 +1,6 @@
 const Glyph = {
 	SPACE: 0,
 	DOT: 1,
-	SWITCH_KNOB: 6,
 	FILL: 7,
 	SEMI_FILL: 8,
 	DITHER_1: 9,

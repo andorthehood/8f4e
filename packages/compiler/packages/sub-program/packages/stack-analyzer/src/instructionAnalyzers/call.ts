@@ -6,20 +6,18 @@ import type {
 	Stack,
 	StackItem,
 } from '@8f4e/language-spec';
-import { createFunctionId, ErrorCode, functionValueTypeToStackItem, getError } from '@8f4e/language-spec';
+import {
+	createFunctionId,
+	ErrorCode,
+	functionValueTypeToStackItem,
+	getError,
+	stackItemToFunctionValueType,
+} from '@8f4e/language-spec';
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 
-function stackItemToExactFunctionValueType(stackItem: StackItem): FunctionValueType {
-	if (stackItem.kind === 'address' && stackItem.pointsTo) {
-		return `${stackItem.pointsTo.baseType}${'*'.repeat(stackItem.pointsTo.pointerDepth)}` as FunctionValueType;
-	}
-
-	return stackItem.valueType as FunctionValueType;
-}
-
 function stackItemsToFunctionId(functionName: string, stackItems: readonly StackItem[]): string {
-	return createFunctionId(functionName, stackItems.map(stackItemToExactFunctionValueType));
+	return createFunctionId(functionName, stackItems.map(stackItemToFunctionValueType));
 }
 
 function formatFunctionCallSignature(functionName: string, parameters: readonly FunctionValueType[]): string {
@@ -41,7 +39,7 @@ function resolveTargetFunction(line: SemanticCallLine, context: CompilationConte
 		return exactMatch;
 	}
 
-	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
+	const inferredParameterTypes = operands.map(stackItemToFunctionValueType);
 	const availableOverloadSignatures = Object.values(functionRegistry.byId)
 		.filter(functionMetadata => functionMetadata.name === functionName)
 		.map(functionMetadata => formatFunctionCallSignature(functionName, functionMetadata.signature.parameters))

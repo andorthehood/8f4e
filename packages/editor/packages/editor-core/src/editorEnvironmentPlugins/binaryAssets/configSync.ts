@@ -44,13 +44,7 @@ export default function createBinaryAssetConfigSync({
 			return;
 		}
 
-		const uniqueUrls: string[] = [];
-
-		for (const asset of loadRequests) {
-			if (!uniqueUrls.includes(asset.url)) {
-				uniqueUrls.push(asset.url);
-			}
-		}
+		const uniqueUrls = Array.from(new Set(loadRequests.map(asset => asset.url)));
 
 		try {
 			const fetchedAssets = await fetchBinaryAssets(uniqueUrls, assetStore);
@@ -59,9 +53,16 @@ export default function createBinaryAssetConfigSync({
 				return;
 			}
 
+			const fetchedAssetsByUrl = new Map<string, BinaryAsset>();
+			for (const candidate of fetchedAssets) {
+				if (!fetchedAssetsByUrl.has(candidate.url)) {
+					fetchedAssetsByUrl.set(candidate.url, candidate);
+				}
+			}
+
 			const nextAssets: BinaryAsset[] = [];
 			for (const asset of loadRequests) {
-				const fetched = fetchedAssets.find(candidate => candidate.url === asset.url);
+				const fetched = fetchedAssetsByUrl.get(asset.url);
 				if (!fetched) {
 					console.warn('Binary asset metadata missing for url:', asset.url);
 					continue;

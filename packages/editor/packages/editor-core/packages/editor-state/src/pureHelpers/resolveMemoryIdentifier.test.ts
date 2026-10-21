@@ -1,5 +1,4 @@
 import type { PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/language-spec';
-import { MemoryTypes } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import {
 	runAfterGraphicDataWidthCalculation,
@@ -23,7 +22,7 @@ function createMemory(
 		numberOfElements: 1,
 		elementWordSize: 4,
 		elementByteLength: 4,
-		type: MemoryTypes.int,
+		type: 'int' as const,
 		byteAddress,
 		allocationUnitAddress: byteAddress / 4,
 		allocationUnitCount: 1,
@@ -70,7 +69,7 @@ describe('resolveMemoryIdentifier', () => {
 	it('resolves a dereferenced pointer from the memory plan without rendered outputs', () => {
 		const state = createMockState();
 		const pointer = createMemory('pointer', 4, {
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			pointeeBaseType: 'int',
 			pointerDepth: 1,
 		});
@@ -88,7 +87,7 @@ describe('resolveMemoryIdentifier', () => {
 	it('builds the byteAddress index once per memory plan and reflects runtime pointer changes without rescanning', () => {
 		const state = createMockState();
 		const pointer = createMemory('pointer', 4, {
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			pointeeBaseType: 'int',
 			pointerDepth: 1,
 		});
@@ -131,7 +130,7 @@ describe('resolveMemoryIdentifier', () => {
 	it('preserves first-match declaration order when duplicate byte addresses exist', () => {
 		const state = createMockState();
 		const pointer = createMemory('pointer', 4, {
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			pointeeBaseType: 'int',
 			pointerDepth: 1,
 		});
@@ -156,7 +155,7 @@ describe('resolveMemoryIdentifier', () => {
 		const state = createMockState();
 		const zeroTarget = createMemory('atZero', 0);
 		const pointer = createMemory('pointer', 4, {
-			type: MemoryTypes['int*'],
+			type: 'int*' as const,
 			pointeeBaseType: 'int',
 			pointerDepth: 1,
 		});

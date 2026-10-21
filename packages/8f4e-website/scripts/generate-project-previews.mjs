@@ -14,11 +14,13 @@ const exampleProjectRoot = path.join(workspaceRoot, 'packages', 'examples', 'src
 const compilerTestPreviewSource = path.join(compilerTestRoot, 'argument-continuation.test.8f4e');
 const featuredProjectIds = [
 	'fm-synth',
+	'reverb',
 	'hymn-to-aurora',
 	'lower-intentions',
 	'digit-classifier',
 	'random-generators',
 	'audio-buffer',
+	'audio-loopback-with-delay',
 	'variable-speed-player',
 	'risen',
 	'overlay-texture',
@@ -32,6 +34,7 @@ const featuredProjects = featuredProjectIds.map(id => {
 	return project;
 });
 const animatedFeaturedProjectIds = new Set([
+	'reverb',
 	'hymn-to-aurora',
 	'lower-intentions',
 	'risen',

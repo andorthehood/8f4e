@@ -575,6 +575,16 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.INVALID_ADDRESS_ARITHMETIC:
+			return {
+				code,
+				message:
+					'Invalid address arithmetic. Add accepts one address and one integer offset; subtraction accepts an address minus an integer offset or two addresses. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,

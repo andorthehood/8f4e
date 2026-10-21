@@ -5,6 +5,7 @@
 Block instructions define the structure of your program. See detailed documentation in the `blocks/` folder:
 
 - [Module blocks](./blocks/module.md) - `module` and `moduleEnd`
+- [Prototype blocks](./blocks/prototype.md) - `prototype`, `prototypeEnd`, and `shape`
 - [Function blocks](./blocks/function.md) - `function`, `param`, `paramShape`, and `functionEnd`
 - [Constants blocks](./blocks/constants.md) - `constants` and `constantsEnd`
 

@@ -1,5 +1,4 @@
 import type { MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/language-spec';
-import { MemoryTypes } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
@@ -42,7 +41,7 @@ function createMemory(overrides: Partial<MemoryFixture> = {}): MemoryFixture {
 		id: 'memory',
 		numberOfElements: 1,
 		elementWordSize: 4,
-		type: MemoryTypes.float,
+		type: 'float' as const,
 		byteAddress: 20,
 		allocationUnitAddress: 5,
 		allocationUnitCount: 1,
@@ -164,10 +163,10 @@ describe('shape', () => {
 							id: 'input',
 							lineNumber: 2,
 							isInherited: true,
-							type: MemoryTypes['float*'],
+							type: 'float*' as const,
 							pointerDepth: 1,
 						}),
-						output: createMemory({ id: 'output', lineNumber: 2, isInherited: true, type: MemoryTypes.int }),
+						output: createMemory({ id: 'output', lineNumber: 2, isInherited: true, type: 'int' as const }),
 					},
 					{
 						...createModuleAst(),

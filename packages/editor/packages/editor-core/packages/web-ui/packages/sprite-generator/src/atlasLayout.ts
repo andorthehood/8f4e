@@ -10,7 +10,7 @@ const BACKGROUND_COLUMNS = 64;
 const BACKGROUND_ROWS = 32;
 const FEEDBACK_SCALE_SLOT_COUNT = 6;
 const FEEDBACK_SCALE_ITEM_COLUMNS = 3;
-const ICON_CHARACTER_WIDTHS = [3, 4, 4] as const;
+const ICON_CHARACTER_WIDTHS = [3] as const;
 
 function columnsToPixels(columns: number, characterWidth: number): number {
 	return columns * characterWidth;

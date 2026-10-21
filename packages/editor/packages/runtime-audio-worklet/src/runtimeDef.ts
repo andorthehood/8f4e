@@ -249,7 +249,13 @@ export function audioWorkletRuntimeFactory(
 
 		try {
 			// @ts-expect-error - navigator.mediaDevices not available in worker context during build
-			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			const stream = await navigator.mediaDevices.getUserMedia({
+				audio: {
+					echoCancellation: false,
+					noiseSuppression: false,
+					autoGainControl: false,
+				},
+			});
 			if (disposed || revision !== inputRevision) {
 				stream.getTracks().forEach((track: any) => track.stop());
 				return;
