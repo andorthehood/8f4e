@@ -1,6 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { MemoryDefaults, PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import { MemoryTypes } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 import updateInputsGraphicData from './updateGraphicData';
@@ -10,7 +9,7 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		id: 'input1',
 		numberOfElements: 1,
 		elementWordSize: 4,
-		type: MemoryTypes['int*'],
+		type: 'int*' as const,
 		byteAddress: 20,
 		allocationUnitAddress: 5,
 		allocationUnitCount: 1,
@@ -97,7 +96,7 @@ describe('updateInputsGraphicData', () => {
 
 	it('ignores non-pointer memory metadata', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
-			type: MemoryTypes.int,
+			type: 'int' as const,
 			pointerDepth: 0,
 		});
 
@@ -108,7 +107,7 @@ describe('updateInputsGraphicData', () => {
 
 	it('adds input widgets from pointer array memory metadata', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
-			type: MemoryTypes['float*'],
+			type: 'float*' as const,
 			pointerDepth: 1,
 		});
 
@@ -156,7 +155,7 @@ describe('updateInputsGraphicData', () => {
 	it('handles multiple inputs in line-number order', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['input2'] = createMemory({
 			id: 'input2',
-			type: MemoryTypes['float*'],
+			type: 'float*' as const,
 			allocationUnitAddress: 6,
 			byteAddress: 24,
 			lineNumber: 2,

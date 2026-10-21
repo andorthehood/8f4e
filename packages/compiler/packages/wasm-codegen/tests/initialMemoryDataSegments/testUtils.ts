@@ -5,7 +5,7 @@ import type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 } from '@8f4e/language-spec';
-import { ALLOCATION_UNIT_BYTE_SIZE, MemoryTypes } from '@8f4e/language-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/language-spec';
 
 function getAllocatedByteLength(allocationUnitCount: number): number {
 	return Math.max(0, allocationUnitCount) * ALLOCATION_UNIT_BYTE_SIZE;
@@ -31,7 +31,7 @@ export function createMemory(
 	const declaration = {
 		numberOfElements: 1,
 		elementWordSize: 4,
-		type: MemoryTypes.int,
+		type: 'int' as const,
 		allocationUnitCount: 1,
 		allocationUnitAddress: overrides.byteAddress / 4,
 		lineNumber: 0,

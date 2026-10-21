@@ -1,5 +1,4 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import { MemoryTypes } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	createMockCodeBlock,
@@ -44,7 +43,7 @@ describe('crossfade directive widget resolution', () => {
 									byteAddress: 0,
 									numberOfElements: 1,
 									elementWordSize: 1,
-									type: MemoryTypes.float,
+									type: 'float' as const,
 									allocationUnitCount: 1,
 									default: 0,
 									isInteger: false,
@@ -56,7 +55,7 @@ describe('crossfade directive widget resolution', () => {
 									byteAddress: 4,
 									numberOfElements: 1,
 									elementWordSize: 1,
-									type: MemoryTypes.float,
+									type: 'float' as const,
 									allocationUnitCount: 1,
 									default: 0,
 									isInteger: false,
