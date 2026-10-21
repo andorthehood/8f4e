@@ -58,29 +58,30 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.text).toEqual([
 			'add (T T -- T)',
-			'Adds two numbers of the same',
-			'type and pushes the result.',
+			'Adds matching numbers or an',
+			'integer byte offset to an',
+			'address and pushes the result.',
 			'before [-int=1, -int=2]',
 			'after: [+int]',
 		]);
 		expect(state.tooltip.highlights).toEqual([
 			{
 				x: state.tooltip.layout.lineX + 8 * 8,
-				y: state.tooltip.layout.y + 3 * 16,
+				y: state.tooltip.layout.y + 4 * 16,
 				width: 6 * 8,
 				height: 16,
 				fillColor: 'tooltipConsumedHighlight',
 			},
 			{
 				x: state.tooltip.layout.lineX + 16 * 8,
-				y: state.tooltip.layout.y + 3 * 16,
+				y: state.tooltip.layout.y + 4 * 16,
 				width: 6 * 8,
 				height: 16,
 				fillColor: 'tooltipConsumedHighlight',
 			},
 			{
 				x: state.tooltip.layout.lineX + 8 * 8,
-				y: state.tooltip.layout.y + 4 * 16,
+				y: state.tooltip.layout.y + 5 * 16,
 				width: 4 * 8,
 				height: 16,
 				fillColor: 'tooltipAddedHighlight',
@@ -149,8 +150,9 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.text).toEqual([
 			'add (T T -- T)',
-			'Adds two numbers of the same',
-			'type and pushes the result.',
+			'Adds matching numbers or an',
+			'integer byte offset to an',
+			'address and pushes the result.',
 			'before [-int=1, -int=2]',
 			'after: [+int]',
 		]);
@@ -269,8 +271,9 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.text).toEqual([
 			'add (T T -- T)',
-			'Adds two numbers of the same',
-			'type and pushes the result.',
+			'Adds matching numbers or an',
+			'integer byte offset to an',
+			'address and pushes the result.',
 		]);
 
 		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', 1);
