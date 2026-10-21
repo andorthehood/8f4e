@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	createMockCodeBlock,
@@ -47,7 +47,7 @@ describe('piano directive widget resolution', () => {
 									allocationUnitCount: 10,
 									numberOfElements: 10,
 									elementWordSize: 1,
-									type: MemoryTypes.int,
+									type: 'int' as const,
 									default: 0,
 									pointerDepth: 0,
 								},
@@ -59,7 +59,7 @@ describe('piano directive widget resolution', () => {
 									allocationUnitCount: 1,
 									numberOfElements: 1,
 									elementWordSize: 1,
-									type: MemoryTypes.int,
+									type: 'int' as const,
 									default: 0,
 									pointerDepth: 0,
 								},

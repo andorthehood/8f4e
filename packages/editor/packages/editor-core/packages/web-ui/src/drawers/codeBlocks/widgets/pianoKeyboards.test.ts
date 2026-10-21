@@ -1,6 +1,6 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
-import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { describe, expect, it, type vi } from 'vitest';
 import { createDrawContextMock, createSpriteIdLookupMock } from '../../../__tests__/rendering';
 import type { DrawContext as Engine } from '../../../drawContext';
@@ -28,7 +28,7 @@ function createMockMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Pl
 		id: 'memory',
 		numberOfElements: 1,
 		elementWordSize: 1,
-		type: MemoryTypes.int,
+		type: 'int' as const,
 		byteAddress: 0,
 		allocationUnitCount: 1,
 		allocationUnitAddress: 0,
