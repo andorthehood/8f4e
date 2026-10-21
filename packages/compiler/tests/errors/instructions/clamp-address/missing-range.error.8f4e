@@ -1,0 +1,8 @@
+8f4e/v1
+
+entry main
+module clampAddressMissingRange
+push 42
+clampAddress
+moduleEnd
+entryEnd
