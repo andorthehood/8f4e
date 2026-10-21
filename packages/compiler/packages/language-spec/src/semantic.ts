@@ -158,11 +158,10 @@ export interface FunctionCompilationContext extends CompilationContext {
 
 export type StackValueType = 'int' | 'float' | 'float64';
 
-/** Metadata describing values reachable from an address stack item. */
+/** Pointee type facts for an address. These facts do not include provenance or bounds guarantees. */
 export interface PointeeMetadata {
 	baseType: PointeeBaseType;
 	pointerDepth: number;
-	elementCount?: number;
 }
 
 /** Type and value facts known about one ordinary value on the compiler analysis stack. */
@@ -175,7 +174,11 @@ export interface StackValue {
 	knownValue?: number;
 }
 
-/** Type and value facts known about one value that is proven to be a memory address. */
+/**
+ * Type and value facts known about one address-like integer.
+ * `pointsTo` describes how to interpret the address; only `address.safeRange` or
+ * `address.safeAccessByteWidth` proves that a memory access is statically safe.
+ */
 export interface StackAddress {
 	kind: 'address';
 	valueType: 'int';

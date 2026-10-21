@@ -40,7 +40,6 @@ function getAddressPointeeMetadata(context: CompilationContext, address: Address
 	return {
 		baseType,
 		pointerDepth,
-		elementCount: memoryItem.numberOfElements,
 	} satisfies PointeeMetadata;
 }
 
@@ -80,9 +79,6 @@ function getPointeeMetadata(
 		? {
 				baseType: pointerMetadata.pointeeBaseType,
 				pointerDepth: getPointerDepthFromMetadata(pointerMetadata),
-				...(pointerMetadata.pointeeElementCount !== undefined
-					? { elementCount: pointerMetadata.pointeeElementCount }
-					: {}),
 			}
 		: undefined;
 }
@@ -114,9 +110,6 @@ function pushDereferencedPointerStackItems(
 				pointsTo: {
 					baseType: pointerMetadata.pointeeBaseType,
 					pointerDepth: remainingPointerDepth,
-					...(pointerMetadata.pointeeElementCount !== undefined
-						? { elementCount: pointerMetadata.pointeeElementCount }
-						: {}),
 				},
 			}),
 		];

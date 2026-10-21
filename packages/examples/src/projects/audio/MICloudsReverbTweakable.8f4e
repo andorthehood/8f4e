@@ -563,7 +563,7 @@ float* pointer &buffer
 int* readOffset
 - &controlValues:tank1DelayReadOffset
 
-local int readAddress
+local float* readAddress
 
 ; @wave &buffer count(buffer) pointer
 
@@ -689,7 +689,7 @@ float* pointer &buffer
 int* readOffset
 - &controlValues:tank2DelayReadOffset
 
-local int readAddress
+local float* readAddress
 
 ; @wave &buffer count(buffer) pointer
 

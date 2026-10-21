@@ -314,6 +314,9 @@ The localSet instruction consumes a value from the stack and stores it in a loca
 
 Floating-point assignments must match the destination local or parameter's declared width: `float` accepts float32 values and `float64` accepts float64 values. Mixed-width assignments are compiler errors; no implicit widening or narrowing is performed. Use `castToFloat64` to explicitly promote a float32 value before assigning it to a float64 local.
 
+Pointer assignments must exactly match the destination's pointee base type and pointer depth. A raw `int`, a different
+pointer type, or a pointer assigned to an `int` local is a compiler error.
+
 #### Examples
 
 ```
