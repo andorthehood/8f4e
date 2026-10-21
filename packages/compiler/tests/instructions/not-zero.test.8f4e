@@ -1,0 +1,42 @@
+8f4e/v1
+
+note
+; @pos 2 2
+; @config runtime TestRuntime
+
+notZero returns integer
+booleans for integer, float,
+and float64 values.
+noteEnd
+
+entry test
+module intAssertions
+push 0
+notZero
+assertEqual 0
+
+push 1
+notZero
+assertEqual 1
+moduleEnd
+
+module floatAssertions
+push 0.0
+notZero
+assertEqual 0
+
+push 1.0
+notZero
+assertEqual 1
+moduleEnd
+
+module float64Assertions
+push 0.0f64
+notZero
+assertEqual 0
+
+push 1.0f64
+notZero
+assertEqual 1
+moduleEnd
+entryEnd
