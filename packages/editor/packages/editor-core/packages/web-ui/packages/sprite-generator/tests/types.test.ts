@@ -142,6 +142,8 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('tooltipBackground');
 			expect(fillKeys).toContain('tooltipAddedHighlight');
 			expect(fillKeys).toContain('tooltipConsumedHighlight');
+			expect(fillKeys).toContain('switchBackground');
+			expect(fillKeys).toContain('switchKnob');
 		});
 
 		it('should have all required icon color properties', () => {

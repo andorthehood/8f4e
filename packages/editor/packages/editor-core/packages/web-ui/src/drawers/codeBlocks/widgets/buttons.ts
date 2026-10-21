@@ -1,7 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import { Icon } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
+import drawBinaryControl from './drawBinaryControl';
 
 export default function drawButtons(
 	engine: DrawContext,
@@ -13,15 +13,15 @@ export default function drawButtons(
 		return;
 	}
 
-	for (const { x, y, allocationUnitAddress, onValue, offValue } of codeBlock.widgets.buttons) {
-		const value = memoryViews.int32[allocationUnitAddress] || 0;
+	for (const button of codeBlock.widgets.buttons) {
+		const value = memoryViews.int32[button.allocationUnitAddress] || 0;
 
-		if (value === onValue) {
-			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_ON]);
-		} else if (value === offValue) {
-			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_OFF]);
+		if (value === button.onValue) {
+			drawBinaryControl(engine, state, button, true);
+		} else if (value === button.offValue) {
+			drawBinaryControl(engine, state, button, false);
 		} else {
-			engine.drawText(x, y, '[__]', state.spriteLookups.fontNumbers);
+			engine.drawText(button.x, button.y, '[__]', state.spriteLookups.fontNumbers);
 		}
 	}
 }

@@ -64,6 +64,8 @@ const defaultColorScheme: ColorScheme = {
 		codeBlockHighlightLevel3: 'rgba(255,255,255,0.05)',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyBlack: '#000000',
+		switchBackground: '#000000',
+		switchKnob: '#000000',
 		tooltipBackground: '#ffffff',
 		tooltipAddedHighlight: '#ccffcc',
 		tooltipConsumedHighlight: '#ffcccc',

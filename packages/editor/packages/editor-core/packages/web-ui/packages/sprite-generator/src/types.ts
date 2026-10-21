@@ -82,6 +82,8 @@ export interface ColorScheme {
 		codeBlockHighlightLevel3: string;
 		pianoKeyWhite: string;
 		pianoKeyBlack: string;
+		switchBackground: string;
+		switchKnob: string;
 		tooltipBackground: string;
 		tooltipAddedHighlight: string;
 		tooltipConsumedHighlight: string;

@@ -64,6 +64,8 @@ export const minimalColorScheme: ColorScheme = {
 		codeBlockHighlightLevel3: '#003333',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyBlack: '#000000',
+		switchBackground: '#336699',
+		switchKnob: '#993366',
 		tooltipBackground: '#ffffff',
 		tooltipAddedHighlight: '#ccffcc',
 		tooltipConsumedHighlight: '#ffcccc',
