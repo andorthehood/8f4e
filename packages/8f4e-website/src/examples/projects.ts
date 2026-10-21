@@ -55,8 +55,8 @@ export const projects = [
 	},
 	{
 		id: 'audio-loopback-5-second-delay',
-		title: 'Audio loopback with five-second delay',
-		description: 'Delay incoming audio by five seconds before routing it to the left and right outputs.',
+		title: 'Audio loopback with delay',
+		description: 'Delay incoming audio through a circular buffer before routing it to the left and right outputs.',
 		path: 'audio/audioLoopback5SecondDelay.8f4e',
 	},
 	{

@@ -26,8 +26,8 @@ note
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioInBufferLAddress audioin:buffer
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName audioLoopback5SecondDelay
 ; @config color.text.lineNumber #80666a
 ; @config color.text.entryName #f0e4dc
@@ -106,10 +106,9 @@ noteEnd
 note
 ; @pos 175 12
 ; This is a stereo loopback example
-; that delays the input audio by five
-; seconds before writing the signal
-; into the left and right output
-; buffers.
+; that delays the input audio before
+; writing the signal into a shared
+; left and right output buffer.
 noteEnd
 
 entry main
@@ -146,29 +145,30 @@ ifEnd
 
 moduleEnd
 module delay
-; @pos 48 1
+; @pos 49 1
 ; @home
 use env
 
-const DELAY_BUFFER_SIZE SAMPLE_RATE*5
+const DELAY_BUFFER_SIZE SAMPLE_RATE*3
 
 float* in &audioin:out
 float out
 float[] buffer DELAY_BUFFER_SIZE
 int pointer &buffer
 
-; Read the five-second-old sample
+; Read sample
 push &out
 push pointer
 loadFloat
 store
 
-; Replace it with the current sample
+; Write current sample
 push pointer
 push *in
 store
 
-; Advance and wrap the circular buffer pointer
+; Advance and wrap the circular
+; buffer pointer
 push &pointer
 push pointer
 push sizeof(buffer)
@@ -185,49 +185,8 @@ store
 ifEnd
 
 moduleEnd
-module audiooutL
-; @pos 89 1
-use env
-
-float* in &delay:out
-
-; Audio buffer
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer
-; pointer by the
-; buffer word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-module audiooutR
-; @pos 130 1
-
+module audioout
+; @pos 99 1
 use env
 
 float* in &delay:out
