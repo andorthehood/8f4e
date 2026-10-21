@@ -321,7 +321,7 @@ export const instructionSpecs = {
 		}
 	),
 	add: withDocsAndStack(binaryMatchingSpec, {
-		shortDescription: 'Adds two numbers of the same type and pushes the result.',
+		shortDescription: 'Adds matching numbers or an integer byte offset to an address and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
@@ -1007,7 +1007,7 @@ export const instructionSpecs = {
 		effects: { memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH } },
 	},
 	sub: withDocsAndStack(binaryMatchingSpec, {
-		shortDescription: 'Subtracts the second value from the first value and pushes the result.',
+		shortDescription: 'Subtracts matching numbers, an integer byte offset, or two addresses and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),

@@ -348,7 +348,7 @@ float out
 ; @wave2 &buffer count(buffer) playhead
 
 local float samplePosition
-local int sampleAddress
+local int16* sampleAddress
 
 ; Calculate read address
 push *position
