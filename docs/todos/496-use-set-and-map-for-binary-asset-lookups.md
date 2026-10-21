@@ -3,7 +3,7 @@ title: 'TODO: Use Set and Map for binary-asset lookups'
 priority: Low
 effort: 1-2h
 created: 2026-10-14
-issue: https://github.com/andorthehood/8f4e/issues/1013
+issue: https://github.com/8f4e/8f4e/issues/1013
 status: Open
 completed: null
 ---

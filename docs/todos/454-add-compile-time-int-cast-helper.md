@@ -3,7 +3,7 @@ title: 'TODO: Add compile-time int cast helper'
 priority: Medium
 effort: 4-8h
 created: 2026-06-11
-issue: https://github.com/andorthehood/8f4e/issues/948
+issue: https://github.com/8f4e/8f4e/issues/948
 status: Open
 completed: null
 ---

@@ -3,7 +3,7 @@ title: 'TODO: Add Sergamon font to the editor'
 priority: Low
 effort: 4-8h
 created: 2026-07-30
-issue: https://github.com/andorthehood/8f4e/issues/952
+issue: https://github.com/8f4e/8f4e/issues/952
 status: Open
 completed: null
 ---

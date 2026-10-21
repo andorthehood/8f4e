@@ -1,7 +1,7 @@
 import type { SemanticCallLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-import createInstructionCompilerTestContext, { createStackFacts } from '../testUtils';
+import createInstructionCompilerTestContext, { createStackFacts } from '../../tests/testUtils';
 import call from './call';
 
 const targetId = 'convert__float';

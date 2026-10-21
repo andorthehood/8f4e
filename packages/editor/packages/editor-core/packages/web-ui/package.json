@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/web-ui",
-  "version": "2.2.0",
+  "version": "3.0.3",
   "private": true,
   "description": "8f4e web UI package - canvas renderer for the editor",
   "type": "module",
@@ -15,14 +15,14 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andorthehood/8f4e.git"
+    "url": "git+https://github.com/8f4e/8f4e.git"
   },
   "author": "Andor Polgar",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andorthehood/8f4e/issues"
+    "url": "https://github.com/8f4e/8f4e/issues"
   },
-  "homepage": "https://github.com/andorthehood/8f4e#readme",
+  "homepage": "https://github.com/8f4e/8f4e#readme",
   "dependencies": {
     "@8f4e/web-ui-render-projection": "*",
     "@8f4e/editor-state-types": "*",
@@ -36,7 +36,7 @@
     "@8f4e/editor-state-testing": "*",
     "@vitest/browser": "4.1.7",
     "@vitest/browser-playwright": "4.1.7",
-    "playwright": "1.63.0",
+    "playwright": "1.64.1",
     "vitest": "4.1.7"
   },
   "scripts": {

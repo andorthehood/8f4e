@@ -3,7 +3,7 @@ title: 'TODO: Show const values in declaration tooltips'
 priority: Medium
 effort: 2-4h
 created: 2026-05-28
-issue: https://github.com/andorthehood/8f4e/issues/720
+issue: https://github.com/8f4e/8f4e/issues/720
 status: Open
 completed: null
 ---

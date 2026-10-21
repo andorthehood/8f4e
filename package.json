@@ -13,19 +13,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andorthehood/8f4e.git"
+    "url": "git+https://github.com/8f4e/8f4e.git"
   },
   "author": "Andor Polgar",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andorthehood/8f4e/issues"
+    "url": "https://github.com/8f4e/8f4e/issues"
   },
-  "homepage": "https://github.com/andorthehood/8f4e#readme",
+  "homepage": "https://github.com/8f4e/8f4e#readme",
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@nx/js": "23.3.0",
     "@nx/vite": "23.3.0",
-    "@playwright/test": "1.63.0",
+    "@playwright/test": "1.64.1",
     "@types/audioworklet": "0.0.100",
     "@types/node": "24.13.2",
     "@types/offscreencanvas": "2019.7.3",

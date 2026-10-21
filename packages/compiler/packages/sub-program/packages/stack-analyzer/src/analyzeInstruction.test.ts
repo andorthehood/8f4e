@@ -1,10 +1,8 @@
 import type { CompilerASTLine, MapBlockStackFrame, MemoryAddressRange } from '@8f4e/language-spec';
 import { ALLOCATION_UNIT_BYTE_SIZE, ArgumentType, BlockType, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-
+import createStackAnalyzerTestContext from '../tests/testUtils';
 import { analyzeInstruction } from './analyzeInstruction';
-
-import createStackAnalyzerTestContext from './testUtils';
 
 describe('analyzeInstruction', () => {
 	it('records stack before, consumed operands, produced items, and stack after', () => {
@@ -159,15 +157,6 @@ describe('analyzeInstruction', () => {
 				mapBlock,
 			],
 			activeMapBlock: mapBlock,
-			activeBlockDepths: {
-				[BlockType.MODULE]: 1,
-				[BlockType.LOOP]: 0,
-				[BlockType.CONDITION]: 0,
-				[BlockType.FUNCTION]: 0,
-				[BlockType.BLOCK]: 0,
-				[BlockType.CONSTANTS]: 0,
-				[BlockType.MAP]: 1,
-			},
 		});
 		const line = {
 			lineNumber: 1,

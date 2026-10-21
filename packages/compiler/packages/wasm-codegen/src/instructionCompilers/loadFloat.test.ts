@@ -4,7 +4,7 @@ import createInstructionCompilerTestContext, {
 	compileInstructionForTest,
 	containsByteCodeSequence,
 	createStackFacts as createBaseStackFacts,
-} from '../testUtils';
+} from '../../tests/testUtils';
 import loadFloat from './loadFloat';
 
 /** Builds the analyzed float32 result used by the existing load cases. */

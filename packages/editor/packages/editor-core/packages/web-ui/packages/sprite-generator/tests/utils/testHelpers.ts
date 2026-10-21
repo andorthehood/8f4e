@@ -48,16 +48,6 @@ export function findAllCommands(commands: DrawingCommand[], commandType: Command
 }
 
 /**
- * Utility to validate that required command types are present
- */
-export function validateRequiredCommands(commands: DrawingCommand[], requiredTypes: CommandValue[]): void {
-	requiredTypes.forEach(type => {
-		const command = findCommand(commands, type);
-		expect(command).toBeDefined();
-	});
-}
-
-/**
  * Mock function to create deterministic test data
  */
 export function createMockBitmap(size: number): number[] {

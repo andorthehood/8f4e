@@ -183,6 +183,22 @@ describe('cli', () => {
 		});
 	});
 
+	it('dumps unsigned narrow integer arrays without signed sign-extension', async () => {
+		const { stdout } = await execCli([
+			'run',
+			runtimeFixturePath,
+			'--dump',
+			'unsignedBytes',
+			'--dump',
+			'unsignedShorts',
+		]);
+
+		expect(JSON.parse(stdout)).toEqual({
+			unsignedBytes: [0, 255],
+			unsignedShorts: [0, 65535],
+		});
+	});
+
 	it('fails when run is called without any --dump', async () => {
 		await expect(execCli(['run', runtimeFixturePath, '--cycles', '2'])).rejects.toThrow('Command failed');
 	});

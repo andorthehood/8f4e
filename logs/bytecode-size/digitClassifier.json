@@ -748,5 +748,23 @@
 		"version": "6.5.4",
 		"benchmark": "digitClassifier.8f4e",
 		"emittedBytes": 14406
+	},
+	{
+		"commit": "653b85d5f069a8a769d64eb9bec6730a215d3ae5",
+		"version": "7.0.0",
+		"benchmark": "digitClassifier.8f4e",
+		"emittedBytes": 14406
+	},
+	{
+		"commit": "d269737284bdfbba24a22a053b8b458a959fd09e",
+		"version": "7.0.1",
+		"benchmark": "digitClassifier.8f4e",
+		"emittedBytes": 14406
+	},
+	{
+		"commit": "dab5b17bfefcfca1ea31aa770aebdf17368773b0",
+		"version": "7.0.2",
+		"benchmark": "digitClassifier.8f4e",
+		"emittedBytes": 14406
 	}
 ]

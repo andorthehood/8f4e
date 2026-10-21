@@ -8,7 +8,7 @@ import type {
 } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { expect } from 'vitest';
-import { createCodegenContext } from './createCodegenContext';
+import { createCodegenContext } from '../src/createCodegenContext';
 
 export default function createInstructionCompilerTestContext(overrides: Partial<CodegenContext> = {}): CodegenContext {
 	return createCodegenContext({
