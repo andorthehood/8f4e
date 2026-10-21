@@ -1,0 +1,23 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Unsigned right shift behavior is
+checked with native
+assertions.
+noteEnd
+
+entry test
+module shiftRightUnsignedAssertions
+push 8
+push 2
+shiftRightUnsigned
+assertEqual 2
+
+push -1
+push 1
+shiftRightUnsigned
+assertEqual 2147483647
+moduleEnd
+entryEnd
