@@ -28,7 +28,7 @@ note
 ; @config audioRuntime.audioInBufferLAddress audioin:buffer
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config audioRuntime.audioOutBufferRAddress audioout:buffer
-; @config export.fileName audioLoopback5SecondDelay
+; @config export.fileName audioLoopbackWithDelay
 ; @config color.text.lineNumber #80666a
 ; @config color.text.entryName #f0e4dc
 ; @config color.text.debugInfo #987a7f

@@ -19,6 +19,7 @@ const featuredProjectIds = [
 	'digit-classifier',
 	'random-generators',
 	'audio-buffer',
+	'audio-loopback-with-delay',
 	'variable-speed-player',
 	'risen',
 	'overlay-texture',
