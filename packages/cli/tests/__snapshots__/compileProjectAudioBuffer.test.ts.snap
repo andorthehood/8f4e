@@ -2007,7 +2007,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; @config color.fill.scanLine #f0a54b",
         "; @config color.fill.track #334956",
         "; @config color.fill.fill #2eaac0",
-        "; @config color.fill.handle #dce9ec",
+        "; @config color.fill.controlKnob #dce9ec",
         "; @config color.fill.codeBlockHighlightLevel1 #243743",
         "; @config color.fill.codeBlockHighlightLevel2 #2c414f",
         "; @config color.fill.codeBlockHighlightLevel3 #344b5b",

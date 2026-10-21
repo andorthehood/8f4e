@@ -116,7 +116,7 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('pianoKeyBlackPressedOverlay');
 			expect(textKeys).toContain('tooltipText');
 			expect(textKeys).toContain('tooltipHighlight');
-			expect(textKeys).toContain('sliderHandle');
+			expect(textKeys).toContain('controlKnob');
 		});
 
 		it('should have all required fill color properties', () => {
@@ -144,11 +144,8 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('tooltipAddedHighlight');
 			expect(fillKeys).toContain('tooltipConsumedHighlight');
 			expect(fillKeys).toContain('switchBackground');
-			expect(fillKeys).toContain('switchKnob');
-		});
-
-		it('should have the switch text color property', () => {
-			expect(Object.keys(minimalColorScheme.text)).toContain('switch');
+			expect(fillKeys).toContain('controlKnob');
+			expect(fillKeys).toContain('crossfadeHandle');
 		});
 
 		it('should have all required icon color properties', () => {

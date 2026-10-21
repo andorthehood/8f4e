@@ -1052,7 +1052,7 @@ note
 ; @config color.fill.scanLine #f6e7bd
 ; @config color.fill.track #2b241a
 ; @config color.fill.fill #d4af37
-; @config color.fill.handle #f6e7bd
+; @config color.fill.controlKnob #f6e7bd
 ; @config color.fill.codeBlockHighlightLevel1 rgba(212,175,55,0.06)
 ; @config color.fill.codeBlockHighlightLevel2 rgba(212,175,55,0.11)
 ; @config color.fill.codeBlockHighlightLevel3 rgba(212,175,55,0.17)

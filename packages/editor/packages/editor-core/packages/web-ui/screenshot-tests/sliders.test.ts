@@ -13,11 +13,11 @@ test('sliders', async () => {
 	const mockState = createMockStateWithColors({
 		editorConfig: {
 			color: {
-				text: { sliderHandle: '#ffcc00' },
+				text: { controlKnob: '#ffcc00' },
 				fill: {
 					track: '#111111',
 					fill: '#cccccc',
-					handle: '#336699',
+					controlKnob: '#336699',
 				},
 			},
 		},

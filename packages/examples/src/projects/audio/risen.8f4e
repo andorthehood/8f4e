@@ -341,7 +341,7 @@ note
 ; @config color.fill.scanLine #55ffff
 ; @config color.fill.track #aaaaaa
 ; @config color.fill.fill #0000aa
-; @config color.fill.handle #ffffff
+; @config color.fill.controlKnob #ffffff
 ; @config color.fill.pianoKeyWhite #ffffff
 ; @config color.fill.pianoKeyBlack #000000
 ; @config color.fill.tooltipBackground #0000aa

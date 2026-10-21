@@ -89,7 +89,7 @@ note
 ; @config color.fill.scanLine #dd7d36
 ; @config color.fill.track #66757a
 ; @config color.fill.fill #006b75
-; @config color.fill.handle #edf1ed
+; @config color.fill.controlKnob #edf1ed
 ; @config color.fill.codeBlockHighlightLevel1 #a7b1af
 ; @config color.fill.codeBlockHighlightLevel2 #96a4a1
 ; @config color.fill.codeBlockHighlightLevel3 #859691

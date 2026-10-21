@@ -871,7 +871,7 @@ note
 ; @config color.fill.scanLine #ffd4ad
 ; @config color.fill.track rgba(232,232,255,0.22)
 ; @config color.fill.fill rgba(255,216,184,0.7)
-; @config color.fill.handle #fff
+; @config color.fill.controlKnob #fff
 ; @config color.fill.codeBlockHighlightLevel1 rgba(225,220,255,0.08)
 ; @config color.fill.codeBlockHighlightLevel2 rgba(225,220,255,0.13)
 ; @config color.fill.codeBlockHighlightLevel3 rgba(225,220,255,0.18)

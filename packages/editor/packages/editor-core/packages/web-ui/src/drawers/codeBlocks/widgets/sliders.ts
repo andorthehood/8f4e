@@ -37,9 +37,9 @@ export default function drawer(
 
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.track, width, height);
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.fill, handleX + handleWidth, height);
-		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, handleWidth, height);
-		engine.drawText(handleX, 0, HANDLE_LABEL, state.spriteLookups.fontSliderHandle);
-		engine.drawText(handleX, state.viewport.hGrid, HANDLE_LABEL, state.spriteLookups.fontSliderHandle);
+		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.controlKnob, handleWidth, height);
+		engine.drawText(handleX, 0, HANDLE_LABEL, state.spriteLookups.fontControlKnob);
+		engine.drawText(handleX, state.viewport.hGrid, HANDLE_LABEL, state.spriteLookups.fontControlKnob);
 
 		engine.endGroup();
 	}

@@ -291,7 +291,8 @@ note
 ; @config color.fill.scanLine #e5663d
 ; @config color.fill.track #465148
 ; @config color.fill.fill #1f7260
-; @config color.fill.handle #e9ead8
+; @config color.fill.controlKnob #e9ead8
+; @config color.fill.crossfadeHandle #e9ead8
 ; @config color.fill.codeBlockHighlightLevel1 #354038
 ; @config color.fill.codeBlockHighlightLevel2 #3d4940
 ; @config color.fill.codeBlockHighlightLevel3 #465248

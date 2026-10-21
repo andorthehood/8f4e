@@ -39,7 +39,7 @@ describe('drawSliders', () => {
 			viewport: { vGrid: 8, hGrid: 16 },
 			spriteLookups: {
 				fillColors: createSpriteIdLookupMock(),
-				fontSliderHandle: createSpriteIdLookupMock(),
+				fontControlKnob: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -53,11 +53,11 @@ describe('drawSliders', () => {
 		expect(drawSprite.mock.calls).toEqual([
 			[0, 0, 'track', 32, 32],
 			[0, 0, 'fill', 20, 32],
-			[12, 0, 'handle', 8, 32],
+			[12, 0, 'controlKnob', 8, 32],
 		]);
 		expect(drawText.mock.calls).toEqual([
-			[12, 0, '|', state.spriteLookups?.fontSliderHandle],
-			[12, 16, '|', state.spriteLookups?.fontSliderHandle],
+			[12, 0, '|', state.spriteLookups?.fontControlKnob],
+			[12, 16, '|', state.spriteLookups?.fontControlKnob],
 		]);
 	});
 });

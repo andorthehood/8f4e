@@ -14,11 +14,11 @@ test('switches', async () => {
 		editorConfig: {
 			color: {
 				text: {
-					switch: '#ffcc00',
+					controlKnob: '#ffcc00',
 				},
 				fill: {
 					switchBackground: '#111111',
-					switchKnob: '#336699',
+					controlKnob: '#336699',
 				},
 			},
 		},

@@ -21,7 +21,7 @@ function createTestState() {
 		viewport: { vGrid: 8, hGrid: 16 },
 		spriteLookups: {
 			fillColors: createSpriteIdLookupMock(),
-			fontSwitch: createSpriteIdLookupMock(),
+			fontControlKnob: createSpriteIdLookupMock(),
 		} as never,
 	});
 }
@@ -37,12 +37,12 @@ describe('drawBinaryControl', () => {
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 		expect(drawSprite.mock.calls).toEqual([
 			[10, 20, 'switchBackground', 32, 16],
-			[18, 20, 'switchKnob', 8, 16],
+			[18, 20, 'controlKnob', 8, 16],
 		]);
-		expect(drawText).toHaveBeenCalledWith(10, 20, '[# ]', state.spriteLookups?.fontSwitch);
+		expect(drawText).toHaveBeenCalledWith(10, 20, '[| ]', state.spriteLookups?.fontControlKnob);
 	});
 
-	it('moves the knob fill and hashmark to the on position', () => {
+	it('moves the knob fill and vertical bar to the on position', () => {
 		const engine = createDrawContextMock();
 		const state = createTestState();
 
@@ -52,8 +52,8 @@ describe('drawBinaryControl', () => {
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 		expect(drawSprite.mock.calls).toEqual([
 			[10, 20, 'switchBackground', 32, 16],
-			[26, 20, 'switchKnob', 8, 16],
+			[26, 20, 'controlKnob', 8, 16],
 		]);
-		expect(drawText).toHaveBeenCalledWith(10, 20, '[ #]', state.spriteLookups?.fontSwitch);
+		expect(drawText).toHaveBeenCalledWith(10, 20, '[ |]', state.spriteLookups?.fontControlKnob);
 	});
 });
