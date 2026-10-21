@@ -1,8 +1,8 @@
 import type { FunctionValueType, ResolvedLocalSetLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
+import createStackAnalyzerTestContext from '../../tests/testUtils';
 import { analyzeInstruction } from '../analyzeInstruction';
-import createStackAnalyzerTestContext from '../testUtils';
 
 function localSetLine(type: FunctionValueType): ResolvedLocalSetLine {
 	return {
