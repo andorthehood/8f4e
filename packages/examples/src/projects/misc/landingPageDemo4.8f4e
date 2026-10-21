@@ -56,9 +56,9 @@ note
 ; @config color.fill.background #960
 ; @config color.fill.backgroundDots #b98212
 ; @config color.fill.backgroundDots2 #e7ad32
-; @config color.fill.moduleBackground #2d1b0e
+; @config color.fill.moduleBackground #211307
 ; @config color.fill.debugInfoBackground #211309
-; @config color.fill.moduleBackgroundDragged #2d1b0e
+; @config color.fill.moduleBackgroundDragged #211307
 ; @config color.fill.moduleBackgroundDisabled #322216
 ; @config color.fill.wire #ffe09c
 ; @config color.fill.wireHighlighted #fff4cf
