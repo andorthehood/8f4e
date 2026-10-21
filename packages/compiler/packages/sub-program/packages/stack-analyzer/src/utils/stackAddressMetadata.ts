@@ -43,7 +43,7 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 
 	return {
 		...(knownValue !== undefined ? { knownValue } : {}),
-		...(safeRange || clampRange
+		...(safeRange || clampRange || pointsTo
 			? {
 					kind: 'address',
 					valueType: 'int',
@@ -79,7 +79,7 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 
 	return {
 		...(knownValue !== undefined ? { knownValue } : {}),
-		...(safeRange || clampRange
+		...(safeRange || clampRange || pointsTo
 			? {
 					kind: 'address',
 					valueType: 'int',

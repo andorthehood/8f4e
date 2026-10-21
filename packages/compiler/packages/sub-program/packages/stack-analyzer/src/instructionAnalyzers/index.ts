@@ -14,7 +14,7 @@ import { analyzeExitIfTrue } from './controlFlow';
 import { analyzeFunctionEnd } from './functionEnd';
 import { analyzeLocalSet } from './localSet';
 import { analyzeMapEnd } from './mapEnd';
-import { analyzeClampAddress } from './memory';
+import { analyzeClampAddress, analyzeLoadFloat } from './memory';
 import { analyzeAbs } from './numeric/abs';
 import { analyzeAdd } from './numeric/add';
 import { analyzeAnd } from './numeric/and';
@@ -83,6 +83,8 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 		case 'clampModuleAddress':
 		case 'clampGlobalAddress':
 			return analyzeClampAddress(line, context);
+		case 'loadFloat':
+			return analyzeLoadFloat(context);
 		case 'localSet':
 			return analyzeLocalSet(line, context);
 		case 'exitIfTrue':
