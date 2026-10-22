@@ -2048,8 +2048,16 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
     },
   ],
   "pointerMetadataByModuleId": {
-    "audioout": {},
-    "phaseAccumulator": {},
+    "audioout": {
+      "in": {
+        "pointeeElementCount": 1,
+      },
+    },
+    "phaseAccumulator": {
+      "frequency": {
+        "pointeeElementCount": 1,
+      },
+    },
   },
   "projectMemoryExposuresByGroupPath": {},
   "prototypes": [],
