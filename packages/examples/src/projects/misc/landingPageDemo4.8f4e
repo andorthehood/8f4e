@@ -101,7 +101,7 @@ note
 noteEnd
 
 entry main
-module sqare
+module square
 ; @pos 19 0
 ; @home left
 
@@ -140,7 +140,7 @@ moduleEnd
 module lowPassFilter
 ; @pos 55 0
 
-float* in &sqare:out
+float* in &square:out
 float out
 
 float alpha 0.04
