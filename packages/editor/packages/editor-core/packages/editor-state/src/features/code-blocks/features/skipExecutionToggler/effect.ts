@@ -3,6 +3,7 @@ import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-
 import type { StateManager } from '@8f4e/state-manager';
 import { isSkipExecutionDirective } from '@8f4e/tokenizer';
 import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
+import incrementProjectRevision from '../../../program-compiler/incrementProjectRevision';
 import setSkipExecution from './setSkipExecution';
 
 /**
@@ -31,6 +32,7 @@ export default function skipExecutionToggler(store: StateManager<State>, events:
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 		if (result.changed) {
 			incrementCompilerInputRevision(store);
+			incrementProjectRevision(store);
 		}
 	}
 
