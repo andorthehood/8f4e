@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import incrementProjectRevision from '../../../../program-compiler/incrementProjectRevision';
 import { removeDirective } from '../../directiveEditing';
 import { getGroupBlocks } from '../getGroupBlocks';
 
@@ -37,6 +38,9 @@ export default function groupUngroupper(store: StateManager<State>, events: Even
 		// Trigger store update to refresh all affected blocks
 		// Using codeBlocks array update to ensure all blocks are refreshed
 		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
+		if (groupBlocks.length > 0) {
+			incrementProjectRevision(store);
+		}
 	}
 
 	events.on('ungroupByName', onUngroupByName);
