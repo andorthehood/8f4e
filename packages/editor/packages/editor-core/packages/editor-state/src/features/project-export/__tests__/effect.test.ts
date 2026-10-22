@@ -49,16 +49,14 @@ describe('projectExport', () => {
 			expect(saveSessionCall).toBeDefined();
 		});
 
-		it('should subscribe to code changes for auto-saving', () => {
+		it('should subscribe to project changes for auto-saving', () => {
 			const subscribeSpy = vi.spyOn(store, 'subscribe');
 
 			projectExport(store, mockEvents);
 
-			expect(subscribeSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', expect.any(Function));
-			expect(subscribeSpy).toHaveBeenCalledWith(
-				'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
-				expect.any(Function)
-			);
+			expect(subscribeSpy).toHaveBeenCalledWith('projectRevision', expect.any(Function));
+			expect(subscribeSpy).toHaveBeenCalledWith('initialProjectState', expect.any(Function));
+			expect(subscribeSpy).not.toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', expect.any(Function));
 
 			subscribeSpy.mockRestore();
 		});
@@ -238,7 +236,8 @@ describe('projectExport', () => {
 			projectExport(store, mockEvents);
 			const code = ['note local.settings', '; @pos 4 8', '; @config font terminus8x16', 'noteEnd'];
 
-			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', code);
+			note.code = code;
+			store.set('projectRevision', 1);
 
 			expect(saveSession).toHaveBeenLastCalledWith(expect.objectContaining({ notes: [{ id: 0, code }] }));
 			const save = vi.mocked(mockEvents.on).mock.calls.find(call => call[0] === 'saveProject')![1];
@@ -246,7 +245,7 @@ describe('projectExport', () => {
 			expect(parseProjectSource(saveProject.mock.calls[0][0]).notes.map(block => block.code)).toEqual([code]);
 
 			mockState.codeBlockRendering.rootCodeBlocks.splice(0);
-			store.set('codeBlockRendering.codeBlocks', mockState.codeBlockRendering.rootCodeBlocks);
+			store.set('projectRevision', 2);
 
 			expect(saveSession).toHaveBeenLastCalledWith(expect.objectContaining({ notes: [] }));
 		});
@@ -319,7 +318,7 @@ describe('projectExport', () => {
 			await expect(saveSessionCallback()).resolves.toBeUndefined();
 		});
 
-		it('should trigger saveSession on code changes', async () => {
+		it('should trigger saveSession on project changes', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 
@@ -331,23 +330,59 @@ describe('projectExport', () => {
 
 			projectExport(store, mockEvents);
 
-			// Find the code change callback
-			const codeChangeCall = subscribeSpy.mock.calls.find(
-				call => call[0] === 'codeBlockRendering.selectedCodeBlock.code'
-			);
-			expect(codeChangeCall).toBeDefined();
-			const programmaticChangeCall = subscribeSpy.mock.calls.find(
-				call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
-			);
-			expect(programmaticChangeCall).toBeDefined();
+			// Find the project change callback
+			const projectChangeCall = subscribeSpy.mock.calls.find(call => call[0] === 'projectRevision');
+			expect(projectChangeCall).toBeDefined();
 
-			const codeChangeCallback = codeChangeCall![1];
-			await codeChangeCallback();
+			const projectChangeCallback = projectChangeCall![1];
+			await projectChangeCallback();
 
 			expect(mockSaveSession).toHaveBeenCalled();
 			expect(mockState.callbacks.saveProject).not.toHaveBeenCalled();
 
 			subscribeSpy.mockRestore();
+		});
+
+		it('should not trigger saveSession on selection or caret changes', async () => {
+			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.saveSession = mockSaveSession;
+			const block = createMockCodeBlock({ blockType: 'module', code: ['module main', 'moduleEnd'], entry: 'main' });
+			mockState.codeBlockRendering.rootCodeBlocks = [block];
+			mockState.codeBlockRendering.codeBlocks = mockState.codeBlockRendering.rootCodeBlocks;
+
+			projectExport(store, mockEvents);
+
+			// Reassigning the selected block (even the same one) used to autosave.
+			store.set('codeBlockRendering.selectedCodeBlock', block);
+			store.set('codeBlockRendering.selectedCodeBlock', block);
+			store.set('codeBlockRendering.selectedCodeBlock.cursor', { row: 0, col: 3, x: 0, y: 0 });
+			store.set('codeBlockRendering.codeBlocks', mockState.codeBlockRendering.codeBlocks);
+
+			expect(mockSaveSession).not.toHaveBeenCalled();
+		});
+
+		it('should trigger saveSession when a project is loaded or restored', async () => {
+			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.saveSession = mockSaveSession;
+
+			projectExport(store, mockEvents);
+
+			store.set('initialProjectState', {
+				code: [],
+				modules: [],
+				functions: [],
+				constants: [],
+				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
+				groups: [],
+			});
+			for (let i = 0; i < 5; i++) {
+				await Promise.resolve();
+			}
+
+			expect(mockSaveSession).toHaveBeenCalledTimes(1);
 		});
 	});
 });
