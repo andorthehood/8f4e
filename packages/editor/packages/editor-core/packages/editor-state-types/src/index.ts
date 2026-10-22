@@ -358,6 +358,8 @@ export interface Options {
 export interface State {
 	/** Monotonic change signal for compiler inputs; selection and visual metadata do not advance it. */
 	compilerInputRevision: number;
+	/** Monotonic change signal for persisted project content; selection, caret movement, and navigation do not advance it. */
+	projectRevision: number;
 	compiler: Compiler;
 	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;
