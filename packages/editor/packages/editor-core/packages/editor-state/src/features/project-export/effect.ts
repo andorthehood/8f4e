@@ -68,9 +68,15 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		});
 	}
 
-	store.subscribe('codeBlockRendering.codeBlocks', onSaveSession);
-	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSaveSession);
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
+	function onProjectLoaded() {
+		// The loaded project is populated into code blocks in response to the same
+		// state change; defer to a microtask so the restored/loaded blocks are in
+		// place before the session snapshot is serialized.
+		void Promise.resolve().then(onSaveSession);
+	}
+
+	store.subscribe('projectRevision', onSaveSession);
+	store.subscribe('initialProjectState', onProjectLoaded);
 	events.on('saveSession', onSaveSession);
 	events.on('saveProject', () => onSaveProject('saveProject'));
 	events.on('exportProject', () => onSaveProject('exportProject'));

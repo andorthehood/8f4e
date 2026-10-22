@@ -4,6 +4,7 @@ import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { instructionParser } from '@8f4e/tokenizer';
 import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
+import incrementProjectRevision from '../../../program-compiler/incrementProjectRevision';
 import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
@@ -255,6 +256,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		replaceCodeBlocksInPlace(existingBlocks, [...normalBlocks, codeBlock, ...topBlocks]);
 		store.set('codeBlockRendering.codeBlocks', existingBlocks);
 		incrementCompilerInputRevision(store);
+		incrementProjectRevision(store);
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
@@ -271,6 +273,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		store.set('codeBlockRendering.codeBlocks', codeBlocks);
 		if (codeBlockExists) {
 			incrementCompilerInputRevision(store);
+			incrementProjectRevision(store);
 		}
 	}
 
@@ -302,6 +305,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Use selectedCodeBlockForProgrammaticEdit to trigger graphics update
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 		incrementCompilerInputRevision(store);
+		incrementProjectRevision(store);
 	}
 
 	async function onAddCodeBlockBySlug({

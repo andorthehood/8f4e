@@ -6,6 +6,7 @@ export default function createDefaultState() {
 
 	return {
 		compilerInputRevision: 0,
+		projectRevision: 0,
 		compiler: {
 			isCompiling: false,
 			compiledModules: {},

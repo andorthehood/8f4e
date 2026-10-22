@@ -239,8 +239,9 @@ describe('groupNonstickToggler', () => {
 
 		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
-		// Should be called twice - once for each block
-		expect(setSpy).toHaveBeenCalledTimes(2);
+		// Once for each block, then the project revision advances once for the group.
+		expect(setSpy).toHaveBeenCalledTimes(3);
+		expect(setSpy).toHaveBeenLastCalledWith('projectRevision', 1);
 		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block1);
 		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block2);
 	});
