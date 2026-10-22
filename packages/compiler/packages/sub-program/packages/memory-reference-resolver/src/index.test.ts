@@ -176,7 +176,7 @@ describe('resolveMemoryReferences', () => {
 		expect(ast.lines[1]).toBe(pushLine);
 	});
 
-	it('uses pointer declaration address defaults for later pointee count queries', () => {
+	it.each([0, 1, 4])('preserves a known pointee count of %i from a pointer declaration default', count => {
 		const moduleLine = {
 			lineNumber: 1,
 			instruction: 'module',
@@ -185,7 +185,7 @@ describe('resolveMemoryReferences', () => {
 		const samplesLine = {
 			lineNumber: 2,
 			instruction: 'float[]',
-			arguments: [classifyIdentifier('samples'), { type: ArgumentType.LITERAL, value: 4, isInteger: true }],
+			arguments: [classifyIdentifier('samples'), { type: ArgumentType.LITERAL, value: count, isInteger: true }],
 		};
 		const pointerLine = {
 			lineNumber: 3,
@@ -206,10 +206,10 @@ describe('resolveMemoryReferences', () => {
 		const samples = createMemoryDeclaration('samples', {
 			lineNumber: 2,
 			type: 'float',
-			numberOfElements: 4,
+			numberOfElements: count,
 			elementWordSize: 4,
 			allocationUnitAddress: 4,
-			allocationUnitCount: 4,
+			allocationUnitCount: count,
 			byteAddress: 16,
 			isInteger: false,
 		});
@@ -240,7 +240,7 @@ describe('resolveMemoryReferences', () => {
 
 		expect(result.references.modules[0].lineFacts[3]?.arguments?.[0]).toEqual({
 			type: ArgumentType.LITERAL,
-			value: 4,
+			value: count,
 			isInteger: true,
 		});
 	});
