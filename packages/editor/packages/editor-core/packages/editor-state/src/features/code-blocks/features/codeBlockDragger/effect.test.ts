@@ -1,3 +1,4 @@
+import { createMockState } from '@8f4e/editor-state-testing';
 import type { EventDispatcher, InternalMouseEvent, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -15,7 +16,7 @@ describe('codeBlockDragger', () => {
 
 	beforeEach(() => {
 		// Initialize state
-		state = {
+		state = createMockState({
 			featureFlags: {
 				moduleDragging: true,
 				editing: true,
@@ -46,7 +47,7 @@ describe('codeBlockDragger', () => {
 				height: 600,
 				gridCoordinates: { x: 0, y: 0 },
 			},
-		} as State;
+		});
 
 		store = createStateManager(state);
 
