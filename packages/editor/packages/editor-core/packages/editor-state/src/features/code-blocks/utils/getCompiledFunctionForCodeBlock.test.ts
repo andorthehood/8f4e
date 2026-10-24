@@ -1,4 +1,9 @@
-import { type CompiledFunction, createFunctionId, type ValidatedFunctionAST } from '@8f4e/language-spec';
+import {
+	type CompiledFunction,
+	type ComposedFunctionAST,
+	createFunctionId,
+	ROOT_PROJECT_GROUP_PATH,
+} from '@8f4e/language-spec';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '../../../pureHelpers/testingUtils/testUtils';
@@ -52,14 +57,18 @@ function createTestCompiledFunction(
 				: [],
 		ast: {
 			type: 'function',
-			id: name,
+			name,
 			projectBlockId,
+			sourceIdentity: {
+				projectGroupPath: ROOT_PROJECT_GROUP_PATH,
+				codeBlockId: name,
+			},
 			functionLine: { lineNumber: 0, instruction: 'function', arguments: [{ value: name }] },
 			functionEndLine: { lineNumber: 3, instruction: 'functionEnd', arguments: [] },
 			signature: { parameters: [paramType], returns: [] },
 			lines: [],
-		} as unknown as ValidatedFunctionAST,
-	} as CompiledFunction;
+		} as unknown as ComposedFunctionAST,
+	};
 }
 
 describe('getCompiledFunctionForCodeBlock', () => {
